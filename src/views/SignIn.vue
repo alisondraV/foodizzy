@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Sign In</h1>
+    <h1>Welcome!</h1>
+    <p>Let’s optimize your food consumption together</p>
     <form @submit.prevent>
       <label>
         Email:
@@ -16,7 +17,7 @@
         />
       </label>
       <br />
-      <button @click="signIn">Sign In</button>
+      <v-button label="Sign In" @click="signIn" />
     </form>
     <button @click="signUpThroughGoogle">Sign Up though Google</button>
     <button @click="goToSignUpPage">Sign Up</button>
@@ -27,8 +28,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import router from "@/router";
+import VButton from "@/components/VButton.vue";
 
-@Component
+@Component({
+  components: {
+    VButton
+  }
+})
 export default class SignIn extends Vue {
   email = "";
   password = "";
