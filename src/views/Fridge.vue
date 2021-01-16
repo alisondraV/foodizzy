@@ -2,7 +2,6 @@
   <div>
     <h1>Fridge</h1>
     <h2 v-for="product in products" :key="product.id">{{ product }}</h2>
-    <button @click="getProducts">Get products</button>
     <button @click="goBack">Back</button>
   </div>
 </template>
@@ -11,13 +10,28 @@
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import router from "@/router";
+import Authentication from "@/utils/Authentication";
+import firebase from "firebase";
 
 @Component
 export default class Fridge extends Vue {
   products: Array<string> = [];
+  user: firebase.User | null = null;
 
-  async getProducts() {
-    this.products = await Firestore.instance.getProducts();
+  mounted() {
+    console.log('mounted');
+    
+    // this.products = await Firestore.instance.getProducts();
+    Authentication.onAuthStateChanged(user => {
+      if (!user) {
+        // TODO: handle unauthorized state
+        throw new Error("Unauthrized!")
+      }
+      Firestore.instance.getFamilyForUser(user).then(family => console.log(family));
+
+      this.user = user;
+    });
+    
   }
   goBack() {
     router.back();
