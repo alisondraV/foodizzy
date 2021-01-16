@@ -2,6 +2,7 @@ import Family from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
+import ShoppingListItem from "@/types/ShoppingListItem";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -66,11 +67,6 @@ export default class Firestore {
       throw new Error(`Family for UID:${user.uid} was not found`);
     }
     return { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
-  }
-
-  public async getProducts() {
-    const documents = await this.db.collection("products").get();
-    return documents.docs.map<string>(qds => qds.data().name);
   }
 
   public async getRecipes() {
