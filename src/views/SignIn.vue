@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <h1>Welcome!</h1>
-    <p>Let’s optimize your food consumption together</p>
-    <form @submit.prevent>
-      <label>
-        Email:
-        <input type="email" placeholder="Type in your email" v-model="email" />
-      </label>
+  <div class="m-8">
+    <div class="mb-4">
+      <p class="text-4xl text-primary-text">Welcome!</p>
+      <p class="text-sm">Let’s optimize your food consumption together</p>
+    </div>
+    <div class="mb-4">
+      <v-input type="email" label="Type in your email" v-model="email" />
       <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          placeholder="Type in your password"
-          v-model="password"
-        />
-      </label>
+      <v-input type="password" label="Type in your password" v-model="password" />
       <br />
       <v-button label="Sign In" @click="signIn" />
-    </form>
-    <button @click="signUpThroughGoogle">Sign Up though Google</button>
-    <button @click="goToSignUpPage">Sign Up</button>
+    </div>
+    <button
+      @click="$emit('click')"
+      class="text-black shadow-xl rounded-md h-12 w-full mb-4"
+    >
+      Continue with Google
+    </button>
+    <div class="text-sm">
+      <h3 class="text-sm mb-4">You don't have account yet? </h3>
+      <h3 class="text-dark-peach cursor-pointer" @click="goToSignUpPage">Sign Up</h3>
+    </div>
   </div>
 </template>
 
@@ -29,9 +29,11 @@ import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
+import VInput from "@/components/VInput.vue";
 
 @Component({
   components: {
+    VInput,
     VButton
   }
 })

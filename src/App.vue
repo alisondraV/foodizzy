@@ -10,6 +10,7 @@
 * {
   @apply tracking-widest leading-relaxed;
   font-family: "Poppins", regular, serif;
+  color: #383838;
   padding: 0;
   margin: 0;
   scroll-behavior: smooth;
