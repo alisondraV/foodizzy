@@ -3,7 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import firebase from "firebase";
-import Firestore from "@/Firestore";
+import Firestore from "@/utils/Firestore";
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,

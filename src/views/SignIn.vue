@@ -1,26 +1,39 @@
 <template>
-  <form>
-    <label>
-      Email:
-      <input type="text" placeholder="Type in your email">
-    </label>
-    <br />
-    <label>
-      Name:
-      <input type="text" placeholder="Type in your name">
-    </label>
-    <br />
-    <button @click="login">Sign In</button>
-  </form>
+  <div>
+    <h1>Sign In</h1>
+    <form @submit.prevent>
+      <label>
+        Email:
+        <input type="email" placeholder="Type in your email" v-model="email" />
+      </label>
+      <br />
+      <label>
+        Password:
+        <input
+          type="password"
+          placeholder="Type in your password"
+          v-model="password"
+        />
+      </label>
+      <br />
+      <button @click="signIn">Sign In</button>
+    </form>
+  </div>
 </template>
 
 <script>
 import { Component, Vue } from "vue-property-decorator";
+import Authentication from "@/utils/Authentication";
+import router from "@/router";
 
 @Component
 export default class SignIn extends Vue {
-  login() {
-    console.log('login');
+  email = "";
+  password = "";
+
+  async signIn() {
+    await Authentication.signIn(this.email, this.password);
+    await router.push("/app-main");
   }
 }
 </script>
