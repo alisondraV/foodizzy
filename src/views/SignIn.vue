@@ -4,22 +4,28 @@
       <p class="text-4xl text-primary-text">Welcome!</p>
       <p class="text-sm">Let’s optimize your food consumption together</p>
     </div>
-    <div class="mb-4">
+    <div class="mb-8">
       <v-input type="email" label="Type in your email" v-model="email" />
       <br />
       <v-input type="password" label="Type in your password" v-model="password" />
       <br />
-      <v-button label="Sign In" @click="signIn" />
+      <v-button class="mb-6" label="Sign In" @click="signIn" />
+      <div class="flex items-center" style="color: grey">
+        <hr class="w-1/2 border-gray mb-6"/>
+        <span class="w-1/5 text-center mb-6">OR</span>
+        <hr class="w-1/2 border-gray mb-6"/>
+      </div>
+      <button
+        @click="$emit('click')"
+        class="text-black rounded-md h-12 w-full"
+        style="box-shadow: gray 1px 1px 10px"
+      >
+        Continue with Google
+      </button>
     </div>
-    <button
-      @click="$emit('click')"
-      class="text-black shadow-xl rounded-md h-12 w-full mb-4"
-    >
-      Continue with Google
-    </button>
-    <div class="text-sm">
-      <h3 class="text-sm mb-4">You don't have account yet? </h3>
-      <h3 class="text-dark-peach cursor-pointer" @click="goToSignUpPage">Sign Up</h3>
+    <div class="text-center">
+      <span class="text-sm mb-4 mr-5">Don't have account yet?</span>
+      <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage">Sign Up</span>
     </div>
   </div>
 </template>
