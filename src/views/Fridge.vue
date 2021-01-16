@@ -2,7 +2,10 @@
   <div>
     <h1>Fridge</h1>
     <button @click="goBack">Back</button>
-    <h2 v-for="product in products" :key="product">{{ product }}</h2>
+    <input v-model="searchQuery" type="search" @input="handleSearch">
+    <ul>
+      <li v-for="product in filteredProducts" :key="product">{{ product }}</li>
+    </ul>
   </div>
 </template>
 
@@ -18,6 +21,7 @@ import IProduct from "@/types/Product";
 export default class Fridge extends Vue {
   products: string[] = [];
   user: firebase.User | null = null;
+  searchQuery = '';
 
   async mounted() {
     this.user = await Authentication.getCurrentUser()
@@ -30,6 +34,14 @@ export default class Fridge extends Vue {
 
     const family = await Firestore.instance.getFamilyForUser(this.user!);
     this.products = family.storage
+  }
+
+  handleSearch() {
+    console.log(this.searchQuery);
+  }
+
+  get filteredProducts() {
+    return this.products.filter(product => product.toLowerCase().includes(this.searchQuery.toLowerCase()))
   }
 
   goBack() {
