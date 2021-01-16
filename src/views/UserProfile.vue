@@ -22,10 +22,8 @@ import Authentication from "@/utils/Authentication";
 export default class AppMain extends Vue {
   user: firebase.User | null = null;
 
-  mounted() {
-    Authentication.onAuthStateChanged(user => {
-      this.user = user;
-    });
+  async mounted() {
+    this.user = await Authentication.getCurrentUser();
   }
 
   goBack() {
