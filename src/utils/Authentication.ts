@@ -1,6 +1,10 @@
 import firebase from "firebase";
 
 export default class Authentication {
+  public static onAuthStateChanged(callback: (user: firebase.User | null) => any) {
+    firebase.auth().onAuthStateChanged(callback);
+  }
+
   public static getCurrentUser() {
     try {
       return firebase.auth().currentUser;

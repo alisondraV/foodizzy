@@ -1,7 +1,12 @@
 <template>
   <div>
     <h1>Your Profile</h1>
-    <p>Email: {{ user.email }}</p>
+    <div v-if="!user">
+      Loading...
+    </div>
+    <div v-else>
+      <p>Email: {{ user.email }}</p>
+    </div>
     <button @click="goBack">Back</button>
   </div>
 </template>
@@ -10,16 +15,18 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import firebase from "firebase";
-import User = firebase.User;
 import Authentication from "@/utils/Authentication";
 
 @Component
 export default class AppMain extends Vue {
-  user: User = null;
+  user: firebase.User | null = null;
 
   mounted() {
-    this.user = Authentication.getCurrentUser();
+    Authentication.onAuthStateChanged(user => {
+      this.user = user;
+    });
   }
+
   goBack() {
     router.back();
   }
