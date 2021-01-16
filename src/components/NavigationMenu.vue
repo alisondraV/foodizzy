@@ -1,9 +1,29 @@
 <template>
-  <div>
-    <button @click="goToFridgePage">Go to your fridge</button>
-    <button @click="goToShoppingList">Go to your shopping list</button>
-    <button @click="goToRecipes">Go to your recipes</button>
-    <button @click="goToProfile">Go to your profile</button>
+  <div class="flex justify-between h-8 mx-5">
+    <img
+      src="@/assets/images/Home.svg"
+      alt="Home"
+      @click="goToTheHomePage"
+      class="cursor-pointer"
+    />
+    <img
+      src="@/assets/images/Fridge.svg"
+      alt="Home"
+      @click="goToTheFridgePage"
+      class="cursor-pointer"
+    />
+    <img
+      src="@/assets/images/ShoppingList.svg"
+      alt="ShoppingList"
+      @click="goToTheShoppingList"
+      class="cursor-pointer"
+    />
+    <img
+      src="@/assets/images/Recipes.svg"
+      alt="Recipes"
+      @click="goToTheRecipesPage"
+      class="cursor-pointer"
+    />
   </div>
 </template>
 
@@ -13,16 +33,16 @@ import router from "../router";
 
 @Component
 export default class NavigationMenu extends Vue {
-  goToFridgePage() {
+  goToTheHomePage() {
+    router.push("/home");
+  }
+  goToTheFridgePage() {
     router.push("/fridge");
   }
-  goToShoppingList() {
+  goToTheShoppingList() {
     router.push("/shopping-list");
   }
-  goToProfile() {
-    router.push("/profile");
-  }
-  goToRecipes() {
+  goToTheRecipesPage() {
     router.push("/recipes");
   }
 }
