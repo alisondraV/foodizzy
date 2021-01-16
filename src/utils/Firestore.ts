@@ -1,6 +1,7 @@
 import Family from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
+import WastedProduct from "@/types/WastedProduct";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -22,7 +23,7 @@ export default class Firestore {
     await this.db.collection('family').doc(family.id).set(family);
   }
 
-  public async removeFromStorage(family: Family|null, product: Product) {
+  public async removeFromStorage(family: Family | null, product: Product) {
     if (!family) {
       throw new Error("No family supplied");
     }
@@ -37,7 +38,7 @@ export default class Firestore {
     family.shoppingList.push({
       name: product.name,
       acquired: false
-    })
+    });
     await this.db.collection('family').doc(family.id).set(family);
   }
 
@@ -49,7 +50,7 @@ export default class Firestore {
     if (snap.docs.length === 0) {
       throw new Error(`Family for UID:${user.uid} was not found`);
     }
-    return { id: snap.docs[0].id, ...snap.docs[0].data() } as Family
+    return { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
   }
 
   public async getProducts() {
@@ -60,5 +61,15 @@ export default class Firestore {
   public async getRecipes() {
     const documents = await this.db.collection("recipes").get();
     return documents.docs.map<string>(qds => qds.data().name);
+  }
+
+  public async getWastedForFamily(family: Family | null) {
+    const documents = await this.db.collection("wasteBuckets")
+        .where("familyId", "==", family?.id)
+        .get();
+    if (documents.docs.length === 0) {
+      throw new Error(`WasteBucket for family: ${family?.id} was not found`);
+    }
+    return documents.docs[0].data().wasted as WastedProduct[];
   }
 }

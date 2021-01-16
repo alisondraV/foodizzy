@@ -3,34 +3,52 @@
     <h1>Fridge</h1>
     <input v-model="searchQuery" type="search" />
     <ul>
-      <li v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
+      <li
+        v-for="category in Object.keys(filteredCategoryProducts)"
+        :key="category"
+      >
         <h2>{{ category }}</h2>
-        <hr>
+        <hr />
         <ul>
-          <li v-for="product in filteredCategoryProducts[category]" :key="product.name">
-            <button  @click="markAsFinished(product)">finished</button>
+          <li
+            v-for="product in filteredCategoryProducts[category]"
+            :key="product.name"
+          >
+            <button @click="markAsFinished(product)">finished</button>
             {{ product.name }}
-            <button  @click="markAsWasted(product)">wasted</button>
+            <button @click="markAsWasted(product)">wasted</button>
           </li>
         </ul>
       </li>
     </ul>
     <form action="">
       <label for="name">Name</label>
-      <input type="text" name="name" id="name" v-model="newProductName">
-      <br>
+      <input type="text" name="name" id="name" v-model="newProductName" />
+      <br />
       <label for="category">Category</label>
-      <input type="text" name="category" id="category" v-model="newProductCategory">
-      <br>
+      <input
+        type="text"
+        name="category"
+        id="category"
+        v-model="newProductCategory"
+      />
+      <br />
       <button @click="addToStorage(name, category)">+</button>
     </form>
+    <div class="bottom-0 right-0 mb-20 mr-3 fixed">
+      <img
+        @click="addNewProduct"
+        src="@/assets/images/AddNew.svg"
+        alt="Add"
+        class="cursor-pointer p-4"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
-import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import firebase from "firebase";
 import Product from "@/types/Product";
@@ -41,9 +59,9 @@ export default class Fridge extends Vue {
   products: Product[] = [];
   user: firebase.User | null = null;
   family: Family | null = null;
-  searchQuery = '';
-  newProductName= '';
-  newProductCategory= '';
+  searchQuery = "";
+  newProductName = "";
+  newProductCategory = "";
 
   async mounted() {
     this.user = await Authentication.getCurrentUser();
@@ -55,15 +73,17 @@ export default class Fridge extends Vue {
     }
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = this.family.storage
+    this.products = this.family.storage;
   }
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-    })
+      return product.name
+        .toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    });
 
-    type Category = {[category: string]: Product[]}
+    type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
       if (!Object.keys(acc).includes(product.category)) {
         acc[product.category] = [];
@@ -76,19 +96,26 @@ export default class Fridge extends Vue {
   }
 
   async markAsFinished(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name)
+    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
   async markAsWasted(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name)
+    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
   async addToStorage() {
-    await Firestore.instance.addProductToStorage(this.family, {name: this.newProductName, category: this.newProductCategory});
+    await Firestore.instance.addProductToStorage(this.family, {
+      name: this.newProductName,
+      category: this.newProductCategory
+    });
+  }
+
+  addNewProduct() {
+    console.log("Add new");
   }
 }
 </script>

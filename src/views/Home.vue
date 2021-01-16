@@ -1,14 +1,9 @@
 <template>
   <div>
     <h1 class="text-6xl">Main</h1>
-    <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-      <img
-        @click="addNewProduct"
-        src="@/assets/images/AddNew.svg"
-        alt="Add"
-        class="cursor-pointer p-4"
-      />
-    </div>
+    <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
+      {{ wastedProduct.name }}
+    </p>
     <navigation-menu />
   </div>
 </template>
@@ -16,6 +11,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
+import Firestore from "@/utils/Firestore";
+import Authentication from "@/utils/Authentication";
+import WastedProduct from "@/types/WastedProduct";
+import Family from "@/types/Family";
 
 @Component({
   components: {
@@ -23,8 +22,26 @@ import NavigationMenu from "@/components/NavigationMenu.vue";
   }
 })
 export default class Home extends Vue {
-  addNewProduct() {
-    console.log("Add new");
+  family: Family | null = null;
+  user: firebase.User | null = null;
+  wastedProducts: WastedProduct[] = [];
+
+  async mounted() {
+    this.user = await Authentication.getCurrentUser();
+    console.log(this.user!.uid);
+
+    if (!this.user) {
+      // TODO: handle unauthorized state
+      throw new Error("Unauthrized!");
+    }
+
+    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    await this.getWastedForFamily();
+  }
+  async getWastedForFamily() {
+    this.wastedProducts = await Firestore.instance.getWastedForFamily(
+      this.family
+    );
   }
 }
 </script>
