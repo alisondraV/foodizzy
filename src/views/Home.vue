@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h1>Main</h1>
+    <h1 class="text-6xl">Main</h1>
+    <div class="bottom-0 right-0 mb-20 mr-3 fixed">
+      <img
+        @click="addNewProduct"
+        src="@/assets/images/AddNew.svg"
+        alt="Add"
+        class="cursor-pointer p-4"
+      />
+    </div>
     <navigation-menu />
   </div>
 </template>
@@ -14,5 +22,9 @@ import NavigationMenu from "@/components/NavigationMenu.vue";
     NavigationMenu
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  addNewProduct() {
+    console.log("Add new");
+  }
+}
 </script>

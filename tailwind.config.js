@@ -13,7 +13,9 @@ module.exports = {
       "dark-peach": "#D98B84",
       "dark-yellow": "#D0AA45",
       "light-yellow": "#FFE6A3",
-      "secondary-text": "#9A9A9C"
+      "light-grey": "#E7E7E7",
+      "secondary-text": "#9A9A9C",
+      "background": "#FFFFFFFF"
     },
     extend: {}
   },
