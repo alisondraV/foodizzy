@@ -11,10 +11,16 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
-    path: "/login",
-    name: "Login",
+    path: "/sign-in",
+    name: "SignIn",
     component: () =>
-      import("../views/Login.vue")
+      import("../views/SignIn.vue")
+  },
+  {
+    path: "/sign-up",
+    name: "SignUp",
+    component: () =>
+      import("../views/SignUp.vue")
   }
 ];
 
