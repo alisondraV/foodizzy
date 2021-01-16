@@ -16,6 +16,7 @@
         </ul>
       </li>
     </ul>
+    <input type="button" value="+">
   </div>
 </template>
 
@@ -66,12 +67,15 @@ export default class Fridge extends Vue {
   }
 
   markAsFinished(product: IProduct) {
+    this.products = this.products.filter(p => p.name != product.name)
     Firestore.instance.removeFromStorage(this.family, product);
     Firestore.instance.addToShoppingList(this.family, product);
   }
 
-  markAsWasted() {
-    throw new Error("Unimplemented")
+  markAsWasted(product: IProduct) {
+    this.products = this.products.filter(p => p.name != product.name)
+    Firestore.instance.removeFromStorage(this.family, product);
+    Firestore.instance.addToShoppingList(this.family, product);
   }
 }
 </script>
