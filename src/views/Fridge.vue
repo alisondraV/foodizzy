@@ -4,7 +4,7 @@
     <button @click="goBack">Back</button>
     <input v-model="searchQuery" type="search">
     <ul>
-      <li v-for="product in filteredProducts" :key="product">{{ product }}</li>
+      <li v-for="product in filteredProducts" :key="product.name">{{ product.name }}</li>
     </ul>
   </div>
 </template>
@@ -19,7 +19,7 @@ import IProduct from "@/types/Product";
 
 @Component
 export default class Fridge extends Vue {
-  products: string[] = [];
+  products: IProduct[] = [];
   user: firebase.User | null = null;
   searchQuery = '';
 
@@ -38,7 +38,7 @@ export default class Fridge extends Vue {
 
   get filteredProducts() {
     return this.products.filter(product => {
-      return product.toLowerCase().includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     })
   }
 
