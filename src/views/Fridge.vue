@@ -2,9 +2,15 @@
   <div>
     <h1>Fridge</h1>
     <button @click="goBack">Back</button>
+    <br>
     <input v-model="searchQuery" type="search">
     <ul>
-      <li v-for="product in filteredProducts" :key="product.name">{{ product.name }}</li>
+      <li v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
+        <h2>{{ category }}</h2>
+        <ul>
+          <li v-for="product in filteredCategoryProducts[category]" :key="product.name">{{ product.name }}</li>
+        </ul>
+      </li>
     </ul>
   </div>
 </template>
@@ -36,10 +42,21 @@ export default class Fridge extends Vue {
     this.products = family.storage
   }
 
-  get filteredProducts() {
-    return this.products.filter(product => {
+  get filteredCategoryProducts() {
+    const reducedProducts = this.products.filter(product => {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     })
+
+    type ICategory = {[category: string]: IProduct[]}
+    return reducedProducts.reduce<ICategory>((acc, product) => {
+      if (!Object.keys(acc).includes(product.category)) {
+        acc[product.category] = []
+      }
+
+      acc[product.category].push(product)
+
+      return acc
+    }, {})
   }
 
   goBack() {
