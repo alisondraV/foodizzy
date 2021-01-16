@@ -39,7 +39,7 @@ const routes: Array<RouteConfig> = [
     path: "/profile",
     name: "UserProfile",
     component: () => import("../views/UserProfile.vue")
-  },
+  }
 ];
 
 const router = new VueRouter({
