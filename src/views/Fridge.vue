@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Fridge</h1>
-    <button @click="goBack">Back</button>
     <input v-model="searchQuery" type="search" />
     <ul>
       <li v-for="category in Object.keys(filteredCategoryProducts)" :key="category">

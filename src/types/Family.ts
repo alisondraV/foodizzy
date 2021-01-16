@@ -1,9 +1,9 @@
-import IProduct from "./Product";
-import IShoppingListItem from './ShoppingListItem'
+import Product from "./Product";
+import ShoppingListItem from './ShoppingListItem'
 
-export default interface IFamily {
+export default interface Family {
     id: string;
     members: string[];
-    storage: IProduct[];
-    shoppingList: IShoppingListItem[];
+    storage: Product[];
+    shoppingList: ShoppingListItem[];
 }
