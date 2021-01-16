@@ -43,6 +43,7 @@
         class="cursor-pointer p-4"
       />
     </div>
+    <navigation-menu />
   </div>
 </template>
 
@@ -53,8 +54,13 @@ import Authentication from "@/utils/Authentication";
 import firebase from "firebase";
 import Product from "@/types/Product";
 import Family from "@/types/Family";
+import NavigationMenu from "@/components/NavigationMenu.vue";
 
-@Component
+@Component({
+  components: {
+    NavigationMenu
+  }
+})
 export default class Fridge extends Vue {
   products: Product[] = [];
   user: firebase.User | null = null;
@@ -104,6 +110,7 @@ export default class Fridge extends Vue {
   async markAsWasted(product: Product) {
     this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(this.family, product);
+    await Firestore.instance.moveToWasted(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 

@@ -1,6 +1,5 @@
 import Product from "./Product";
 
-export default interface WastedProduct {
-    product: Product[];
+export default interface WastedProduct extends Product{
     dateWasted: Date;
 }
