@@ -2,7 +2,7 @@
   <div>
     <h1>Fridge</h1>
     <button @click="goBack">Back</button>
-    <input v-model="searchQuery" type="search" @input="handleSearch">
+    <input v-model="searchQuery" type="search">
     <ul>
       <li v-for="product in filteredProducts" :key="product">{{ product }}</li>
     </ul>
@@ -36,12 +36,10 @@ export default class Fridge extends Vue {
     this.products = family.storage
   }
 
-  handleSearch() {
-    console.log(this.searchQuery);
-  }
-
   get filteredProducts() {
-    return this.products.filter(product => product.toLowerCase().includes(this.searchQuery.toLowerCase()))
+    return this.products.filter(product => {
+      return product.toLowerCase().includes(this.searchQuery.toLowerCase());
+    })
   }
 
   goBack() {
