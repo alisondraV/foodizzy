@@ -24,7 +24,12 @@ const routes: Array<RouteConfig> = [
     path: "/app-main",
     name: "AppMain",
     component: () => import("../views/AppMain.vue")
-  }
+  },
+  {
+    path: "/fridge",
+    name: "Fridge",
+    component: () => import("../views/Fridge.vue")
+  },
 ];
 
 const router = new VueRouter({
