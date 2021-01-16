@@ -30,6 +30,11 @@ const routes: Array<RouteConfig> = [
     name: "Fridge",
     component: () => import("../views/Fridge.vue")
   },
+  {
+    path: "/shopping-list",
+    name: "ShoppingList",
+    component: () => import("../views/ShoppingList.vue")
+  },
 ];
 
 const router = new VueRouter({
