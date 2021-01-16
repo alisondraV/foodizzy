@@ -18,6 +18,7 @@
       <br />
       <button @click="signIn">Sign In</button>
     </form>
+    <button @click="signUpThroughGoogle">Sign Up though Google</button>
     <button @click="goToSignUpPage">Sign Up</button>
   </div>
 </template>
@@ -39,6 +40,11 @@ export default class SignIn extends Vue {
 
   goToSignUpPage() {
     router.push("/sign-up");
+  }
+
+  async signUpThroughGoogle() {
+    await Authentication.signUpThroughGoogle();
+    await router.push("/home");
   }
 }
 </script>
