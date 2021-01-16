@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>What is in your fridge?</h1>
-    <br>
-    <input v-model="searchQuery" type="search">
+    <h1>Fridge</h1>
+    <button @click="goBack">Back</button>
+    <input v-model="searchQuery" type="search" />
     <ul>
       <li v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2>{{ category }}</h2>
@@ -47,12 +47,12 @@ export default class Fridge extends Vue {
   newProductCategory= '';
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser()
+    this.user = await Authentication.getCurrentUser();
     console.log(this.user!.uid);
-    
+
     if (!this.user) {
       // TODO: handle unauthorized state
-      throw new Error("Unauthrized!")
+      throw new Error("Unauthrized!");
     }
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
