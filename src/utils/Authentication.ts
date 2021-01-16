@@ -1,18 +1,11 @@
 import firebase from "firebase";
 
 export default class Authentication {
-  public static onAuthStateChanged(
-    callback: (user: firebase.User | null) => any
-  ) {
-    firebase.auth().onAuthStateChanged(callback);
-  }
-
-  public static getCurrentUser() {
-    try {
-      return firebase.auth().currentUser;
-    } catch (error) {
-      console.log("Failed to load the user: ", error);
-    }
+  public static async getCurrentUser(): Promise<firebase.User | null> {
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(user => resolve(user));
+      // TODO: handle timeout
+    })
   }
 
   public static async signIn(email: string, password: string) {
