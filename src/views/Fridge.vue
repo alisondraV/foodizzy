@@ -16,7 +16,15 @@
         </ul>
       </li>
     </ul>
-    <input type="button" value="+">
+    <form action="">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" v-model="newProductName">
+      <br>
+      <label for="category">Category</label>
+      <input type="text" name="category" id="category" v-model="newProductCategory">
+      <br>
+      <input type="button" value="+" @click="addToStorage(name, category)">
+    </form>
   </div>
 </template>
 
@@ -35,6 +43,8 @@ export default class Fridge extends Vue {
   user: firebase.User | null = null;
   family: IFamily | null = null;
   searchQuery = '';
+  newProductName= '';
+  newProductCategory= '';
 
   async mounted() {
     this.user = await Authentication.getCurrentUser()
@@ -66,16 +76,20 @@ export default class Fridge extends Vue {
     }, {});
   }
 
-  markAsFinished(product: IProduct) {
+  async markAsFinished(product: IProduct) {
     this.products = this.products.filter(p => p.name != product.name)
-    Firestore.instance.removeFromStorage(this.family, product);
-    Firestore.instance.addToShoppingList(this.family, product);
+    await Firestore.instance.removeFromStorage(this.family, product);
+    await Firestore.instance.addToShoppingList(this.family, product);
   }
 
-  markAsWasted(product: IProduct) {
+  async markAsWasted(product: IProduct) {
     this.products = this.products.filter(p => p.name != product.name)
-    Firestore.instance.removeFromStorage(this.family, product);
-    Firestore.instance.addToShoppingList(this.family, product);
+    await Firestore.instance.removeFromStorage(this.family, product);
+    await Firestore.instance.addToShoppingList(this.family, product);
+  }
+
+  async addToStorage() {
+    await Firestore.instance.addProductToStorage(this.family, {name: this.newProductName, category: this.newProductCategory});
   }
 }
 </script>

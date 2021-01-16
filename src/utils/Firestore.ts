@@ -1,4 +1,5 @@
 import IFamily from "@/types/Family";
+import IProduct from "@/types/Product";
 import Product from "@/types/Product";
 import firebase from "firebase";
 
@@ -14,15 +15,23 @@ export default class Firestore {
     return this._instance;
   }
 
-  removeFromStorage(family: IFamily|null, product: Product) {
+  public async addProductToStorage(family: IFamily | null, product: IProduct) {
+    if (!family) {
+      throw new Error("No family supplied");
+    }
+    family.storage.push(product);
+    await this.db.collection('family').doc(family.id).set(family);
+  }
+
+  public async removeFromStorage(family: IFamily|null, product: Product) {
     if (!family) {
       throw new Error("No family supplied");
     }
     family.storage = family.storage.filter(candidate => candidate.name != product.name);
-    this.db.collection('family').doc(family.id).set(family);
+    await this.db.collection('family').doc(family.id).set(family);
   }
 
-  addToShoppingList(family: IFamily|null, product: Product) {
+  public async addToShoppingList(family: IFamily|null, product: Product) {
     if (!family) {
       throw new Error("No family supplied");
     }
@@ -30,7 +39,7 @@ export default class Firestore {
       name: product.name,
       acquired: false
     })
-    this.db.collection('family').doc(family.id).set(family);
+    await this.db.collection('family').doc(family.id).set(family);
   }
 
   public async getFamilyForUser(user: firebase.User) {
