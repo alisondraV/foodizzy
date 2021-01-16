@@ -13,14 +13,17 @@ const routes: Array<RouteConfig> = [
   {
     path: "/sign-in",
     name: "SignIn",
-    component: () =>
-      import("../views/SignIn.vue")
+    component: () => import("../views/SignIn.vue")
   },
   {
     path: "/sign-up",
     name: "SignUp",
-    component: () =>
-      import("../views/SignUp.vue")
+    component: () => import("../views/SignUp.vue")
+  },
+  {
+    path: "/app-main",
+    name: "AppMain",
+    component: () => import("../views/AppMain.vue")
   }
 ];
 
