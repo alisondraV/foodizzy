@@ -38,12 +38,9 @@ export default class Authentication {
   public static async signUpThroughGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
-      const result = await firebase.auth().signInWithPopup(provider);
-      const user = result.user;
-      const credential = result.credential;
-      // const token = credential.accessToken;
+      await firebase.auth().signInWithPopup(provider);
     } catch (error) {
-      console.log("Sign Up failed: ", error);
+      console.log("Sign Up with Google failed: ", error);
     }
   }
 }

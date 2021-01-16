@@ -18,6 +18,7 @@
       <br />
       <button @click="signIn">Sign In</button>
     </form>
+    <button @click="goToSignUpPage">Sign Up</button>
   </div>
 </template>
 
@@ -34,6 +35,10 @@ export default class SignIn extends Vue {
   async signIn() {
     await Authentication.signIn(this.email, this.password);
     await router.push("/app-main");
+  }
+
+  goToSignUpPage() {
+    router.push("/sign-up");
   }
 }
 </script>

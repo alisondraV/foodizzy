@@ -40,11 +40,12 @@ export default class SignUp extends Vue {
 
   async signUp() {
     await Authentication.signUp(this.email, this.password);
-    await router.push("/app-main");
+    await router.push("/home");
   }
 
   async signUpThroughGoogle() {
     await Authentication.signUpThroughGoogle();
+    await router.push("/home");
   }
 }
 </script>

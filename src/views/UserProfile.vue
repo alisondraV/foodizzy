@@ -6,6 +6,7 @@
     </div>
     <div v-else>
       <p>Email: {{ user.email }}</p>
+      <img :src="user.photoURL" alt="profile-image">
     </div>
     <button @click="goBack">Back</button>
   </div>

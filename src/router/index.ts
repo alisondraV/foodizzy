@@ -5,13 +5,9 @@ import Home from "../views/Home.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  
   {
     path: "/",
-    name: "Home",
-    component: Home
-  },
-  {
-    path: "/sign-in",
     name: "SignIn",
     component: () => import("../views/SignIn.vue")
   },
@@ -21,9 +17,9 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/SignUp.vue")
   },
   {
-    path: "/app-main",
-    name: "AppMain",
-    component: () => import("../views/AppMain.vue")
+    path: "/home",
+    name: "Home",
+    component: () => import("../views/Home.vue")
   },
   {
     path: "/fridge",

@@ -12,7 +12,7 @@ import { Component, Vue } from "vue-property-decorator";
 import router from "../router";
 
 @Component
-export default class Menu extends Vue {
+export default class NavigationMenu extends Vue {
   goToFridgePage() {
     router.push("/fridge");
   }

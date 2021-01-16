@@ -1,20 +1,18 @@
 <template>
-  <div class="home">
-    <button @click="goToLoginPage">Sign In</button>
-    <button @click="goToSignUpPage">Sign Up</button>
+  <div>
+    <h1>Main</h1>
+    <navigation-menu />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import router from "@/router";
+import { Component, Vue } from "vue-property-decorator";
+import NavigationMenu from "@/components/NavigationMenu.vue";
 
-export default class Home extends Vue {
-  goToLoginPage() {
-    router.push("/sign-in");
+@Component({
+  components: {
+    NavigationMenu
   }
-  goToSignUpPage() {
-    router.push("/sign-up");
-  }
-}
+})
+export default class Home extends Vue {}
 </script>
