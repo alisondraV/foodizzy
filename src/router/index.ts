@@ -35,6 +35,11 @@ const routes: Array<RouteConfig> = [
     name: "ShoppingList",
     component: () => import("../views/ShoppingList.vue")
   },
+  {
+    path: "/profile",
+    name: "UserProfile",
+    component: () => import("../views/UserProfile.vue")
+  },
 ];
 
 const router = new VueRouter({
