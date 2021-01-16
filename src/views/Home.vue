@@ -1,18 +1,16 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <button @click="goToLoginPage">Login</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { Vue } from "vue-property-decorator";
+import router from "@/router";
 
-@Component({
-  components: {
-    HelloWorld
+export default class Home extends Vue {
+  goToLoginPage() {
+    router.push("/login");
   }
-})
-export default class Home extends Vue {}
+}
 </script>
