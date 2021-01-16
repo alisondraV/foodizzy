@@ -16,4 +16,8 @@ export default class Firestore {
     const documents = await Firestore.instance.db.collection("products").get();
     return documents.docs.map<string>(qds => qds.data().name);
   }
+  public async getRecipes() {
+    const documents = await Firestore.instance.db.collection("recipes").get();
+    return documents.docs.map<string>(qds => qds.data().name);
+  }
 }

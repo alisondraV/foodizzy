@@ -3,6 +3,7 @@
     <button @click="goToFridgePage">Go to your fridge</button>
     <button @click="goToShoppingList">Go to your shopping list</button>
     <button @click="goToProfile">Go to your profile</button>
+    <button @click="goToRecipes">Go to your recipes</button>
   </div>
 </template>
 
@@ -20,6 +21,9 @@ export default class Menu extends Vue {
   }
   goToProfile() {
     router.push("/profile");
+  }
+  goToRecipes() {
+    router.push("/recipes");
   }
 }
 </script>
