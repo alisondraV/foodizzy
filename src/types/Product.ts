@@ -1,3 +1,3 @@
 export default interface IProduct {
-    name: string;
+  name: string;
 }

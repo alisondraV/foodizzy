@@ -1,6 +1,9 @@
 <template>
   <div>
-    <button @click="$emit('click')" class="text-black rounded-md bg-primary-yellow h-12 w-full">
+    <button
+      @click="$emit('click')"
+      class="text-black rounded-md bg-primary-yellow h-12 w-full"
+    >
       {{ label }}
     </button>
   </div>

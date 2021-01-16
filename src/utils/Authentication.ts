@@ -5,7 +5,7 @@ export default class Authentication {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => resolve(user));
       // TODO: handle timeout
-    })
+    });
   }
 
   public static async signIn(email: string, password: string) {

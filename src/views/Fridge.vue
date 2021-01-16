@@ -2,7 +2,7 @@
   <div>
     <h1>Fridge</h1>
     <button @click="goBack">Back</button>
-    <input v-model="searchQuery" type="search">
+    <input v-model="searchQuery" type="search" />
     <ul>
       <li v-for="product in filteredProducts" :key="product">{{ product }}</li>
     </ul>
@@ -21,25 +21,25 @@ import IProduct from "@/types/Product";
 export default class Fridge extends Vue {
   products: string[] = [];
   user: firebase.User | null = null;
-  searchQuery = '';
+  searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser()
+    this.user = await Authentication.getCurrentUser();
     console.log(this.user!.uid);
-    
+
     if (!this.user) {
       // TODO: handle unauthorized state
-      throw new Error("Unauthrized!")
+      throw new Error("Unauthrized!");
     }
 
     const family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = family.storage
+    this.products = family.storage;
   }
 
   get filteredProducts() {
     return this.products.filter(product => {
       return product.toLowerCase().includes(this.searchQuery.toLowerCase());
-    })
+    });
   }
 
   goBack() {

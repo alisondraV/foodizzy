@@ -14,11 +14,14 @@ export default class Firestore {
   }
 
   public async getFamilyForUser(user: firebase.User) {
-    const snap = await this.db.collection('family').where('members', 'array-contains', user.uid).get()
+    const snap = await this.db
+      .collection("family")
+      .where("members", "array-contains", user.uid)
+      .get();
     if (snap.docs.length === 0) {
-      throw new Error(`Family for UID:${user.uid} was not found`)
+      throw new Error(`Family for UID:${user.uid} was not found`);
     }
-    return snap.docs[0].data() as IFamily
+    return snap.docs[0].data() as IFamily;
   }
 
   public async getProducts() {
