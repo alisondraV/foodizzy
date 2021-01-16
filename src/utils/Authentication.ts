@@ -1,6 +1,14 @@
 import firebase from "firebase";
 
 export default class Authentication {
+  public static getCurrentUser() {
+    try {
+      return firebase.auth().currentUser;
+    } catch (error) {
+      console.log("Failed to load the user: ", error);
+    }
+  }
+
   public static async signIn(email: string, password: string) {
     try {
       const user = await firebase
