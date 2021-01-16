@@ -1,7 +1,9 @@
 import firebase from "firebase";
 
 export default class Authentication {
-  public static onAuthStateChanged(callback: (user: firebase.User | null) => any) {
+  public static onAuthStateChanged(
+    callback: (user: firebase.User | null) => any
+  ) {
     firebase.auth().onAuthStateChanged(callback);
   }
 
