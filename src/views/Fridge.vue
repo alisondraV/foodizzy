@@ -8,9 +8,9 @@
         <hr>
         <ul>
           <li v-for="product in filteredCategoryProducts[category]" :key="product.name">
-            <input type="button" value="finished" @click="markAsFinished(product)">
+            <button  @click="markAsFinished(product)">finished</button>
             {{ product.name }}
-            <input type="button" value="wasted" @click="markAsWasted(product)">
+            <button  @click="markAsWasted(product)">wasted</button>
           </li>
         </ul>
       </li>
@@ -22,7 +22,7 @@
       <label for="category">Category</label>
       <input type="text" name="category" id="category" v-model="newProductCategory">
       <br>
-      <input type="button" value="+" @click="addToStorage(name, category)">
+      <button @click="addToStorage(name, category)">+</button>
     </form>
   </div>
 </template>
@@ -33,14 +33,14 @@ import Firestore from "@/utils/Firestore";
 import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import firebase from "firebase";
-import IProduct from "@/types/Product";
-import IFamily from "@/types/Family";
+import Product from "@/types/Product";
+import Family from "@/types/Family";
 
 @Component
 export default class Fridge extends Vue {
-  products: IProduct[] = [];
+  products: Product[] = [];
   user: firebase.User | null = null;
-  family: IFamily | null = null;
+  family: Family | null = null;
   searchQuery = '';
   newProductName= '';
   newProductCategory= '';
@@ -63,8 +63,8 @@ export default class Fridge extends Vue {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     })
 
-    type ICategory = {[category: string]: IProduct[]}
-    return reducedProducts.reduce<ICategory>((acc, product) => {
+    type Category = {[category: string]: Product[]}
+    return reducedProducts.reduce<Category>((acc, product) => {
       if (!Object.keys(acc).includes(product.category)) {
         acc[product.category] = [];
       }
@@ -75,13 +75,13 @@ export default class Fridge extends Vue {
     }, {});
   }
 
-  async markAsFinished(product: IProduct) {
+  async markAsFinished(product: Product) {
     this.products = this.products.filter(p => p.name != product.name)
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
-  async markAsWasted(product: IProduct) {
+  async markAsWasted(product: Product) {
     this.products = this.products.filter(p => p.name != product.name)
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
