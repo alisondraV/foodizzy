@@ -20,7 +20,7 @@
         <p class="mb-6">Family: {{ family.name }}</p>
         <hr class="w-full border-secondary-text mb-6" />
         <div class="flex justify-between w-1/4" @click="logOut">
-          <img src="@/assets/images/LogOut.svg" alt="Log Out">
+          <img src="@/assets/images/LogOut.svg" alt="Log Out" />
           <p>Log Out</p>
         </div>
       </div>

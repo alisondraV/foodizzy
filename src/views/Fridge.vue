@@ -22,7 +22,9 @@
                 alt="Finished"
                 @click="markAsFinished(product)"
               />
-              <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
+              <span class="flex-1 ml-4 text-primary-text">{{
+                product.name
+              }}</span>
               <img
                 src="@/assets/images/Waste.svg"
                 alt="Wasted"
