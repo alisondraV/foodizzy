@@ -35,8 +35,15 @@ export default class DoughnutChart extends Vue {
     const options = {
       type: 'doughnut',
       data: chartData,
-      borderWidth: 2,
-      options: this.options
+      borderWidth: 1,
+      borderColor: '#ff0',
+      options: { 
+        ...this.options,
+        cutoutPercentage: 80,
+        legend: {
+          display: false
+        }
+      }
     }
     new Chart(canvas, options)
   }

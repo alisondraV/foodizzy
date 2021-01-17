@@ -2,10 +2,11 @@
   <div>
     <v-header heading="" />
     <div class="mt-20 mb-20 mx-8">
-      <DonutChart :data="[25, 75, 30]"
-      :labels="['Red', 'Green', 'Blue']"
-      :colors="['red', 'green', 'blue']">
-        68%
+      <DonutChart 
+        v-if="wastedProducts.length > 0"
+        :data="Object.values(statistics)"
+        :labels="Object.keys(statistics)"
+        :colors="['#01877E', '#FFB0A9', 'F9D678', '383838']">
       </DonutChart>
     </div>
     <navigation-menu />
@@ -46,8 +47,6 @@ export default class Home extends Vue {
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
     await this.getWastedForFamily();
-    console.log(this.statistics);
-    
   }
 
   async getWastedForFamily() {
@@ -68,24 +67,6 @@ export default class Home extends Vue {
 
       return acc;
     }, {});
-  }
-
-  get chartProps() {
-    const totalWaste = Object.values(this.statistics).reduce((acc, e) => acc + e, 0)
-    const colors = ['green', 'blue', 'yellow', 'red', 'black']
-
-    return {
-      size: 250,
-      sections: Object.keys(this.statistics).map((category, i) => {
-        return {
-          label: category,
-          value: this.statistics[category] * 100 / totalWaste,
-          color: colors[i]
-        }
-      }),
-      thickness: 40,
-      hasLegend: true,
-    }
   }
 }
 </script>
