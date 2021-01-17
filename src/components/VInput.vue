@@ -1,23 +1,14 @@
 <template>
   <div>
     <label class="flex flex-col relative block text-gray-600">
-      <span
-        class="origin-top top-input text-sm tracking-wider absolute transition-all truncate"
-        :class="{
-          'bg-white top-input text-gray-700 px-2 round-sm text-xs': isFocused,
-          'invisible': value !== null && value !== ''
-        }"
-      >
-        {{ label }}
-      </span>
-
       <input
-        class="focus:outline-none border rounded-md text-gray-800 h-10"
+        class="focus:outline-none border rounded-md text-gray-800 h-10 p-4"
         :value="value"
         @focus="focused = true"
         @blur="focused = false"
         @input="$emit('input', $event.target.value)"
         :type="type"
+        :placeholder="label"
       />
     </label>
   </div>
