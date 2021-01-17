@@ -27,6 +27,7 @@ import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
+import firebase from "firebase";
 
 @Component({
   components: {

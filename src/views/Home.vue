@@ -18,6 +18,7 @@ import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
 import VHeader from "@/components/VHeader.vue";
+import firebase from "firebase";
 
 @Component({
   components: {
