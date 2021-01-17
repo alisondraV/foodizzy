@@ -6,7 +6,8 @@
         v-if="wastedProducts.length > 0"
         :data="chartData"
         :labels="chartLabels"
-        :colors="['#E7E7E7', '#01877E', '#FFB0A9', '#F9D678', '#383838']">
+        :colors="['#E7E7E7', '#01877E', '#FFB0A9', '#F9D678', '#383838']" 
+        :centerText="wastePercentage">
       </DonutChart>
     </div>
     <navigation-menu />
@@ -69,12 +70,20 @@ export default class Home extends Vue {
     }, {});
   }
 
+  get totalWaste() {
+    return Object.values(this.statistics).reduce((acc, e) => e + acc, 0)
+  }
+
   get chartData() {
-    return [ this.family?.totalProducts, ...Object.values(this.statistics)]
+    return [ this.family!.totalProducts - this.totalWaste, ...Object.values(this.statistics)]
   }
 
   get chartLabels() {
     return [ 'Eaten', ...Object.keys(this.statistics)]
+  }
+
+  get wastePercentage() {
+    return this.totalWaste / this.family!.totalProducts * 100 + '%'
   }
 }
 </script>
