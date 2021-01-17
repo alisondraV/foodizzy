@@ -1,17 +1,11 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    name: "Home",
-    component: Home
-  },
-  {
-    path: "/sign-in",
     name: "SignIn",
     component: () => import("../views/SignIn.vue")
   },
@@ -21,9 +15,14 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/SignUp.vue")
   },
   {
-    path: "/app-main",
-    name: "AppMain",
-    component: () => import("../views/AppMain.vue")
+    path: "/create-family",
+    name: "NewFamily",
+    component: () => import("../views/NewFamily.vue")
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: () => import("../views/Home.vue")
   },
   {
     path: "/fridge",
@@ -44,6 +43,12 @@ const routes: Array<RouteConfig> = [
     path: "/recipes",
     name: "Recipes",
     component: () => import("../views/Recipes.vue")
+  },
+  {
+    path: "/new-product",
+    name: "NewProduct",
+    component: () => import("../views/NewProduct.vue"),
+    props: route => ({ query: route.params.location })
   }
 ];
 

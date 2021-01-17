@@ -1,26 +1,139 @@
 <template>
   <div>
-    <h1>Fridge</h1>
-    <h2 v-for="product in products" :key="product.id">{{ product }}</h2>
-    <button @click="getProducts">Get products</button>
-    <button @click="goBack">Back</button>
+    <v-header heading="What's in your fridge?" />
+    <div class="mt-24 mb-20 mx-8">
+      <search-input class="mb-4" v-model="searchQuery" />
+      <ul>
+        <li
+          class="mb-4"
+          v-for="category in Object.keys(filteredCategoryProducts)"
+          :key="category"
+        >
+          <h2 class="text-primary-green mb-1">{{ category }}</h2>
+          <hr class="text-secondary-text mb-2" />
+          <ul>
+            <li
+              class="flex justify-between py-3 text-xl left-0"
+              v-for="product in filteredCategoryProducts[category]"
+              :key="product.name"
+            >
+              <img
+                src="@/assets/images/Check.svg"
+                alt="Finished"
+                @click="markAsFinished(product)"
+              />
+              <span class="flex-1 ml-4 text-primary-text">{{
+                product.name
+              }}</span>
+              <img
+                src="@/assets/images/Waste.svg"
+                alt="Wasted"
+                @click="markAsWasted(product)"
+              />
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="bottom-0 right-0 mb-20 mr-3 fixed">
+        <img
+          @click="addNewProduct"
+          src="@/assets/images/AddNew.svg"
+          alt="Add"
+          class="cursor-pointer p-4"
+        />
+      </div>
+    </div>
+    <navigation-menu current-page="Fridge" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
+import Authentication from "@/utils/Authentication";
+import firebase from "firebase";
+import Product from "@/types/Product";
+import Family from "@/types/Family";
+import NavigationMenu from "@/components/NavigationMenu.vue";
+import VHeader from "@/components/VHeader.vue";
+import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
 
-@Component
-export default class Fridge extends Vue {
-  products: Array<string> = [];
-
-  async getProducts() {
-    this.products = await Firestore.instance.getProducts();
+@Component({
+  components: {
+    SearchInput,
+    NavigationMenu,
+    VHeader
   }
-  goBack() {
-    router.back();
+})
+export default class Fridge extends Vue {
+  products: Product[] = [];
+  user: firebase.User | null = null;
+  family: Family | null = null;
+  searchQuery = "";
+  newProductName = "";
+  newProductCategory = "";
+
+  async mounted() {
+    this.user = await Authentication.getCurrentUser();
+    console.log(this.user!.uid);
+
+    if (!this.user) {
+      // TODO: handle unauthorized state
+      throw new Error("Unauthrized!");
+    }
+
+    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.products = this.getProductsWithCategory();
+  }
+
+  get filteredCategoryProducts() {
+    const reducedProducts = this.products.filter(product => {
+      return product.name
+        .toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    });
+
+    type Category = { [category: string]: Product[] };
+    return reducedProducts.reduce<Category>((acc, product) => {
+      const categoryName = product.category ?? "General";
+      if (!Object.keys(acc).includes(categoryName)) {
+        acc[categoryName] = [];
+      }
+
+      acc[categoryName].push(product);
+
+      return acc;
+    }, {});
+  }
+
+  async markAsFinished(product: Product) {
+    this.products = this.products.filter(p => p.name != product.name);
+    await Firestore.instance.removeFromStorage(this.family, product);
+    await Firestore.instance.addToShoppingList(this.family, product);
+  }
+
+  async markAsWasted(product: Product) {
+    this.products = this.products.filter(p => p.name != product.name);
+    await Firestore.instance.removeFromStorage(this.family, product);
+    await Firestore.instance.moveToWasted(this.family, product);
+    await Firestore.instance.addToShoppingList(this.family, product);
+  }
+
+  addNewProduct() {
+    router.push({ path: "/new-product", query: { location: "storage" } });
+  }
+
+  getProductsWithCategory(): Product[] {
+    const allProducts = this.family?.storage;
+    if (!allProducts) {
+      return [];
+    }
+
+    return allProducts!.map(product => {
+      const productCategory = product.category ?? "General";
+      return { name: product.name, category: productCategory };
+    });
   }
 }
 </script>

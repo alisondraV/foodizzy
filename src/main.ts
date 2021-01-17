@@ -4,6 +4,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import firebase from "firebase";
 import Firestore from "@/utils/Firestore";
+import "./assets/tailwind.css";
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
