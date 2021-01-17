@@ -30,7 +30,7 @@
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
     <img
-      v-if="isShoppingListPage"
+      v-if="isShoppingListPage()"
       src="@/assets/images/Close.svg"
       alt="Wasted"
       @click="$emit('remove', product)"

@@ -6,7 +6,7 @@
       {{ heading }}
     </span>
     <img
-      v-if="!isProfilePage()"
+      v-if="!isProfileOrNewProductPage()"
       src="@/assets/images/Profile.svg"
       alt="Profile"
       @click="goToTheProfilePage"
@@ -31,8 +31,8 @@ import router from "../router";
 export default class VHeader extends Vue {
   @Prop() heading: string;
 
-  isProfilePage() {
-    return this.heading.includes("Profile");
+  isProfileOrNewProductPage() {
+    return this.heading.includes("Profile") || this.heading.includes("New Item");
   }
 
   goBack() {
