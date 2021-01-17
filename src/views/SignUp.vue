@@ -20,6 +20,12 @@
       />
       <v-input
         class="mb-6"
+        type="name"
+        label="Type in your name"
+        v-model="name"
+      />
+      <v-input
+        class="mb-6"
         type="password"
         label="Type in your password"
         v-model="password"
@@ -73,7 +79,7 @@ export default class SignUp extends Vue {
   }
 
   async signUp() {
-    const user = await Authentication.signUp(this.email, this.password);
+    const user = await Authentication.signUp(this.email, this.password, this.name);
     try {
       await Firestore.instance.getFamilyForUser(user!);
       await router.push("/home");

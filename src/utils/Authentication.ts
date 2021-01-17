@@ -27,11 +27,12 @@ export default class Authentication {
     }
   }
 
-  public static async signUp(email: string, password: string) {
+  public static async signUp(email: string, password: string, name: string) {
     try {
       const cred = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
+      firebase.auth().currentUser?.updateProfile({ displayName: name });
       return cred.user;
     } catch (error) {
       console.log("Sign Up failed: ", error);
