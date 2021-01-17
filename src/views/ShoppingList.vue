@@ -50,7 +50,7 @@ export default class ShoppingList extends Vue {
   }
 
   addNewProduct() {
-    router.push({ path: 'new-product/shoppingList' });
+    router.push({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 }
 </script>

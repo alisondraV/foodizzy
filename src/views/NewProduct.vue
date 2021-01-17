@@ -28,7 +28,7 @@ import router from "@/router";
   }
 })
 export default class Home extends Vue {
-  @Prop() location: string;
+  location?: string;
   allProducts: Product[] = [];
   family: Family | null = null;
   user: firebase.User | null = null;
@@ -45,8 +45,8 @@ export default class Home extends Vue {
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
     this.allProducts = await Firestore.instance.getAllProducts();
-    console.log(this.location);
-    
+
+    this.location = this.$route.query.location as string;
   }
 
   async resolveNewProduct(product: Product) {

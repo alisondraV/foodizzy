@@ -40,10 +40,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Recipes.vue")
   },
   {
-    path: "/new-product/:location",
+    path: "/new-product",
     name: "NewProduct",
     component: () => import("../views/NewProduct.vue"),
-    props: true
+    props: route => ({ query: route.params.location })
   }
 ];
 
