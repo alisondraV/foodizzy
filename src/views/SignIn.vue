@@ -1,8 +1,11 @@
 <template>
   <div class="m-8">
-    <div class="mb-4">
-      <p class="text-4xl font-bold text-primary-text">Welcome!</p>
-      <p class="text-sm">Let’s optimize your food consumption together</p>
+    <div class="mb-4 flex">
+      <div>
+        <p class="text-4xl font-bold text-primary-text">Welcome!</p>
+        <p class="text-sm text-secondary-text">Let’s optimize your food consumption together</p>
+      </div>
+      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
     </div>
     <div class="mb-8">
       <v-input
