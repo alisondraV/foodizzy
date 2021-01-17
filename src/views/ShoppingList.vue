@@ -12,8 +12,9 @@
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
         <div>
-          <shopping-item
+          <list-item
             v-for="product in filteredCategoryProducts[category]"
+            current-page="ShoppingList"
             :key="product.name"
             :product="product"
             @remove="removeFromShoppingList"
@@ -45,13 +46,13 @@ import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
 import firebase from "firebase";
 import SearchInput from "@/components/SearchInput.vue";
-import ShoppingItem from "@/components/ShoppingItem.vue";
 import VButton from "@/components/VButton.vue";
+import ListItem from "@/components/ListItem.vue";
 
 @Component({
   components: {
+    ListItem,
     VButton,
-    ShoppingItem,
     SearchInput,
     NavigationMenu,
     VHeader
