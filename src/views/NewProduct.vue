@@ -6,13 +6,13 @@
       Add new Item
     </span>
     <p v-for="product in allProducts" :key="product.name">
-      <button @click="resolveNewProduct">+</button>{{ product.name }}
+      <button @click="resolveNewProduct(product)">+</button>{{ product.name }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
@@ -20,6 +20,7 @@ import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
 import firebase from 'firebase';
 import Product from "@/types/Product";
+import router from "@/router";
 
 @Component({
   components: {
@@ -27,6 +28,7 @@ import Product from "@/types/Product";
   }
 })
 export default class Home extends Vue {
+  @Prop() location: string;
   allProducts: Product[] = [];
   family: Family | null = null;
   user: firebase.User | null = null;
@@ -43,6 +45,17 @@ export default class Home extends Vue {
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
     this.allProducts = await Firestore.instance.getAllProducts();
+    console.log(this.location);
+    
+  }
+
+  async resolveNewProduct(product: Product) {
+    if (this.location === 'storage') {
+      await Firestore.instance.addProductToStorage(this.family, product);
+    } else if (this.location === 'shoppingList') {
+      await Firestore.instance.addToShoppingList(this.family, product);
+    }
+    router.back()
   }
 }
 </script>

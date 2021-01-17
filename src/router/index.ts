@@ -40,9 +40,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Recipes.vue")
   },
   {
-    path: "/new-product",
+    path: "/new-product/:location",
     name: "NewProduct",
-    component: () => import("../views/NewProduct.vue")
+    component: () => import("../views/NewProduct.vue"),
+    props: true
   }
 ];
 

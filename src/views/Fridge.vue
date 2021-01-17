@@ -125,7 +125,7 @@ export default class Fridge extends Vue {
   }
 
   addNewProduct() {
-    router.push('/new-product')
+    router.push({ path: 'new-product/storage' });
   }
 }
 </script>
