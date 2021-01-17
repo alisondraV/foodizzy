@@ -16,6 +16,11 @@ export default class Firestore {
     return this._instance;
   }
 
+  public async getAllProducts(): Promise<Product[]> {
+    const querySnap = await this.db.collection('products').get();
+    return querySnap.docs.map(doc => doc.data() as Product);
+  }
+
   public async addProductToStorage(family: Family | null, product: Product) {
     if (!family) {
       throw new Error("No family supplied");
