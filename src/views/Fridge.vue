@@ -18,7 +18,7 @@
               :key="product.name"
             >
               <img
-                src="@/assets/images/Finish.svg"
+                src="@/assets/images/Check.svg"
                 alt="Finished"
                 @click="markAsFinished(product)"
               />
@@ -125,7 +125,6 @@ export default class Fridge extends Vue {
     const allProducts = this.family?.storage;
     return allProducts?.map(product => {
       const productCategory = product.category ?? "General";
-      console.log(productCategory);
       return { name: product.name, category: productCategory };
     });
   }
