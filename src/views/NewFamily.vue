@@ -11,6 +11,7 @@
         label="Family Name"
         v-model="familyName"
       />
+      <p class="text-3xl text-primary-text">Invite Family Members</p>
       <v-input
         class="mb-6"
         type="email"

@@ -10,10 +10,10 @@ export default class Authentication {
 
   public static async signIn(email: string, password: string) {
     try {
-      const user = await firebase
+      const cred = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      console.log("User: ", user);
+      return cred.user
     } catch (error) {
       console.log("SignIn failed: ", error);
     }
@@ -21,10 +21,10 @@ export default class Authentication {
 
   public static async signUp(email: string, password: string) {
     try {
-      const user = await firebase
+      const cred = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      console.log("User: ", user);
+      return cred.user
     } catch (error) {
       console.log("Sign Up failed: ", error);
     }
