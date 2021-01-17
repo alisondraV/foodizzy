@@ -2,6 +2,7 @@ import Family from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
+import ShoppingListItem from "@/types/ShoppingListItem";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -98,6 +99,10 @@ export default class Firestore {
       .collection("family")
       .doc(family.id)
       .set(family);
+  }
+
+  public async updateShoppingList(family: Family|null, products: ShoppingListItem[]) {
+    await this.db.collection('family').doc(family?.id).update('shoppingList', products)
   }
 
   public async getFamilyForUser(user: firebase.User) {
