@@ -75,9 +75,7 @@ export default class SignUp extends Vue {
   async signUp() {
     const user = await Authentication.signUp(this.email, this.password);
     try {
-      const family = await Firestore.instance.getFamilyForUser(user!)
-      console.log(family);
-      
+      await Firestore.instance.getFamilyForUser(user!)
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");

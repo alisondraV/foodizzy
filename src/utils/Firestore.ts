@@ -5,14 +5,24 @@ import WastedProduct from "@/types/WastedProduct";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
-
+  
   private static _instance: Firestore | null = null;
-
+  
   public static get instance(): Firestore {
     if (this._instance === null) {
       this._instance = new Firestore();
     }
     return this._instance;
+  }
+
+  public async createFamily(name: string, members: string[]) {
+    await this.db.collection('family').add({
+      members,
+      name,
+      shoppingList: [],
+      storage:[],
+      totalProducts: {}
+    })
   }
 
   public async getAllProducts(): Promise<Product[]> {
