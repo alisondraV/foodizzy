@@ -13,7 +13,7 @@ export default class Authentication {
       const cred = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      return cred.user
+      return cred.user;
     } catch (error) {
       console.log("SignIn failed: ", error);
     }
@@ -32,7 +32,7 @@ export default class Authentication {
       const cred = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      return cred.user
+      return cred.user;
     } catch (error) {
       console.log("Sign Up failed: ", error);
     }
@@ -42,7 +42,7 @@ export default class Authentication {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const userCred = await firebase.auth().signInWithPopup(provider);
-      return userCred.user
+      return userCred.user;
     } catch (error) {
       console.log("Sign Up with Google failed: ", error);
     }

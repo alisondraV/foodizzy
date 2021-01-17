@@ -82,7 +82,7 @@ export default class SignIn extends Vue {
   async signIn() {
     const user = await Authentication.signIn(this.email, this.password);
     try {
-      await Firestore.instance.getFamilyForUser(user!)
+      await Firestore.instance.getFamilyForUser(user!);
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
@@ -92,7 +92,7 @@ export default class SignIn extends Vue {
   async signInThroughGoogle() {
     const user = await Authentication.signUpThroughGoogle();
     try {
-      await Firestore.instance.getFamilyForUser(user!)
+      await Firestore.instance.getFamilyForUser(user!);
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");

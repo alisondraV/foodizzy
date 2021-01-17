@@ -8,30 +8,32 @@
         label="Family Name"
         v-model="familyName"
       />
-      <p class="text-1xl font-bold text-primary-text mb-4">Invite Family Members</p>
+      <p class="text-1xl font-bold text-primary-text mb-4">
+        Invite Family Members
+      </p>
       <div class="flex flex-row justify-between mb-4">
         <v-input
-            class="w-4/5"
-            type="email"
-            label="Email Address"
-            v-model="currentEmail"
+          class="w-4/5"
+          type="email"
+          label="Email Address"
+          v-model="currentEmail"
         />
-        <img
-            src="@/assets/images/Plus.svg"
-            alt="Add"
-            @click="addEmail"
-        />
+        <img src="@/assets/images/Plus.svg" alt="Add" @click="addEmail" />
       </div>
       <ul>
-          <li v-for="email in memberEmails" :key="email" class="flex color-red bg-red p-2">
-              <p>{{email}}</p>
-              <img
-                src="@/assets/images/Close.svg"
-                alt="remove"
-                @click="removeEmail(email)"
-                class="w-4 h-4"
-                />
-            </li>
+        <li
+          v-for="email in memberEmails"
+          :key="email"
+          class="flex color-red bg-red p-2"
+        >
+          <p>{{ email }}</p>
+          <img
+            src="@/assets/images/Close.svg"
+            alt="remove"
+            @click="removeEmail(email)"
+            class="w-4 h-4"
+          />
+        </li>
       </ul>
     </div>
     <div>
@@ -47,7 +49,7 @@ import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import Firestore from "@/utils/Firestore";
-import firebase from 'firebase'
+import firebase from "firebase";
 
 @Component({
   components: {
@@ -56,27 +58,30 @@ import firebase from 'firebase'
   }
 })
 export default class SignIn extends Vue {
-  familyName = ''
-  memberEmails: string[] = []
-  currentEmail = ''
-  user: firebase.User | null = null
+  familyName = "";
+  memberEmails: string[] = [];
+  currentEmail = "";
+  user: firebase.User | null = null;
 
-    async mounted() {
-        this.user = await Authentication.getCurrentUser()
-    }
+  async mounted() {
+    this.user = await Authentication.getCurrentUser();
+  }
 
   async createFamily() {
-    await Firestore.instance.createFamily(this.familyName, [this.user!.uid, ...this.memberEmails]);
-    router.push('/home');
+    await Firestore.instance.createFamily(this.familyName, [
+      this.user!.uid,
+      ...this.memberEmails
+    ]);
+    router.push("/home");
   }
 
   addEmail() {
-      this.memberEmails.push(this.currentEmail);
-      this.currentEmail = ''
+    this.memberEmails.push(this.currentEmail);
+    this.currentEmail = "";
   }
 
   removeEmail(email: string) {
-      this.memberEmails.splice(this.memberEmails.indexOf(email), 1)
+    this.memberEmails.splice(this.memberEmails.indexOf(email), 1);
   }
 }
 </script>
