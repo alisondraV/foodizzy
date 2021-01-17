@@ -15,7 +15,7 @@ module.exports = {
       "light-yellow": "#FFE6A3",
       "light-grey": "#E7E7E7",
       "secondary-text": "#9A9A9C",
-      "background": "#FFFFFFFF"
+      background: "#FFFFFFFF"
     },
     extend: {}
   },

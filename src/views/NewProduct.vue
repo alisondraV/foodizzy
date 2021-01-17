@@ -18,7 +18,7 @@ import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
-import firebase from 'firebase';
+import firebase from "firebase";
 import Product from "@/types/Product";
 import router from "@/router";
 
@@ -50,12 +50,12 @@ export default class Home extends Vue {
   }
 
   async resolveNewProduct(product: Product) {
-    if (this.location === 'storage') {
+    if (this.location === "storage") {
       await Firestore.instance.addProductToStorage(this.family, product);
-    } else if (this.location === 'shoppingList') {
+    } else if (this.location === "shoppingList") {
       await Firestore.instance.addToShoppingList(this.family, product);
     }
-    router.back()
+    router.back();
   }
 }
 </script>
