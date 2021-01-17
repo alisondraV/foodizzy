@@ -22,7 +22,7 @@
         <hr>
       </div>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Home" />
   </div>
 </template>
 

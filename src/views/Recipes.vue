@@ -5,7 +5,7 @@
       <h2 v-for="recipe in recipes" :key="recipe.id">{{ recipe }}</h2>
       <button @click="getRecipes">Get recipes</button>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Recipes" />
   </div>
 </template>
 

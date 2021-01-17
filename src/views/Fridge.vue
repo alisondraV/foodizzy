@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-20 mb-20 mx-8">
-      <search-input class="mb-4" v-model="searchQuery" type="search" />
+    <div class="mt-24 mb-20 mx-8">
+      <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li
           class="mb-4"
           v-for="category in Object.keys(filteredCategoryProducts)"
           :key="category"
         >
-          <h2 class="text-primary-green">{{ category }}</h2>
-          <hr class="text-secondary-text" />
+          <h2 class="text-primary-green mb-1">{{ category }}</h2>
+          <hr class="text-secondary-text mb-2" />
           <ul>
             <li
               class="flex justify-between py-3 text-xl left-0"
@@ -18,11 +18,11 @@
               :key="product.name"
             >
               <img
-                src="@/assets/images/Finish.svg"
+                src="@/assets/images/Check.svg"
                 alt="Finished"
                 @click="markAsFinished(product)"
               />
-              <span class="flex-1 ml-4">{{ product.name }}</span>
+              <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
               <img
                 src="@/assets/images/Waste.svg"
                 alt="Wasted"
@@ -41,7 +41,7 @@
         />
       </div>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Fridge" />
   </div>
 </template>
 
@@ -118,14 +118,13 @@ export default class Fridge extends Vue {
   }
 
   addNewProduct() {
-    router.push({ path: '/new-product', query: { location: 'storage' } });
+    router.push({ path: "/new-product", query: { location: "storage" } });
   }
 
   getProductsWithCategory() {
     const allProducts = this.family?.storage;
     return allProducts?.map(product => {
       const productCategory = product.category ?? "General";
-      console.log(productCategory);
       return { name: product.name, category: productCategory };
     });
   }

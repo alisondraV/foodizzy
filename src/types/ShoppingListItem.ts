@@ -1,4 +1,4 @@
 export default interface ShoppingListItem {
-    name: string;
-    acquired: boolean;
-};
+  name: string;
+  acquired: boolean;
+}

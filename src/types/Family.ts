@@ -1,5 +1,5 @@
 import Product from "./Product";
-import ShoppingListItem from './ShoppingListItem'
+import ShoppingListItem from "./ShoppingListItem";
 
 export default interface Family {
     id: string;
