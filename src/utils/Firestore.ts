@@ -2,17 +2,28 @@ import Family from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
+import ShoppingListItem from "@/types/ShoppingListItem";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
-
+  
   private static _instance: Firestore | null = null;
-
+  
   public static get instance(): Firestore {
     if (this._instance === null) {
       this._instance = new Firestore();
     }
     return this._instance;
+  }
+
+  public async createFamily(name: string, members: string[]) {
+    await this.db.collection('family').add({
+      members,
+      name,
+      shoppingList: [],
+      storage:[],
+      totalProducts: {}
+    })
   }
 
   public async getAllProducts(): Promise<Product[]> {
@@ -88,6 +99,10 @@ export default class Firestore {
       .collection("family")
       .doc(family.id)
       .set(family);
+  }
+
+  public async updateShoppingList(family: Family|null, products: ShoppingListItem[]) {
+    await this.db.collection('family').doc(family?.id).update('shoppingList', products)
   }
 
   public async getFamilyForUser(user: firebase.User) {

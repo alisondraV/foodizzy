@@ -117,12 +117,13 @@ export default class ShoppingList extends Vue {
     });
   }
 
-  checkShoppingItem(shoppingItem: ShoppingListItem) {
+  async checkShoppingItem(shoppingItem: ShoppingListItem) {
     this.products = this.products.map(product => {
       return product.name == shoppingItem.name
         ? { ...product, acquired: !product.acquired }
         : product;
     });
+    await Firestore.instance.updateShoppingList(this.family, this.products);
   }
 
   async updateFridge() {
