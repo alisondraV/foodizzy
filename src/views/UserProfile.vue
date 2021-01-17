@@ -1,14 +1,16 @@
 <template>
   <div>
     <v-header heading="Your Profile" />
-    <div v-if="!user">
-      Loading...
+    <div class="mt-20 mb-20">
+      <div v-if="!user">
+        Loading...
+      </div>
+      <div v-else>
+        <p>Email: {{ user.email }}</p>
+        <img :src="user.photoURL" alt="profile-image" />
+      </div>
+      <button @click="goBack">Back</button>
     </div>
-    <div v-else>
-      <p>Email: {{ user.email }}</p>
-      <img :src="user.photoURL" alt="profile-image" />
-    </div>
-    <button @click="goBack">Back</button>
   </div>
 </template>
 

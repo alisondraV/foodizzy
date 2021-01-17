@@ -1,9 +1,11 @@
 <template>
   <div>
     <v-header heading="" />
-    <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
-      {{ wastedProduct.name }}
-    </p>
+    <div class="mt-20 mb-20">
+      <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
+        {{ wastedProduct.name }}
+      </p>
+    </div>
     <navigation-menu />
   </div>
 </template>

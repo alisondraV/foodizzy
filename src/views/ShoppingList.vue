@@ -1,15 +1,18 @@
 <template>
   <div>
     <v-header heading="Shopping List" />
-    <h2 v-for="product in products" :key="product.name">{{ product.name }}</h2>
-
-    <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-      <img
-        @click="addNewProduct"
-        src="@/assets/images/AddNew.svg"
-        alt="Add"
-        class="cursor-pointer p-4"
-      />
+    <div class="mt-20 mb-20">
+      <h2 v-for="product in products" :key="product.name">
+        {{ product.name }}
+      </h2>
+      <div class="bottom-0 right-0 mb-20 mr-3 fixed">
+        <img
+          @click="addNewProduct"
+          src="@/assets/images/AddNew.svg"
+          alt="Add"
+          class="cursor-pointer p-4"
+        />
+      </div>
     </div>
     <navigation-menu />
   </div>

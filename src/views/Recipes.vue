@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-header heading="Recipes" />
-    <h2 v-for="recipe in recipes" :key="recipe.id">{{ recipe }}</h2>
-    <button @click="getRecipes">Get recipes</button>
+    <div class="mt-20 mb-20">
+      <h2 v-for="recipe in recipes" :key="recipe.id">{{ recipe }}</h2>
+      <button @click="getRecipes">Get recipes</button>
+    </div>
     <navigation-menu />
   </div>
 </template>
