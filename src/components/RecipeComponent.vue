@@ -5,7 +5,9 @@
       src="@/assets/images/Pasta.jpg"
       alt="recipe-img"
     />
-    <h2 class="text-lg font-semibold mb-2 text-primary-text">{{ recipe.name }}</h2>
+    <h2 class="text-lg font-semibold mb-2 text-primary-text">
+      {{ recipe.name }}
+    </h2>
     <p class="text-secondary-text mb-4">{{ recipe.steps[0] }}</p>
   </div>
 </template>

@@ -24,7 +24,7 @@
         <li
           v-for="email in memberEmails"
           :key="email"
-          class="flex color-red bg-red p-2"
+          class="flex justify-between color-red bg-red p-2 items-center py-3 text-lg"
         >
           <p>{{ email }}</p>
           <img

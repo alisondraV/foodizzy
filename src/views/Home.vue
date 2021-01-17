@@ -5,8 +5,12 @@
       class="mt-20 mb-20 mx-8 flex flex-col"
       v-if="wastedProducts && wastedProducts.length > 0"
     >
-      <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
+      <h1 class="text-3xl mb-2 font-extrabold text-primary-text">
+        Welcome, {{ firstName }}!
+      </h1>
+      <h2 class="mb-4 font-extrabold text-primary-text">
+        Track your food waste here
+      </h2>
       <DonutChart
         class="mb-6"
         :data="chartData"
@@ -39,7 +43,7 @@
           >
           </DonutChart>
         </div>
-        <p>of all {{ category }} was wasted</p>
+        <p class="text-primary-text">of all {{ category }} was wasted</p>
       </div>
     </div>
     <navigation-menu current-page="Home" />
