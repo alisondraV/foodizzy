@@ -1,5 +1,5 @@
 <template>
-  <canvas id="doughnut" />
+  <canvas :id="canvasId" />
 </template>
 
 <script lang="ts">
@@ -19,10 +19,11 @@ export default class DoughnutChart extends Vue {
     }
   })
   readonly options: object | undefined
-  @Prop() centerText: string;
+  @Prop() centerNumber: number;
+  @Prop() canvasId: string;
 
   mounted() {
-    const centerText = this.centerText;
+    const centerNumber = this.centerNumber;
     Chart.defaults.CentralDoughnut = Chart.helpers.clone(Chart.defaults.doughnut);
     Chart.controllers.CentralDoughnut = Chart.controllers.doughnut.extend({
         name: "CentralDoughnut",
@@ -41,7 +42,7 @@ export default class DoughnutChart extends Vue {
             this.chart.ctx.font = fontSize + "em Poppins";
             this.chart.ctx.textBaseline = "middle";
 
-            const text = centerText,
+            const text = (centerNumber * 100).toFixed(1) + '%',
                 textX = Math.round((width - this.chart.ctx.measureText(text).width) / 2),
                 textY = height / 2;
 
@@ -61,7 +62,7 @@ export default class DoughnutChart extends Vue {
   }
 
   createChart(chartData: object) {
-    const canvas = document.getElementById('doughnut') as HTMLCanvasElement
+    const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement
     const options = {
       type: 'CentralDoughnut',
       data: chartData,
