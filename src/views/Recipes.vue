@@ -1,15 +1,9 @@
 <template>
   <div>
     <v-header heading="Recipes" />
-    <div class="mt-20 mb-20 mx-8">
+    <div class="mt-24 mb-20 mx-8">
       <figure class="m-10 rounded" v-for="recipe in recipes" :key="recipe.name">
-        <img
-          class="h-40 w-full object-cover rounded-none "
-          src="@/assets/images/pasta.jpeg"
-          alt="recipe-img"
-        />
-        <h2 class="text-lg font-semibold">{{ recipe.name }}</h2>
-        <p>{{ recipe.steps[0] }}</p>
+        <recipe-component :recipe="recipe" />
       </figure>
     </div>
     <navigation-menu current-page="Recipes" />
@@ -25,9 +19,11 @@ import Recipe from "@/types/Recipe";
 import Family from "@/types/Family";
 import firebase from "firebase";
 import VHeader from "@/components/VHeader.vue";
+import RecipeComponent from "@/components/RecipeComponent.vue";
 
 @Component({
   components: {
+    RecipeComponent,
     NavigationMenu,
     VHeader
   }
