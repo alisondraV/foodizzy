@@ -72,9 +72,9 @@ export default class Home extends Vue {
   family: Family | null = null;
   user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
-  firstName: string;
   categoryColors: { [category: string]: string } = {};
 
+  firstName = "";
   defaultColor = "#E7E7E7";
   colors: string[] = ["#01877E", "#FFB0A9", "#F9D678", "#383838"];
   monthList = [
@@ -101,10 +101,12 @@ export default class Home extends Vue {
       throw new Error("Unauthrized!");
     }
 
-    this.firstName = this.user.displayName.substr(
-      0,
-      this.user.displayName?.indexOf(" ")
-    );
+    if(this.user.displayName) {
+      this.firstName = this.user!.displayName.substr(
+        0,
+        this.user.displayName?.indexOf(" ")
+      );
+    }
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
     await this.getWastedForFamily();
   }
@@ -123,7 +125,7 @@ export default class Home extends Vue {
     type Category = { [category: string]: number };
     let categoryCount = 0;
     return this.wastedProducts.reduce<Category>((acc, product) => {
-      const categoryName = (product.category ?? "general").toLowerCase();
+      const categoryName = (product.category ?? "General").toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
         this.categoryColors[categoryName] = this.colors[categoryCount];

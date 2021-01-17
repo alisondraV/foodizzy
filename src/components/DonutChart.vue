@@ -16,9 +16,9 @@ export default class DoughnutChart extends Vue {
       return Chart.defaults.doughnut;
     }
   })
+  @Prop() centerNumber!: number;
+  @Prop() canvasId!: string;
   readonly options: object | undefined;
-  @Prop() centerNumber: number;
-  @Prop() canvasId: string;
 
   mounted() {
     const centerNumber = this.centerNumber;

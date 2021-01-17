@@ -44,8 +44,8 @@ import ShoppingListItem from "@/types/ShoppingListItem";
 
 @Component
 export default class ListItem extends Vue {
-  @Prop() product: ShoppingListItem;
-  @Prop() currentPage: string;
+  @Prop() product!: ShoppingListItem;
+  @Prop() currentPage!: string;
   @Prop() inStorageOrShopping?: boolean;
 
   isShoppingListPage() {

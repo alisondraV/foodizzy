@@ -18,7 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class SearchInput extends Vue {
-  @Prop() value: null;
+  @Prop() value!: null;
   focused = false;
 
   get isFocused() {

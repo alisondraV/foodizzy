@@ -29,7 +29,7 @@ import router from "../router";
 
 @Component
 export default class VHeader extends Vue {
-  @Prop() heading: string;
+  @Prop() heading!: string;
 
   isProfileOrNewProductPage() {
     return (

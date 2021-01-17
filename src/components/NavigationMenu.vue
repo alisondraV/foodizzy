@@ -39,7 +39,7 @@ import router from "../router";
 
 @Component
 export default class NavigationMenu extends Vue {
-  @Prop() currentPage: string;
+  @Prop() currentPage!: string;
 
   isCurrentPageStyle(page: string) {
     return page == this.currentPage

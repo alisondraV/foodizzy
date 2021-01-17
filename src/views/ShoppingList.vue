@@ -90,11 +90,12 @@ export default class ShoppingList extends Vue {
 
     type Category = { [category: string]: ShoppingListItem[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      if (!Object.keys(acc).includes(product.category)) {
-        acc[product.category] = [];
+      const categoryName = product.category ?? "General";
+      if (!Object.keys(acc).includes(categoryName)) {
+        acc[categoryName] = [];
       }
 
-      acc[product.category].push(product);
+      acc[categoryName].push(product);
 
       return acc;
     }, {});
@@ -105,9 +106,13 @@ export default class ShoppingList extends Vue {
     await Firestore.instance.removeFromShoppingList(this.family, product);
   }
 
-  getProductsWithCategory() {
+  getProductsWithCategory(): ShoppingListItem[] {
     const allProducts = this.family?.shoppingList;
-    return allProducts?.map(product => {
+    if (!allProducts) {
+      return [];
+    }
+
+    return allProducts!.map(product => {
       const productCategory = product.category ?? "General";
       return {
         name: product.name,

@@ -18,6 +18,6 @@ import Recipe from "@/types/Recipe";
 
 @Component
 export default class RecipeComponent extends Vue {
-  @Prop() recipe: Recipe;
+  @Prop() recipe!: Recipe;
 }
 </script>

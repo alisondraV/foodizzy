@@ -93,11 +93,12 @@ export default class NewProduct extends Vue {
 
     type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      if (!Object.keys(acc).includes(product.category)) {
-        acc[product.category] = [];
+      const categoryName = product.category ?? "General";
+      if (!Object.keys(acc).includes(categoryName)) {
+        acc[categoryName] = [];
       }
 
-      acc[product.category].push(product);
+      acc[categoryName].push(product);
 
       return acc;
     }, {});

@@ -19,9 +19,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class VInput extends Vue {
-  @Prop() value: null;
-  @Prop() label: string;
-  @Prop() type: string;
+  @Prop() value!: null;
+  @Prop() label!: string;
+  @Prop() type!: string;
   focused = false;
 
   get isFocused() {
