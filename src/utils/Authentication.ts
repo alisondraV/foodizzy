@@ -19,6 +19,14 @@ export default class Authentication {
     }
   }
 
+  public static async signOut() {
+    try {
+      return await firebase.auth().signOut();
+    } catch (error) {
+      console.log("SignOut failed: ", error);
+    }
+  }
+
   public static async signUp(email: string, password: string) {
     try {
       const user = await firebase

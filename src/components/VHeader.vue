@@ -1,7 +1,7 @@
 <template>
   <div class="bg-background flex h-20 px-5 w-full top-0 fixed pt-4">
     <span
-      class="ml-2 w-4/5 text-2xl place-self-center font-extrabold text-primary-text"
+      class="ml-4 w-4/5 text-2xl place-self-center font-extrabold text-primary-text"
     >
       {{ heading }}
     </span>
