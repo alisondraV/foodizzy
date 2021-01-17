@@ -33,7 +33,8 @@ export default class Authentication {
   public static async signUpThroughGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
-      await firebase.auth().signInWithPopup(provider);
+      const userCred = await firebase.auth().signInWithPopup(provider);
+      return userCred.user
     } catch (error) {
       console.log("Sign Up with Google failed: ", error);
     }

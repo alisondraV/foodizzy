@@ -59,6 +59,7 @@ import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
+import Firestore from "@/utils/Firestore";
 
 @Component({
   components: {
@@ -84,8 +85,13 @@ export default class SignIn extends Vue {
   }
 
   async signInThroughGoogle() {
-    await Authentication.signUpThroughGoogle();
-    await router.push("/home");
+    const user = await Authentication.signUpThroughGoogle();
+    try {
+      await Firestore.instance.getFamilyForUser(user!)
+      await router.push("/home");
+    } catch (err) {
+      await router.push("/create-family");
+    }
   }
 }
 </script>
