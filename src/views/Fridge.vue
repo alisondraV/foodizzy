@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-20 mb-20 mx-8">
-      <search-input class="mb-4" v-model="searchQuery" type="search" />
+    <div class="mt-24 mb-20 mx-8">
+      <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li
           class="mb-4"
           v-for="category in Object.keys(filteredCategoryProducts)"
           :key="category"
         >
-          <h2 class="text-primary-green">{{ category }}</h2>
-          <hr class="text-secondary-text" />
+          <h2 class="text-primary-green mb-1">{{ category }}</h2>
+          <hr class="text-secondary-text mb-2" />
           <ul>
             <li
               class="flex justify-between py-3 text-xl left-0"

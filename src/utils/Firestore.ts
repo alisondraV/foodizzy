@@ -52,6 +52,14 @@ export default class Firestore {
     await this.db.collection('wasteBuckets').doc(bucket.id).update("wasted", updatedWastedList);
   }
 
+  public async removeFromShoppingList(family: Family | null, product: Product) {
+    if (!family) {
+      throw new Error("No family supplied");
+    }
+    family.shoppingList = family.shoppingList.filter(candidate => candidate.name != product.name);
+    await this.db.collection('family').doc(family.id).set(family);
+  }
+
   public async addToShoppingList(family: Family|null, product: Product) {
     if (!family) {
       throw new Error("No family supplied");
