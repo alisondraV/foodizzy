@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-6xl">Main</h1>
+    <v-header heading="" />
     <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
       {{ wastedProduct.name }}
     </p>
@@ -15,9 +15,11 @@ import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
+    VHeader,
     NavigationMenu
   }
 })

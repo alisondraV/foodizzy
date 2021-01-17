@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Fridge</h1>
+    <v-header heading="What's in your fridge?" />
     <input v-model="searchQuery" type="search" />
     <ul>
       <li
@@ -55,10 +55,12 @@ import firebase from "firebase";
 import Product from "@/types/Product";
 import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    NavigationMenu
+    NavigationMenu,
+    VHeader
   }
 })
 export default class Fridge extends Vue {

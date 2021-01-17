@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Recipes</h1>
+    <v-header heading="Recipes" />
     <h2 v-for="recipe in recipes" :key="recipe.id">{{ recipe }}</h2>
     <button @click="getRecipes">Get recipes</button>
     <navigation-menu />
@@ -11,10 +11,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    NavigationMenu
+    NavigationMenu,
+    VHeader
   }
 })
 export default class Recipes extends Vue {

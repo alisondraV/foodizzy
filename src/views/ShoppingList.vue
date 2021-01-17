@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Shopping List</h1>
+    <v-header heading="Shopping List" />
     <h2 v-for="product in products" :key="product.name">{{ product.name }}</h2>
 
     <div class="bottom-0 right-0 mb-20 mr-3 fixed">
@@ -22,10 +22,12 @@ import NavigationMenu from "@/components/NavigationMenu.vue";
 import Authentication from "@/utils/Authentication";
 import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    NavigationMenu
+    NavigationMenu,
+    VHeader
   }
 })
 export default class ShoppingList extends Vue {
