@@ -3,6 +3,7 @@ import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
 import Recipe from "@/types/Recipe";
+import ShoppingListItem from "@/types/ShoppingListItem";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
