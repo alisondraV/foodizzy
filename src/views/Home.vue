@@ -1,9 +1,11 @@
 <template>
   <div>
-    <h1 class="text-6xl">Main</h1>
-    <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
-      {{ wastedProduct.name }}
-    </p>
+    <v-header heading="" />
+    <div class="mt-20 mb-20">
+      <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
+        {{ wastedProduct.name }}
+      </p>
+    </div>
     <navigation-menu />
   </div>
 </template>
@@ -16,9 +18,11 @@ import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
 import firebase from 'firebase';
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
+    VHeader,
     NavigationMenu
   }
 })

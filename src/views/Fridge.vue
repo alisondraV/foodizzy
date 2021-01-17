@@ -1,47 +1,49 @@
 <template>
   <div>
-    <h1>Fridge</h1>
-    <input v-model="searchQuery" type="search" />
-    <ul>
-      <li
-        v-for="category in Object.keys(filteredCategoryProducts)"
-        :key="category"
-      >
-        <h2>{{ category }}</h2>
-        <hr />
-        <ul>
-          <li
-            v-for="product in filteredCategoryProducts[category]"
-            :key="product.name"
-          >
-            <button @click="markAsFinished(product)">finished</button>
-            {{ product.name }}
-            <button @click="markAsWasted(product)">wasted</button>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <form action="">
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name" v-model="newProductName" />
-      <br />
-      <label for="category">Category</label>
-      <input
-        type="text"
-        name="category"
-        id="category"
-        v-model="newProductCategory"
-      />
-      <br />
-      <button @click="addToStorage(name, category)">+</button>
-    </form>
-    <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-      <img
-        @click="addNewProduct"
-        src="@/assets/images/AddNew.svg"
-        alt="Add"
-        class="cursor-pointer p-4"
-      />
+    <v-header heading="What's in your fridge?" />
+    <div class="mt-20 mb-20">
+      <input v-model="searchQuery" type="search" />
+      <ul>
+        <li
+          v-for="category in Object.keys(filteredCategoryProducts)"
+          :key="category"
+        >
+          <h2>{{ category }}</h2>
+          <hr />
+          <ul>
+            <li
+              v-for="product in filteredCategoryProducts[category]"
+              :key="product.name"
+            >
+              <button @click="markAsFinished(product)">finished</button>
+              {{ product.name }}
+              <button @click="markAsWasted(product)">wasted</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <form action="">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" v-model="newProductName" />
+        <br />
+        <label for="category">Category</label>
+        <input
+          type="text"
+          name="category"
+          id="category"
+          v-model="newProductCategory"
+        />
+        <br />
+        <button @click="addToStorage(name, category)">+</button>
+      </form>
+      <div class="bottom-0 right-0 mb-20 mr-3 fixed">
+        <img
+          @click="addNewProduct"
+          src="@/assets/images/AddNew.svg"
+          alt="Add"
+          class="cursor-pointer p-4"
+        />
+      </div>
     </div>
     <navigation-menu />
   </div>
@@ -55,10 +57,12 @@ import firebase from "firebase";
 import Product from "@/types/Product";
 import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    NavigationMenu
+    NavigationMenu,
+    VHeader
   }
 })
 export default class Fridge extends Vue {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Recipes</h1>
+    <v-header heading="Recipes" />
     <figure class="m-10 rounded" v-for="recipe in recipes" :key="recipe.name">
       <img class="h-40 w-full object-cover rounded-none " src="@/assets/images/pasta.jpeg" alt="recipe-img">
       <h2 class="text-lg font-semibold">{{recipe.name}}</h2>
@@ -18,10 +18,12 @@ import Authentication from "@/utils/Authentication";
 import Recipe from "@/types/Recipe";
 import Family from "@/types/Family";
 import firebase from "firebase";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    NavigationMenu
+    NavigationMenu,
+    VHeader
   }
 })
 export default class Recipes extends Vue {

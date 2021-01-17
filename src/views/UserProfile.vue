@@ -1,14 +1,16 @@
 <template>
   <div>
-    <h1>Your Profile</h1>
-    <div v-if="!user">
-      Loading...
+    <v-header heading="Your Profile" />
+    <div class="mt-20 mb-20">
+      <div v-if="!user">
+        Loading...
+      </div>
+      <div v-else>
+        <p>Email: {{ user.email }}</p>
+        <img :src="user.photoURL" alt="profile-image" />
+      </div>
+      <button @click="goBack">Back</button>
     </div>
-    <div v-else>
-      <p>Email: {{ user.email }}</p>
-      <img :src="user.photoURL" alt="profile-image" />
-    </div>
-    <button @click="goBack">Back</button>
   </div>
 </template>
 
@@ -17,8 +19,11 @@ import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
+import VHeader from "@/components/VHeader.vue";
 
-@Component
+@Component({
+  components: { VHeader }
+})
 export default class AppMain extends Vue {
   user: firebase.User | null = null;
 

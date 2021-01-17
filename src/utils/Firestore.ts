@@ -74,11 +74,6 @@ export default class Firestore {
     return { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
   }
 
-  public async getProducts() {
-    const documents = await this.db.collection("products").get();
-    return documents.docs.map<string>(qds => qds.data().name);
-  }
-
   public async getRecipes() {
     const documents = await this.db.collection("recipes").get();
     return documents.docs.map<string>(qds => qds.data().name);
