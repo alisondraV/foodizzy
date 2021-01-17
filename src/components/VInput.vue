@@ -4,7 +4,8 @@
       <span
         class="origin-top top-input text-sm tracking-wider absolute transition-all truncate"
         :class="{
-          'bg-white top-input text-gray-700 px-2 round-sm text-xs': isFocused
+          'bg-white top-input text-gray-700 px-2 round-sm text-xs': isFocused,
+          'invisible': value !== null && value !== ''
         }"
       >
         {{ label }}
