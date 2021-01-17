@@ -11,12 +11,11 @@
       </span>
 
       <input
-        class="border rounded-md text-gray-800 h-10"
+        class="focus:outline-none border rounded-md text-gray-800 h-10"
         :value="value"
         @focus="focused = true"
         @blur="focused = false"
         @input="$emit('input', $event.target.value)"
-        :name="label"
         :type="type"
       />
     </label>

@@ -2,7 +2,7 @@
   <div>
     <v-header heading="What's in your fridge?" />
     <div class="mt-20 mb-20 mx-8">
-      <input v-model="searchQuery" type="search" />
+      <search-input class="mb-4" v-model="searchQuery" type="search" />
       <ul>
         <li
           class="mb-4"
@@ -54,9 +54,11 @@ import Product from "@/types/Product";
 import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
+import SearchInput from "@/components/SearchInput.vue";
 
 @Component({
   components: {
+    SearchInput,
     NavigationMenu,
     VHeader
   }
