@@ -18,6 +18,7 @@ import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
 import VHeader from "@/components/VHeader.vue";
+import firebase from 'firebase';
 
 @Component({
   components: {
@@ -41,11 +42,28 @@ export default class Home extends Vue {
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
     await this.getWastedForFamily();
+    console.log(this.statistics);
+    
   }
+
   async getWastedForFamily() {
     this.wastedProducts = await Firestore.instance.getWastedForFamily(
       this.family
     );
+  }
+
+  get statistics() {
+    type Category = { [category: string]: number };
+    return this.wastedProducts.reduce<Category>((acc, product) => {
+      const categoryName = product.category ?? 'General'
+      if (!Object.keys(acc).includes(categoryName)) {
+        acc[categoryName] = 0;
+      }
+
+      acc[categoryName]++;
+
+      return acc;
+    }, {});
   }
 }
 </script>
