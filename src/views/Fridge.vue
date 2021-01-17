@@ -1,41 +1,37 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-20 mb-20">
+    <div class="mt-20 mb-20 mx-8">
       <input v-model="searchQuery" type="search" />
       <ul>
         <li
+          class="mb-4"
           v-for="category in Object.keys(filteredCategoryProducts)"
           :key="category"
         >
-          <h2>{{ category }}</h2>
-          <hr />
+          <h2 class="text-primary-green">{{ category }}</h2>
+          <hr class="text-secondary-text" />
           <ul>
             <li
+              class="flex justify-between py-3 text-xl left-0"
               v-for="product in filteredCategoryProducts[category]"
               :key="product.name"
             >
-              <button @click="markAsFinished(product)">finished</button>
-              {{ product.name }}
-              <button @click="markAsWasted(product)">wasted</button>
+              <img
+                src="@/assets/images/Finish.svg"
+                alt="Finished"
+                @click="markAsFinished(product)"
+              />
+              <span class="flex-1 ml-4">{{ product.name }}</span>
+              <img
+                src="@/assets/images/Waste.svg"
+                alt="Wasted"
+                @click="markAsWasted(product)"
+              />
             </li>
           </ul>
         </li>
       </ul>
-      <form action="">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" v-model="newProductName" />
-        <br />
-        <label for="category">Category</label>
-        <input
-          type="text"
-          name="category"
-          id="category"
-          v-model="newProductCategory"
-        />
-        <br />
-        <button @click="addToStorage(name, category)">+</button>
-      </form>
       <div class="bottom-0 right-0 mb-20 mr-3 fixed">
         <img
           @click="addNewProduct"
@@ -83,7 +79,7 @@ export default class Fridge extends Vue {
     }
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = this.family.storage;
+    this.products = this.getProductsWithCategory();
   }
 
   get filteredCategoryProducts() {
@@ -118,15 +114,17 @@ export default class Fridge extends Vue {
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
-  async addToStorage() {
-    await Firestore.instance.addProductToStorage(this.family, {
-      name: this.newProductName,
-      category: this.newProductCategory
-    });
-  }
-
   addNewProduct() {
     console.log("Add new");
+  }
+
+  getProductsWithCategory() {
+    const allProducts = this.family?.storage;
+    return allProducts?.map(product => {
+      const productCategory = product.category ?? "General";
+      console.log(productCategory);
+      return { name: product.name, category: productCategory };
+    });
   }
 }
 </script>

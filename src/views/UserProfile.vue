@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="Your Profile" />
-    <div class="mt-20 mb-20">
+    <div class="mt-20 mb-20 mx-8">
       <div v-if="!user">
         Loading...
       </div>

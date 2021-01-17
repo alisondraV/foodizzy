@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="" />
-    <div class="mt-20 mb-20">
+    <div class="mt-20 mb-20 mx-8">
       <p v-for="wastedProduct in wastedProducts" :key="wastedProduct.name">
         {{ wastedProduct.name }}
       </p>

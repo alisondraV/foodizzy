@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="Shopping List" />
-    <div class="mt-20 mb-20">
+    <div class="mt-20 mb-20 mx-8">
       <h2 v-for="product in products" :key="product.name">
         {{ product.name }}
       </h2>
