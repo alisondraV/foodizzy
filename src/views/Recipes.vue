@@ -1,12 +1,18 @@
 <template>
   <div>
     <v-header heading="Recipes" />
-    <figure class="m-10 rounded" v-for="recipe in recipes" :key="recipe.name">
-      <img class="h-40 w-full object-cover rounded-none " src="@/assets/images/pasta.jpeg" alt="recipe-img">
-      <h2 class="text-lg font-semibold">{{recipe.name}}</h2>
-      <p>{{ recipe.steps[0] }}</p>
-    </figure>
-    <navigation-menu />
+    <div class="mt-20 mb-20 mx-8">
+      <figure class="m-10 rounded" v-for="recipe in recipes" :key="recipe.name">
+        <img
+          class="h-40 w-full object-cover rounded-none "
+          src="@/assets/images/pasta.jpeg"
+          alt="recipe-img"
+        />
+        <h2 class="text-lg font-semibold">{{ recipe.name }}</h2>
+        <p>{{ recipe.steps[0] }}</p>
+      </figure>
+    </div>
+    <navigation-menu current-page="Recipes" />
   </div>
 </template>
 

@@ -1,8 +1,13 @@
 <template>
   <div class="m-8">
-    <div class="mb-4">
-      <p class="text-4xl font-bold text-primary-text">Welcome!</p>
-      <p class="text-sm">Let’s optimize your food consumption together</p>
+    <div class="mb-4 flex">
+      <div>
+        <p class="text-4xl font-bold text-primary-text">Welcome!</p>
+        <p class="text-sm text-secondary-text">
+          Let’s optimize your food consumption together
+        </p>
+      </div>
+      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
     </div>
     <div class="mb-8">
       <v-input
@@ -54,6 +59,7 @@ import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
+import Firestore from "@/utils/Firestore";
 
 @Component({
   components: {
@@ -74,13 +80,23 @@ export default class SignIn extends Vue {
   }
 
   async signIn() {
-    await Authentication.signIn(this.email, this.password);
-    await router.push("/home");
+    const user = await Authentication.signIn(this.email, this.password);
+    try {
+      await Firestore.instance.getFamilyForUser(user!);
+      await router.push("/home");
+    } catch (err) {
+      await router.push("/create-family");
+    }
   }
 
   async signInThroughGoogle() {
-    await Authentication.signUpThroughGoogle();
-    await router.push("/home");
+    const user = await Authentication.signUpThroughGoogle();
+    try {
+      await Firestore.instance.getFamilyForUser(user!);
+      await router.push("/home");
+    } catch (err) {
+      await router.push("/create-family");
+    }
   }
 }
 </script>

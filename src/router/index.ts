@@ -15,6 +15,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/SignUp.vue")
   },
   {
+    path: "/create-family",
+    name: "NewFamily",
+    component: () => import("../views/NewFamily.vue")
+  },
+  {
     path: "/home",
     name: "Home",
     component: () => import("../views/Home.vue")
@@ -38,6 +43,12 @@ const routes: Array<RouteConfig> = [
     path: "/recipes",
     name: "Recipes",
     component: () => import("../views/Recipes.vue")
+  },
+  {
+    path: "/new-product",
+    name: "NewProduct",
+    component: () => import("../views/NewProduct.vue"),
+    props: route => ({ query: route.params.location })
   }
 ];
 

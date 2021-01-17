@@ -1,41 +1,39 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-20 mb-20">
-      <input v-model="searchQuery" type="search" />
+    <div class="mt-24 mb-20 mx-8">
+      <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li
+          class="mb-4"
           v-for="category in Object.keys(filteredCategoryProducts)"
           :key="category"
         >
-          <h2>{{ category }}</h2>
-          <hr />
+          <h2 class="text-primary-green mb-1">{{ category }}</h2>
+          <hr class="text-secondary-text mb-2" />
           <ul>
             <li
+              class="flex justify-between py-3 text-xl left-0"
               v-for="product in filteredCategoryProducts[category]"
               :key="product.name"
             >
-              <button @click="markAsFinished(product)">finished</button>
-              {{ product.name }}
-              <button @click="markAsWasted(product)">wasted</button>
+              <img
+                src="@/assets/images/Check.svg"
+                alt="Finished"
+                @click="markAsFinished(product)"
+              />
+              <span class="flex-1 ml-4 text-primary-text">{{
+                product.name
+              }}</span>
+              <img
+                src="@/assets/images/Waste.svg"
+                alt="Wasted"
+                @click="markAsWasted(product)"
+              />
             </li>
           </ul>
         </li>
       </ul>
-      <form action="">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" v-model="newProductName" />
-        <br />
-        <label for="category">Category</label>
-        <input
-          type="text"
-          name="category"
-          id="category"
-          v-model="newProductCategory"
-        />
-        <br />
-        <button @click="addToStorage(name, category)">+</button>
-      </form>
       <div class="bottom-0 right-0 mb-20 mr-3 fixed">
         <img
           @click="addNewProduct"
@@ -45,7 +43,7 @@
         />
       </div>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Fridge" />
   </div>
 </template>
 
@@ -58,9 +56,12 @@ import Product from "@/types/Product";
 import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
+import SearchInput from "@/components/SearchInput.vue";
+import router from "@/router";
 
 @Component({
   components: {
+    SearchInput,
     NavigationMenu,
     VHeader
   }
@@ -83,7 +84,7 @@ export default class Fridge extends Vue {
     }
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = this.family.storage;
+    this.products = this.getProductsWithCategory();
   }
 
   get filteredCategoryProducts() {
@@ -118,15 +119,16 @@ export default class Fridge extends Vue {
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
-  async addToStorage() {
-    await Firestore.instance.addProductToStorage(this.family, {
-      name: this.newProductName,
-      category: this.newProductCategory
-    });
+  addNewProduct() {
+    router.push({ path: "/new-product", query: { location: "storage" } });
   }
 
-  addNewProduct() {
-    console.log("Add new");
+  getProductsWithCategory() {
+    const allProducts = this.family?.storage;
+    return allProducts?.map(product => {
+      const productCategory = product.category ?? "General";
+      return { name: product.name, category: productCategory };
+    });
   }
 }
 </script>
