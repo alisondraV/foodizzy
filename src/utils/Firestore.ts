@@ -2,6 +2,7 @@ import Family from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
+import Recipe from "@/types/Recipe";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -13,6 +14,11 @@ export default class Firestore {
       this._instance = new Firestore();
     }
     return this._instance;
+  }
+
+  public async getRecipesForFamily(family: Family): Promise<Recipe[]> {
+    const docSnaps = await this.db.collection('recipes').where('familyId', '==', family.id).get()
+    return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
   }
 
   public async addProductToStorage(family: Family | null, product: Product) {

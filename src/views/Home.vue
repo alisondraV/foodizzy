@@ -15,6 +15,7 @@ import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import Family from "@/types/Family";
+import firebase from 'firebase';
 
 @Component({
   components: {
