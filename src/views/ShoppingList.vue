@@ -14,7 +14,7 @@
         />
       </div>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="ShoppingList" />
   </div>
 </template>
 

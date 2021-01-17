@@ -41,7 +41,7 @@
         />
       </div>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Fridge" />
   </div>
 </template>
 

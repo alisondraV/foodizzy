@@ -6,7 +6,7 @@
         {{ wastedProduct.name }}
       </p>
     </div>
-    <navigation-menu />
+    <navigation-menu current-page="Home" />
   </div>
 </template>
 
