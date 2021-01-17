@@ -3,6 +3,7 @@ import ShoppingListItem from './ShoppingListItem'
 
 export default interface Family {
     id: string;
+    totalProducts: number;
     members: string[];
     storage: Product[];
     shoppingList: ShoppingListItem[];

@@ -4,9 +4,9 @@
     <div class="mt-20 mb-20 mx-8">
       <DonutChart 
         v-if="wastedProducts.length > 0"
-        :data="Object.values(statistics)"
-        :labels="Object.keys(statistics)"
-        :colors="['#01877E', '#FFB0A9', 'F9D678', '383838']">
+        :data="chartData"
+        :labels="chartLabels"
+        :colors="['#E7E7E7', '#01877E', '#FFB0A9', '#F9D678', '#383838']">
       </DonutChart>
     </div>
     <navigation-menu />
@@ -67,6 +67,14 @@ export default class Home extends Vue {
 
       return acc;
     }, {});
+  }
+
+  get chartData() {
+    return [ this.family?.totalProducts, ...Object.values(this.statistics)]
+  }
+
+  get chartLabels() {
+    return [ 'Eaten', ...Object.keys(this.statistics)]
   }
 }
 </script>
