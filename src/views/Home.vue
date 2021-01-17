@@ -6,7 +6,7 @@
       v-if="wastedProducts && wastedProducts.length > 0"
     >
       <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold">Track your food waste hear</h2>
+      <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
       <DonutChart
         class="mb-6"
         :data="chartData"
@@ -17,7 +17,8 @@
       >
       </DonutChart>
       <p class="text-secondary-text text-center mb-6">
-        {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted in {{ getMonth() }}
+        {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted in
+        {{ getMonth() }}
       </p>
       <div
         v-for="category in Object.keys(statistics)"
@@ -111,7 +112,7 @@ export default class Home extends Vue {
   }
 
   getMonth() {
-    return this.monthList[(new Date()).getMonth()];
+    return this.monthList[new Date().getMonth()];
   }
 
   get statistics() {
