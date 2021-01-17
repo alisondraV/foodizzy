@@ -55,6 +55,7 @@ import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
+import router from "@/router";
 
 @Component({
   components: {
@@ -117,7 +118,7 @@ export default class Fridge extends Vue {
   }
 
   addNewProduct() {
-    console.log("Add new");
+    router.push({ path: '/new-product', query: { location: 'storage' } });
   }
 
   getProductsWithCategory() {
