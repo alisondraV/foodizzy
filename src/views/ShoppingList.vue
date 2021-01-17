@@ -23,6 +23,7 @@ import Authentication from "@/utils/Authentication";
 import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import VHeader from "@/components/VHeader.vue";
+import router from "@/router";
 
 @Component({
   components: {
@@ -49,7 +50,7 @@ export default class ShoppingList extends Vue {
   }
 
   addNewProduct() {
-    console.log("Add new");
+    router.push({ path: 'new-product/shoppingList' });
   }
 }
 </script>
