@@ -101,7 +101,7 @@ export default class Firestore {
       throw new Error("No family supplied");
     }
     family.shoppingList.push({
-      name: product.name,
+      ...product,
       acquired: false
     });
     await this.db
