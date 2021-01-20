@@ -26,13 +26,18 @@ export default class Firestore {
   }
 
   public async createFamily(name: string, members: string[]) {
-    await this.db.collection("family").add({
+    const newFamily = await this.db.collection("family").add({
       members,
       name,
       shoppingList: [],
       storage: [],
       totalProducts: {}
     });
+
+    await this.db.collection("wasteBuckets").add({
+      familyId: newFamily.id,
+      wasted: []
+    })
   }
 
   public async getAllProducts(): Promise<Product[]> {
