@@ -42,8 +42,8 @@ import ListItem from "@/components/ListItem.vue";
   components: {
     ListItem,
     SearchInput,
-    VHeader
-  }
+    VHeader,
+  },
 })
 export default class NewProduct extends Vue {
   location?: string;
@@ -53,7 +53,7 @@ export default class NewProduct extends Vue {
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {
@@ -85,7 +85,7 @@ export default class NewProduct extends Vue {
   }
 
   get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
+    const reducedProducts = this.products.filter((product) => {
       return product.name
         .toLowerCase()
         .includes(this.searchQuery.toLowerCase());
@@ -106,15 +106,17 @@ export default class NewProduct extends Vue {
 
   async getProductsWithCategory() {
     const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map(product => {
+    return allProducts.map((product) => {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });
   }
 
   isInStorageOrShoppingList(product: Product) {
-    const storageProductNames = this.family?.storage.map(p => p.name);
-    const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
+    const storageProductNames = this.family?.storage.map((p) => p.name);
+    const shoppingListProductNames = this.family?.shoppingList.map(
+      (p) => p.name
+    );
     return (
       storageProductNames?.includes(product.name) ||
       shoppingListProductNames?.includes(product.name)

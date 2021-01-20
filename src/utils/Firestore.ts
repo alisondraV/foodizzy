@@ -17,6 +17,16 @@ export default class Firestore {
     return this._instance;
   }
 
+  constructor() {
+    this.db = firebase.firestore();
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Emulator connected");
+
+      this.db.useEmulator('localhost', 8080);
+    }
+  }
+
   public async getRecipesForFamily(family: Family): Promise<Recipe[]> {
     const docSnaps = await this.db
       .collection("recipes")

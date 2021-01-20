@@ -25,8 +25,8 @@ import RecipeComponent from "@/components/RecipeComponent.vue";
   components: {
     RecipeComponent,
     NavigationMenu,
-    VHeader
-  }
+    VHeader,
+  },
 })
 export default class Recipes extends Vue {
   recipes: Recipe[] = [];
@@ -34,7 +34,7 @@ export default class Recipes extends Vue {
   family: Family | null = null;
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {
