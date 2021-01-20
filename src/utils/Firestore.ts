@@ -149,6 +149,7 @@ export default class Firestore {
     if (documents.docs.length === 0) {
       throw new Error(`WasteBucket for family: ${family?.id} was not found`);
     }
-    return documents.docs[0].data().wasted as WastedProduct[];
+
+    return documents.docs[0].data().wasted ?? [] as WastedProduct[];
   }
 }
