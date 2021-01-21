@@ -8,46 +8,51 @@
       <h2 class="mb-4 font-extrabold text-primary-text">
         Track your food waste here
       </h2>
-      <div v-if="Object.keys(statistics).length === 0">
-        <p class="text-secondary-text text-center mb-6">
-          We don't have enought data to display, go fill your fridge!
-        </p>
-      </div>
+      <p v-if="loading" class="text-secondary-text text-center mb-6">
+        Loading...
+      </p>
       <div v-else>
-        <DonutChart
-          class="mb-6"
-          :data="chartData"
-          :labels="chartLabels"
-          :colors="[defaultColor, ...Object.values(categoryColors)]"
-          :centerNumber="getWastePercentage()"
-          canvasId="main"
-        >
-        </DonutChart>
-        <p class="text-secondary-text text-center mb-6">
-          {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted
-          in
-          {{ getMonth() }}
-        </p>
-        <div
-          v-for="category in Object.keys(statistics)"
-          :key="category"
-          class="flex mb-6 items-center w-full"
-        >
-          <div class="h-30 w-40 flex items-center">
-            <DonutChart
-              :data="[
-                statistics[category.toLowerCase()],
-                family.totalProducts[category.toLowerCase()] -
+        <div v-if="totalProducts === 0">
+          <p class="text-secondary-text text-center mb-6">
+            We don't have enought data to display, go fill your fridge!
+          </p>
+        </div>
+        <div v-else>
+          <DonutChart
+            class="mb-6"
+            :data="chartData"
+            :labels="chartLabels"
+            :colors="[defaultColor, ...Object.values(categoryColors)]"
+            :centerNumber="getWastePercentage()"
+            canvasId="main"
+          >
+          </DonutChart>
+          <p class="text-secondary-text text-center mb-6">
+            {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted
+            in
+            {{ getMonth() }}
+          </p>
+          <div
+            v-for="category in Object.keys(statistics)"
+            :key="category"
+            class="flex mb-6 items-center w-full"
+          >
+            <div class="h-30 w-40 flex items-center">
+              <DonutChart
+                :data="[
                   statistics[category.toLowerCase()],
-              ]"
-              :labels="['wasted', 'eaten']"
-              :colors="[categoryColors[category.toLowerCase()], defaultColor]"
-              :centerNumber="getWastePercentage(category)"
-              :canvasId="category.toLowerCase()"
-            >
-            </DonutChart>
+                  family.totalProducts[category.toLowerCase()] -
+                    statistics[category.toLowerCase()],
+                ]"
+                :labels="['wasted', 'eaten']"
+                :colors="[categoryColors[category.toLowerCase()], defaultColor]"
+                :centerNumber="getWastePercentage(category)"
+                :canvasId="category.toLowerCase()"
+              >
+              </DonutChart>
+            </div>
+            <p class="text-primary-text">of all {{ category }} was wasted</p>
           </div>
-          <p class="text-primary-text">of all {{ category }} was wasted</p>
         </div>
       </div>
     </div>
@@ -74,6 +79,7 @@ import DonutChart from "@/components/DonutChart.vue";
   },
 })
 export default class Home extends Vue {
+  loading = true;
   family: Family | null = null;
   user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
@@ -114,13 +120,10 @@ export default class Home extends Vue {
       );
     }
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    await this.getWastedForFamily();
-  }
-
-  async getWastedForFamily() {
     this.wastedProducts = await Firestore.instance.getWastedForFamily(
       this.family
     );
+    this.loading = false;
   }
 
   getMonth() {
@@ -130,7 +133,6 @@ export default class Home extends Vue {
   get statistics() {
     type Category = { [category: string]: number };
     let categoryCount = 0;
-    console.log(this.wastedProducts);
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
       const categoryName = (product.category ?? "General").toLowerCase();
@@ -147,7 +149,11 @@ export default class Home extends Vue {
   }
 
   get totalProducts() {
-    return Object.values(this.family!.totalProducts).reduce(
+    if (!this.family) {
+      return 0;
+    }
+
+    return Object.values(this.family.totalProducts).reduce(
       (acc, e) => e + acc,
       0
     );
@@ -169,11 +175,11 @@ export default class Home extends Vue {
   }
 
   getWastePercentage(category?: string) {
-    if (!category) {
-      return this.totalWaste / this.totalProducts;
+    if (category) {
+      category = category.toLowerCase();
+      return this.statistics[category] / this.family!.totalProducts[category];
     }
-    category = category.toLowerCase();
-    return this.statistics[category] / this.family!.totalProducts[category];
+    return this.totalWaste / this.totalProducts;
   }
 }
 </script>
