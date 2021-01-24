@@ -3,6 +3,11 @@
     <v-header heading="Add New Item" />
     <div class="mt-24 mb-20 mx-8">
       <search-input class="mb-4" v-model="searchQuery" />
+      <v-button
+        class="mb-4"
+        label="Add Custom Product"
+        @click="addCustomProduct"
+      />
       <div
         class="mb-4"
         v-for="category in Object.keys(filteredCategoryProducts)"
@@ -37,9 +42,11 @@ import router from "@/router";
 import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import ListItem from "@/components/ListItem.vue";
+import VButton from "@/components/VButton.vue";
 
 @Component({
   components: {
+    VButton,
     ListItem,
     SearchInput,
     VHeader
@@ -54,7 +61,6 @@ export default class NewProduct extends Vue {
 
   async mounted() {
     this.user = await Authentication.getCurrentUser();
-    console.log(this.user!.uid);
 
     if (!this.user) {
       // TODO: handle unauthorized state
@@ -65,6 +71,10 @@ export default class NewProduct extends Vue {
     this.products = await this.getProductsWithCategory();
 
     this.location = this.$route.query.location as string;
+  }
+
+  addCustomProduct() {
+    router.push({ path: "custom-product", query: { location: this.location } });
   }
 
   async removeExistingProduct(product: Product) {

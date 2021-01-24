@@ -33,7 +33,9 @@ export default class VHeader extends Vue {
 
   isProfileOrNewProductPage() {
     return (
-      this.heading.includes("Profile") || this.heading.includes("New Item")
+      this.heading.includes("Profile") ||
+      this.heading.includes("New Item") ||
+      this.heading.includes("Custom Item")
     );
   }
 
