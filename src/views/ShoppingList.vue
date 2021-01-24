@@ -55,8 +55,8 @@ import ListItem from "@/components/ListItem.vue";
     VButton,
     SearchInput,
     NavigationMenu,
-    VHeader
-  }
+    VHeader,
+  },
 })
 export default class ShoppingList extends Vue {
   products: ShoppingListItem[] = [];
@@ -65,7 +65,7 @@ export default class ShoppingList extends Vue {
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {
@@ -82,7 +82,7 @@ export default class ShoppingList extends Vue {
   }
 
   get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
+    const reducedProducts = this.products.filter((product) => {
       return product.name
         .toLowerCase()
         .includes(this.searchQuery.toLowerCase());
@@ -102,7 +102,7 @@ export default class ShoppingList extends Vue {
   }
 
   async removeFromShoppingList(product: ShoppingListItem) {
-    this.products = this.products.filter(p => p.name != product.name);
+    this.products = this.products.filter((p) => p.name != product.name);
     await Firestore.instance.removeFromShoppingList(this.family, product);
   }
 
@@ -112,18 +112,18 @@ export default class ShoppingList extends Vue {
       return [];
     }
 
-    return allProducts!.map(product => {
+    return allProducts!.map((product) => {
       const productCategory = product.category ?? "General";
       return {
         name: product.name,
         category: productCategory,
-        acquired: product.acquired
+        acquired: product.acquired,
       };
     });
   }
 
   async checkShoppingItem(shoppingItem: ShoppingListItem) {
-    this.products = this.products.map(product => {
+    this.products = this.products.map((product) => {
       return product.name == shoppingItem.name
         ? { ...product, acquired: !product.acquired }
         : product;
@@ -132,7 +132,7 @@ export default class ShoppingList extends Vue {
   }
 
   async updateFridge() {
-    const acquiredProducts = this.products.filter(p => p.acquired);
+    const acquiredProducts = this.products.filter((p) => p.acquired);
     for (const product of acquiredProducts) {
       await this.removeFromShoppingList(product);
       await Firestore.instance.addProductToStorage(this.family, product);
