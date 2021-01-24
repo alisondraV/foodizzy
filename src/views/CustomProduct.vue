@@ -1,7 +1,20 @@
 <template>
   <div>
     <v-header heading="Add Custom Item" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert
+        v-if="wasAdded"
+        :label="this.product.name + ' was added to the ' + this.location"
+      />
+      <v-alert
+        v-if="alreadyExists"
+        :label="this.product.name + ' already exists in the ' + this.location"
+      />
+    </div>
+    <div
+      class="mb-20 mx-8"
+      :class="alreadyExists || wasAdded ? 'mt-4' : 'mt-24'"
+    >
       <v-input
         class="mb-4"
         type="text"
@@ -26,23 +39,26 @@ import Authentication from "@/utils/Authentication";
 import Family from "@/types/Family";
 import firebase from "firebase";
 import Product from "@/types/Product";
-import router from "@/router";
 import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
+import VAlert from "@/components/VAlert.vue";
 
 @Component({
   components: {
+    VAlert,
     VButton,
     VInput,
     VHeader
   }
 })
 export default class CustomProduct extends Vue {
+  alreadyExists = false;
   location?: string;
   family: Family | null = null;
   user: firebase.User | null = null;
   product: Product = {};
+  wasAdded = false;
 
   async mounted() {
     this.user = await Authentication.getCurrentUser();
@@ -59,16 +75,17 @@ export default class CustomProduct extends Vue {
 
   async resolveNewProduct() {
     if (this.isInStorageOrShoppingList()) {
-      console.log(this.product.name, " already exists");
+      this.alreadyExists = true;
       return;
     }
 
     if (this.location === "storage") {
       await Firestore.instance.addProductToStorage(this.family, this.product);
+      this.wasAdded = true;
     } else if (this.location === "shoppingList") {
       await Firestore.instance.addToShoppingList(this.family, this.product);
+      this.wasAdded = true;
     }
-    router.back();
   }
 
   isInStorageOrShoppingList() {
