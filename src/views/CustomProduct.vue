@@ -2,19 +2,9 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert
-        v-if="wasAdded"
-        :label="this.product.name + ' was added to the ' + this.location"
-      />
-      <v-alert
-        v-if="alreadyExists"
-        :label="this.product.name + ' already exists in the ' + this.location"
-      />
+      <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>
-    <div
-      class="mb-20 mx-8"
-      :class="alreadyExists || wasAdded ? 'mt-4' : 'mt-24'"
-    >
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <v-input
         class="mb-4"
         type="text"
@@ -53,12 +43,11 @@ import VAlert from "@/components/VAlert.vue";
   }
 })
 export default class CustomProduct extends Vue {
-  alreadyExists = false;
+  alertMessage: string | null = null;
   location?: string;
   family: Family | null = null;
   user: firebase.User | null = null;
-  product: Product = {};
-  wasAdded = false;
+  product: Product = { name: "" };
 
   async mounted() {
     this.user = await Authentication.getCurrentUser();
@@ -69,31 +58,33 @@ export default class CustomProduct extends Vue {
     }
 
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
-
     this.location = this.$route.query.location as string;
   }
 
   async resolveNewProduct() {
+    if (!this.product) {
+      return;
+    }
+
     if (this.isInStorageOrShoppingList()) {
-      this.alreadyExists = true;
+      this.alertMessage = `${this.product.name} already exists in the ${this.location}`;
       return;
     }
 
     if (this.location === "storage") {
       await Firestore.instance.addProductToStorage(this.family, this.product);
-      this.wasAdded = true;
     } else if (this.location === "shoppingList") {
       await Firestore.instance.addToShoppingList(this.family, this.product);
-      this.wasAdded = true;
     }
+    this.alertMessage = `${this.product.name} was added to the ${this.location}`;
   }
 
   isInStorageOrShoppingList() {
     const storageProductNames = this.family?.storage.map(p => p.name);
     const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
     return (
-      storageProductNames?.includes(this.product.name) ||
-      shoppingListProductNames?.includes(this.product.name)
+      storageProductNames?.includes(this.product!.name) ||
+      shoppingListProductNames?.includes(this.product!.name)
     );
   }
 }
