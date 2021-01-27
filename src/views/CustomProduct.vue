@@ -10,12 +10,14 @@
         type="text"
         label="Product Name"
         v-model="product.name"
+        @input="alertMessage = null"
       />
       <v-input
         class="mb-10"
         type="text"
         label="Category"
         v-model="product.category"
+        @input="alertMessage = null"
       />
       <v-button label="Add" @click="resolveNewProduct" />
     </div>
@@ -57,7 +59,7 @@ export default class CustomProduct extends Vue {
       throw new Error("Unauthrized!");
     }
 
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.family = await Firestore.instance.getFamilyForUser(this.user);
     this.location = this.$route.query.location as string;
   }
 
@@ -77,14 +79,15 @@ export default class CustomProduct extends Vue {
       await Firestore.instance.addToShoppingList(this.family, this.product);
     }
     this.alertMessage = `${this.product.name} was added to the ${this.location}`;
+    this.product = { name: "" };
   }
 
   isInStorageOrShoppingList() {
     const storageProductNames = this.family?.storage.map(p => p.name);
     const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
     return (
-      storageProductNames?.includes(this.product!.name) ||
-      shoppingListProductNames?.includes(this.product!.name)
+      storageProductNames?.includes(this.product.name) ||
+      shoppingListProductNames?.includes(this.product.name)
     );
   }
 }
