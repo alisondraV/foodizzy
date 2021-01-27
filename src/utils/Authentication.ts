@@ -15,8 +15,8 @@ export default class Authentication {
   private constructor() {
     this.auth = firebase.auth();
 
-    if (process.env.NODE_ENV === 'development') {
-      this.auth.useEmulator('http://localhost:9099/');
+    if (process.env.NODE_ENV === "development") {
+      this.auth.useEmulator("http://localhost:9099/");
     }
   }
 

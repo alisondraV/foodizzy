@@ -64,8 +64,8 @@ import Firestore from "@/utils/Firestore";
 @Component({
   components: {
     VInput,
-    VButton,
-  },
+    VButton
+  }
 })
 export default class SignIn extends Vue {
   email = "";

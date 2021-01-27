@@ -36,7 +36,7 @@ import Firestore from "@/utils/Firestore";
 import router from "@/router";
 
 @Component({
-  components: { VHeader },
+  components: { VHeader }
 })
 export default class AppMain extends Vue {
   user: firebase.User | null = null;

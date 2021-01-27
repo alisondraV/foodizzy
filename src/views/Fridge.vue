@@ -63,8 +63,8 @@ import router from "@/router";
   components: {
     SearchInput,
     NavigationMenu,
-    VHeader,
-  },
+    VHeader
+  }
 })
 export default class Fridge extends Vue {
   products: Product[] = [];
@@ -88,7 +88,7 @@ export default class Fridge extends Vue {
   }
 
   get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter((product) => {
+    const reducedProducts = this.products.filter(product => {
       return product.name
         .toLowerCase()
         .includes(this.searchQuery.toLowerCase());
@@ -108,13 +108,13 @@ export default class Fridge extends Vue {
   }
 
   async markAsFinished(product: Product) {
-    this.products = this.products.filter((p) => p.name != product.name);
+    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
   }
 
   async markAsWasted(product: Product) {
-    this.products = this.products.filter((p) => p.name != product.name);
+    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(this.family, product);
     await Firestore.instance.moveToWasted(this.family, product);
     await Firestore.instance.addToShoppingList(this.family, product);
@@ -130,7 +130,7 @@ export default class Fridge extends Vue {
       return [];
     }
 
-    return allProducts!.map((product) => {
+    return allProducts!.map(product => {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });

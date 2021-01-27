@@ -70,6 +70,7 @@ import Family from "@/types/Family";
 import VHeader from "@/components/VHeader.vue";
 import firebase from "firebase";
 import DonutChart from "@/components/DonutChart.vue";
+import { colors, monthList } from "@/utils/consts";
 
 @Component({
   components: {
@@ -87,21 +88,6 @@ export default class Home extends Vue {
 
   firstName = "";
   defaultColor = "#E7E7E7";
-  colors: string[] = ["#01877E", "#FFB0A9", "#F9D678", "#383838"];
-  monthList = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
@@ -124,7 +110,7 @@ export default class Home extends Vue {
   }
 
   getMonth() {
-    return this.monthList[new Date().getMonth()];
+    return monthList[new Date().getMonth()];
   }
 
   get statistics() {
@@ -135,7 +121,7 @@ export default class Home extends Vue {
       const categoryName = (product.category ?? "General").toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
-        this.categoryColors[categoryName] = this.colors[categoryCount];
+        this.categoryColors[categoryName] = colors[categoryCount];
         categoryCount++;
       }
 

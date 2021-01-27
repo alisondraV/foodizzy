@@ -20,10 +20,10 @@ export default class Firestore {
   constructor() {
     this.db = firebase.firestore();
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       console.log("Emulator connected");
 
-      this.db.useEmulator('localhost', 8080);
+      this.db.useEmulator("localhost", 8080);
     }
   }
 
@@ -47,7 +47,7 @@ export default class Firestore {
     await this.db.collection("wasteBuckets").add({
       familyId: newFamily.id,
       wasted: []
-    })
+    });
   }
 
   public async getAllProducts(): Promise<Product[]> {
@@ -160,6 +160,6 @@ export default class Firestore {
       throw new Error(`WasteBucket for family: ${family?.id} was not found`);
     }
 
-    return documents.docs[0].data().wasted ?? [] as WastedProduct[];
+    return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
   }
 }
