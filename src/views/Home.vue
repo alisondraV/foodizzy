@@ -34,7 +34,7 @@
             :data="[
               statistics[category.toLowerCase()],
               family.totalProducts[category.toLowerCase()] -
-                statistics[category.toLowerCase()]
+                statistics[category.toLowerCase()],
             ]"
             :labels="['wasted', 'eaten']"
             :colors="[categoryColors[category.toLowerCase()], defaultColor]"
@@ -65,8 +65,8 @@ import DonutChart from "@/components/DonutChart.vue";
   components: {
     VHeader,
     NavigationMenu,
-    DonutChart
-  }
+    DonutChart,
+  },
 })
 export default class Home extends Vue {
   family: Family | null = null;
@@ -89,11 +89,11 @@ export default class Home extends Vue {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {
@@ -101,7 +101,7 @@ export default class Home extends Vue {
       throw new Error("Unauthrized!");
     }
 
-    if(this.user.displayName) {
+    if (this.user.displayName) {
       this.firstName = this.user!.displayName.substr(
         0,
         this.user.displayName?.indexOf(" ")
@@ -152,7 +152,7 @@ export default class Home extends Vue {
   get chartData() {
     return [
       this.totalProducts - this.totalWaste,
-      ...Object.values(this.statistics)
+      ...Object.values(this.statistics),
     ];
   }
 

@@ -54,8 +54,8 @@ import firebase from "firebase";
 @Component({
   components: {
     VInput,
-    VButton
-  }
+    VButton,
+  },
 })
 export default class SignIn extends Vue {
   familyName = "";
@@ -64,13 +64,13 @@ export default class SignIn extends Vue {
   user: firebase.User | null = null;
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
   }
 
   async createFamily() {
     await Firestore.instance.createFamily(this.familyName, [
       this.user!.uid,
-      ...this.memberEmails
+      ...this.memberEmails,
     ]);
     router.push("/home");
   }

@@ -2,9 +2,7 @@
   <div>
     <v-header heading="Your Profile" />
     <div class="mt-24 mb-20 mx-8">
-      <div v-if="!user">
-        Loading...
-      </div>
+      <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <img
           class="mb-4 rounded-full w-1/3"
@@ -38,19 +36,19 @@ import Firestore from "@/utils/Firestore";
 import router from "@/router";
 
 @Component({
-  components: { VHeader }
+  components: { VHeader },
 })
 export default class AppMain extends Vue {
   user: firebase.User | null = null;
   family: Family | null = null;
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
   }
 
   async logOut() {
-    await Authentication.signOut();
+    await Authentication.instance.signOut();
     await router.push("/");
   }
 }
