@@ -41,8 +41,8 @@ import VAlert from "@/components/VAlert.vue";
     VAlert,
     VButton,
     VInput,
-    VHeader
-  }
+    VHeader,
+  },
 })
 export default class CustomProduct extends Vue {
   alertMessage: string | null = null;
@@ -52,7 +52,7 @@ export default class CustomProduct extends Vue {
   product: Product = { name: "" };
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
 
     if (!this.user) {
       // TODO: handle unauthorized state
@@ -83,8 +83,10 @@ export default class CustomProduct extends Vue {
   }
 
   isInStorageOrShoppingList() {
-    const storageProductNames = this.family?.storage.map(p => p.name);
-    const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
+    const storageProductNames = this.family?.storage.map((p) => p.name);
+    const shoppingListProductNames = this.family?.shoppingList.map(
+      (p) => p.name
+    );
     return (
       storageProductNames?.includes(this.product.name) ||
       shoppingListProductNames?.includes(this.product.name)
