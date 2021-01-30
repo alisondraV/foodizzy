@@ -1,8 +1,8 @@
 <template>
   <div>
-    <label class="flex flex-col relative block text-gray-600">
+    <label class="flex flex-col relative block text-secondary-text">
       <input
-        class="focus:outline-none border rounded-md text-gray-800 h-10 p-4"
+        class="focus:outline-none border border-secondary-text rounded-md text-primary-text h-10 p-4"
         :value="value"
         @focus="focused = true"
         @blur="focused = false"
