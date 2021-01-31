@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve --mode production",
     "serve-dev": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "emulate": "firebase emulators:start --import ./emulator_data",
+    "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data"
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",

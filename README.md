@@ -16,7 +16,9 @@ npm install
 `npm run serve` - run with production data
 
 ### Runs the Firebase emulators
-`firebase emulators:start`
+
+`npm run emulate` - run the emulators
+`npm run emulate-export` - run the emulators and save any changes to the emulator data
 
 ### Compiles and minifies for production
 ```
