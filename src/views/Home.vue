@@ -19,15 +19,12 @@
         </div>
         <div v-else>
           <DonutChart
-            :data="[
-              statistics[category.toLowerCase()],
-              family.totalProducts[category.toLowerCase()] -
-                statistics[category.toLowerCase()],
-            ]"
-            :labels="['wasted', 'eaten']"
-            :colors="[categoryColors[category.toLowerCase()], defaultColor]"
-            :centerNumber="getWastePercentage(category)"
-            :canvasId="category.toLowerCase()"
+            class="mb-6"
+            :data="chartData"
+            :labels="chartLabels"
+            :colors="[defaultColor, ...Object.values(categoryColors)]"
+            :centerNumber="getWastePercentage()"
+            canvasId="main"
           >
           </DonutChart>
           <p class="text-secondary-text text-center mb-6">
