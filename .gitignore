@@ -22,3 +22,4 @@ pnpm-debug.log*
 
 #firebase
 *.log
+src/utils/data.json
