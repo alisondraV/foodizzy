@@ -13,4 +13,8 @@
   margin: 0;
   scroll-behavior: smooth;
 }
+
+.firebase-emulator-warning {
+  display: none;
+}
 </style>

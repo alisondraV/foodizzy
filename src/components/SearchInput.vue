@@ -1,8 +1,8 @@
 <template>
-  <div class="border rounded-md flex w-full">
+  <div class="border border-secondary-text rounded-md flex w-full">
     <img class="pl-4" src="@/assets/images/Search.svg" alt="Finished" />
     <input
-      class="text-gray-800 h-10 w-full p-4 mr-2 focus:outline-none"
+      class="text-primary-text h-10 w-full p-4 mr-2 focus:outline-none"
       :value="value"
       @focus="focused = true"
       @blur="focused = false"
