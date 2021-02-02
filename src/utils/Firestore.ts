@@ -84,11 +84,12 @@ export default class Firestore {
       throw new Error("No family supplied");
     }
 
+    const seconds = new Date().getTime() / 1000;
     const documents = await this.db
       .collection("wasteBuckets")
       .where("familyId", "==", family?.id)
       .get();
-    const wastedProduct: WastedProduct = { ...product, dateWasted: new Date() };
+    const wastedProduct: WastedProduct = { ...product, dateWasted: new firebase.firestore.Timestamp(seconds, 0) };
     const bucket = documents.docs[0];
     const updatedWastedList = [...bucket.data().wasted, wastedProduct];
 
