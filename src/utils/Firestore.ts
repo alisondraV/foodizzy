@@ -40,8 +40,7 @@ export default class Firestore {
       members,
       name,
       shoppingList: [],
-      storage: [],
-      totalProducts: {}
+      storage: []
     });
 
     await this.db.collection("wasteBuckets").add({
