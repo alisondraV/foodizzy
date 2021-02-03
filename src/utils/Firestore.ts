@@ -162,4 +162,17 @@ export default class Firestore {
 
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
   }
+
+  public async getStatisticsForThisMonth(family: Family) {
+    const statistics = await this.db.collection(`family/${family.id}/statistics`);
+    const thisMonthStatsCollection = await statistics
+        .where("month", "==", new Date().getMonth())
+        .where("year", "==", new Date().getFullYear())
+        .get();
+    if (thisMonthStatsCollection.docs.length === 0) {
+      return {};
+    }
+
+    return thisMonthStatsCollection.docs[0].data().totalProducts;
+  }
 }

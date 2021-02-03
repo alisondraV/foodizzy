@@ -14,7 +14,7 @@
       <div v-else>
         <div v-if="totalProducts === 0">
           <p class="text-secondary-text text-center mb-6">
-            We don't have enought data to display, go fill your fridge!
+            We don't have enough data to display, go fill your fridge!
           </p>
         </div>
         <div v-else>
@@ -30,7 +30,7 @@
           <p class="text-secondary-text text-center mb-6">
             {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted
             in
-            {{ getMonth() }}
+            {{ month }}
           </p>
           <div
             v-for="category in Object.keys(statistics)"
@@ -41,7 +41,7 @@
               <DonutChart
                 :data="[
                   statistics[category.toLowerCase()],
-                  family.totalProducts[category.toLowerCase()] -
+                  totalProductsForMonth[category.toLowerCase()] -
                     statistics[category.toLowerCase()]
                 ]"
                 :labels="['wasted', 'eaten']"
@@ -85,6 +85,7 @@ export default class Home extends Vue {
   user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
   categoryColors: { [category: string]: string } = {};
+  totalProductsForMonth: { [category: string]: number } = {};
 
   firstName = "";
   defaultColor = "#E7E7E7";
@@ -103,13 +104,24 @@ export default class Home extends Vue {
         this.user.displayName;
     }
     this.family = await Firestore.instance.getFamilyForUser(this.user);
-    this.wastedProducts = await Firestore.instance.getWastedForFamily(
+    this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
       this.family
     );
+    await this.getWastedProductsForThisMonth();
     this.loading = false;
   }
 
-  getMonth() {
+  async getWastedProductsForThisMonth() {
+    const allWastedProducts = await Firestore.instance.getWastedForFamily(
+      this.family
+    );
+
+    this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
+      return product.dateWasted.toDate().getMonth() == new Date().getMonth();
+    });
+  }
+
+  get month() {
     return monthList[new Date().getMonth()];
   }
 
@@ -136,7 +148,7 @@ export default class Home extends Vue {
       return 0;
     }
 
-    return Object.values(this.family.totalProducts).reduce(
+    return Object.values(this.totalProductsForMonth).reduce(
       (acc, e) => e + acc,
       0
     );
@@ -160,7 +172,7 @@ export default class Home extends Vue {
   getWastePercentage(category?: string) {
     if (category) {
       category = category.toLowerCase();
-      return this.statistics[category] / this.family!.totalProducts[category];
+      return this.statistics[category] / this.totalProductsForMonth[category];
     }
     return this.totalWaste / this.totalProducts;
   }
