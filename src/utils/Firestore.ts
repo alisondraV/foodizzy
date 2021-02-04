@@ -164,7 +164,7 @@ export default class Firestore {
   }
 
   public async getStatisticsForThisMonth(family: Family) {
-    const statistics = await this.db.collection(`family/${family.id}/statistics`);
+    const statistics = this.db.collection(`family/${family.id}/statistics`);
     const thisMonthStatsCollection = await statistics
         .where("month", "==", new Date().getMonth())
         .where("year", "==", new Date().getFullYear())
@@ -174,5 +174,18 @@ export default class Firestore {
     }
 
     return thisMonthStatsCollection.docs[0].data().totalProducts;
+  }
+
+  public async getAvailableMonthData(family: Family) {
+    const monthData: { month: number; year: number; }[] = [];
+
+    const statistics = await this.db
+        .collection(`family/${family.id}/statistics`)
+        .get();
+    statistics.docs.forEach(stats => {
+      monthData.push({ month: stats.data().month, year: stats.data().year });
+    });
+
+    return monthData;
   }
 }

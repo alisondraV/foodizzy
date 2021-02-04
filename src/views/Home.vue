@@ -8,6 +8,20 @@
       <h2 class="mb-4 font-extrabold text-primary-text">
         Track your food waste here
       </h2>
+      <label>
+        <select
+          v-model="selectedMonthData"
+          @change="getWastedProductsForSelectedMonth"
+        >
+          <option
+            v-for="data in monthData"
+            :value="data"
+            :key="`${data.month}-${data.year}`"
+          >
+            {{ getMonthDataString(data.month, data.year) }}
+          </option>
+        </select>
+      </label>
       <p v-if="loading" class="text-secondary-text text-center mb-6">
         Loading...
       </p>
@@ -82,11 +96,16 @@ import { colors, monthList } from "@/utils/consts";
 export default class Home extends Vue {
   loading = true;
   family: Family | null = null;
+  monthData: { month: number; year: number }[] = [];
   user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
   categoryColors: { [category: string]: string } = {};
   totalProductsForMonth: { [category: string]: number } = {};
 
+  selectedMonthData = {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear()
+  };
   firstName = "";
   defaultColor = "#E7E7E7";
 
@@ -107,22 +126,33 @@ export default class Home extends Vue {
     this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
       this.family
     );
-    await this.getWastedProductsForThisMonth();
+    await this.getWastedProductsForSelectedMonth();
+    this.monthData = await Firestore.instance.getAvailableMonthData(
+      this.family!
+    );
     this.loading = false;
   }
 
-  async getWastedProductsForThisMonth() {
+  getMonthDataString(month: number, year: number) {
+    return `${monthList[month]} ${year}`;
+  }
+
+  async getWastedProductsForSelectedMonth() {
     const allWastedProducts = await Firestore.instance.getWastedForFamily(
       this.family
     );
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
-      return product.dateWasted.toDate().getMonth() == new Date().getMonth();
+      return (
+        product.dateWasted.toDate().getMonth() ==
+          this.selectedMonthData.month &&
+        product.dateWasted.toDate().getFullYear() == this.selectedMonthData.year
+      );
     });
   }
 
   get month() {
-    return monthList[new Date().getMonth()];
+    return monthList[this.selectedMonthData.month];
   }
 
   get statistics() {
