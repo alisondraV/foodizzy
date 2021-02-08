@@ -18,13 +18,14 @@ export default class Authentication {
 
     if (process.env.NODE_ENV === "development") {
       this.auth.useEmulator("http://localhost:9099/");
-      // TODO: use the below option, when the type issue is resolved (https://github.com/firebase/firebase-js-sdk/issues/4223)
+      // TODO: use the below option, when the type issue is resolved
+      //  (https://github.com/firebase/firebase-js-sdk/issues/4223)
       // this.auth.useEmulator('http://localhost:9099/', { disableWarnings: true });
     }
   }
 
   public async getCurrentUser(): Promise<firebase.User | null> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => resolve(user));
       // TODO: handle timeout
     });

@@ -80,10 +80,7 @@ export default class SignIn extends Vue {
   }
 
   async signIn() {
-    await Authentication.instance.signIn(
-      this.email,
-      this.password
-    );
+    await Authentication.instance.signIn(this.email, this.password);
     try {
       await Firestore.instance.getCurrentFamily();
       await router.push("/home");

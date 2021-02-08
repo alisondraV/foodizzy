@@ -39,12 +39,14 @@ export default class Firestore {
   }
 
   public async createFamily(name: string, members: string[]) {
-    const newFamilyRef: DocumentReference = await this.db.collection("family").add({
-      members,
-      name,
-      shoppingList: [],
-      storage: []
-    });
+    const newFamilyRef: DocumentReference = await this.db
+      .collection("family")
+      .add({
+        members,
+        name,
+        shoppingList: [],
+        storage: []
+      });
 
     await this.db.collection("wasteBuckets").add({
       familyId: newFamilyRef.id,
@@ -58,15 +60,17 @@ export default class Firestore {
   }
 
   public async addProductToStorage(product: Product) {
-    (await this.getCurrentFamily())!.storage.push(product);
+    const family = await this.getCurrentFamily();
+
+    family.storage.push(product);
     await this.db
       .collection("family")
-      .doc((await this.getCurrentFamily())!.id)
-      .set((await this.getCurrentFamily())!);
+      .doc(family.id)
+      .set(family);
   }
 
   public async removeFromStorage(product: Product) {
-    const family = (await this.getCurrentFamily())!;
+    const family = await this.getCurrentFamily();
 
     family.storage = family.storage.filter(
       candidate => candidate.name != product.name
@@ -83,7 +87,10 @@ export default class Firestore {
       .collection("wasteBuckets")
       .where("familyId", "==", (await this.getCurrentFamily())!.id)
       .get();
-    const wastedProduct: WastedProduct = { ...product, dateWasted: new firebase.firestore.Timestamp(seconds, 0) };
+    const wastedProduct: WastedProduct = {
+      ...product,
+      dateWasted: new firebase.firestore.Timestamp(seconds, 0)
+    };
     const bucket = documents.docs[0];
     const updatedWastedList = [...bucket.data().wasted, wastedProduct];
 
@@ -94,7 +101,7 @@ export default class Firestore {
   }
 
   public async removeFromShoppingList(product: Product) {
-    const family = (await this.getCurrentFamily())!;
+    const family = await this.getCurrentFamily();
 
     family.shoppingList = family.shoppingList.filter(
       candidate => candidate.name != product.name
@@ -106,7 +113,7 @@ export default class Firestore {
   }
 
   public async addToShoppingList(product: Product) {
-    const family = (await this.getCurrentFamily())!;
+    const family = await this.getCurrentFamily();
 
     family.shoppingList.push({
       ...product,
@@ -127,12 +134,12 @@ export default class Firestore {
 
   public async getCurrentFamily() {
     if (this.family) {
-      return this.family
+      return this.family;
     }
 
     const user = await Authentication.instance.getCurrentUser();
     if (!user) {
-      throw new Error('Unauthorized');
+      throw new Error("Unauthorized");
     }
 
     const snap = await this.db
@@ -142,7 +149,10 @@ export default class Firestore {
     if (snap.docs.length === 0) {
       throw new Error(`Family for UID:${user.uid} was not found`);
     }
-    return this.family = { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
+    return (this.family = {
+      id: snap.docs[0].id,
+      ...snap.docs[0].data()
+    } as Family);
   }
 
   public async getRecipes() {
@@ -151,7 +161,7 @@ export default class Firestore {
   }
 
   public async getWastedForFamily() {
-    const family = (await this.getCurrentFamily())!;
+    const family = await this.getCurrentFamily();
 
     const documents = await this.db
       .collection("wasteBuckets")
@@ -164,13 +174,17 @@ export default class Firestore {
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
   }
 
-  public async getStatisticsForThisMonth(monthData: any) {
-    const statistics = this.db
-        .collection(`family/${(await this.getCurrentFamily())!.id}/statistics`);
+  public async getStatisticsForThisMonth(monthData: {
+    month: number;
+    year: number;
+  }) {
+    const statistics = this.db.collection(
+      `family/${(await this.getCurrentFamily())!.id}/statistics`
+    );
     const thisMonthStatsCollection = await statistics
-        .where("month", "==", monthData.month)
-        .where("year", "==", monthData.year)
-        .get();
+      .where("month", "==", monthData.month)
+      .where("year", "==", monthData.year)
+      .get();
     if (thisMonthStatsCollection.docs.length === 0) {
       return {};
     }
@@ -179,11 +193,11 @@ export default class Firestore {
   }
 
   public async getAvailableMonthData() {
-    const monthData: { month: number; year: number; }[] = [];
+    const monthData: { month: number; year: number }[] = [];
 
     const statistics = await this.db
-        .collection(`family/${(await this.getCurrentFamily())!.id}/statistics`)
-        .get();
+      .collection(`family/${(await this.getCurrentFamily())!.id}/statistics`)
+      .get();
     statistics.docs.forEach(stats => {
       monthData.push({ month: stats.data().month, year: stats.data().year });
     });
