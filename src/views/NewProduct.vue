@@ -32,11 +32,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import Family from "@/types/Family";
-import firebase from "firebase";
 import Product from "@/types/Product";
 import router from "@/router";
 import VHeader from "@/components/VHeader.vue";
@@ -56,18 +55,10 @@ export default class NewProduct extends Vue {
   location?: string;
   products: Product[] = [];
   family: Family | null = null;
-  user: firebase.User | null = null;
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user);
+    this.family = await Authentication.instance.getFamily();
     this.products = await this.getProductsWithCategory();
 
     this.location = this.$route.query.location as string;

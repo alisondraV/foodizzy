@@ -1,7 +1,10 @@
 import firebase from "firebase";
+import Family from "@/types/Family";
+import Firestore from "@/utils/Firestore";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
+  public family: Family | null = null;
 
   private static _instance: Authentication | null = null;
 
@@ -22,8 +25,22 @@ export default class Authentication {
     }
   }
 
+  public async getFamily() {
+    if (this.family) {
+      return this.family;
+    }
+
+    const user = await this.getCurrentUser();
+    if (!user) {
+      this.family = null;
+      throw new Error('Not authorized');
+    }
+
+    return this.family = await Firestore.instance.getFamilyForUser(user);
+  }
+
   public async getCurrentUser(): Promise<firebase.User | null> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       firebase.auth().onAuthStateChanged(user => resolve(user));
       // TODO: handle timeout
     });

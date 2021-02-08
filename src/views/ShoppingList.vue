@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import Authentication from "@/utils/Authentication";
@@ -44,7 +44,6 @@ import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
-import firebase from "firebase";
 import SearchInput from "@/components/SearchInput.vue";
 import VButton from "@/components/VButton.vue";
 import ListItem from "@/components/ListItem.vue";
@@ -60,20 +59,11 @@ import ListItem from "@/components/ListItem.vue";
 })
 export default class ShoppingList extends Vue {
   products: ShoppingListItem[] = [];
-  user: firebase.User | null = null;
   family: Family | null = null;
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    console.log(this.user!.uid);
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.family = await Authentication.instance.getFamily();
     this.products = this.getProductsWithCategory();
   }
 
@@ -112,7 +102,7 @@ export default class ShoppingList extends Vue {
       return [];
     }
 
-    return allProducts!.map(product => {
+    return allProducts.map(product => {
       const productCategory = product.category ?? "General";
       return {
         name: product.name,
