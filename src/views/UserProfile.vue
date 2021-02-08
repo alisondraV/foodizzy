@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
@@ -44,7 +44,7 @@ export default class AppMain extends Vue {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.family = await Firestore.instance.getCurrentFamily();
   }
 
   async logOut() {

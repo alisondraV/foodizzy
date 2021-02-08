@@ -14,9 +14,7 @@
 import {Component, Vue} from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Authentication from "@/utils/Authentication";
 import Recipe from "@/types/Recipe";
-import Family from "@/types/Family";
 import VHeader from "@/components/VHeader.vue";
 import RecipeComponent from "@/components/RecipeComponent.vue";
 
@@ -29,11 +27,9 @@ import RecipeComponent from "@/components/RecipeComponent.vue";
 })
 export default class Recipes extends Vue {
   recipes: Recipe[] = [];
-  family: Family | null = null;
 
   async mounted() {
-    this.family = await Authentication.instance.getFamily();
-    this.recipes = await Firestore.instance.getRecipesForFamily(this.family);
+    this.recipes = await Firestore.instance.getRecipesForFamily();
   }
 }
 </script>

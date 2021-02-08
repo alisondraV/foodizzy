@@ -1,10 +1,8 @@
 import firebase from "firebase";
-import Family from "@/types/Family";
 import Firestore from "@/utils/Firestore";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
-  public family: Family | null = null;
 
   private static _instance: Authentication | null = null;
 
@@ -25,20 +23,6 @@ export default class Authentication {
     }
   }
 
-  public async getFamily() {
-    if (this.family) {
-      return this.family;
-    }
-
-    const user = await this.getCurrentUser();
-    if (!user) {
-      this.family = null;
-      throw new Error('Not authorized');
-    }
-
-    return this.family = await Firestore.instance.getFamilyForUser(user);
-  }
-
   public async getCurrentUser(): Promise<firebase.User | null> {
     return new Promise((resolve) => {
       firebase.auth().onAuthStateChanged(user => resolve(user));
@@ -51,6 +35,7 @@ export default class Authentication {
       const cred = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
+
       return cred.user;
     } catch (error) {
       console.log("SignIn failed: ", error);
@@ -59,7 +44,8 @@ export default class Authentication {
 
   public async signOut() {
     try {
-      return await firebase.auth().signOut();
+      await firebase.auth().signOut();
+      Firestore.instance.family = null;
     } catch (error) {
       console.log("SignOut failed: ", error);
     }
@@ -77,7 +63,7 @@ export default class Authentication {
     }
   }
 
-  public async signUpThroughGoogle() {
+  public async authWithGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const userCred = await firebase.auth().signInWithPopup(provider);

@@ -4,9 +4,12 @@ import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
 import Recipe from "@/types/Recipe";
 import ShoppingListItem from "@/types/ShoppingListItem";
+import Authentication from "@/utils/Authentication";
+import DocumentReference = firebase.firestore.DocumentReference;
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
+  public family: Family | null = null;
 
   private static _instance: Firestore | null = null;
 
@@ -27,16 +30,16 @@ export default class Firestore {
     }
   }
 
-  public async getRecipesForFamily(family: Family): Promise<Recipe[]> {
+  public async getRecipesForFamily(): Promise<Recipe[]> {
     const docSnaps = await this.db
       .collection("recipes")
-      .where("familyId", "==", family.id)
+      .where("familyId", "==", (await this.getCurrentFamily())!.id)
       .get();
     return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
   }
 
   public async createFamily(name: string, members: string[]) {
-    const newFamily = await this.db.collection("family").add({
+    const newFamilyRef: DocumentReference = await this.db.collection("family").add({
       members,
       name,
       shoppingList: [],
@@ -44,7 +47,7 @@ export default class Firestore {
     });
 
     await this.db.collection("wasteBuckets").add({
-      familyId: newFamily.id,
+      familyId: newFamilyRef.id,
       wasted: []
     });
   }
@@ -54,21 +57,17 @@ export default class Firestore {
     return querySnap.docs.map(doc => doc.data() as Product);
   }
 
-  public async addProductToStorage(family: Family | null, product: Product) {
-    if (!family) {
-      throw new Error("No family supplied");
-    }
-    family.storage.push(product);
+  public async addProductToStorage(product: Product) {
+    (await this.getCurrentFamily())!.storage.push(product);
     await this.db
       .collection("family")
-      .doc(family.id)
-      .set(family);
+      .doc((await this.getCurrentFamily())!.id)
+      .set((await this.getCurrentFamily())!);
   }
 
-  public async removeFromStorage(family: Family | null, product: Product) {
-    if (!family) {
-      throw new Error("No family supplied");
-    }
+  public async removeFromStorage(product: Product) {
+    const family = (await this.getCurrentFamily())!;
+
     family.storage = family.storage.filter(
       candidate => candidate.name != product.name
     );
@@ -78,15 +77,11 @@ export default class Firestore {
       .set(family);
   }
 
-  public async moveToWasted(family: Family | null, product: Product) {
-    if (!family) {
-      throw new Error("No family supplied");
-    }
-
+  public async moveToWasted(product: Product) {
     const seconds = new Date().getTime() / 1000;
     const documents = await this.db
       .collection("wasteBuckets")
-      .where("familyId", "==", family?.id)
+      .where("familyId", "==", (await this.getCurrentFamily())!.id)
       .get();
     const wastedProduct: WastedProduct = { ...product, dateWasted: new firebase.firestore.Timestamp(seconds, 0) };
     const bucket = documents.docs[0];
@@ -98,10 +93,9 @@ export default class Firestore {
       .update("wasted", updatedWastedList);
   }
 
-  public async removeFromShoppingList(family: Family | null, product: Product) {
-    if (!family) {
-      throw new Error("No family supplied");
-    }
+  public async removeFromShoppingList(product: Product) {
+    const family = (await this.getCurrentFamily())!;
+
     family.shoppingList = family.shoppingList.filter(
       candidate => candidate.name != product.name
     );
@@ -111,10 +105,9 @@ export default class Firestore {
       .set(family);
   }
 
-  public async addToShoppingList(family: Family | null, product: Product) {
-    if (!family) {
-      throw new Error("No family supplied");
-    }
+  public async addToShoppingList(product: Product) {
+    const family = (await this.getCurrentFamily())!;
+
     family.shoppingList.push({
       ...product,
       acquired: false
@@ -125,17 +118,23 @@ export default class Firestore {
       .set(family);
   }
 
-  public async updateShoppingList(
-    family: Family | null,
-    products: ShoppingListItem[]
-  ) {
+  public async updateShoppingList(products: ShoppingListItem[]) {
     await this.db
       .collection("family")
-      .doc(family?.id)
+      .doc((await this.getCurrentFamily())!?.id)
       .update("shoppingList", products);
   }
 
-  public async getFamilyForUser(user: firebase.User) {
+  public async getCurrentFamily() {
+    if (this.family) {
+      return this.family
+    }
+
+    const user = await Authentication.instance.getCurrentUser();
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const snap = await this.db
       .collection("family")
       .where("members", "array-contains", user.uid)
@@ -143,7 +142,7 @@ export default class Firestore {
     if (snap.docs.length === 0) {
       throw new Error(`Family for UID:${user.uid} was not found`);
     }
-    return { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
+    return this.family = { id: snap.docs[0].id, ...snap.docs[0].data() } as Family;
   }
 
   public async getRecipes() {
@@ -151,7 +150,9 @@ export default class Firestore {
     return documents.docs.map<string>(qds => qds.data().name);
   }
 
-  public async getWastedForFamily(family: Family | null) {
+  public async getWastedForFamily() {
+    const family = (await this.getCurrentFamily())!;
+
     const documents = await this.db
       .collection("wasteBuckets")
       .where("familyId", "==", family?.id)
@@ -163,8 +164,9 @@ export default class Firestore {
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
   }
 
-  public async getStatisticsForThisMonth(family: Family, monthData: any) {
-    const statistics = this.db.collection(`family/${family.id}/statistics`);
+  public async getStatisticsForThisMonth(monthData: any) {
+    const statistics = this.db
+        .collection(`family/${(await this.getCurrentFamily())!.id}/statistics`);
     const thisMonthStatsCollection = await statistics
         .where("month", "==", monthData.month)
         .where("year", "==", monthData.year)
@@ -176,11 +178,11 @@ export default class Firestore {
     return thisMonthStatsCollection.docs[0].data().totalProducts;
   }
 
-  public async getAvailableMonthData(family: Family) {
+  public async getAvailableMonthData() {
     const monthData: { month: number; year: number; }[] = [];
 
     const statistics = await this.db
-        .collection(`family/${family.id}/statistics`)
+        .collection(`family/${(await this.getCurrentFamily())!.id}/statistics`)
         .get();
     statistics.docs.forEach(stats => {
       monthData.push({ month: stats.data().month, year: stats.data().year });

@@ -39,8 +39,6 @@
 import {Component, Vue} from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Authentication from "@/utils/Authentication";
-import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
@@ -59,12 +57,10 @@ import ListItem from "@/components/ListItem.vue";
 })
 export default class ShoppingList extends Vue {
   products: ShoppingListItem[] = [];
-  family: Family | null = null;
   searchQuery = "";
 
   async mounted() {
-    this.family = await Authentication.instance.getFamily();
-    this.products = this.getProductsWithCategory();
+    this.products = await this.getProductsWithCategory();
   }
 
   addNewProduct() {
@@ -93,11 +89,12 @@ export default class ShoppingList extends Vue {
 
   async removeFromShoppingList(product: ShoppingListItem) {
     this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromShoppingList(this.family, product);
+    await Firestore.instance.removeFromShoppingList(product);
   }
 
-  getProductsWithCategory(): ShoppingListItem[] {
-    const allProducts = this.family?.shoppingList;
+  async getProductsWithCategory(): Promise<ShoppingListItem[]> {
+    const family = await Firestore.instance.getCurrentFamily();
+    const allProducts = family.shoppingList;
     if (!allProducts) {
       return [];
     }
@@ -118,14 +115,14 @@ export default class ShoppingList extends Vue {
         ? { ...product, acquired: !product.acquired }
         : product;
     });
-    await Firestore.instance.updateShoppingList(this.family, this.products);
+    await Firestore.instance.updateShoppingList(this.products);
   }
 
   async updateFridge() {
     const acquiredProducts = this.products.filter(p => p.acquired);
     for (const product of acquiredProducts) {
       await this.removeFromShoppingList(product);
-      await Firestore.instance.addProductToStorage(this.family, product);
+      await Firestore.instance.addProductToStorage(product);
     }
   }
 }
