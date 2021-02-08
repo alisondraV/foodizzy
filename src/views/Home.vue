@@ -34,15 +34,17 @@
           </p>
         </div>
         <div v-else>
-          <DonutChart
-            class="mb-6"
-            :data="chartData"
-            :labels="chartLabels"
-            :colors="[defaultColor, ...Object.values(categoryColors)]"
-            :centerNumber="getWastePercentage()"
-            canvasId="main"
-          >
-          </DonutChart>
+          <div v-for="chart in chartData" :key="chart[0]">
+            <DonutChart
+              class="mb-6"
+              :data="chart"
+              :labels="chartLabels"
+              :colors="[defaultColor, ...Object.values(categoryColors)]"
+              :centerNumber="getWastePercentage()"
+              canvasId="main"
+            >
+            </DonutChart>
+          </div>
           <p class="text-secondary-text text-center mb-6">
             {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted
             in
@@ -125,9 +127,6 @@ export default class Home extends Vue {
         this.user.displayName;
     }
     this.family = await Firestore.instance.getFamilyForUser(this.user);
-    this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
-      this.family
-    );
     await this.getWastedProductsForSelectedMonth();
     this.monthData = await Firestore.instance.getAvailableMonthData(
       this.family!
@@ -135,11 +134,19 @@ export default class Home extends Vue {
     this.loading = false;
   }
 
+  async getTotalProductsForMonth() {
+    this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
+      this.family!,
+      this.selectedMonthData
+    );
+  }
+
   getMonthDataString(month: number, year: number) {
     return `${monthList[month]} ${year}`;
   }
 
   async getWastedProductsForSelectedMonth() {
+    await this.getTotalProductsForMonth();
     const allWastedProducts = await Firestore.instance.getWastedForFamily(
       this.family
     );
@@ -191,10 +198,10 @@ export default class Home extends Vue {
   }
 
   get chartData() {
-    return [
+    return [[
       this.totalProducts - this.totalWaste,
       ...Object.values(this.statistics)
-    ];
+    ]];
   }
 
   get chartLabels() {

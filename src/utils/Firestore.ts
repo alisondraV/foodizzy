@@ -163,11 +163,11 @@ export default class Firestore {
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
   }
 
-  public async getStatisticsForThisMonth(family: Family) {
+  public async getStatisticsForThisMonth(family: Family, monthData: any) {
     const statistics = this.db.collection(`family/${family.id}/statistics`);
     const thisMonthStatsCollection = await statistics
-        .where("month", "==", new Date().getMonth())
-        .where("year", "==", new Date().getFullYear())
+        .where("month", "==", monthData.month)
+        .where("year", "==", monthData.year)
         .get();
     if (thisMonthStatsCollection.docs.length === 0) {
       return {};
