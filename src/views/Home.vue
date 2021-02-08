@@ -8,20 +8,22 @@
       <h2 class="mb-4 font-extrabold text-primary-text">
         Track your food waste here
       </h2>
-      <label>
-        <select
-          v-model="selectedMonthData"
-          @change="getWastedProductsForSelectedMonth"
-        >
-          <option
-            v-for="data in monthData"
-            :value="data"
-            :key="`${data.month}-${data.year}`"
+      <div class="text-right w-full mb-4 text-primary-text">
+        <label>
+          <select
+            v-model="selectedMonthData"
+            @change="getWastedProductsForSelectedMonth"
           >
-            {{ getMonthDataString(data.month, data.year) }}
-          </option>
-        </select>
-      </label>
+            <option
+              v-for="data in monthData"
+              :value="data"
+              :key="`${data.month}-${data.year}`"
+            >
+              {{ getMonthDataString(data.month, data.year) }}
+            </option>
+          </select>
+        </label>
+      </div>
       <p v-if="loading" class="text-secondary-text text-center mb-6">
         Loading...
       </p>
