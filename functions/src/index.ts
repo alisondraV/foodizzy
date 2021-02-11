@@ -17,6 +17,14 @@ export const onFamilyUpdate = functions.firestore
     return null;
   });
 
+export const onFamilyCreate = functions.firestore
+  .document("/family/{familyId}")
+  .onCreate((snapshot, context) => {
+    const newFamily = snapshot.data();
+
+    return sendWelcomeEmails(newFamily)
+  });
+
 function updateTotalProducts(
   newFamily: FirebaseFirestore.DocumentData, 
   oldFamily: FirebaseFirestore.DocumentData, 
@@ -46,10 +54,11 @@ function updateTotalProducts(
 
 function sendWelcomeEmails(
   newFamily: FirebaseFirestore.DocumentData, 
-  oldFamily: FirebaseFirestore.DocumentData
+  oldFamily?: FirebaseFirestore.DocumentData
 ) {
+  const oldMembers = oldFamily?.members ?? [];
   const newEmails = newFamily.members.filter((email: any) => {
-    return !oldFamily.members.find((oldEmail: any) => oldEmail === email);
+    return !oldMembers.find((oldEmail: any) => oldEmail === email);
   })
 
   console.log(newEmails)
