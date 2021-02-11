@@ -1,65 +1,72 @@
 import * as functions from "firebase-functions";
+import sendEmail from "./sendEmail";
 
 export const onFamilyUpdate = functions.firestore
-  .document("/family/{familyId}")
-  .onUpdate((change, context) => {
-    const oldFamily = change.before.data();
-    const newFamily = change.after.data();
+    .document("/family/{familyId}")
+    .onUpdate((change, context) => {
+      const oldFamily = change.before.data();
+      const newFamily = change.after.data();
 
-    if (newFamily.storage.length > oldFamily.storage.length) {
-      return updateTotalProducts(newFamily, oldFamily, change);
-    }
-    
-    if (newFamily.members.length > oldFamily.members.length) {
-      return sendWelcomeEmails(newFamily, oldFamily);
-    }
+      if (newFamily.storage.length > oldFamily.storage.length) {
+        return updateTotalProducts(newFamily, oldFamily, change);
+      }
 
-    return null;
-  });
+      if (newFamily.members.length > oldFamily.members.length) {
+        return sendWelcomeEmails(newFamily, oldFamily);
+      }
+
+      return null;
+    });
 
 export const onFamilyCreate = functions.firestore
-  .document("/family/{familyId}")
-  .onCreate((snapshot, context) => {
-    const newFamily = snapshot.data();
+    .document("/family/{familyId}")
+    .onCreate((snapshot, context) => {
+      const newFamily = snapshot.data();
 
-    return sendWelcomeEmails(newFamily)
-  });
+      return sendWelcomeEmails(newFamily);
+    });
 
 function updateTotalProducts(
-  newFamily: FirebaseFirestore.DocumentData, 
-  oldFamily: FirebaseFirestore.DocumentData, 
-  change: functions.Change<functions.firestore.QueryDocumentSnapshot>
+    newFamily: FirebaseFirestore.DocumentData,
+    oldFamily: FirebaseFirestore.DocumentData,
+    change: functions.Change<functions.firestore.QueryDocumentSnapshot>
 ) {
-  let addedProduct: any = null
+  let addedProduct: any = null;
   newFamily.storage.forEach((newProduct: any) => {
     if (!oldFamily.storage.find((oldProduct: any) => newProduct.name === oldProduct.name)) {
-      addedProduct = newProduct
+      addedProduct = newProduct;
     }
-  })
+  });
   console.log("A new product added: ", addedProduct);
 
   if (addedProduct == null) {
-    throw new Error("The storages were the same")
+    throw new Error("The storages were the same");
   }
 
-  const categoryName = addedProduct!.category.toLowerCase() ?? "general"
+  const categoryName = addedProduct!.category.toLowerCase() ?? "general";
 
   if (!Object.keys(newFamily.totalProducts).includes(categoryName)) {
-    newFamily.totalProducts[categoryName] = 0
+    newFamily.totalProducts[categoryName] = 0;
   }
-  newFamily.totalProducts[categoryName]++
+  newFamily.totalProducts[categoryName]++;
 
-  return change.after.ref.update("totalProducts", newFamily.totalProducts)
+  return change.after.ref.update("totalProducts", newFamily.totalProducts);
 }
 
 function sendWelcomeEmails(
-  newFamily: FirebaseFirestore.DocumentData, 
-  oldFamily?: FirebaseFirestore.DocumentData
+    newFamily: FirebaseFirestore.DocumentData,
+    oldFamily?: FirebaseFirestore.DocumentData
 ) {
   const oldMembers = oldFamily?.members ?? [];
   const newEmails = newFamily.members.filter((email: any) => {
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
-  })
+  });
 
-  console.log(newEmails)
+  return Promise.all(newEmails.map((email: string) => {
+    return sendEmail({
+      subject: "Welcome to Foodizzy!",
+      to: email,
+      text: "Hi there! You have been invited to join your family members at Foodizy. Sign up at https://foodizzy-app.web.app/.",
+    });
+  }));
 }
