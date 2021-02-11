@@ -6,14 +6,18 @@ export const onFamilyUpdate = functions.firestore
     const oldFamily = change.before.data();
     const newFamily = change.after.data();
 
-    if (newFamily.storage.length >= oldFamily.storage.length) {
+    if (newFamily.storage.length > oldFamily.storage.length) {
       return updateTotalProducts(newFamily, oldFamily, change);
     }
     
+    if (newFamily.members.length > oldFamily.members.length) {
+      return sendWelcomeEmails(newFamily, oldFamily);
+    }
+
     return null;
   });
 
-async function updateTotalProducts(
+function updateTotalProducts(
   newFamily: FirebaseFirestore.DocumentData, 
   oldFamily: FirebaseFirestore.DocumentData, 
   change: functions.Change<functions.firestore.QueryDocumentSnapshot>
@@ -38,4 +42,15 @@ async function updateTotalProducts(
   newFamily.totalProducts[categoryName]++
 
   return change.after.ref.update("totalProducts", newFamily.totalProducts)
+}
+
+function sendWelcomeEmails(
+  newFamily: FirebaseFirestore.DocumentData, 
+  oldFamily: FirebaseFirestore.DocumentData
+) {
+  const newEmails = newFamily.members.filter((email: any) => {
+    return !oldFamily.members.find((oldEmail: any) => oldEmail === email);
+  })
+
+  console.log(newEmails)
 }
