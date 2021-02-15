@@ -25,8 +25,8 @@ import RecipeComponent from "@/components/RecipeComponent.vue";
   components: {
     RecipeComponent,
     NavigationMenu,
-    VHeader,
-  },
+    VHeader
+  }
 })
 export default class Recipes extends Vue {
   recipes: Recipe[] = [];

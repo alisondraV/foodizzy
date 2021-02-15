@@ -49,8 +49,8 @@ import VButton from "@/components/VButton.vue";
     VButton,
     ListItem,
     SearchInput,
-    VHeader,
-  },
+    VHeader
+  }
 })
 export default class NewProduct extends Vue {
   location?: string;
@@ -67,7 +67,7 @@ export default class NewProduct extends Vue {
       throw new Error("Unauthrized!");
     }
 
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.family = await Firestore.instance.getFamilyForUser(this.user);
     this.products = await this.getProductsWithCategory();
 
     this.location = this.$route.query.location as string;
@@ -95,7 +95,7 @@ export default class NewProduct extends Vue {
   }
 
   get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter((product) => {
+    const reducedProducts = this.products.filter(product => {
       return product.name
         .toLowerCase()
         .includes(this.searchQuery.toLowerCase());
@@ -116,17 +116,15 @@ export default class NewProduct extends Vue {
 
   async getProductsWithCategory() {
     const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map((product) => {
+    return allProducts.map(product => {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });
   }
 
   isInStorageOrShoppingList(product: Product) {
-    const storageProductNames = this.family?.storage.map((p) => p.name);
-    const shoppingListProductNames = this.family?.shoppingList.map(
-      (p) => p.name
-    );
+    const storageProductNames = this.family?.storage.map(p => p.name);
+    const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
     return (
       storageProductNames?.includes(product.name) ||
       shoppingListProductNames?.includes(product.name)
