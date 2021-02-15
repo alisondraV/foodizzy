@@ -1,14 +1,35 @@
 import firebase from "firebase";
 
 export default class Authentication {
-  public static async getCurrentUser(): Promise<firebase.User | null> {
+  public auth: firebase.auth.Auth;
+
+  private static _instance: Authentication | null = null;
+
+  public static get instance(): Authentication {
+    if (this._instance === null) {
+      this._instance = new Authentication();
+    }
+    return this._instance;
+  }
+
+  private constructor() {
+    this.auth = firebase.auth();
+
+    if (process.env.NODE_ENV === "development") {
+      this.auth.useEmulator("http://localhost:9099/");
+      // TODO: use the below option, when the type issue is resolved (https://github.com/firebase/firebase-js-sdk/issues/4223)
+      // this.auth.useEmulator('http://localhost:9099/', { disableWarnings: true });
+    }
+  }
+
+  public async getCurrentUser(): Promise<firebase.User | null> {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => resolve(user));
       // TODO: handle timeout
     });
   }
 
-  public static async signIn(email: string, password: string) {
+  public async signIn(email: string, password: string) {
     try {
       const cred = await firebase
         .auth()
@@ -19,7 +40,7 @@ export default class Authentication {
     }
   }
 
-  public static async signOut() {
+  public async signOut() {
     try {
       return await firebase.auth().signOut();
     } catch (error) {
@@ -27,7 +48,7 @@ export default class Authentication {
     }
   }
 
-  public static async signUp(email: string, password: string, name: string) {
+  public async signUp(email: string, password: string, name: string) {
     try {
       const cred = await firebase
         .auth()
@@ -39,7 +60,7 @@ export default class Authentication {
     }
   }
 
-  public static async signUpThroughGoogle() {
+  public async signUpThroughGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const userCred = await firebase.auth().signInWithPopup(provider);

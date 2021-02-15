@@ -65,7 +65,7 @@ export default class ShoppingList extends Vue {
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {

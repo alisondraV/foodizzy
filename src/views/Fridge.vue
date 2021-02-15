@@ -75,7 +75,7 @@ export default class Fridge extends Vue {
   newProductCategory = "";
 
   async mounted() {
-    this.user = await Authentication.getCurrentUser();
+    this.user = await Authentication.instance.getCurrentUser();
     console.log(this.user!.uid);
 
     if (!this.user) {

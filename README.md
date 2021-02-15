@@ -11,9 +11,14 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
+
+`npm run serve-dev` - run with firebase emulators
+`npm run serve` - run with production data
+
+### Runs the Firebase emulators
+
+`npm run emulate` - run the emulators
+`npm run emulate-export` - run the emulators and save any changes to the emulator data
 
 ### Compiles and minifies for production
 ```

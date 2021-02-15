@@ -49,6 +49,12 @@ const routes: Array<RouteConfig> = [
     name: "NewProduct",
     component: () => import("../views/NewProduct.vue"),
     props: route => ({ query: route.params.location })
+  },
+  {
+    path: "/custom-product",
+    name: "CustomProduct",
+    component: () => import("../views/CustomProduct.vue"),
+    props: route => ({ query: route.params.location })
   }
 ];
 

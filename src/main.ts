@@ -16,7 +16,6 @@ const firebaseConfig = {
   measurementId: process.env.VUE_APP_MEASUREMENT_ID
 };
 const app = firebase.initializeApp(firebaseConfig);
-Firestore.instance.db = firebase.firestore(app);
 
 Vue.config.productionTip = false;
 
