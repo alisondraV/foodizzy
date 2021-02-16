@@ -3,7 +3,6 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import firebase from "firebase";
-import Firestore from "@/utils/Firestore";
 import "./assets/tailwind.css";
 
 const firebaseConfig = {
@@ -15,7 +14,7 @@ const firebaseConfig = {
   appId: process.env.VUE_APP_APP_ID,
   measurementId: process.env.VUE_APP_MEASUREMENT_ID
 };
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 Vue.config.productionTip = false;
 
