@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import VInput from "@/components/VInput.vue";
@@ -79,13 +79,9 @@ export default class SignUp extends Vue {
   }
 
   async signUp() {
-    const user = await Authentication.instance.signUp(
-      this.email,
-      this.password,
-      this.name
-    );
+    await Authentication.instance.signUp(this.email, this.password, this.name);
     try {
-      await Firestore.instance.getFamilyForUser(user!);
+      await Firestore.instance.getCurrentFamily();
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
@@ -93,9 +89,9 @@ export default class SignUp extends Vue {
   }
 
   async signUpThroughGoogle() {
-    const user = await Authentication.instance.signUpThroughGoogle();
+    await Authentication.instance.authWithGoogle();
     try {
-      await Firestore.instance.getFamilyForUser(user!);
+      await Firestore.instance.getCurrentFamily();
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
