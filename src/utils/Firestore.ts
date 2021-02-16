@@ -49,6 +49,12 @@ export default class Firestore {
     });
   }
 
+  public async inviteMembers(family: Family, memberEmails: string[]) {
+    await this.db
+      .doc(`family/${family.id}`)
+      .update('members', firebase.firestore.FieldValue.arrayUnion(...memberEmails));
+  }
+
   public async getAllProducts(): Promise<Product[]> {
     const querySnap = await this.db.collection("allProducts").get();
     return querySnap.docs.map(doc => doc.data() as Product);

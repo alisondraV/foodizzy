@@ -11,7 +11,7 @@
               <div>{{ email }}</div>
             </div>
             <div>
-                <button>+</button>
+                <button @click="addNewMembers">+</button>
             </div>
         </div>
       </div>
@@ -38,6 +38,10 @@ export default class AppMain extends Vue {
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
     this.family = await Firestore.instance.getFamilyForUser(this.user!);
+  }
+
+  async addNewMembers() {
+    router.push('/new-family-members');
   }
 }
 </script>

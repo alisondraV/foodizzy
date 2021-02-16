@@ -45,6 +45,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Family.vue")
   },
   {
+    path: "/new-family-members",
+    name: "NewFamilyMembers",
+    component: () => import("../views/NewFamilyMembers.vue"),
+  },
+  {
     path: "/recipes",
     name: "Recipes",
     component: () => import("../views/Recipes.vue")
