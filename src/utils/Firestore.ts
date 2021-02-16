@@ -138,7 +138,7 @@ export default class Firestore {
   public async getFamilyForUser(user: firebase.User) {
     const snap = await this.db
       .collection("family")
-      .where("members", "array-contains", user.uid)
+      .where("members", "array-contains", user.email)
       .get();
     if (snap.docs.length === 0) {
       throw new Error(`Family for UID:${user.uid} was not found`);
