@@ -11,13 +11,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Authentication from "@/utils/Authentication";
 import Recipe from "@/types/Recipe";
-import Family from "@/types/Family";
-import firebase from "firebase";
 import VHeader from "@/components/VHeader.vue";
 import RecipeComponent from "@/components/RecipeComponent.vue";
 
@@ -30,20 +27,9 @@ import RecipeComponent from "@/components/RecipeComponent.vue";
 })
 export default class Recipes extends Vue {
   recipes: Recipe[] = [];
-  user: firebase.User | null = null;
-  family: Family | null = null;
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    console.log(this.user!.uid);
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.recipes = await Firestore.instance.getRecipesForFamily(this.family);
+    this.recipes = await Firestore.instance.getRecipesForFamily();
   }
 }
 </script>

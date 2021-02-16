@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
@@ -72,7 +72,7 @@ export default class SignIn extends Vue {
       this.user!.uid,
       ...this.memberEmails
     ]);
-    router.push("/home");
+    await router.push("/home");
   }
 
   addEmail() {
