@@ -54,6 +54,14 @@ export default class Firestore {
     });
   }
 
+  public async quitFamily() {
+    const family = await this.getCurrentFamily();
+    const user = await Authentication.instance.getCurrentUser();
+    await this.db
+      .doc(`family/${family.id}`)
+      .update('members', firebase.firestore.FieldValue.arrayRemove(user!.email));
+  }
+
   public async inviteMembers(memberEmails: string[]) {
     const family = await this.getCurrentFamily();
     await this.db

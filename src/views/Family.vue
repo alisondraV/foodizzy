@@ -14,6 +14,7 @@
                 <button @click="addNewMembers">+</button>
             </div>
         </div>
+        <v-button label="Quit Family" @click="handleQuit"></v-button>
       </div>
     </div>
   </div>
@@ -22,12 +23,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VHeader from "@/components/VHeader.vue";
+import VButton from "@/components/VButton.vue";
 import Family from "@/types/Family";
 import Firestore from "@/utils/Firestore";
 import router from "@/router";
 
 @Component({
-  components: { VHeader }
+  components: { VHeader, VButton }
 })
 export default class AppMain extends Vue {
   family: Family | null = null;
@@ -40,6 +42,11 @@ export default class AppMain extends Vue {
 
   async addNewMembers() {
     router.push('/new-family-members');
+  }
+
+  async handleQuit() {
+    await Firestore.instance.quitFamily();
+    router.push('/');
   }
 }
 </script>
