@@ -35,7 +35,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
@@ -52,16 +51,14 @@ import Family from "@/types/Family";
 export default class SignIn extends Vue {
   memberEmails: string[] = [];
   currentEmail = "";
-  user: firebase.User | null = null;
   family: Family | null = null;
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
+    this.family = await Firestore.instance.getCurrentFamily();
   }
 
   async inviteMembers() {
-    await Firestore.instance.inviteMembers(this.family!, this.memberEmails);
+    await Firestore.instance.inviteMembers(this.memberEmails);
     router.back();
   }
 

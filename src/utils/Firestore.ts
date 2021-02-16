@@ -54,10 +54,18 @@ export default class Firestore {
     });
   }
 
-  public async inviteMembers(family: Family, memberEmails: string[]) {
+  public async inviteMembers(memberEmails: string[]) {
+    const family = await this.getCurrentFamily();
     await this.db
       .doc(`family/${family.id}`)
       .update('members', firebase.firestore.FieldValue.arrayUnion(...memberEmails));
+  }
+
+  public async listenForMemberChanges(
+    callback: (snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>) => void
+  ) {
+    const family = await this.getCurrentFamily();
+    this.db.doc(`family/${family.id}`).onSnapshot({ next: callback });
   }
 
   public async getAllProducts(): Promise<Product[]> {
