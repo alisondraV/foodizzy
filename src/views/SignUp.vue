@@ -56,12 +56,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
-import Firestore from "@/utils/Firestore";
+import {CurrentFamily} from "@/types";
 
 @Component({
   components: {
@@ -81,7 +81,7 @@ export default class SignUp extends Vue {
   async signUp() {
     await Authentication.instance.signUp(this.email, this.password, this.name);
     try {
-      await Firestore.instance.getCurrentFamily();
+      await CurrentFamily.instance.getCurrentFamily();
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
@@ -91,7 +91,7 @@ export default class SignUp extends Vue {
   async signUpThroughGoogle() {
     await Authentication.instance.authWithGoogle();
     try {
-      await Firestore.instance.getCurrentFamily();
+      await CurrentFamily.instance.getCurrentFamily();
       await router.push("/home");
     } catch (err) {
       await router.push("/create-family");

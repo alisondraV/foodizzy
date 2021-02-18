@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
-import Family from "@/types/Family";
+import Family, {CurrentFamily} from "@/types/Family";
 import Firestore from "@/utils/Firestore";
 import router from "@/router";
 
@@ -44,7 +44,7 @@ export default class AppMain extends Vue {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.family = await Firestore.instance.getCurrentFamily();
+    this.family = await CurrentFamily.instance.getCurrentFamily();
   }
 
   async logOut() {

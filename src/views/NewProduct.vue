@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import router from "@/router";
@@ -40,6 +40,7 @@ import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import ListItem from "@/components/ListItem.vue";
 import VButton from "@/components/VButton.vue";
+import {CurrentFamily} from "@/types";
 
 @Component({
   components: {
@@ -109,7 +110,7 @@ export default class NewProduct extends Vue {
   }
 
   async isInStorageOrShoppingList(product: Product) {
-    const family = await Firestore.instance.getCurrentFamily();
+    const family = await CurrentFamily.instance.getCurrentFamily();
 
     const storageProductNames = family.storage.map(p => p.name);
     const shoppingListProductNames = family.shoppingList.map(p => p.name);

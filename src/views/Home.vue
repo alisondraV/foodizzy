@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
@@ -87,7 +87,7 @@ import WastedProduct from "@/types/WastedProduct";
 import VHeader from "@/components/VHeader.vue";
 import firebase from "firebase";
 import DonutChart from "@/components/DonutChart.vue";
-import {colors, monthList} from "@/utils/consts";
+import { colors, monthList } from "@/utils/consts";
 
 @Component({
   components: {
