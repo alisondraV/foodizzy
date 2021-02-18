@@ -16,7 +16,7 @@
     </div>
     <div v-if="isNewProductPage()">
       <img
-        v-if="inStorageOrShopping"
+        v-if="inAnyLists"
         src="@/assets/images/Minus.svg"
         alt="Remove"
         @click="$emit('remove', product)"
@@ -41,18 +41,35 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ShoppingListItem from "@/types/ShoppingListItem";
+import { CurrentFamily } from "@/types";
 
 @Component
 export default class ListItem extends Vue {
   @Prop() product!: ShoppingListItem;
   @Prop() currentPage!: string;
-  @Prop() inStorageOrShopping?: boolean;
+  inAnyLists = false;
+
+  async mounted() {
+    this.inAnyLists = await this.isInStorageOrShoppingList();
+  }
 
   isShoppingListPage() {
     return this.currentPage == "ShoppingList";
   }
+
   isNewProductPage() {
     return this.currentPage == "NewProduct";
+  }
+
+  async isInStorageOrShoppingList() {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+
+    const storageProductNames = family.storage.map(p => p.name);
+    const shoppingListProductNames = family.shoppingList.map(p => p.name);
+    return (
+      storageProductNames?.includes(this.product.name) ||
+      shoppingListProductNames?.includes(this.product.name)
+    );
   }
 }
 </script>
