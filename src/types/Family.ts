@@ -1,17 +1,17 @@
-import Product from "./Product";
-import ShoppingListItem from "./ShoppingListItem";
-import Firestore from "@/utils/Firestore";
-import Recipe from "@/types/Recipe";
 import Authentication from "@/utils/Authentication";
+import Firestore from "@/utils/Firestore";
+import Product from "./Product";
+import Recipe from "@/types/Recipe";
+import ShoppingListItem from "./ShoppingListItem";
 import WastedProduct from "@/types/WastedProduct";
 
 export default interface Family {
   id: string;
-  name: string;
   members: string[];
-  totalProducts: { [category: string]: number };
+  name: string;
   storage: Product[];
   shoppingList: ShoppingListItem[];
+  totalProducts: { [category: string]: number };
 }
 
 export class CurrentFamily {

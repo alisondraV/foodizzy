@@ -1,9 +1,9 @@
-import { CurrentFamily } from "@/types/Family";
-import Product from "@/types/Product";
 import firebase from "firebase";
-import WastedProduct from "@/types/WastedProduct";
-import ShoppingListItem from "@/types/ShoppingListItem";
+import { CurrentFamily } from "@/types/Family";
 import DocumentReference = firebase.firestore.DocumentReference;
+import Product from "@/types/Product";
+import ShoppingListItem from "@/types/ShoppingListItem";
+import WastedProduct from "@/types/WastedProduct";
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
