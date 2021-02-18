@@ -1,6 +1,5 @@
 import firebase from "firebase";
 import { CurrentFamily } from "@/types/Family";
-import DocumentReference = firebase.firestore.DocumentReference;
 import Product from "@/types/Product";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import WastedProduct from "@/types/WastedProduct";
@@ -25,22 +24,6 @@ export default class Firestore {
 
       this.db.useEmulator("localhost", 8080);
     }
-  }
-
-  public async createFamily(name: string, members: string[]) {
-    const newFamilyRef: DocumentReference = await this.db
-      .collection("family")
-      .add({
-        members,
-        name,
-        shoppingList: [],
-        storage: []
-      });
-
-    await this.db.collection("wasteBuckets").add({
-      familyId: newFamilyRef.id,
-      wasted: []
-    });
   }
 
   public async getAllProducts(): Promise<Product[]> {

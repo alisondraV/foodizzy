@@ -1,4 +1,6 @@
+import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
+import DocumentReference = firebase.firestore.DocumentReference;
 import Firestore from "@/utils/Firestore";
 import Product from "./Product";
 import Recipe from "@/types/Recipe";
@@ -24,6 +26,22 @@ export class CurrentFamily {
       this._instance = new CurrentFamily();
     }
     return this._instance;
+  }
+
+  public async create(name: string, members: string[]) {
+    const newFamilyRef: DocumentReference = await Firestore.instance.db
+        .collection("family")
+        .add({
+          members,
+          name,
+          shoppingList: [],
+          storage: []
+        });
+
+    await Firestore.instance.db.collection("wasteBuckets").add({
+      familyId: newFamilyRef.id,
+      wasted: []
+    });
   }
 
   public async getCurrentFamily() {
