@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import Firestore from "@/utils/Firestore";
+import {CurrentFamily} from "@/types";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
@@ -46,7 +46,7 @@ export default class Authentication {
   public async signOut() {
     try {
       await firebase.auth().signOut();
-      Firestore.instance.family = null;
+      CurrentFamily.instance.family = null;
     } catch (error) {
       console.log("SignOut failed: ", error);
     }

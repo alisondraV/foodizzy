@@ -1,4 +1,4 @@
-import Family, {CurrentFamily} from "@/types/Family";
+import {CurrentFamily} from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
@@ -7,7 +7,6 @@ import DocumentReference = firebase.firestore.DocumentReference;
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
-  public family: Family | null = null;
 
   private static _instance: Firestore | null = null;
 
@@ -122,53 +121,8 @@ export default class Firestore {
       .update("shoppingList", products);
   }
 
-  public async getRecipes() {
+  public async getAllRecipes() {
     const documents = await this.db.collection("recipes").get();
     return documents.docs.map<string>(qds => qds.data().name);
-  }
-
-  public async getWastedForFamily() {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    const documents = await this.db
-      .collection("wasteBuckets")
-      .where("familyId", "==", family?.id)
-      .get();
-    if (documents.docs.length === 0) {
-      throw new Error(`WasteBucket for family: ${family?.id} was not found`);
-    }
-
-    return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
-  }
-
-  public async getStatisticsForThisMonth(monthData: {
-    month: number;
-    year: number;
-  }) {
-    const statistics = this.db.collection(
-      `family/${(await CurrentFamily.instance.getCurrentFamily())!.id}/statistics`
-    );
-    const thisMonthStatsCollection = await statistics
-      .where("month", "==", monthData.month)
-      .where("year", "==", monthData.year)
-      .get();
-    if (thisMonthStatsCollection.docs.length === 0) {
-      return {};
-    }
-
-    return thisMonthStatsCollection.docs[0].data().totalProducts;
-  }
-
-  public async getAvailableMonthData() {
-    const monthData: { month: number; year: number }[] = [];
-
-    const statistics = await this.db
-      .collection(`family/${(await CurrentFamily.instance.getCurrentFamily())!.id}/statistics`)
-      .get();
-    statistics.docs.forEach(stats => {
-      monthData.push({ month: stats.data().month, year: stats.data().year });
-    });
-
-    return monthData;
   }
 }

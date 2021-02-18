@@ -81,13 +81,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
 import VHeader from "@/components/VHeader.vue";
 import firebase from "firebase";
 import DonutChart from "@/components/DonutChart.vue";
 import { colors, monthList } from "@/utils/consts";
+import {CurrentFamily} from "@/types";
 
 @Component({
   components: {
@@ -121,12 +121,12 @@ export default class Home extends Vue {
         ) || this.user!.displayName;
     }
     await this.getWastedProductsForSelectedMonth();
-    this.monthData = await Firestore.instance.getAvailableMonthData();
+    this.monthData = await CurrentFamily.instance.getAvailableMonthData();
     this.loading = false;
   }
 
   async getTotalProductsForMonth() {
-    this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
+    this.totalProductsForMonth = await CurrentFamily.instance.getStatisticsForThisMonth(
       this.selectedMonthData
     );
   }
@@ -137,7 +137,7 @@ export default class Home extends Vue {
 
   async getWastedProductsForSelectedMonth() {
     await this.getTotalProductsForMonth();
-    const allWastedProducts = await Firestore.instance.getWastedForFamily();
+    const allWastedProducts = await CurrentFamily.instance.getWastedProducts();
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
       return (
