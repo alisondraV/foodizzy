@@ -61,7 +61,7 @@ import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {

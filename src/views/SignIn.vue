@@ -59,8 +59,7 @@ import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import Firestore from "@/utils/Firestore";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {

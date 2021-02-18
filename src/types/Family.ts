@@ -54,8 +54,8 @@ export class CurrentFamily {
     const monthData: { month: number; year: number }[] = [];
 
     const statistics = await Firestore.instance.db
-        .collection(`family/${family.id}/statistics`)
-        .get();
+      .collection(`family/${family.id}/statistics`)
+      .get();
     statistics.docs.forEach(stats => {
       monthData.push({ month: stats.data().month, year: stats.data().year });
     });
@@ -73,14 +73,19 @@ export class CurrentFamily {
     return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
   }
 
-  public async getStatisticsForThisMonth(monthData: { month: number, year: number }) {
+  public async getStatisticsForThisMonth(monthData: {
+    month: number;
+    year: number;
+  }) {
     const family = await this.getCurrentFamily();
 
-    const statistics = Firestore.instance.db.collection(`family/${family!.id}/statistics`);
+    const statistics = Firestore.instance.db.collection(
+      `family/${family!.id}/statistics`
+    );
     const thisMonthStatsCollection = await statistics
-        .where("month", "==", monthData.month)
-        .where("year", "==", monthData.year)
-        .get();
+      .where("month", "==", monthData.month)
+      .where("year", "==", monthData.year)
+      .get();
     if (thisMonthStatsCollection.docs.length === 0) {
       return {};
     }
@@ -92,9 +97,9 @@ export class CurrentFamily {
     const family = await this.getCurrentFamily();
 
     const documents = await Firestore.instance.db
-        .collection("wasteBuckets")
-        .where("familyId", "==", family?.id)
-        .get();
+      .collection("wasteBuckets")
+      .where("familyId", "==", family?.id)
+      .get();
     if (documents.docs.length === 0) {
       throw new Error(`WasteBucket for family: ${family?.id} was not found`);
     }

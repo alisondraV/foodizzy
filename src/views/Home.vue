@@ -87,7 +87,7 @@ import VHeader from "@/components/VHeader.vue";
 import firebase from "firebase";
 import DonutChart from "@/components/DonutChart.vue";
 import { colors, monthList } from "@/utils/consts";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {

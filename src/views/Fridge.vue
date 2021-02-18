@@ -55,7 +55,7 @@ import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {

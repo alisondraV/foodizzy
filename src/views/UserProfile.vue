@@ -31,8 +31,7 @@ import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
-import Family, {CurrentFamily} from "@/types/Family";
-import Firestore from "@/utils/Firestore";
+import Family, { CurrentFamily } from "@/types/Family";
 import router from "@/router";
 
 @Component({

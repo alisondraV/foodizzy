@@ -1,4 +1,4 @@
-import {CurrentFamily} from "@/types/Family";
+import { CurrentFamily } from "@/types/Family";
 import Product from "@/types/Product";
 import firebase from "firebase";
 import WastedProduct from "@/types/WastedProduct";
@@ -74,7 +74,11 @@ export default class Firestore {
     const seconds = new Date().getTime() / 1000;
     const documents = await this.db
       .collection("wasteBuckets")
-      .where("familyId", "==", (await CurrentFamily.instance.getCurrentFamily())!.id)
+      .where(
+        "familyId",
+        "==",
+        (await CurrentFamily.instance.getCurrentFamily())!.id
+      )
       .get();
     const wastedProduct: WastedProduct = {
       ...product,

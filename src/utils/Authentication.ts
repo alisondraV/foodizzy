@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;

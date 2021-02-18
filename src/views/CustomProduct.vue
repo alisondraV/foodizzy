@@ -32,7 +32,7 @@ import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import VAlert from "@/components/VAlert.vue";
-import {CurrentFamily} from "@/types";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
