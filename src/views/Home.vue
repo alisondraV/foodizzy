@@ -114,10 +114,6 @@ export default class Home extends Vue {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    if (!this.user) {
-      await router.push('/sign-in');
-      return;
-    }
     
     if (this.user!.displayName) {
       this.firstName =
