@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import Authentication from "@/utils/Authentication";
 import VInput from "@/components/VInput.vue";
