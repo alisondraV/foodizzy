@@ -75,14 +75,14 @@ export default class SignUp extends Vue {
   password = "";
 
   goToSignInPage() {
-    router.push("/");
+    router.push("/sign-in");
   }
 
   async signUp() {
     await Authentication.instance.signUp(this.email, this.password, this.name);
     try {
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }
@@ -92,7 +92,7 @@ export default class SignUp extends Vue {
     await Authentication.instance.authWithGoogle();
     try {
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }

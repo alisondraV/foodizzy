@@ -83,7 +83,7 @@ export default class SignIn extends Vue {
     await Authentication.instance.signIn(this.email, this.password);
     try {
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }
@@ -94,7 +94,7 @@ export default class SignIn extends Vue {
     try {
       // try to get the family
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }

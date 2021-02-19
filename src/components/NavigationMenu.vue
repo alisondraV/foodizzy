@@ -48,7 +48,7 @@ export default class NavigationMenu extends Vue {
       : "";
   }
   goToTheHomePage() {
-    router.push("/home");
+    router.push("/");
   }
   goToTheFridgePage() {
     router.push("/fridge");
