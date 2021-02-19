@@ -1,5 +1,6 @@
+import Authentication from "@/utils/Authentication";
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, { NavigationGuard, NavigationGuardNext, Route, RouteConfig } from "vue-router";
 
 Vue.use(VueRouter);
 
@@ -62,6 +63,22 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
+  try {
+    console.log('getting user info...');
+    
+    const user = await Authentication.instance.getCurrentUser();
+    if (to.name === 'SignIn' || to.name === 'SignUp' || user !== null) {
+      next();
+    } else {
+      next('/sign-in');
+    }
+  } catch (e) {
+    console.error(e.message);
+    next('sign-in');
+  }
 });
 
 export default router;
