@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
@@ -83,7 +83,7 @@ export default class SignIn extends Vue {
     await Authentication.instance.signIn(this.email, this.password);
     try {
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }
@@ -94,7 +94,7 @@ export default class SignIn extends Vue {
     try {
       // try to get the family
       await Firestore.instance.getCurrentFamily();
-      await router.push("/home");
+      await router.push("/");
     } catch (err) {
       await router.push("/create-family");
     }

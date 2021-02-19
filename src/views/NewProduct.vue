@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import router from "@/router";
