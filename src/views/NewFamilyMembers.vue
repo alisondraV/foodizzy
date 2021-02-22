@@ -39,7 +39,6 @@ import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import Firestore from "@/utils/Firestore";
-import firebase from "firebase";
 import Family from "@/types/Family";
 
 @Component({

@@ -64,9 +64,11 @@ function sendWelcomeEmails(
 
   return Promise.all(newEmails.map((email: string) => {
     return sendEmail({
-      subject: "Welcome to Foodizzy!",
-      to: email,
-      text: "Hi there! You have been invited to join your family members at Foodizy. Sign up at https://foodizzy-app.web.app/.",
+      to: [email],
+      message: {
+        subject: "Welcome to Foodizzy!",
+        html: "Hi there! You have been invited to join your family members at Foodizy. Sign up at https://foodizzy-app.web.app/.",
+      }
     });
   }));
 }
