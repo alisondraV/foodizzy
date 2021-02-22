@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div class="mt-24 mb-20 mx-8">
-      <span
-        class="ml-4 w-4/5 text-header place-self-center font-extrabold text-primary-text"
-      >
+    <div class="mt-12 mb-20 mx-8">
+      <div class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
         What is in your fridge?
-      </span>
+      </div>
       <search-input class="mb-4" v-model="searchQuery" />
     </div>
   </div>
