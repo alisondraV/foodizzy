@@ -1,10 +1,28 @@
 <template>
   <div>
     <div class="mt-12 mb-20 mx-8">
-      <div class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
+      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
         What is in your fridge?
-      </div>
+      </h1>
       <search-input class="mb-4" v-model="searchQuery" />
+      <div
+        class="mb-4"
+        v-for="category in Object.keys(filteredCategoryProducts)"
+        :key="category"
+      >
+        <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
+        <div class="flex flex-wrap -mx-2">
+          <div
+            class="bg-light-grey rounded py-2 px-3 mx-2 my-1"
+            style="width: 45%"
+            v-for="product in filteredCategoryProducts[category]"
+            :key="product.name"
+            :product="product"
+          >
+            {{ product.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +54,26 @@ export default class Fridge extends Vue {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });
+  }
+
+  get filteredCategoryProducts() {
+    const reducedProducts = this.products.filter(product => {
+      return product.name
+        .toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    });
+
+    type Category = { [category: string]: Product[] };
+    return reducedProducts.reduce<Category>((acc, product) => {
+      const categoryName = product.category ?? "General";
+      if (!Object.keys(acc).includes(categoryName)) {
+        acc[categoryName] = [];
+      }
+
+      acc[categoryName].push(product);
+
+      return acc;
+    }, {});
   }
 }
 </script>
