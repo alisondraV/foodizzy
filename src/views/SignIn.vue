@@ -59,7 +59,7 @@ import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import Firestore from "@/utils/Firestore";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -82,8 +82,8 @@ export default class SignIn extends Vue {
   async signIn() {
     await Authentication.instance.signIn(this.email, this.password);
     try {
-      await Firestore.instance.getCurrentFamily();
-      await router.push("/");
+      await CurrentFamily.instance.getCurrentFamily();
+      await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
     }
@@ -92,9 +92,8 @@ export default class SignIn extends Vue {
   async signInThroughGoogle() {
     await Authentication.instance.authWithGoogle();
     try {
-      // try to get the family
-      await Firestore.instance.getCurrentFamily();
-      await router.push("/");
+      await CurrentFamily.instance.getCurrentFamily();
+      await router.push("/home");
     } catch (err) {
       await router.push("/create-family");
     }
