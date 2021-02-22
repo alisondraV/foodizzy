@@ -32,6 +32,7 @@ import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import VAlert from "@/components/VAlert.vue";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -71,7 +72,7 @@ export default class CustomProduct extends Vue {
 
   async isInStorageOrShoppingList() {
     // TODO: move to Firestore?
-    const family = await Firestore.instance.getCurrentFamily();
+    const family = await CurrentFamily.instance.getCurrentFamily();
 
     const storageProductNames = family.storage.map(p => p.name);
     const shoppingListProductNames = family.shoppingList.map(p => p.name);

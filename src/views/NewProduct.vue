@@ -19,7 +19,6 @@
           <list-item
             v-for="product in filteredCategoryProducts[category]"
             current-page="NewProduct"
-            :in-storage-or-shopping="isInStorageOrShoppingList(product)"
             :key="product.name"
             :product="product"
             @remove="removeExistingProduct"
@@ -106,17 +105,6 @@ export default class NewProduct extends Vue {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });
-  }
-
-  async isInStorageOrShoppingList(product: Product) {
-    const family = await Firestore.instance.getCurrentFamily();
-
-    const storageProductNames = family.storage.map(p => p.name);
-    const shoppingListProductNames = family.shoppingList.map(p => p.name);
-    return (
-      storageProductNames?.includes(product.name) ||
-      shoppingListProductNames?.includes(product.name)
-    );
   }
 }
 </script>

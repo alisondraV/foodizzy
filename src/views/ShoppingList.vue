@@ -45,6 +45,7 @@ import router from "@/router";
 import SearchInput from "@/components/SearchInput.vue";
 import VButton from "@/components/VButton.vue";
 import ListItem from "@/components/ListItem.vue";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -93,7 +94,7 @@ export default class ShoppingList extends Vue {
   }
 
   async getProductsWithCategory(): Promise<ShoppingListItem[]> {
-    const family = await Firestore.instance.getCurrentFamily();
+    const family = await CurrentFamily.instance.getCurrentFamily();
     const allProducts = family.shoppingList;
     if (!allProducts) {
       return [];
