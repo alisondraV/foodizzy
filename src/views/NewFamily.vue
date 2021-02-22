@@ -72,7 +72,7 @@ export default class SignIn extends Vue {
       this.user!.uid,
       ...this.memberEmails
     ]);
-    await router.push("/home");
+    await router.push("/");
   }
 
   addEmail() {

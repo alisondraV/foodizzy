@@ -48,7 +48,7 @@ export default class AppMain extends Vue {
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.push("/");
+    await router.push("/sign-in");
   }
 }
 </script>

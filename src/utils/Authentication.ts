@@ -25,9 +25,9 @@ export default class Authentication {
   }
 
   public async getCurrentUser(): Promise<firebase.User | null> {
-    return new Promise(resolve => {
-      firebase.auth().onAuthStateChanged(user => resolve(user));
-      // TODO: handle timeout
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(resolve);
+      setTimeout(() => reject("Timeout"), 5000);
     });
   }
 

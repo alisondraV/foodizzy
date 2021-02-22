@@ -92,7 +92,6 @@ export default class SignIn extends Vue {
   async signInThroughGoogle() {
     await Authentication.instance.authWithGoogle();
     try {
-      // try to get the family
       await CurrentFamily.instance.getCurrentFamily();
       await router.push("/home");
     } catch (err) {

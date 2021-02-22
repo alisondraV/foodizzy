@@ -75,7 +75,7 @@ export default class SignUp extends Vue {
   password = "";
 
   goToSignInPage() {
-    router.push("/");
+    router.push("/sign-in");
   }
 
   async signUp() {
