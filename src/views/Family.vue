@@ -24,20 +24,19 @@
 import { Component, Vue } from "vue-property-decorator";
 import VHeader from "@/components/VHeader.vue";
 import VButton from "@/components/VButton.vue";
-import Family from "@/types/Family";
-import Firestore from "@/utils/Firestore";
+import Family, { CurrentFamily } from "@/types/Family";
 import router from "@/router";
 
 @Component({
   components: { VHeader, VButton }
 })
 export default class AppMain extends Vue {
-  family: Family | null = null;
   members: string[] = [];
+  family: Family | null = null;
 
   async mounted() {
-    this.family = await Firestore.instance.getCurrentFamily();
-    await Firestore.instance.listenForMemberChanges((snapshot) => this.members = (snapshot.data() as Family).members)
+    this.family = await CurrentFamily.instance.getCurrentFamily();
+    await CurrentFamily.instance.listenForMemberChanges((snapshot) => this.members = (snapshot.data() as Family).members)
   }
 
   async addNewMembers() {
@@ -45,7 +44,7 @@ export default class AppMain extends Vue {
   }
 
   async handleQuit() {
-    await Firestore.instance.quitFamily();
+    await CurrentFamily.instance.quit();
     router.push('/');
   }
 }

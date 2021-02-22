@@ -48,13 +48,14 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -111,7 +112,7 @@ export default class Fridge extends Vue {
   }
 
   async getProductsWithCategory(): Promise<Product[]> {
-    const family = await Firestore.instance.getCurrentFamily();
+    const family = await CurrentFamily.instance.getCurrentFamily();
     const allProducts = family.storage;
 
     if (!allProducts) {

@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import Firestore from "@/utils/Firestore";
+import { CurrentFamily } from "@/types";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
@@ -25,9 +25,9 @@ export default class Authentication {
   }
 
   public async getCurrentUser(): Promise<firebase.User | null> {
-    return new Promise(resolve => {
-      firebase.auth().onAuthStateChanged(user => resolve(user));
-      // TODO: handle timeout
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(resolve);
+      setTimeout(() => reject("Timeout"), 5000);
     });
   }
 
@@ -46,7 +46,7 @@ export default class Authentication {
   public async signOut() {
     try {
       await firebase.auth().signOut();
-      Firestore.instance.family = null;
+      CurrentFamily.instance.family = null;
     } catch (error) {
       console.log("SignOut failed: ", error);
     }

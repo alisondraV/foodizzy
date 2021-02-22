@@ -39,7 +39,7 @@ import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import Firestore from "@/utils/Firestore";
-import Family from "@/types/Family";
+import Family, { CurrentFamily } from "@/types/Family";
 
 @Component({
   components: {
@@ -50,14 +50,9 @@ import Family from "@/types/Family";
 export default class SignIn extends Vue {
   memberEmails: string[] = [];
   currentEmail = "";
-  family: Family | null = null;
-
-  async mounted() {
-    this.family = await Firestore.instance.getCurrentFamily();
-  }
 
   async inviteMembers() {
-    await Firestore.instance.inviteMembers(this.memberEmails);
+    await CurrentFamily.instance.inviteMembers(this.memberEmails);
     router.back();
   }
 

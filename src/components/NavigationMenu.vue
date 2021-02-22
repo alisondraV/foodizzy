@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import router from "../router";
 
 @Component
@@ -48,7 +48,7 @@ export default class NavigationMenu extends Vue {
       : "";
   }
   goToTheHomePage() {
-    router.push("/home");
+    router.push("/");
   }
   goToTheFridgePage() {
     router.push("/fridge");

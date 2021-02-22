@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
+import { Component, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import Recipe from "@/types/Recipe";
 import VHeader from "@/components/VHeader.vue";
 import RecipeComponent from "@/components/RecipeComponent.vue";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -29,7 +29,7 @@ export default class Recipes extends Vue {
   recipes: Recipe[] = [];
 
   async mounted() {
-    this.recipes = await Firestore.instance.getRecipesForFamily();
+    this.recipes = await CurrentFamily.instance.getRecipes();
   }
 }
 </script>
