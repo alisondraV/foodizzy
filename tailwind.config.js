@@ -17,6 +17,9 @@ module.exports = {
       "secondary-text": "#9A9A9C",
       background: "#FFFFFFFF"
     },
+    fontSize: {
+      header: "1.4rem"
+    },
     extend: {}
   },
   variants: {
