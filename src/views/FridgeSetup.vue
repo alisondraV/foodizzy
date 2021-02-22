@@ -1,30 +1,35 @@
 <template>
-  <div class="mt-12 mb-12 mx-8">
-    <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
-      What is in your fridge?
-    </h1>
-    <search-input class="mb-4" v-model="searchQuery" />
-    <div
-      class="mb-4"
-      v-for="category in Object.keys(filteredCategoryProducts)"
-      :key="category"
-    >
-      <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
-      <div class="flex flex-wrap -mx-2">
-        <div
-          class="rounded py-2 px-3 mx-2 my-1"
-          :class="
-            isInProductsList(product) ? 'bg-light-yellow' : 'bg-light-grey'
-          "
-          style="width: 45%"
-          v-for="product in filteredCategoryProducts[category]"
-          :key="product.name"
-          :product="product"
-          @click="addToProductList(product)"
-        >
-          {{ product.name }}
+  <div>
+    <div class="mt-12 mb-20 mx-8">
+      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
+        What is in your fridge?
+      </h1>
+      <search-input class="mb-4" v-model="searchQuery" />
+      <div
+        class="mb-4"
+        v-for="category in Object.keys(filteredCategoryProducts)"
+        :key="category"
+      >
+        <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
+        <div class="flex flex-wrap justify-between -mx-2">
+          <div
+            class="rounded py-2 px-3 mx-2 my-1"
+            :class="
+              isInProductsList(product) ? 'bg-light-yellow' : 'bg-light-grey'
+            "
+            style="width: 45%"
+            v-for="product in filteredCategoryProducts[category]"
+            :key="product.name"
+            :product="product"
+            @click="addToProductList(product)"
+          >
+            {{ product.name }}
+          </div>
         </div>
       </div>
+    </div>
+    <div v-if="listIsNotEmpty" class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button class="mx-8 mt-3" label="Done" @click="goToTheNextPage" />
     </div>
   </div>
 </template>
@@ -34,9 +39,12 @@ import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import SearchInput from "@/components/SearchInput.vue";
+import VButton from "@/components/VButton.vue";
+import router from "@/router";
 
 @Component({
   components: {
+    VButton,
     SearchInput
   }
 })
@@ -88,6 +96,14 @@ export default class Fridge extends Vue {
 
       return acc;
     }, {});
+  }
+
+  get listIsNotEmpty() {
+    return this.productsToAdd.length !== 0;
+  }
+
+  goToTheNextPage() {
+    router.push("/home");
   }
 }
 </script>
