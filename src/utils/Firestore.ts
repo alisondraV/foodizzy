@@ -22,7 +22,7 @@ export default class Firestore {
     if (process.env.NODE_ENV === "development") {
       console.log("Emulator connected");
 
-      this.db.useEmulator("localhost", 8080);
+      this.db.useEmulator("localhost", 8888);
     }
   }
 

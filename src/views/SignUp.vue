@@ -20,7 +20,7 @@
       />
       <v-input
         class="mb-6"
-        type="name"
+        type="text"
         label="Type in your name"
         v-model="name"
       />
