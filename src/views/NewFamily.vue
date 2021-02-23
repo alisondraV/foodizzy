@@ -48,8 +48,8 @@ import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import Firestore from "@/utils/Firestore";
 import firebase from "firebase";
+import {CurrentFamily} from "@/types";
 
 @Component({
   components: {
@@ -68,11 +68,11 @@ export default class SignIn extends Vue {
   }
 
   async createFamily() {
-    await Firestore.instance.createFamily(this.familyName, [
+    await CurrentFamily.instance.create(this.familyName, [
       this.user!.uid,
       ...this.memberEmails
     ]);
-    router.push("/home");
+    await router.push("/");
   }
 
   addEmail() {

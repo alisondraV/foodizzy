@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { CurrentFamily } from "@/types";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
@@ -17,15 +18,16 @@ export default class Authentication {
 
     if (process.env.NODE_ENV === "development") {
       this.auth.useEmulator("http://localhost:9099/");
-      // TODO: use the below option, when the type issue is resolved (https://github.com/firebase/firebase-js-sdk/issues/4223)
+      // TODO: use the below option, when the type issue is resolved
+      //  (https://github.com/firebase/firebase-js-sdk/issues/4223)
       // this.auth.useEmulator('http://localhost:9099/', { disableWarnings: true });
     }
   }
 
   public async getCurrentUser(): Promise<firebase.User | null> {
     return new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged(user => resolve(user));
-      // TODO: handle timeout
+      firebase.auth().onAuthStateChanged(resolve);
+      setTimeout(() => reject("Timeout"), 5000);
     });
   }
 
@@ -34,6 +36,7 @@ export default class Authentication {
       const cred = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
+
       return cred.user;
     } catch (error) {
       console.log("SignIn failed: ", error);
@@ -42,7 +45,8 @@ export default class Authentication {
 
   public async signOut() {
     try {
-      return await firebase.auth().signOut();
+      await firebase.auth().signOut();
+      CurrentFamily.instance.family = null;
     } catch (error) {
       console.log("SignOut failed: ", error);
     }
@@ -60,7 +64,7 @@ export default class Authentication {
     }
   }
 
-  public async signUpThroughGoogle() {
+  public async authWithGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const userCred = await firebase.auth().signInWithPopup(provider);

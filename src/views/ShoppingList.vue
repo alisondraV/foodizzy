@@ -39,15 +39,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Authentication from "@/utils/Authentication";
-import Family from "@/types/Family";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
-import firebase from "firebase";
 import SearchInput from "@/components/SearchInput.vue";
 import VButton from "@/components/VButton.vue";
 import ListItem from "@/components/ListItem.vue";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -60,21 +58,10 @@ import ListItem from "@/components/ListItem.vue";
 })
 export default class ShoppingList extends Vue {
   products: ShoppingListItem[] = [];
-  user: firebase.User | null = null;
-  family: Family | null = null;
   searchQuery = "";
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    console.log(this.user!.uid);
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = this.getProductsWithCategory();
+    this.products = await this.getProductsWithCategory();
   }
 
   addNewProduct() {
@@ -103,16 +90,17 @@ export default class ShoppingList extends Vue {
 
   async removeFromShoppingList(product: ShoppingListItem) {
     this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromShoppingList(this.family, product);
+    await Firestore.instance.removeFromShoppingList(product);
   }
 
-  getProductsWithCategory(): ShoppingListItem[] {
-    const allProducts = this.family?.shoppingList;
+  async getProductsWithCategory(): Promise<ShoppingListItem[]> {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+    const allProducts = family.shoppingList;
     if (!allProducts) {
       return [];
     }
 
-    return allProducts!.map(product => {
+    return allProducts.map(product => {
       const productCategory = product.category ?? "General";
       return {
         name: product.name,
@@ -128,14 +116,14 @@ export default class ShoppingList extends Vue {
         ? { ...product, acquired: !product.acquired }
         : product;
     });
-    await Firestore.instance.updateShoppingList(this.family, this.products);
+    await Firestore.instance.updateShoppingList(this.products);
   }
 
   async updateFridge() {
     const acquiredProducts = this.products.filter(p => p.acquired);
     for (const product of acquiredProducts) {
       await this.removeFromShoppingList(product);
-      await Firestore.instance.addProductToStorage(this.family, product);
+      await Firestore.instance.addProductToStorage(product);
     }
   }
 }

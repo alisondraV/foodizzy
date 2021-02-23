@@ -27,14 +27,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
-import Authentication from "@/utils/Authentication";
-import Family from "@/types/Family";
-import firebase from "firebase";
 import Product from "@/types/Product";
 import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import VAlert from "@/components/VAlert.vue";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -47,19 +45,9 @@ import VAlert from "@/components/VAlert.vue";
 export default class CustomProduct extends Vue {
   alertMessage: string | null = null;
   location?: string;
-  family: Family | null = null;
-  user: firebase.User | null = null;
   product: Product = { name: "" };
 
-  async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user);
+  mounted() {
     this.location = this.$route.query.location as string;
   }
 
@@ -74,17 +62,20 @@ export default class CustomProduct extends Vue {
     }
 
     if (this.location === "storage") {
-      await Firestore.instance.addProductToStorage(this.family, this.product);
+      await Firestore.instance.addProductToStorage(this.product);
     } else if (this.location === "shoppingList") {
-      await Firestore.instance.addToShoppingList(this.family, this.product);
+      await Firestore.instance.addToShoppingList(this.product);
     }
     this.alertMessage = `${this.product.name} was added to the ${this.location}`;
     this.product = { name: "" };
   }
 
-  isInStorageOrShoppingList() {
-    const storageProductNames = this.family?.storage.map(p => p.name);
-    const shoppingListProductNames = this.family?.shoppingList.map(p => p.name);
+  async isInStorageOrShoppingList() {
+    // TODO: move to Firestore?
+    const family = await CurrentFamily.instance.getCurrentFamily();
+
+    const storageProductNames = family.storage.map(p => p.name);
+    const shoppingListProductNames = family.shoppingList.map(p => p.name);
     return (
       storageProductNames?.includes(this.product.name) ||
       shoppingListProductNames?.includes(this.product.name)

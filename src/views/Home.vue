@@ -81,14 +81,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import NavigationMenu from "@/components/NavigationMenu.vue";
-import Firestore from "@/utils/Firestore";
 import Authentication from "@/utils/Authentication";
 import WastedProduct from "@/types/WastedProduct";
-import Family from "@/types/Family";
 import VHeader from "@/components/VHeader.vue";
 import firebase from "firebase";
 import DonutChart from "@/components/DonutChart.vue";
 import { colors, monthList } from "@/utils/consts";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -99,7 +98,6 @@ import { colors, monthList } from "@/utils/consts";
 })
 export default class Home extends Vue {
   loading = true;
-  family: Family | null = null;
   monthData: { month: number; year: number }[] = [];
   user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
@@ -116,27 +114,20 @@ export default class Home extends Vue {
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
 
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    if (this.user.displayName) {
+    if (this.user!.displayName) {
       this.firstName =
-        this.user.displayName.substr(0, this.user.displayName?.indexOf(" ")) ||
-        this.user.displayName;
+        this.user!.displayName.substr(
+          0,
+          this.user!.displayName?.indexOf(" ")
+        ) || this.user!.displayName;
     }
-    this.family = await Firestore.instance.getFamilyForUser(this.user);
     await this.getWastedProductsForSelectedMonth();
-    this.monthData = await Firestore.instance.getAvailableMonthData(
-      this.family!
-    );
+    this.monthData = await CurrentFamily.instance.getAvailableMonthData();
     this.loading = false;
   }
 
   async getTotalProductsForMonth() {
-    this.totalProductsForMonth = await Firestore.instance.getStatisticsForThisMonth(
-      this.family!,
+    this.totalProductsForMonth = await CurrentFamily.instance.getStatisticsForThisMonth(
       this.selectedMonthData
     );
   }
@@ -147,9 +138,7 @@ export default class Home extends Vue {
 
   async getWastedProductsForSelectedMonth() {
     await this.getTotalProductsForMonth();
-    const allWastedProducts = await Firestore.instance.getWastedForFamily(
-      this.family
-    );
+    const allWastedProducts = await CurrentFamily.instance.getWastedProducts();
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
       return (
@@ -183,10 +172,6 @@ export default class Home extends Vue {
   }
 
   get totalProducts() {
-    if (!this.family) {
-      return 0;
-    }
-
     return Object.values(this.totalProductsForMonth).reduce(
       (acc, e) => e + acc,
       0
@@ -198,10 +183,9 @@ export default class Home extends Vue {
   }
 
   get chartData() {
-    return [[
-      this.totalProducts - this.totalWaste,
-      ...Object.values(this.statistics)
-    ]];
+    return [
+      [this.totalProducts - this.totalWaste, ...Object.values(this.statistics)]
+    ];
   }
 
   get chartLabels() {

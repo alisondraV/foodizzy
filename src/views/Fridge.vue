@@ -50,14 +50,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
-import Authentication from "@/utils/Authentication";
-import firebase from "firebase";
 import Product from "@/types/Product";
-import Family from "@/types/Family";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
+import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -68,23 +66,12 @@ import router from "@/router";
 })
 export default class Fridge extends Vue {
   products: Product[] = [];
-  user: firebase.User | null = null;
-  family: Family | null = null;
   searchQuery = "";
   newProductName = "";
   newProductCategory = "";
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    console.log(this.user!.uid);
-
-    if (!this.user) {
-      // TODO: handle unauthorized state
-      throw new Error("Unauthrized!");
-    }
-
-    this.family = await Firestore.instance.getFamilyForUser(this.user!);
-    this.products = this.getProductsWithCategory();
+    this.products = await this.getProductsWithCategory();
   }
 
   get filteredCategoryProducts() {
@@ -109,28 +96,30 @@ export default class Fridge extends Vue {
 
   async markAsFinished(product: Product) {
     this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromStorage(this.family, product);
-    await Firestore.instance.addToShoppingList(this.family, product);
+    await Firestore.instance.removeFromStorage(product);
+    await Firestore.instance.addToShoppingList(product);
   }
 
   async markAsWasted(product: Product) {
     this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromStorage(this.family, product);
-    await Firestore.instance.moveToWasted(this.family, product);
-    await Firestore.instance.addToShoppingList(this.family, product);
+    await Firestore.instance.removeFromStorage(product);
+    await Firestore.instance.moveToWasted(product);
+    await Firestore.instance.addToShoppingList(product);
   }
 
   addNewProduct() {
     router.push({ path: "/new-product", query: { location: "storage" } });
   }
 
-  getProductsWithCategory(): Product[] {
-    const allProducts = this.family?.storage;
+  async getProductsWithCategory(): Promise<Product[]> {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+    const allProducts = family.storage;
+
     if (!allProducts) {
       return [];
     }
 
-    return allProducts!.map(product => {
+    return allProducts.map(product => {
       const productCategory = product.category ?? "General";
       return { name: product.name, category: productCategory };
     });
