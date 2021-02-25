@@ -10,6 +10,7 @@ import WastedProduct from "@/types/WastedProduct";
 export default interface Family {
   id: string;
   members: string[];
+  pendingMembers: string[];
   name: string;
   storage: Product[];
   shoppingList: ShoppingListItem[];
@@ -29,10 +30,12 @@ export class CurrentFamily {
   }
 
   public async create(name: string, members: string[]) {
+    const user = await Authentication.instance.getCurrentUser();
     const newFamilyRef: DocumentReference = await Firestore.instance.db
         .collection("family")
         .add({
-          members,
+          members: [user?.email],
+          pendingMembers: members,
           name,
           shoppingList: [],
           storage: []
@@ -137,10 +140,10 @@ export class CurrentFamily {
     const family = await this.getCurrentFamily();
     await Firestore.instance.db
       .doc(`family/${family.id}`)
-      .update('members', firebase.firestore.FieldValue.arrayUnion(...memberEmails));
+      .update('pendingMembers', firebase.firestore.FieldValue.arrayUnion(...memberEmails));
   }
 
-  public async listenForMemberChanges(
+  public async listenForChanges(
     callback: (snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>) => void
   ) {
     const family = await this.getCurrentFamily();

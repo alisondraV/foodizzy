@@ -61,17 +61,9 @@ export default class SignIn extends Vue {
   familyName = "";
   memberEmails: string[] = [];
   currentEmail = "";
-  user: firebase.User | null = null;
-
-  async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-  }
 
   async createFamily() {
-    await CurrentFamily.instance.create(this.familyName, [
-      this.user!.uid,
-      ...this.memberEmails
-    ]);
+    await CurrentFamily.instance.create(this.familyName, this.memberEmails);
     await router.push("/");
   }
 

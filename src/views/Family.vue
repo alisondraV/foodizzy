@@ -7,8 +7,8 @@
         <h1>{{ family.name }}</h1>
         <h2>Members</h2>
         <div>
-            <div v-for="email in members" :key="email">
-              <div>{{ email }}</div>
+            <div v-for="member in allMembers" :key="member">
+              <div>{{ member.email + (member.isPending ? ' (pending)' : '') }}</div>
             </div>
             <div>
                 <button @click="addNewMembers">+</button>
@@ -32,11 +32,16 @@ import router from "@/router";
 })
 export default class AppMain extends Vue {
   members: string[] = [];
+  pendingMembers: string[] = [];
   family: Family | null = null;
 
   async mounted() {
     this.family = await CurrentFamily.instance.getCurrentFamily();
-    await CurrentFamily.instance.listenForMemberChanges((snapshot) => this.members = (snapshot.data() as Family).members)
+    await CurrentFamily.instance.listenForChanges((snapshot) => {
+      const family = snapshot.data() as Family;
+      this.members = family.members;
+      this.pendingMembers = family.pendingMembers;
+    })
   }
 
   async addNewMembers() {
@@ -46,6 +51,14 @@ export default class AppMain extends Vue {
   async handleQuit() {
     await CurrentFamily.instance.quit();
     router.push('/');
+  }
+
+  get allMembers() {
+    const allEmails = [...this.members, ...this.pendingMembers];
+    return allEmails.map((email) => ({
+      email,
+      isPending: this.pendingMembers.includes(email)
+    }));
   }
 }
 </script>

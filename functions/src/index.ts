@@ -11,7 +11,7 @@ export const onFamilyUpdate = functions.firestore
         return updateTotalProducts(newFamily, oldFamily, change);
       }
 
-      if (newFamily.members.length > oldFamily.members.length) {
+      if (newFamily.pendingMembers.length > oldFamily.pendingMembers.length) {
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
@@ -57,10 +57,12 @@ function sendWelcomeEmails(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily?: FirebaseFirestore.DocumentData
 ) {
-  const oldMembers = oldFamily?.members ?? [];
-  const newEmails = newFamily.members.filter((email: any) => {
+  const oldMembers = oldFamily?.pendingMembers ?? [];
+  const newEmails = newFamily.pendingMembers.filter((email: any) => {
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
+
+  console.log('New Members: ', newEmails);
 
   return Promise.all(newEmails.map((email: string) => {
     const url = 'https://foodizzy-app.web.app/'; // TODO: change to the confirmation funtion url
