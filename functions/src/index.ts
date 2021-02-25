@@ -63,11 +63,14 @@ function sendWelcomeEmails(
   });
 
   return Promise.all(newEmails.map((email: string) => {
+    const url = 'https://foodizzy-app.web.app/'; // TODO: change to the confirmation funtion url
     return sendEmail({
       to: [email],
       message: {
         subject: "Welcome to Foodizzy!",
-        html: "Hi there! You have been invited to join your family members at Foodizy. Sign up at https://foodizzy-app.web.app/.",
+        html: `
+          <p>Hi there! You have been invited to join your family members at Foodizy. <a href="${url}">Accept your invite</a></p>.
+        `,
       }
     });
   }));
