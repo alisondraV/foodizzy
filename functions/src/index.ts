@@ -65,7 +65,10 @@ function sendWelcomeEmails(
   console.log('New Members: ', newEmails);
 
   return Promise.all(newEmails.map((email: string) => {
-    const url = 'https://foodizzy-app.web.app/'; // TODO: change to the confirmation funtion url
+    const url = `https://foodizzy-app.web.app/accept-invite?familyId=${newFamily.id}&email=${email}`;
+
+    // TODO: optionally forward to localhost
+
     return sendEmail({
       to: [email],
       message: {

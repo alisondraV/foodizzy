@@ -66,6 +66,11 @@ const routes: Array<RouteConfig> = [
     name: "CustomProduct",
     component: () => import("../views/CustomProduct.vue"),
     props: route => ({ query: route.params.location })
+  },
+  {
+    path: "/accept-invite",
+    name: "AcceptInvite",
+    component: () => import("../views/AcceptInvite.vue"),
   }
 ];
 
