@@ -7,11 +7,15 @@ export const onFamilyUpdate = functions.firestore
       const oldFamily = change.before.data();
       const newFamily = change.after.data();
 
-      if (newFamily.storage.length > oldFamily.storage.length) {
+      const newStorage = newFamily.storage;
+      const oldStorage = oldFamily.storage;
+      if (newStorage.length > oldStorage.length) {
         return updateTotalProducts(newFamily, oldFamily, change);
       }
 
-      if (newFamily.pendingMembers.length > oldFamily.pendingMembers.length) {
+      const newPendingMembers = newFamily.pendingMembers ?? [];
+      const oldPendingMembers = oldFamily.pendingMembers ?? [];
+      if (newPendingMembers.length > oldPendingMembers.length) {
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
@@ -66,8 +70,6 @@ function sendWelcomeEmails(
 
   return Promise.all(newEmails.map((email: string) => {
     const url = `https://foodizzy-app.web.app/invites`;
-
-    // TODO: optionally forward to localhost
 
     return sendEmail({
       to: [email],
