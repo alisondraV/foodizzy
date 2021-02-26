@@ -48,7 +48,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/new-family-members",
     name: "NewFamilyMembers",
-    component: () => import("../views/NewFamilyMembers.vue"),
+    component: () => import("../views/NewFamilyMembers.vue")
   },
   {
     path: "/recipes",
@@ -70,7 +70,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/invites",
     name: "Invites",
-    component: () => import("../views/Invites.vue"),
+    component: () => import("../views/Invites.vue")
   }
 ];
 
@@ -87,7 +87,9 @@ router.beforeEach(
 
       const user = await Authentication.instance.getCurrentUser();
       const publicURLs = ["SignIn", "SignUp", "Invites"];
-      const destinationIsPublic = publicURLs.some(url => url.startsWith(to.name ?? ''))
+      const destinationIsPublic = publicURLs.some(url =>
+        url.startsWith(to.name ?? "")
+      );
       if (destinationIsPublic || user !== null) {
         next();
       } else {

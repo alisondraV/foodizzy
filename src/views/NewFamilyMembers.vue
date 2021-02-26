@@ -1,6 +1,8 @@
 <template>
   <div class="m-8 flex flex-col h-screen">
-    <p class="text-2xl font-bold text-primary-text mb-6">Invite Family Member</p>
+    <p class="text-2xl font-bold text-primary-text mb-6">
+      Invite Family Member
+    </p>
     <div class="mb-8 flex-start">
       <div class="flex flex-row justify-between mb-4">
         <v-input
@@ -38,8 +40,7 @@ import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import Firestore from "@/utils/Firestore";
-import Family, { CurrentFamily } from "@/types/Family";
+import { CurrentFamily } from "@/types/Family";
 
 @Component({
   components: {

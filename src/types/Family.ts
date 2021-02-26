@@ -32,14 +32,14 @@ export class CurrentFamily {
   public async create(name: string, members: string[]) {
     const user = await Authentication.instance.getCurrentUser();
     const newFamilyRef: DocumentReference = await Firestore.instance.db
-        .collection("family")
-        .add({
-          members: [user?.email],
-          pendingMembers: members,
-          name,
-          shoppingList: [],
-          storage: []
-        });
+      .collection("family")
+      .add({
+        members: [user?.email],
+        pendingMembers: members,
+        name,
+        shoppingList: [],
+        storage: []
+      });
 
     await Firestore.instance.db.collection("wasteBuckets").add({
       familyId: newFamilyRef.id,
@@ -133,18 +133,28 @@ export class CurrentFamily {
     const user = await Authentication.instance.getCurrentUser();
     await Firestore.instance.db
       .doc(`family/${family.id}`)
-      .update('members', firebase.firestore.FieldValue.arrayRemove(user!.email));
+      .update(
+        "members",
+        firebase.firestore.FieldValue.arrayRemove(user!.email)
+      );
   }
 
   public async inviteMembers(memberEmails: string[]) {
     const family = await this.getCurrentFamily();
     await Firestore.instance.db
       .doc(`family/${family.id}`)
-      .update('pendingMembers', firebase.firestore.FieldValue.arrayUnion(...memberEmails));
+      .update(
+        "pendingMembers",
+        firebase.firestore.FieldValue.arrayUnion(...memberEmails)
+      );
   }
 
   public async listenForChanges(
-    callback: (snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>) => void
+    callback: (
+      snapshot: firebase.firestore.DocumentSnapshot<
+        firebase.firestore.DocumentData
+      >
+    ) => void
   ) {
     const family = await this.getCurrentFamily();
     Firestore.instance.db
@@ -157,17 +167,23 @@ export class CurrentFamily {
       const family = await this.getCurrentFamily();
       await Firestore.instance.db
         .doc(`family/${family.id}`)
-        .update('members', firebase.firestore.FieldValue.arrayRemove(userEmail));
+        .update(
+          "members",
+          firebase.firestore.FieldValue.arrayRemove(userEmail)
+        );
     } catch (e) {
       console.log(e.message);
     }
 
     await Firestore.instance.db
       .doc(`family/${newFamilyId}`)
-      .update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
+      .update(
+        "pendingMembers",
+        firebase.firestore.FieldValue.arrayRemove(userEmail)
+      );
 
     await Firestore.instance.db
       .doc(`family/${newFamilyId}`)
-      .update('members', firebase.firestore.FieldValue.arrayUnion(userEmail));
+      .update("members", firebase.firestore.FieldValue.arrayUnion(userEmail));
   }
 }

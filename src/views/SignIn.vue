@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import VButton from "@/components/VButton.vue";
@@ -76,9 +76,9 @@ export default class SignIn extends Vue {
   }
 
   goToSignUpPage() {
-    let route = '/sign-up';
+    let route = "/sign-up";
     if (this.redirect) {
-      route += '?redirect=' + this.redirect;
+      route += "?redirect=" + this.redirect;
     }
     router.replace(route);
   }
@@ -108,7 +108,7 @@ export default class SignIn extends Vue {
   }
 
   async finishSignIn() {
-    const route = '/' + (this.redirect ?? 'home');
+    const route = "/" + (this.redirect ?? "home");
     await router.replace(route);
   }
 }

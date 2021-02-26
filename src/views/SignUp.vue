@@ -70,7 +70,6 @@ import { CurrentFamily } from "@/types";
   }
 })
 export default class SignUp extends Vue {
-
   email = "";
   name = "";
   password = "";
@@ -80,9 +79,9 @@ export default class SignUp extends Vue {
   }
 
   goToSignInPage() {
-    let route = '/sign-in';
+    let route = "/sign-in";
     if (this.redirect) {
-      route += '?redirect=' + this.redirect;
+      route += "?redirect=" + this.redirect;
     }
     router.replace(route);
   }
@@ -108,7 +107,7 @@ export default class SignUp extends Vue {
   }
 
   async finishSignUp() {
-    const route = '/' + (this.redirect ?? 'home');
+    const route = "/" + (this.redirect ?? "home");
     await router.replace(route);
   }
 }

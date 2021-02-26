@@ -115,8 +115,8 @@ export default class Firestore {
 
   public async getInvites(userEmail: string): Promise<Family[]> {
     const familyQuerySnap = await this.db
-      .collection('family')
-      .where('pendingMembers', 'array-contains', userEmail)
+      .collection("family")
+      .where("pendingMembers", "array-contains", userEmail)
       .get();
 
     return familyQuerySnap.docs.map(snap => snap.data() as Family);
