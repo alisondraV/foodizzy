@@ -68,9 +68,9 @@ const routes: Array<RouteConfig> = [
     props: route => ({ query: route.params.location })
   },
   {
-    path: "/accept-invite",
-    name: "AcceptInvite",
-    component: () => import("../views/AcceptInvite.vue"),
+    path: "/invites",
+    name: "Invites",
+    component: () => import("../views/Invites.vue"),
   }
 ];
 
@@ -86,7 +86,7 @@ router.beforeEach(
       console.log("getting user info...");
 
       const user = await Authentication.instance.getCurrentUser();
-      const publicURLs = ["SignIn", "SignUp", "AcceptInvite"]
+      const publicURLs = ["SignIn", "SignUp", "Invites"]
       if (publicURLs.includes(to.name ?? '') || user !== null) {
         next();
       } else {
