@@ -25,8 +25,9 @@ import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
 import VButton from "@/components/VButton.vue";
-import Family from "@/types/Family";
+import Family, { CurrentFamily } from "@/types/Family";
 import Firestore from "@/utils/Firestore";
+import router from "@/router";
 
 @Component({
   components: { VHeader, VButton }
@@ -41,9 +42,11 @@ export default class AppMain extends Vue {
   }
 
   async handleAcceptInvite(familyId: string) {
-    // TODO: move user from pendingMembers to members
+    if (!this.user || !this.user.email) throw new Error('Unauthorized!');
+
+    await CurrentFamily.instance.switchTo(familyId, this.user.email);
     
-    // TODO: redirect to /
+    await router.push('/');
   }
 }
 </script>

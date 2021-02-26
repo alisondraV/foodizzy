@@ -151,4 +151,23 @@ export class CurrentFamily {
       .doc(`family/${family.id}`)
       .onSnapshot({ next: callback });
   }
+
+  public async switchTo(newFamilyId: string, userEmail: string): Promise<void> {
+    try {
+      const family = await this.getCurrentFamily();
+      await Firestore.instance.db
+        .doc(`family/${family.id}`)
+        .update('members', firebase.firestore.FieldValue.arrayRemove(userEmail));
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    await Firestore.instance.db
+      .doc(`family/${newFamilyId}`)
+      .update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
+
+    await Firestore.instance.db
+      .doc(`family/${newFamilyId}`)
+      .update('members', firebase.firestore.FieldValue.arrayUnion(userEmail));
+  }
 }
