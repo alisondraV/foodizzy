@@ -9,8 +9,11 @@
       <div v-else-if="invites.length === 0">
         You don't have any pending invites.
       </div>
-      <div v-else class="w-full flex flex-col items-center text-center">
-        <button @click="handleAccept">Accept</button>
+      <div v-else class="w-full grid gap-2 justify-items-center">
+        <div v-for="family in invites" :key="family.id" class="w-3/4 grid grid-cols-5 gap-3">
+          <div class="text-lg align-text-bottom col-span-3">{{ family.name }}</div>
+          <v-button class="button col-span-2" @click="handleAcceptInvite(family.id)" label="Accept"></v-button>
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +25,7 @@ import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
 import VButton from "@/components/VButton.vue";
-import Family, { CurrentFamily } from "@/types/Family";
+import Family from "@/types/Family";
 import Firestore from "@/utils/Firestore";
 
 @Component({
@@ -37,7 +40,7 @@ export default class AppMain extends Vue {
     this.invites = await Firestore.instance.getInvites(this.user?.email ?? '');
   }
 
-  async handleAccept() {
+  async handleAcceptInvite(familyId: string) {
     // TODO: move user from pendingMembers to members
     
     // TODO: redirect to /
