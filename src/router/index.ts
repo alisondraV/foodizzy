@@ -86,8 +86,9 @@ router.beforeEach(
       console.log("getting user info...");
 
       const user = await Authentication.instance.getCurrentUser();
-      const publicURLs = ["SignIn", "SignUp", "Invites"]
-      if (publicURLs.includes(to.name ?? '') || user !== null) {
+      const publicURLs = ["SignIn", "SignUp", "Invites"];
+      const destinationIsPublic = publicURLs.some(url => url.startsWith(to.name ?? ''))
+      if (destinationIsPublic || user !== null) {
         next();
       } else {
         next("/sign-in");

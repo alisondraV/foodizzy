@@ -4,7 +4,7 @@
     <div class="mt-24 mb-20 mx-8">
       <div v-if="!user">
         <!-- TODO: redirect to log-in and back -->
-        <a href="/log-in" class="underline">Log in</a> to accept your invite.
+        <a href="/sign-in?redirect=invites" class="underline">Log in</a> to accept your invite.
       </div>
       <div v-else-if="invites.length === 0">
         You don't have any pending invites.
