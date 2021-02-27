@@ -30,7 +30,7 @@
       </div>
     </div>
     <div v-if="listIsNotEmpty" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Done" @click="goToTheNextPage" />
+      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" />
     </div>
   </div>
 </template>
@@ -58,6 +58,13 @@ export default class Fridge extends Vue {
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
+  }
+
+  async addProductsToStorage() {
+    for (const product of this.productsToAdd) {
+      await Firestore.instance.addProductToStorage(product);
+    }
+    this.goToTheNextPage();
   }
 
   async getProductsWithCategory() {
