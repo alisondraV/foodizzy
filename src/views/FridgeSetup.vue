@@ -20,7 +20,7 @@
             :key="product.name"
             :product="product"
             :style="getProductColor(product, category)"
-            @click="addToProductList(product)"
+            @click="updateProductList(product)"
           >
             {{ product.name }}
           </div>
@@ -75,8 +75,8 @@ export default class Fridge extends Vue {
     });
   }
 
-  addToProductList(product: Product) {
-    if (this.productsToAdd.includes(product)) {
+  updateProductList(product: Product) {
+    if (this.isInProductsList(product)) {
       return (this.productsToAdd = this.productsToAdd.filter(
         prevProduct => prevProduct != product
       ));
