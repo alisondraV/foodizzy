@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="mt-12 mb-20 mx-8">
+    <skip-header @click="goToTheNextPage" />
+    <div class="mt-20 mb-20 mx-8">
       <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
         What is in your fridge?
       </h1>
@@ -15,7 +16,7 @@
           <div
             class="rounded py-2 px-3 mx-2 my-1"
             :class="
-              isInProductsList(product) ? 'bg-light-yellow' : 'bg-light-grey'
+              isInProductsList(product) ? 'bg-light-green' : 'bg-light-grey'
             "
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
@@ -39,13 +40,15 @@ import { Component, Vue } from "vue-property-decorator";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import SearchInput from "@/components/SearchInput.vue";
+import SkipHeader from "@/components/SkipHeader.vue";
 import VButton from "@/components/VButton.vue";
 import router from "@/router";
 
 @Component({
   components: {
     VButton,
-    SearchInput
+    SearchInput,
+    SkipHeader
   }
 })
 export default class Fridge extends Vue {
