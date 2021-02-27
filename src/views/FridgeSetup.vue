@@ -1,7 +1,7 @@
 <template>
   <div>
     <skip-header @click="goToTheNextPage" />
-    <div class="mt-20 mb-20 mx-8">
+    <div class="mt-20 mb-24 mx-8">
       <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
         What is in your fridge?
       </h1>
@@ -15,13 +15,11 @@
         <div class="flex flex-wrap justify-between -mx-2">
           <div
             class="rounded py-2 px-3 mx-2 my-1"
-            :class="
-              isInProductsList(product) ? 'bg-light-green' : 'bg-light-grey'
-            "
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
             :product="product"
+            :style="getProductColor(product, category)"
             @click="addToProductList(product)"
           >
             {{ product.name }}
@@ -43,6 +41,7 @@ import SearchInput from "@/components/SearchInput.vue";
 import SkipHeader from "@/components/SkipHeader.vue";
 import VButton from "@/components/VButton.vue";
 import router from "@/router";
+import { colors } from "@/utils/consts";
 
 @Component({
   components: {
@@ -54,6 +53,7 @@ import router from "@/router";
 export default class Fridge extends Vue {
   products: Product[] = [];
   productsToAdd: Product[] = [];
+  categoryColors: { [category: string]: string } = {};
   searchQuery = "";
 
   async mounted() {
@@ -88,6 +88,16 @@ export default class Fridge extends Vue {
     return this.productsToAdd.includes(product);
   }
 
+  getProductColor(product, category) {
+    const defaultBg = "#E7E7E7";
+
+    return {
+      background: this.isInProductsList(product)
+        ? this.categoryColors[category]
+        : defaultBg
+    };
+  }
+
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
       return product.name
@@ -96,12 +106,15 @@ export default class Fridge extends Vue {
     });
 
     type Category = { [category: string]: Product[] };
+    let categoryCount = 0;
     return reducedProducts.reduce<Category>((acc, product) => {
       const categoryName = product.category ?? "General";
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
-      }
 
+        this.categoryColors[categoryName] = colors[categoryCount];
+        categoryCount++;
+      }
       acc[categoryName].push(product);
 
       return acc;
