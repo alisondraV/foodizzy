@@ -88,7 +88,7 @@ export default class SignIn extends Vue {
   }
 
   goToTheNextPage() {
-    router.push("/");
+    router.push("/fridge-setup");
   }
 
   removeEmail(email: string) {

@@ -16,6 +16,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/SignUp.vue")
   },
   {
+    path: "/fridge-setup",
+    name: "FridgeSetup",
+    component: () => import("../views/FridgeSetup.vue")
+  },
+  {
     path: "/create-family",
     name: "NewFamily",
     component: () => import("../views/NewFamily.vue")
