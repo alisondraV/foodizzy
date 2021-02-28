@@ -71,8 +71,16 @@ export default class SignIn extends Vue {
   email = "";
   password = "";
 
+  get redirect(): string | null {
+    return (this.$route.query.redirect as string) ?? null;
+  }
+
   goToSignUpPage() {
-    router.push("/sign-up");
+    let route = "/sign-up";
+    if (this.redirect) {
+      route += "?redirect=" + this.redirect;
+    }
+    router.replace(route);
   }
 
   resetPassword() {
@@ -83,7 +91,7 @@ export default class SignIn extends Vue {
     await Authentication.instance.signIn(this.email, this.password);
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await router.push("/");
+      await this.finishSignIn();
     } catch (err) {
       await router.push("/create-family");
     }
@@ -93,10 +101,15 @@ export default class SignIn extends Vue {
     await Authentication.instance.authWithGoogle();
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await router.push("/");
+      await this.finishSignIn();
     } catch (err) {
       await router.push("/create-family");
     }
+  }
+
+  async finishSignIn() {
+    const route = "/" + (this.redirect ?? "home");
+    await router.replace(route);
   }
 }
 </script>

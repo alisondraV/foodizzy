@@ -46,6 +46,16 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/UserProfile.vue")
   },
   {
+    path: "/family",
+    name: "Family",
+    component: () => import("../views/Family.vue")
+  },
+  {
+    path: "/new-family-members",
+    name: "NewFamilyMembers",
+    component: () => import("../views/NewFamilyMembers.vue")
+  },
+  {
     path: "/recipes",
     name: "Recipes",
     component: () => import("../views/Recipes.vue")
@@ -61,6 +71,11 @@ const routes: Array<RouteConfig> = [
     name: "CustomProduct",
     component: () => import("../views/CustomProduct.vue"),
     props: route => ({ query: route.params.location })
+  },
+  {
+    path: "/invites",
+    name: "Invites",
+    component: () => import("../views/Invites.vue")
   }
 ];
 
@@ -76,7 +91,11 @@ router.beforeEach(
       console.log("getting user info...");
 
       const user = await Authentication.instance.getCurrentUser();
-      if (to.name === "SignIn" || to.name === "SignUp" || user !== null) {
+      const publicURLs = ["SignIn", "SignUp", "Invites"];
+      const destinationIsPublic = publicURLs.some(url =>
+        url.startsWith(to.name ?? "")
+      );
+      if (destinationIsPublic || user !== null) {
         next();
       } else {
         next("/sign-in");

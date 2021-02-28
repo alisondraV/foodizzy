@@ -49,12 +49,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
 import router from "@/router";
 import SkipHeader from "@/components/SkipHeader.vue";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import firebase from "firebase";
 import { CurrentFamily } from "@/types";
 
 @Component({
@@ -68,17 +66,9 @@ export default class SignIn extends Vue {
   familyName = "";
   memberEmails: string[] = [];
   currentEmail = "";
-  user: firebase.User | null = null;
-
-  async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-  }
 
   async createFamily() {
-    await CurrentFamily.instance.create(this.familyName, [
-      this.user!.email!,
-      ...this.memberEmails
-    ]);
+    await CurrentFamily.instance.create(this.familyName, this.memberEmails);
     this.goToTheNextPage();
   }
 
