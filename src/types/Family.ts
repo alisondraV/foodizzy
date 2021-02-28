@@ -10,6 +10,7 @@ import WastedProduct from "@/types/WastedProduct";
 export default interface Family {
   id: string;
   members: string[];
+  pendingMembers: string[];
   name: string;
   storage: Product[];
   shoppingList: ShoppingListItem[];
@@ -29,14 +30,16 @@ export class CurrentFamily {
   }
 
   public async create(name: string, members: string[]) {
+    const user = await Authentication.instance.getCurrentUser();
     const newFamilyRef: DocumentReference = await Firestore.instance.db
-        .collection("family")
-        .add({
-          members,
-          name,
-          shoppingList: [],
-          storage: []
-        });
+      .collection("family")
+      .add({
+        members: [user?.email],
+        pendingMembers: members,
+        name,
+        shoppingList: [],
+        storage: []
+      });
 
     await Firestore.instance.db.collection("wasteBuckets").add({
       familyId: newFamilyRef.id,
@@ -123,5 +126,64 @@ export class CurrentFamily {
     }
 
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
+  }
+
+  public async quit() {
+    const family = await this.getCurrentFamily();
+    const user = await Authentication.instance.getCurrentUser();
+    await Firestore.instance.db
+      .doc(`family/${family.id}`)
+      .update(
+        "members",
+        firebase.firestore.FieldValue.arrayRemove(user!.email)
+      );
+  }
+
+  public async inviteMembers(memberEmails: string[]) {
+    const family = await this.getCurrentFamily();
+    await Firestore.instance.db
+      .doc(`family/${family.id}`)
+      .update(
+        "pendingMembers",
+        firebase.firestore.FieldValue.arrayUnion(...memberEmails)
+      );
+  }
+
+  public async listenForChanges(
+    callback: (
+      snapshot: firebase.firestore.DocumentSnapshot<
+        firebase.firestore.DocumentData
+      >
+    ) => void
+  ) {
+    const family = await this.getCurrentFamily();
+    Firestore.instance.db
+      .doc(`family/${family.id}`)
+      .onSnapshot({ next: callback });
+  }
+
+  public async switchTo(newFamilyId: string, userEmail: string): Promise<void> {
+    try {
+      const family = await this.getCurrentFamily();
+      await Firestore.instance.db
+        .doc(`family/${family.id}`)
+        .update(
+          "members",
+          firebase.firestore.FieldValue.arrayRemove(userEmail)
+        );
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    await Firestore.instance.db
+      .doc(`family/${newFamilyId}`)
+      .update(
+        "pendingMembers",
+        firebase.firestore.FieldValue.arrayRemove(userEmail)
+      );
+
+    await Firestore.instance.db
+      .doc(`family/${newFamilyId}`)
+      .update("members", firebase.firestore.FieldValue.arrayUnion(userEmail));
   }
 }

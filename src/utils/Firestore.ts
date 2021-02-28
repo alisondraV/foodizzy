@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import { CurrentFamily } from "@/types/Family";
+import Family, { CurrentFamily } from "@/types/Family";
 import Product from "@/types/Product";
 import ShoppingListItem from "@/types/ShoppingListItem";
 import WastedProduct from "@/types/WastedProduct";
@@ -111,5 +111,14 @@ export default class Firestore {
   public async getAllRecipes() {
     const documents = await this.db.collection("recipes").get();
     return documents.docs.map<string>(qds => qds.data().name);
+  }
+
+  public async getInvites(userEmail: string): Promise<Family[]> {
+    const familyQuerySnap = await this.db
+      .collection("family")
+      .where("pendingMembers", "array-contains", userEmail)
+      .get();
+
+    return familyQuerySnap.docs.map(snap => snap.data() as Family);
   }
 }

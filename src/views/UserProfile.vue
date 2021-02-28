@@ -15,7 +15,7 @@
           {{ user.displayName }}
         </p>
         <p class="mb-2">Email: {{ user.email }}</p>
-        <p class="mb-6">Family: {{ family.name }}</p>
+        <v-button @click="viewFamily" label="Family Page" />
         <hr class="w-full border-secondary-text mb-6" />
         <div class="flex justify-between w-1/4" @click="logOut">
           <img src="@/assets/images/LogOut.svg" alt="Log Out" />
@@ -31,11 +31,12 @@ import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VHeader from "@/components/VHeader.vue";
+import VButton from "@/components/VButton.vue";
 import Family, { CurrentFamily } from "@/types/Family";
 import router from "@/router";
 
 @Component({
-  components: { VHeader }
+  components: { VHeader, VButton }
 })
 export default class AppMain extends Vue {
   user: firebase.User | null = null;
@@ -44,6 +45,10 @@ export default class AppMain extends Vue {
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
     this.family = await CurrentFamily.instance.getCurrentFamily();
+  }
+
+  async viewFamily() {
+    await router.push("/family");
   }
 
   async logOut() {
