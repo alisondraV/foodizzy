@@ -9,9 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          npm i && npm run build
           touch .env
           echo ${{ secrets.ENGINE_API_KEY }} >> .env
+          cat .env
+          npm i && npm run build
     - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
