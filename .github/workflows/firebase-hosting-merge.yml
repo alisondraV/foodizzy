@@ -12,11 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          touch .env
-          echo 'env.VUE_APP_AUTH_DOMAIN:' ${{ env.VUE_APP_AUTH_DOMAIN }}
-          echo 'env.VUE:' ${{ env.VUE }}
-          echo ${{ env.VUE }} >> .env
-          cat .env
+          echo 'secrects.VUE:' ${{ secrects.VUE }}
+          echo 'secrects.VUE_APP_API_KEY:' ${{ secrects.VUE_APP_API_KEY }}
           npm i && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -26,10 +23,10 @@ jobs:
           projectId: foodizzy-app
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
-          VUE_APP_API_KEY: env.VUE_APP_API_KEY
-          VUE_APP_AUTH_DOMAIN: env.VUE_APP_AUTH_DOMAIN
-          VUE_APP_PROJECT_ID: env.VUE_APP_PROJECT_ID
-          VUE_APP_STORAGE_BUCKET: env.VUE_APP_STORAGE_BUCKET
-          VUE_APP_MESSAGING_SENDER_ID: env.VUE_APP_MESSAGING_SENDER_ID
-          VUE_APP_APP_ID: env.VUE_APP_APP_ID
-          VUE_APP_MEASUREMENT_ID: env.VUE_APP_MEASUREMENT_ID
+          VUE_APP_API_KEY: ${{ secrects.VUE_APP_API_KEY }}
+          VUE_APP_AUTH_DOMAIN: ${{ secrects.VUE_APP_AUTH_DOMAIN }}
+          VUE_APP_PROJECT_ID: ${{ secrects.VUE_APP_PROJECT_ID }}
+          VUE_APP_STORAGE_BUCKET: ${{ secrects.VUE_APP_STORAGE_BUCKET }}
+          VUE_APP_MESSAGING_SENDER_ID: ${{ secrects.VUE_APP_MESSAGING_SENDER_ID }}
+          VUE_APP_APP_ID: ${{ secrects.VUE_APP_APP_ID }}
+          VUE_APP_MEASUREMENT_ID: ${{ secrects.VUE_APP_MEASUREMENT_ID }}
