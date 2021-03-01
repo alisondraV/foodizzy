@@ -107,7 +107,7 @@ export default class SignUp extends Vue {
   }
 
   async finishSignUp() {
-    const route = "/" + (this.redirect ?? "home");
+    const route = "/" + (this.redirect ?? "");
     await router.replace(route);
   }
 }
