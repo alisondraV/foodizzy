@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           touch .env
-          echo ${{ secrets.ENGINE_API_KEY }} >> .env
+          echo ${{ secrets.VUE }} >> .env
           cat .env
           npm i && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
