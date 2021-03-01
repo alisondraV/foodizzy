@@ -49,6 +49,10 @@ function updateTotalProducts(
 
   const categoryName = addedProduct!.category.toLowerCase() ?? "general";
 
+  if (!newFamily.totalProducts) {
+    newFamily.totalProducts = {}
+  }
+  
   if (!Object.keys(newFamily.totalProducts).includes(categoryName)) {
     newFamily.totalProducts[categoryName] = 0;
   }
@@ -62,7 +66,8 @@ function sendWelcomeEmails(
     oldFamily?: FirebaseFirestore.DocumentData
 ) {
   const oldMembers = oldFamily?.pendingMembers ?? [];
-  const newEmails = newFamily.pendingMembers.filter((email: any) => {
+  const newMembers = newFamily?.pendingMembers ?? [];
+  const newEmails = newMembers.filter((email: any) => {
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
 

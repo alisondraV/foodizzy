@@ -8,7 +8,7 @@ import ShoppingListItem from "./ShoppingListItem";
 import WastedProduct from "@/types/WastedProduct";
 
 export default interface Family {
-  id: string;
+  id?: string;
   members: string[];
   pendingMembers: string[];
   name: string;
@@ -31,15 +31,17 @@ export class CurrentFamily {
 
   public async create(name: string, members: string[]) {
     const user = await Authentication.instance.getCurrentUser();
+    const newFamily: Family = {
+      members: [user?.email!],
+      pendingMembers: members,
+      name,
+      shoppingList: [],
+      storage: [],
+      totalProducts: {}
+    };
     const newFamilyRef: DocumentReference = await Firestore.instance.db
       .collection("family")
-      .add({
-        members: [user?.email],
-        pendingMembers: members,
-        name,
-        shoppingList: [],
-        storage: []
-      });
+      .add(newFamily);
 
     await Firestore.instance.db.collection("wasteBuckets").add({
       familyId: newFamilyRef.id,
