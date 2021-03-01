@@ -108,7 +108,7 @@ export default class SignIn extends Vue {
   }
 
   async finishSignIn() {
-    const route = "/" + (this.redirect ?? "home");
+    const route = "/" + (this.redirect ?? "");
     await router.replace(route);
   }
 }
