@@ -3,7 +3,7 @@ import sendEmail from "./sendEmail";
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
-    .onUpdate((change, context) => {
+    .onUpdate(async (change, context) => {
       const oldFamily = change.before.data();
       const newFamily = change.after.data();
 
@@ -30,7 +30,7 @@ export const onFamilyCreate = functions.firestore
       return sendWelcomeEmails(newFamily);
     });
 
-function updateTotalProducts(
+async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily: FirebaseFirestore.DocumentData,
     change: functions.Change<functions.firestore.QueryDocumentSnapshot>
@@ -48,17 +48,30 @@ function updateTotalProducts(
   }
 
   const categoryName = addedProduct!.category.toLowerCase() ?? "general";
+  const updatedFamilyStats = change.after.ref.collection("statistics");
 
-  if (!newFamily.totalProducts) {
-    newFamily.totalProducts = {}
+  if ((await updatedFamilyStats.get()).docs.length === 0) {
+    await change.after.ref.collection("statistics").add({
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      totalProducts: {},
+    });
   }
-  
-  if (!Object.keys(newFamily.totalProducts).includes(categoryName)) {
-    newFamily.totalProducts[categoryName] = 0;
-  }
-  newFamily.totalProducts[categoryName]++;
 
-  return change.after.ref.update("totalProducts", newFamily.totalProducts);
+  const thisMonthStatsCollection = await updatedFamilyStats
+      .where("month", "==", new Date().getMonth())
+      .where("year", "==", new Date().getFullYear())
+      .get();
+  const thisMonthData = thisMonthStatsCollection.docs[0].data();
+
+  if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
+    thisMonthData.totalProducts[categoryName] = 0;
+  }
+  thisMonthData.totalProducts[categoryName]++;
+
+  return await updatedFamilyStats
+      .doc(thisMonthStatsCollection.docs[0].id)
+      .update("totalProducts", thisMonthData.totalProducts);
 }
 
 function sendWelcomeEmails(

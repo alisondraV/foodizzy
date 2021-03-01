@@ -31,17 +31,15 @@ export class CurrentFamily {
 
   public async create(name: string, members: string[]) {
     const user = await Authentication.instance.getCurrentUser();
-    const newFamily: Family = {
-      members: [user?.email!],
-      pendingMembers: members,
-      name,
-      shoppingList: [],
-      storage: [],
-      totalProducts: {}
-    };
     const newFamilyRef: DocumentReference = await Firestore.instance.db
       .collection("family")
-      .add(newFamily);
+      .add({
+        members: [user?.email],
+        pendingMembers: members,
+        name,
+        shoppingList: [],
+        storage: []
+      });
 
     await Firestore.instance.db.collection("wasteBuckets").add({
       familyId: newFamilyRef.id,
