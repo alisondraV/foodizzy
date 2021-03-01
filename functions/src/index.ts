@@ -50,19 +50,8 @@ async function updateTotalProducts(
   const categoryName = addedProduct!.category.toLowerCase() ?? "general";
   const updatedFamilyStats = change.after.ref.collection("statistics");
 
-  if ((await updatedFamilyStats.get()).docs.length === 0) {
-    await change.after.ref.collection("statistics").add({
-      month: new Date().getMonth(),
-      year: new Date().getFullYear(),
-      totalProducts: {},
-    });
-  }
-
-  const thisMonthStatsCollection = await updatedFamilyStats
-      .where("month", "==", new Date().getMonth())
-      .where("year", "==", new Date().getFullYear())
-      .get();
-  const thisMonthData = thisMonthStatsCollection.docs[0].data();
+  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
+  const thisMonthData = thisMonthStatsDoc.data() ?? {};
 
   if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
     thisMonthData.totalProducts[categoryName] = 0;
@@ -70,8 +59,27 @@ async function updateTotalProducts(
   thisMonthData.totalProducts[categoryName]++;
 
   return await updatedFamilyStats
-      .doc(thisMonthStatsCollection.docs[0].id)
+      .doc(thisMonthStatsDoc.id)
       .update("totalProducts", thisMonthData.totalProducts);
+}
+
+async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
+  const thisMonthStatsCollection = await statsCollection
+    .where("month", "==", new Date().getMonth())
+    .where("year", "==", new Date().getFullYear())
+    .get();
+
+  let thisMonthStatsDocRef = null;
+  if (thisMonthStatsCollection.docs.length === 0) {
+    thisMonthStatsDocRef = await statsCollection.add({
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      totalProducts: {},
+    });
+  } else {
+    thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
+  }
+  return await thisMonthStatsDocRef.get();
 }
 
 function sendWelcomeEmails(
