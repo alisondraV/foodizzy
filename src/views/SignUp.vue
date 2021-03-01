@@ -88,26 +88,25 @@ export default class SignUp extends Vue {
 
   async signUp() {
     await Authentication.instance.signUp(this.email, this.password, this.name);
-    try {
-      await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignUp();
-    } catch (err) {
-      await router.push("/create-family");
-    }
+    await this.tryGetFamilyAndForward();
   }
 
   async signUpThroughGoogle() {
     await Authentication.instance.authWithGoogle();
+    await this.tryGetFamilyAndForward();
+  }
+
+  async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignUp();
     } catch (err) {
-      await router.push("/create-family");
+      await this.finishSignUp("/create-family");
     }
   }
 
-  async finishSignUp() {
-    const route = "/" + (this.redirect ?? "");
+  async finishSignUp(targetRoute?: string) {
+    const route = "/" + (this.redirect ?? targetRoute);
     await router.replace(route);
   }
 }

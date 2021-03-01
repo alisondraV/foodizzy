@@ -1,7 +1,7 @@
 module.exports = {
   pwa: {
     iconPaths: {
-      msTileImage: "img/icons/Logo.svg"
+      msTileImage: "public/img/icons/mstile-150x150.png"
     }
   }
 };
