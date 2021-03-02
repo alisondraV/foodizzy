@@ -41,7 +41,6 @@ import SearchInput from "@/components/SearchInput.vue";
 import SkipHeader from "@/components/SkipHeader.vue";
 import VButton from "@/components/VButton.vue";
 import router from "@/router";
-import { colors } from "@/utils/consts";
 
 @Component({
   components: {
@@ -51,9 +50,10 @@ import { colors } from "@/utils/consts";
   }
 })
 export default class Fridge extends Vue {
+  categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
   productsToAdd: Product[] = [];
-  categoryColors: { [category: string]: string } = {};
+  colors = ["#B6DDDA", "#FFE6A3"];
   searchQuery = "";
 
   async mounted() {
@@ -112,7 +112,7 @@ export default class Fridge extends Vue {
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
 
-        this.categoryColors[categoryName] = colors[categoryCount];
+        this.categoryColors[categoryName] = this.colors[categoryCount % 2];
         categoryCount++;
       }
       acc[categoryName].push(product);
