@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert v-if="alertMessage" :label="alertMessage" :wasted="true" />
+    </div>
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li
@@ -53,6 +56,7 @@ import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import VHeader from "@/components/VHeader.vue";
+import VAlert from "@/components/VAlert.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
 import { CurrentFamily } from "@/types";
@@ -61,10 +65,12 @@ import { CurrentFamily } from "@/types";
   components: {
     SearchInput,
     NavigationMenu,
+    VAlert,
     VHeader
   }
 })
 export default class Fridge extends Vue {
+  alertMessage = "";
   products: Product[] = [];
   searchQuery = "";
   newProductName = "";
@@ -105,6 +111,7 @@ export default class Fridge extends Vue {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.moveToWasted(product);
     await Firestore.instance.addToShoppingList(product);
+    this.alertMessage = `${product.name} was wasted`;
   }
 
   addNewProduct() {
