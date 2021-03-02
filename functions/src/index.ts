@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import sendEmail from "./sendEmail";
+import axios from 'axios';
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
@@ -82,7 +83,7 @@ async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionRe
   return await thisMonthStatsDocRef.get();
 }
 
-function sendWelcomeEmails(
+async function sendWelcomeEmails(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily?: FirebaseFirestore.DocumentData
 ) {
@@ -94,16 +95,19 @@ function sendWelcomeEmails(
 
   console.log('New Members: ', newEmails);
 
-  return Promise.all(newEmails.map((email: string) => {
-    const url = `https://foodizzy-app.web.app/invites`;
+  const htmlURL = "https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083";
+  const response = await axios.get(htmlURL);
+  let emailTemplate = response.data;
 
+  emailTemplate = emailTemplate.replace("{PERSON}", "Somebody");
+  emailTemplate = emailTemplate.replace("{FAMILY NAME}", `"${newFamily.name}"`);
+  
+  return Promise.all(newEmails.map((email: string) => {
     return sendEmail({
       to: [email],
       message: {
         subject: "Welcome to Foodizzy!",
-        html: `
-          <p>Hi there! You have been invited to join your family members at Foodizy. <a href="${url}">Accept your invite</a></p>.
-        `,
+        html: emailTemplate,
       }
     });
   }));
