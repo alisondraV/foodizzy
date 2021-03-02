@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import sendEmail from "./sendEmail";
-import axios from 'axios';
+import axios from "axios";
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
@@ -66,11 +66,11 @@ async function updateTotalProducts(
 
 async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
   const thisMonthStatsCollection = await statsCollection
-    .where("month", "==", new Date().getMonth())
-    .where("year", "==", new Date().getFullYear())
-    .get();
+      .where("month", "==", new Date().getMonth())
+      .where("year", "==", new Date().getFullYear())
+      .get();
 
-  let thisMonthStatsDocRef = null;
+  let thisMonthStatsDocRef;
   if (thisMonthStatsCollection.docs.length === 0) {
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
@@ -93,7 +93,7 @@ async function sendWelcomeEmails(
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
 
-  console.log('New Members: ', newEmails);
+  console.log("New Members: ", newEmails);
 
   const htmlURL = "https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083";
   const response = await axios.get(htmlURL);
@@ -101,14 +101,14 @@ async function sendWelcomeEmails(
 
   emailTemplate = emailTemplate.replace("{PERSON}", "Somebody");
   emailTemplate = emailTemplate.replace("{FAMILY NAME}", `"${newFamily.name}"`);
-  
+
   return Promise.all(newEmails.map((email: string) => {
     return sendEmail({
       to: [email],
       message: {
         subject: "Welcome to Foodizzy!",
         html: emailTemplate,
-      }
+      },
     });
   }));
 }

@@ -26,5 +26,6 @@ module.exports = {
   rules: {
     "max-len": ["warn", {"code": 100, "tabWidth": 4}],
     "quotes": ["error", "double"],
+    "require-jsdoc": "off",
   },
 };

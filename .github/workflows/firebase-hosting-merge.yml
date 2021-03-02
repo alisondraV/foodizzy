@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          echo 'secrets.VUE:' ${{ secrets.VUE }}
-          echo 'secrets.VUE_APP_API_KEY:' ${{ secrets.VUE_APP_API_KEY }}
-          npm i && npm run build
+      - run: 'npm ci && npm run build'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
