@@ -106,7 +106,7 @@ export default class SignIn extends Vue {
     }
   }
 
-  async finishSignIn(targetRoute?: string) {
+  async finishSignIn(targetRoute = "") {
     const route = "/" + (this.redirect ?? targetRoute);
     await router.replace(route);
   }
