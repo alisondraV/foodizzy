@@ -8,7 +8,7 @@ import ShoppingListItem from "./ShoppingListItem";
 import WastedProduct from "@/types/WastedProduct";
 
 export default interface Family {
-  id: string;
+  id?: string;
   members: string[];
   pendingMembers: string[];
   name: string;

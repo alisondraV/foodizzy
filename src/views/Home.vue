@@ -122,7 +122,10 @@ export default class Home extends Vue {
         ) || this.user!.displayName;
     }
     await this.getWastedProductsForSelectedMonth();
-    this.monthData = await CurrentFamily.instance.getAvailableMonthData();
+    const availableMonthData = await CurrentFamily.instance.getAvailableMonthData();
+    this.monthData = [
+      ...new Set([...availableMonthData, this.selectedMonthData])
+    ];
     this.loading = false;
   }
 

@@ -1,9 +1,10 @@
 import * as functions from "firebase-functions";
 import sendEmail from "./sendEmail";
+import axios from "axios";
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
-    .onUpdate((change, context) => {
+    .onUpdate(async (change, context) => {
       const oldFamily = change.before.data();
       const newFamily = change.after.data();
 
@@ -30,7 +31,7 @@ export const onFamilyCreate = functions.firestore
       return sendWelcomeEmails(newFamily);
     });
 
-function updateTotalProducts(
+async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily: FirebaseFirestore.DocumentData,
     change: functions.Change<functions.firestore.QueryDocumentSnapshot>
@@ -48,37 +49,66 @@ function updateTotalProducts(
   }
 
   const categoryName = addedProduct!.category.toLowerCase() ?? "general";
+  const updatedFamilyStats = change.after.ref.collection("statistics");
 
-  if (!Object.keys(newFamily.totalProducts).includes(categoryName)) {
-    newFamily.totalProducts[categoryName] = 0;
+  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
+  const thisMonthData = thisMonthStatsDoc.data() ?? {};
+
+  if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
+    thisMonthData.totalProducts[categoryName] = 0;
   }
-  newFamily.totalProducts[categoryName]++;
+  thisMonthData.totalProducts[categoryName]++;
 
-  return change.after.ref.update("totalProducts", newFamily.totalProducts);
+  return await updatedFamilyStats
+      .doc(thisMonthStatsDoc.id)
+      .update("totalProducts", thisMonthData.totalProducts);
 }
 
-function sendWelcomeEmails(
+async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
+  const thisMonthStatsCollection = await statsCollection
+      .where("month", "==", new Date().getMonth())
+      .where("year", "==", new Date().getFullYear())
+      .get();
+
+  let thisMonthStatsDocRef;
+  if (thisMonthStatsCollection.docs.length === 0) {
+    thisMonthStatsDocRef = await statsCollection.add({
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      totalProducts: {},
+    });
+  } else {
+    thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
+  }
+  return await thisMonthStatsDocRef.get();
+}
+
+async function sendWelcomeEmails(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily?: FirebaseFirestore.DocumentData
 ) {
   const oldMembers = oldFamily?.pendingMembers ?? [];
-  const newEmails = newFamily.pendingMembers.filter((email: any) => {
+  const newMembers = newFamily?.pendingMembers ?? [];
+  const newEmails = newMembers.filter((email: any) => {
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
 
-  console.log('New Members: ', newEmails);
+  console.log("New Members: ", newEmails);
+
+  const htmlURL = "https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083";
+  const response = await axios.get(htmlURL);
+  let emailTemplate = response.data;
+
+  emailTemplate = emailTemplate.replace("{PERSON}", "Somebody");
+  emailTemplate = emailTemplate.replace("{FAMILY NAME}", `"${newFamily.name}"`);
 
   return Promise.all(newEmails.map((email: string) => {
-    const url = `https://foodizzy-app.web.app/invites`;
-
     return sendEmail({
       to: [email],
       message: {
         subject: "Welcome to Foodizzy!",
-        html: `
-          <p>Hi there! You have been invited to join your family members at Foodizy. <a href="${url}">Accept your invite</a></p>.
-        `,
-      }
+        html: emailTemplate,
+      },
     });
   }));
 }
