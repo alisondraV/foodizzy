@@ -2,7 +2,11 @@
   <div>
     <v-header heading="What's in your fridge?" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" :wasted="true" />
+      <v-alert
+        v-if="alertMessage"
+        :label="alertMessage"
+        :wasted="productWasWasted"
+      />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
@@ -75,6 +79,7 @@ export default class Fridge extends Vue {
   searchQuery = "";
   newProductName = "";
   newProductCategory = "";
+  productWasWasted = false;
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
@@ -104,6 +109,11 @@ export default class Fridge extends Vue {
     this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
+
+    this.alertMessage = `${product.name} was  was added to the Shopping List`;
+    setTimeout(() => {
+      this.alertMessage = "";
+    }, 3000);
   }
 
   async markAsWasted(product: Product) {
@@ -111,7 +121,13 @@ export default class Fridge extends Vue {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.moveToWasted(product);
     await Firestore.instance.addToShoppingList(product);
+
     this.alertMessage = `${product.name} was wasted`;
+    this.productWasWasted = true;
+    setTimeout(() => {
+      this.alertMessage = "";
+      this.productWasWasted = false;
+    }, 3000);
   }
 
   addNewProduct() {
