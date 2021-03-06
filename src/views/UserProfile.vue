@@ -14,31 +14,31 @@
         >
           {{ user.displayName }}
         </p>
-        <ul>
-          <li class="flex justify-between w-full">
+        <ul class="w-full text-primary-text ">
+          <li class="flex justify-between mb-4">
             <img src="@/assets/images/ProfileGreen.svg" alt="Information" />
-            <span>Personal information</span>
+            <span class="flex-1 text-left ml-4">Personal information</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
-          <li class="flex justify-between w-full" @click="viewFamily">
+          <li class="flex justify-between mb-5" @click="viewFamily">
             <img src="@/assets/images/Password.svg" alt="Password" />
-            <span>Change Password</span>
+            <span class="flex-1 text-left ml-4">Change Password</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
 
-          <hr class="w-full border-secondary-text mb-6" />
+          <hr class="w-full border-secondary-text mb-5" />
 
-          <li class="flex justify-between w-full" @click="viewFamily">
+          <li class="flex justify-between mb-5" @click="viewFamily">
             <img src="@/assets/images/Family.svg" alt="Family" />
-            <span>My Family</span>
+            <span class="flex-1 text-left ml-4">My Family</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
 
-          <hr class="w-full border-secondary-text mb-6" />
+          <hr class="w-full border-secondary-text mb-5" />
 
-          <li class="flex justify-between w-full" @click="logOut">
+          <li class="flex" @click="logOut">
             <img src="@/assets/images/LogOut.svg" alt="Log Out" />
-            <span>Log Out</span>
+            <span class="flex-1 text-left ml-4">Log Out</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
         </ul>
