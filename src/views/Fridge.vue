@@ -55,31 +55,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import VHeader from "@/components/VHeader.vue";
-import VAlert from "@/components/VAlert.vue";
-import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
+import { Component, Vue } from "vue-property-decorator";
 import { CurrentFamily } from "@/types";
+import Firestore from "@/utils/Firestore";
+import NavigationMenu from "@/components/NavigationMenu.vue";
+import Product from "@/types/Product";
+import SearchInput from "@/components/SearchInput.vue";
+import VAlert from "@/components/VAlert.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    SearchInput,
     NavigationMenu,
+    SearchInput,
     VAlert,
     VHeader
   }
 })
 export default class Fridge extends Vue {
   alertMessage = "";
-  products: Product[] = [];
-  searchQuery = "";
-  newProductName = "";
   newProductCategory = "";
+  newProductName = "";
+  products: Product[] = [];
   productWasWasted = false;
+  searchQuery = "";
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
@@ -110,7 +110,7 @@ export default class Fridge extends Vue {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
 
-    this.alertMessage = `${product.name} was  was added to the Shopping List`;
+    this.alertMessage = `${product.name} was added to the Shopping List`;
     setTimeout(() => {
       this.alertMessage = "";
     }, 3000);
