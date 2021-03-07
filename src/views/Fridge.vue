@@ -56,7 +56,8 @@
 
 <script lang="ts">
 import router from "@/router";
-import { Component, Vue } from "vue-property-decorator";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component, Mixins } from "vue-property-decorator";
 import { CurrentFamily } from "@/types";
 import Firestore from "@/utils/Firestore";
 import NavigationMenu from "@/components/NavigationMenu.vue";
@@ -73,8 +74,7 @@ import VHeader from "@/components/VHeader.vue";
     VHeader
   }
 })
-export default class Fridge extends Vue {
-  alertMessage = "";
+export default class Fridge extends Mixins(AlertMixin) {
   newProductCategory = "";
   newProductName = "";
   products: Product[] = [];
@@ -110,10 +110,7 @@ export default class Fridge extends Vue {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
 
-    this.alertMessage = `${product.name} was added to the Shopping List`;
-    setTimeout(() => {
-      this.alertMessage = "";
-    }, 3000);
+    await this.showAlert(`${product.name} was added to the Shopping List`);
   }
 
   async markAsWasted(product: Product) {
@@ -122,12 +119,9 @@ export default class Fridge extends Vue {
     await Firestore.instance.moveToWasted(product);
     await Firestore.instance.addToShoppingList(product);
 
-    this.alertMessage = `${product.name} was wasted`;
     this.productWasWasted = true;
-    setTimeout(() => {
-      this.alertMessage = "";
-      this.productWasWasted = false;
-    }, 3000);
+    await this.showAlert(`${product.name} was wasted`);
+    this.productWasWasted = false;
   }
 
   addNewProduct() {
