@@ -15,12 +15,12 @@
           {{ user.displayName }}
         </p>
         <ul class="w-full text-primary-text ">
-          <li class="flex justify-between mb-4">
+          <li class="flex justify-between mb-4" @click="viewPersonalInfo">
             <img src="@/assets/images/ProfileGreen.svg" alt="Information" />
             <span class="flex-1 text-left ml-4">Personal information</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
-          <li class="flex justify-between mb-5" @click="viewFamily">
+          <li class="flex justify-between mb-5" @click="changePassword">
             <img src="@/assets/images/Password.svg" alt="Password" />
             <span class="flex-1 text-left ml-4">Change Password</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
@@ -48,33 +48,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
-import Authentication from "@/utils/Authentication";
-import VHeader from "@/components/VHeader.vue";
-import VButton from "@/components/VButton.vue";
-import Family, { CurrentFamily } from "@/types/Family";
 import router from "@/router";
+import { Component, Vue } from "vue-property-decorator";
+import Family, { CurrentFamily } from "@/types/Family";
+import Authentication from "@/utils/Authentication";
+import VButton from "@/components/VButton.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
-  components: { VHeader, VButton }
+  components: { VButton, VHeader }
 })
 export default class AppMain extends Vue {
-  user: firebase.User | null = null;
   family: Family | null = null;
+  user: firebase.User | null = null;
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
     this.family = await CurrentFamily.instance.getCurrentFamily();
   }
 
-  async viewFamily() {
-    await router.push("/family");
+  async changePassword() {
+    await router.push("/change-password");
   }
 
   async logOut() {
     await Authentication.instance.signOut();
     await router.push("/sign-in");
+  }
+
+  async viewFamily() {
+    await router.push("/family");
+  }
+
+  async viewPersonalInfo() {
+    await router.push("/personal-info");
   }
 }
 </script>
