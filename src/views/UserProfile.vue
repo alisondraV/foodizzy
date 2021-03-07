@@ -33,6 +33,11 @@
             <span class="flex-1 text-left ml-4">My Family</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
+          <li class="flex justify-between mb-5" @click="viewInvitations">
+            <img src="@/assets/images/Invitations.svg" alt="Invitations" />
+            <span class="flex-1 text-left ml-4">Your invitations</span>
+            <img src="@/assets/images/Arrow.svg" alt="Go" />
+          </li>
 
           <hr class="w-full border-secondary-text mb-5" />
 
@@ -79,6 +84,10 @@ export default class AppMain extends Vue {
 
   async viewFamily() {
     await router.push("/family");
+  }
+
+  async viewInvitations() {
+    await router.push("/invitations");
   }
 
   async viewPersonalInfo() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header heading="Accept Your Invite" />
+    <v-header heading="My Invitations" />
     <div class="mt-24 mb-20 mx-8">
       <div v-if="!user">
         <!-- TODO: redirect to log-in and back -->

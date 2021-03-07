@@ -48,7 +48,22 @@ const routes: Array<RouteConfig> = [
   {
     path: "/family",
     name: "Family",
-    component: () => import("../views/Family.vue")
+    component: () => import("../views/profile-settings/Family.vue")
+  },
+  {
+    path: "/invitations",
+    name: "Invitations",
+    component: () => import("../views/profile-settings/Invitations.vue")
+  },
+  {
+    path: "/personal-info",
+    name: "PersonalInformation",
+    component: () => import("../views/profile-settings/PersonalInformation.vue")
+  },
+  {
+    path: "/change-password",
+    name: "ChangePassword",
+    component: () => import("../views/profile-settings/ChangePassword.vue")
   },
   {
     path: "/new-family-members",
@@ -71,11 +86,6 @@ const routes: Array<RouteConfig> = [
     name: "CustomProduct",
     component: () => import("../views/CustomProduct.vue"),
     props: route => ({ query: route.params.location })
-  },
-  {
-    path: "/invites",
-    name: "Invites",
-    component: () => import("../views/Invites.vue")
   },
   {
     path: "*",
