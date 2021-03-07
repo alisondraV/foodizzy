@@ -22,7 +22,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class VInput extends Vue {
   @Prop() value!: null;
   @Prop() label!: string;
-  @Prop({ default: "text" }) type!: string;
+  @Prop({ default: "text" }) type?: string;
   focused = false;
 
   get isFocused() {
