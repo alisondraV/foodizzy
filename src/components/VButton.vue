@@ -3,6 +3,7 @@
     <button
       @click="$emit('click')"
       class="text-primary-text rounded-md bg-primary-yellow h-12 w-full"
+      :style="disabled ? 'opacity: 50%' : 'opacity: 100%;'"
       :disabled="disabled"
     >
       {{ label }}
@@ -19,9 +20,3 @@ export default class VButton extends Vue {
   @Prop({ default: false }) disabled?: boolean;
 }
 </script>
-
-<style scoped>
-button:disabled {
-  opacity: 50%;
-}
-</style>
