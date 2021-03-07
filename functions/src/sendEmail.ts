@@ -1,7 +1,4 @@
-import admin from 'firebase-admin';
-
-admin.initializeApp();
-const db = admin.firestore();
+import {db} from './admin';
 
 interface MailOptions {
     to: string[];
