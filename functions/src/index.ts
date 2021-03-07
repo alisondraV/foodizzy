@@ -20,6 +20,8 @@ export const onFamilyUpdate = functions.firestore
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
+      checkForFamilyRemoval(change.after);
+
       return null;
     });
 
@@ -112,3 +114,12 @@ async function sendWelcomeEmails(
     });
   }));
 }
+
+function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
+  const newFamily = newDoc.data();
+  if (newFamily.members?.length === 0) {
+    return newDoc.ref.delete();
+  }
+  return null;
+}
+
