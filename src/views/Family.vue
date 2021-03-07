@@ -7,7 +7,7 @@
         <h1>{{ family.name }}</h1>
         <h2>Members</h2>
         <div>
-          <div v-for="member in allMembers" :key="member">
+          <div v-for="member in allMembers" :key="member.email">
             <div>
               {{ member.email + (member.isPending ? " (pending)" : "") }}
             </div>
