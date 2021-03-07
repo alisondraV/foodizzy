@@ -3,6 +3,7 @@
     <button
       @click="$emit('click')"
       class="text-primary-text rounded-md bg-primary-yellow h-12 w-full"
+      :disabled="disabled"
     >
       {{ label }}
     </button>
@@ -15,5 +16,12 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class VButton extends Vue {
   @Prop() label!: string;
+  @Prop({ default: false }) disabled?: boolean;
 }
 </script>
+
+<style scoped>
+  button:disabled {
+    opacity: 50%;
+  }
+</style>

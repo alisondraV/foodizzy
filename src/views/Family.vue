@@ -16,7 +16,15 @@
             <button @click="addNewMembers">+</button>
           </div>
         </div>
-        <v-button label="Quit Family" @click="handleQuit"></v-button>
+        <v-input
+          label="Enter the family name to quit"
+          v-model="familyNameInputValue"
+        />
+        <v-button
+          label="Quit Family"
+          @click="handleQuit"
+          :disabled="!familyNameInputMatch"
+        />
       </div>
     </div>
   </div>
@@ -26,23 +34,25 @@
 import { Component, Vue } from "vue-property-decorator";
 import VHeader from "@/components/VHeader.vue";
 import VButton from "@/components/VButton.vue";
+import VInput from "@/components/VInput.vue";
 import Family, { CurrentFamily } from "@/types/Family";
 import router from "@/router";
 
 @Component({
-  components: { VHeader, VButton }
+  components: { VHeader, VButton, VInput }
 })
 export default class AppMain extends Vue {
   members: string[] = [];
   pendingMembers: string[] = [];
   family: Family | null = null;
+  familyNameInputValue = "";
 
   async mounted() {
     this.family = await CurrentFamily.instance.getCurrentFamily();
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
-      this.members = family.members;
-      this.pendingMembers = family.pendingMembers;
+      this.members = family.members ?? [];
+      this.pendingMembers = family.pendingMembers ?? [];
     });
   }
 
@@ -61,6 +71,10 @@ export default class AppMain extends Vue {
       email,
       isPending: this.pendingMembers.includes(email)
     }));
+  }
+
+  get familyNameInputMatch() {
+    return this.familyNameInputValue === this.family?.name;
   }
 }
 </script>
