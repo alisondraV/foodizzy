@@ -124,9 +124,11 @@ async function sendWelcomeEmails(
   }));
 }
 
-function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
+async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
+    const statisticsRefs = await newDoc.ref.collection('statistics').get();
+    await Promise.all(statisticsRefs.docs.map(doc => doc.ref.delete()));
     return newDoc.ref.delete();
   }
   return null;
