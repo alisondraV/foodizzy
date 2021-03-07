@@ -16,8 +16,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class VInput extends Vue {
+export default class VAlert extends Vue {
   @Prop() label!: string;
-  @Prop() wasted?: boolean;
+  @Prop({ default: false }) wasted?: boolean;
 }
 </script>
