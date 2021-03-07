@@ -21,7 +21,7 @@ export default class VButton extends Vue {
 </script>
 
 <style scoped>
-  button:disabled {
-    opacity: 50%;
-  }
+button:disabled {
+  opacity: 50%;
+}
 </style>
