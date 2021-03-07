@@ -40,7 +40,8 @@
 
 <script lang="ts">
 import router from "@/router";
-import { Component, Vue } from "vue-property-decorator";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component, Mixins } from "vue-property-decorator";
 import { CurrentFamily } from "@/types";
 import Firestore from "@/utils/Firestore";
 import ListItem from "@/components/ListItem.vue";
@@ -61,8 +62,7 @@ import VHeader from "@/components/VHeader.vue";
     VHeader
   }
 })
-export default class ShoppingList extends Vue {
-  alertMessage = "";
+export default class ShoppingList extends Mixins(AlertMixin) {
   products: ShoppingListItem[] = [];
   searchQuery = "";
 
@@ -132,10 +132,7 @@ export default class ShoppingList extends Vue {
       await Firestore.instance.addProductToStorage(product);
     }
 
-    this.alertMessage = "Products were added to the Shopping List";
-    setTimeout(() => {
-      this.alertMessage = "";
-    }, 3000);
+    await this.showAlert("Products were added to the Shopping List");
   }
 }
 </script>
