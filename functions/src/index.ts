@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import sendEmail from "./sendEmail";
 import axios from "axios";
-import { db }from './admin';
+import {db} from "./admin";
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
@@ -37,9 +37,12 @@ export const onFamilyCreate = functions.firestore
 export const onFamilyDelete = functions.firestore
     .document("/family/{familyId}")
     .onDelete(async (snapshot, context) => {
-      const wasteBucketQueryResults = await db.collection("wasteBuckets").where("familyId", "==", snapshot.id).get();
+      const wasteBucketQueryResults = await db
+          .collection("wasteBuckets")
+          .where("familyId", "==", snapshot.id)
+          .get();
 
-      return Promise.all(wasteBucketQueryResults.docs.map(doc => doc.ref.delete()));
+      return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
     });
 
 async function updateTotalProducts(
@@ -127,8 +130,8 @@ async function sendWelcomeEmails(
 async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
-    const statisticsRefs = await newDoc.ref.collection('statistics').get();
-    await Promise.all(statisticsRefs.docs.map(doc => doc.ref.delete()));
+    const statisticsRefs = await newDoc.ref.collection("statistics").get();
+    await Promise.all(statisticsRefs.docs.map((doc) => doc.ref.delete()));
     return newDoc.ref.delete();
   }
   return null;
