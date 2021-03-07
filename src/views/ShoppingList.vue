@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-header heading="Shopping List" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert v-if="alertMessage" :label="alertMessage" />
+    </div>
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-6" v-model="searchQuery" />
       <v-button class="mb-4" @click="updateFridge" label="Update Fridge" />
       <div
@@ -36,27 +39,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import VHeader from "@/components/VHeader.vue";
 import router from "@/router";
-import SearchInput from "@/components/SearchInput.vue";
-import VButton from "@/components/VButton.vue";
-import ListItem from "@/components/ListItem.vue";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component, Mixins } from "vue-property-decorator";
 import { CurrentFamily } from "@/types";
+import Firestore from "@/utils/Firestore";
+import ListItem from "@/components/ListItem.vue";
+import NavigationMenu from "@/components/NavigationMenu.vue";
+import SearchInput from "@/components/SearchInput.vue";
+import ShoppingListItem from "@/types/ShoppingListItem";
+import VAlert from "@/components/VAlert.vue";
+import VButton from "@/components/VButton.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
     ListItem,
-    VButton,
-    SearchInput,
     NavigationMenu,
+    SearchInput,
+    VAlert,
+    VButton,
     VHeader
   }
 })
-export default class ShoppingList extends Vue {
+export default class ShoppingList extends Mixins(AlertMixin) {
   products: ShoppingListItem[] = [];
   searchQuery = "";
 
@@ -125,6 +131,8 @@ export default class ShoppingList extends Vue {
       await this.removeFromShoppingList(product);
       await Firestore.instance.addProductToStorage(product);
     }
+
+    await this.showAlert("Products were added to the Shopping List");
   }
 }
 </script>
