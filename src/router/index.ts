@@ -110,17 +110,10 @@ router.beforeEach(
         "UserProfile"
       ];
 
-      console.log(to.name);
-      
-      
       const destinationIsOneOf = routes =>
         routes.some(routeName => to.name === routeName);
-      console.log(destinationIsOneOf(anonymousRoutes));
-      console.log(destinationIsOneOf(authWithoutFamilyRoutes));
-      
+
       if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
-        console.log('anon');
-        
         next("/sign-in");
       } else if (
         userLoggedIn &&
@@ -128,7 +121,6 @@ router.beforeEach(
         !destinationIsOneOf(authWithoutFamilyRoutes)
       ) {
         next("/profile");
-        console.log('familyless');
       } else {
         next();
       }
