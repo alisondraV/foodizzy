@@ -1,6 +1,5 @@
 import { CurrentFamily } from "@/types";
 import Authentication from "@/utils/Authentication";
-import Firestore from "@/utils/Firestore";
 import Vue from "vue";
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
 
