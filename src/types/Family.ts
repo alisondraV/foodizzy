@@ -47,6 +47,14 @@ export class CurrentFamily {
     });
   }
 
+  public async existsFor(user: firebase.User): Promise<boolean> {
+    const familiesSnap = await Firestore.instance.db
+      .collection("family")
+      .where("members", "array-contains", user.email)
+      .get();
+    return familiesSnap.docs.length > 0;
+  }
+
   public async getCurrentFamily() {
     if (this.family) {
       return this.family;

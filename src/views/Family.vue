@@ -51,8 +51,8 @@ export default class AppMain extends Vue {
     this.family = await CurrentFamily.instance.getCurrentFamily();
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
-      this.members = family.members ?? [];
-      this.pendingMembers = family.pendingMembers ?? [];
+      this.members = family?.members ?? [];
+      this.pendingMembers = family?.pendingMembers ?? [];
     });
   }
 

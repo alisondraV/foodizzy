@@ -1,4 +1,6 @@
+import { CurrentFamily } from "@/types";
 import Authentication from "@/utils/Authentication";
+import Firestore from "@/utils/Firestore";
 import Vue from "vue";
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
 
@@ -93,17 +95,42 @@ const router = new VueRouter({
 router.beforeEach(
   async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
     try {
-      console.log("getting user info...");
-
       const user = await Authentication.instance.getCurrentUser();
-      const publicURLs = ["SignIn", "SignUp", "Invites"];
-      const destinationIsPublic = publicURLs.some(url =>
-        url.startsWith(to.name ?? "")
-      );
-      if (destinationIsPublic || user !== null) {
-        next();
-      } else {
+      const userLoggedIn = user != null;
+      let userHasFamily = false;
+      if (userLoggedIn) {
+        userHasFamily = await CurrentFamily.instance.existsFor(user!);
+      }
+      const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      const authWithoutFamilyRoutes = [
+        "SignIn",
+        "SignUp",
+        "Invites",
+        "NewFamily",
+        "UserProfile"
+      ];
+
+      console.log(to.name);
+      
+      
+      const destinationIsOneOf = routes =>
+        routes.some(routeName => to.name === routeName);
+      console.log(destinationIsOneOf(anonymousRoutes));
+      console.log(destinationIsOneOf(authWithoutFamilyRoutes));
+      
+      if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
+        console.log('anon');
+        
         next("/sign-in");
+      } else if (
+        userLoggedIn &&
+        !userHasFamily &&
+        !destinationIsOneOf(authWithoutFamilyRoutes)
+      ) {
+        next("/profile");
+        console.log('familyless');
+      } else {
+        next();
       }
     } catch (e) {
       console.error(e.message);
