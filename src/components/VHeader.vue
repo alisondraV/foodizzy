@@ -6,7 +6,7 @@
       {{ heading }}
     </span>
     <img
-      v-if="!isProfileOrNewProductPage()"
+      v-if="showProfile()"
       src="@/assets/images/Profile.svg"
       alt="Profile"
       @click="goToTheProfilePage"
@@ -30,13 +30,20 @@ import router from "../router";
 @Component
 export default class VHeader extends Vue {
   @Prop() heading!: string;
+  pagesWithoutProfileLink = [
+    "Your Profile",
+    "Item",
+    "Personal Information",
+    "Change Password",
+    "My Family",
+    "My Invitations"
+  ];
 
-  isProfileOrNewProductPage() {
-    return (
-      this.heading.includes("profile-settings") ||
-      this.heading.includes("New Item") ||
-      this.heading.includes("Custom Item")
+  showProfile() {
+    const filteredPages = this.pagesWithoutProfileLink.filter(page =>
+      this.heading.includes(page)
     );
+    return filteredPages.length === 0;
   }
 
   goBack() {

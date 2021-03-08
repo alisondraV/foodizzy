@@ -36,7 +36,7 @@
           </li>
           <li class="flex justify-between mb-5" @click="viewInvitations">
             <img src="@/assets/images/Invitations.svg" alt="Invitations" />
-            <span class="flex-1 text-left ml-4">Your invitations</span>
+            <span class="flex-1 text-left ml-4">My invitations</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
           </li>
 

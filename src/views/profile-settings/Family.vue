@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header heading="Your Family" />
+    <v-header heading="My Family" />
     <div class="mt-24 mb-20 mx-8">
       <div v-if="!family">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
