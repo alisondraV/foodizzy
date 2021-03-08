@@ -1,7 +1,14 @@
 <template>
   <div>
     <v-header heading="What's in your fridge?" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert
+        v-if="alertMessage"
+        :label="alertMessage"
+        :wasted="productWasWasted"
+      />
+    </div>
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li
@@ -48,27 +55,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import VHeader from "@/components/VHeader.vue";
-import SearchInput from "@/components/SearchInput.vue";
 import router from "@/router";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component, Mixins } from "vue-property-decorator";
 import { CurrentFamily } from "@/types";
+import Firestore from "@/utils/Firestore";
+import NavigationMenu from "@/components/NavigationMenu.vue";
+import Product from "@/types/Product";
+import SearchInput from "@/components/SearchInput.vue";
+import VAlert from "@/components/VAlert.vue";
+import VHeader from "@/components/VHeader.vue";
 
 @Component({
   components: {
-    SearchInput,
     NavigationMenu,
+    SearchInput,
+    VAlert,
     VHeader
   }
 })
-export default class Fridge extends Vue {
-  products: Product[] = [];
-  searchQuery = "";
-  newProductName = "";
+export default class Fridge extends Mixins(AlertMixin) {
   newProductCategory = "";
+  newProductName = "";
+  products: Product[] = [];
+  productWasWasted = false;
+  searchQuery = "";
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
@@ -98,6 +109,8 @@ export default class Fridge extends Vue {
     this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
+
+    await this.showAlert(`${product.name} was added to the Shopping List`);
   }
 
   async markAsWasted(product: Product) {
@@ -105,6 +118,10 @@ export default class Fridge extends Vue {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.moveToWasted(product);
     await Firestore.instance.addToShoppingList(product);
+
+    this.productWasWasted = true;
+    await this.showAlert(`${product.name} was wasted`);
+    this.productWasWasted = false;
   }
 
   addNewProduct() {

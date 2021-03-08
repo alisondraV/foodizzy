@@ -25,14 +25,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component, Mixins } from "vue-property-decorator";
+import { CurrentFamily } from "@/types";
 import Firestore from "@/utils/Firestore";
 import Product from "@/types/Product";
+import VAlert from "@/components/VAlert.vue";
+import VButton from "@/components/VButton.vue";
 import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
-import VButton from "@/components/VButton.vue";
-import VAlert from "@/components/VAlert.vue";
-import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -42,8 +43,7 @@ import { CurrentFamily } from "@/types";
     VHeader
   }
 })
-export default class CustomProduct extends Vue {
-  alertMessage: string | null = null;
+export default class CustomProduct extends Mixins(AlertMixin) {
   location?: string;
   product: Product = { name: "" };
 
@@ -56,17 +56,25 @@ export default class CustomProduct extends Vue {
       return;
     }
 
-    if (this.isInStorageOrShoppingList()) {
-      this.alertMessage = `${this.product.name} already exists in the ${this.location}`;
-      return;
+    if (await this.isInStorageOrShoppingList()) {
+      return await this.showAlert(
+        `${this.product.name} already exists in the ${this.location}`
+      );
     }
 
+    await this.addProductToStorageOrShoppingList();
+  }
+
+  async addProductToStorageOrShoppingList() {
     if (this.location === "storage") {
       await Firestore.instance.addProductToStorage(this.product);
     } else if (this.location === "shoppingList") {
       await Firestore.instance.addToShoppingList(this.product);
     }
-    this.alertMessage = `${this.product.name} was added to the ${this.location}`;
+
+    await this.showAlert(
+      `${this.product.name} was added to the ${this.location}`
+    );
     this.product = { name: "" };
   }
 
