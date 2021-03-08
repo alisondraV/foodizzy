@@ -5,9 +5,10 @@
       <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <img
+          v-if="user.photoURL"
+          alt="profile-image"
           class="mb-4 rounded-full w-1/3"
           :src="user.photoURL"
-          alt="profile-image"
         />
         <p
           class="text-xl place-self-center font-extrabold text-primary-text mb-8"
