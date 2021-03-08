@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import sendEmail from "./sendEmail";
 import axios from "axios";
+import {db} from "./admin";
 
 export const onFamilyUpdate = functions.firestore
     .document("/family/{familyId}")
@@ -20,6 +21,8 @@ export const onFamilyUpdate = functions.firestore
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
+      checkForFamilyRemoval(change.after);
+
       return null;
     });
 
@@ -29,6 +32,17 @@ export const onFamilyCreate = functions.firestore
       const newFamily = snapshot.data();
 
       return sendWelcomeEmails(newFamily);
+    });
+
+export const onFamilyDelete = functions.firestore
+    .document("/family/{familyId}")
+    .onDelete(async (snapshot, context) => {
+      const wasteBucketQueryResults = await db
+          .collection("wasteBuckets")
+          .where("familyId", "==", snapshot.id)
+          .get();
+
+      return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
     });
 
 async function updateTotalProducts(
@@ -112,3 +126,14 @@ async function sendWelcomeEmails(
     });
   }));
 }
+
+async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
+  const newFamily = newDoc.data();
+  if (newFamily.members?.length === 0) {
+    const statisticsRefs = await newDoc.ref.collection("statistics").get();
+    await Promise.all(statisticsRefs.docs.map((doc) => doc.ref.delete()));
+    return newDoc.ref.delete();
+  }
+  return null;
+}
+

@@ -1,3 +1,4 @@
+import { CurrentFamily } from "@/types";
 import Authentication from "@/utils/Authentication";
 import Vue from "vue";
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
@@ -93,17 +94,34 @@ const router = new VueRouter({
 router.beforeEach(
   async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
     try {
-      console.log("getting user info...");
-
       const user = await Authentication.instance.getCurrentUser();
-      const publicURLs = ["SignIn", "SignUp", "Invites"];
-      const destinationIsPublic = publicURLs.some(url =>
-        url.startsWith(to.name ?? "")
-      );
-      if (destinationIsPublic || user !== null) {
-        next();
-      } else {
+      const userLoggedIn = user != null;
+      let userHasFamily = false;
+      if (userLoggedIn) {
+        userHasFamily = await CurrentFamily.instance.existsFor(user!);
+      }
+      const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      const authWithoutFamilyRoutes = [
+        "SignIn",
+        "SignUp",
+        "Invites",
+        "NewFamily",
+        "UserProfile"
+      ];
+
+      const destinationIsOneOf = routes =>
+        routes.some(routeName => to.name === routeName);
+
+      if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
         next("/sign-in");
+      } else if (
+        userLoggedIn &&
+        !userHasFamily &&
+        !destinationIsOneOf(authWithoutFamilyRoutes)
+      ) {
+        next("/profile");
+      } else {
+        next();
       }
     } catch (e) {
       console.error(e.message);

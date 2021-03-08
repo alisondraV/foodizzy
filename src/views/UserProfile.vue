@@ -15,7 +15,8 @@
           {{ user.displayName }}
         </p>
         <p class="mb-2">Email: {{ user.email }}</p>
-        <v-button @click="viewFamily" label="Family Page" />
+        <v-button v-if="family" @click="viewFamily" label="Family Page" />
+        <v-button v-else @click="viewInvites" label="My Invites" />
         <hr class="w-full border-secondary-text mb-6" />
         <div class="flex justify-between w-1/4" @click="logOut">
           <img src="@/assets/images/LogOut.svg" alt="Log Out" />
@@ -49,6 +50,10 @@ export default class AppMain extends Vue {
 
   async viewFamily() {
     await router.push("/family");
+  }
+
+  async viewInvites() {
+    await router.push("/invites");
   }
 
   async logOut() {

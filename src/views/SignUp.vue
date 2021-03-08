@@ -101,7 +101,7 @@ export default class SignUp extends Vue {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignUp();
     } catch (err) {
-      await this.finishSignUp("/create-family");
+      await this.finishSignUp("create-family");
     }
   }
 
