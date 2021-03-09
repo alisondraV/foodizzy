@@ -28,20 +28,12 @@
       <div class="mb-3">
         <p class="text-sm">Full Name</p>
         <p v-if="!editMode">{{ user.displayName }}</p>
-        <v-input
-          v-else
-          v-model="newName"
-          class="w-full"
-        />
+        <v-input v-else v-model="newName" class="w-full" />
       </div>
       <div>
         <p class="text-sm">Email</p>
         <p v-if="!editMode">{{ user.email }}</p>
-        <v-input
-          v-else
-          v-model="newEmail"
-          class="mb-3 w-full"
-        />
+        <v-input v-else v-model="newEmail" class="mb-3 w-full" />
       </div>
     </div>
 
@@ -64,8 +56,8 @@ import VHeader from "@/components/VHeader.vue";
 })
 export default class PersonalInformation extends Vue {
   editMode = false;
-  newName: string;
-  newEmail: string;
+  newName: string | null = "";
+  newEmail: string | null = "";
   user: firebase.User | null = null;
 
   async mounted() {
@@ -74,7 +66,7 @@ export default class PersonalInformation extends Vue {
 
   async saveChanges() {
     await Authentication.instance.updateCurrentUser(
-      this.user,
+      this.user!,
       this.newName,
       this.newEmail
     );
@@ -82,8 +74,8 @@ export default class PersonalInformation extends Vue {
   }
 
   flipEditMode() {
-    this.newName = this.user.displayName;
-    this.newEmail = this.user.email;
+    this.newName = this.user!.displayName;
+    this.newEmail = this.user!.email;
     this.editMode = !this.editMode;
   }
 }

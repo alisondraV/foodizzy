@@ -118,7 +118,7 @@ router.beforeEach(
         "NewFamily",
         "UserProfile",
         "ChangePassword",
-        "PersonalInformation",
+        "PersonalInformation"
       ];
 
       const destinationIsOneOf = routes =>
