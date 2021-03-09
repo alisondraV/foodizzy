@@ -114,9 +114,11 @@ router.beforeEach(
       const authWithoutFamilyRoutes = [
         "SignIn",
         "SignUp",
-        "Invites",
+        "Invitations",
         "NewFamily",
-        "UserProfile"
+        "UserProfile",
+        "ChangePassword",
+        "PersonalInformation",
       ];
 
       const destinationIsOneOf = routes =>
