@@ -91,6 +91,36 @@ const router = new VueRouter({
   routes
 });
 
+function getRedirectRoute(
+  isLoggedIn: boolean,
+  hasFamily: boolean,
+  destinationName: string
+): string | null {
+  const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+  const authWithoutFamilyRoutes = [
+    "SignIn",
+    "SignUp",
+    "Invites",
+    "NewFamily",
+    "UserProfile"
+  ];
+
+  const destinationIsOneOf = routes =>
+    routes.some(routeName => destinationName === routeName);
+
+  if (!isLoggedIn) {
+    if (!destinationIsOneOf(anonymousRoutes)) {
+      return "/sign-in";
+    }
+  } else if (!hasFamily) {
+    if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
+      return "/profile";
+    }
+  }
+
+  return null;
+}
+
 router.beforeEach(
   async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
     try {
@@ -100,26 +130,15 @@ router.beforeEach(
       if (userLoggedIn) {
         userHasFamily = await CurrentFamily.instance.existsFor(user!);
       }
-      const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
-      const authWithoutFamilyRoutes = [
-        "SignIn",
-        "SignUp",
-        "Invites",
-        "NewFamily",
-        "UserProfile"
-      ];
 
-      const destinationIsOneOf = routes =>
-        routes.some(routeName => to.name === routeName);
+      const redirectRoute = getRedirectRoute(
+        userLoggedIn,
+        userHasFamily,
+        to.name ?? ""
+      );
 
-      if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
-        next("/sign-in");
-      } else if (
-        userLoggedIn &&
-        !userHasFamily &&
-        !destinationIsOneOf(authWithoutFamilyRoutes)
-      ) {
-        next("/profile");
+      if (redirectRoute) {
+        next(redirectRoute);
       } else {
         next();
       }
