@@ -130,7 +130,7 @@ export default class Home extends Vue {
     const availableMonthData = await CurrentFamily.instance.getAvailableMonthData();
     this.monthData = availableMonthData;
 
-    const currentMonthIsAbsent = new Boolean(
+    const currentMonthIsPresent = Boolean(
       availableMonthData.find(
         data =>
           data.month === this.selectedMonthData.month &&
@@ -138,7 +138,7 @@ export default class Home extends Vue {
       )
     );
 
-    if (currentMonthIsAbsent) {
+    if (!currentMonthIsPresent) {
       this.monthData.push(this.selectedMonthData);
     }
 
