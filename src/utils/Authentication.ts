@@ -44,16 +44,15 @@ export default class Authentication {
     }
   }
 
-  public async signUp(email: string, password: string, name: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      firebase.auth().currentUser?.updateProfile({ displayName: name });
-      return cred.user;
-    } catch (error) {
-      console.log("Sign Up failed: ", error);
-    }
+  public signUp(email: string, password: string, name: string) {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        return firebase
+          .auth()
+          .currentUser?.updateProfile({ displayName: name });
+      });
   }
 
   public async authWithGoogle() {

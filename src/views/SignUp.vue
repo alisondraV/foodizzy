@@ -31,6 +31,7 @@
         v-model="password"
       />
     </div>
+    <div class="text-dark-peach">{{ errorMessage }}</div>
     <div class="mb-8">
       <v-button class="mb-6" label="Sign Up" @click="signUp" />
       <div class="flex items-center text-secondary-text">
@@ -62,6 +63,7 @@ import Authentication from "@/utils/Authentication";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import { CurrentFamily } from "@/types";
+import { authErrors } from "@/utils/consts";
 
 @Component({
   components: {
@@ -73,6 +75,7 @@ export default class SignUp extends Vue {
   email = "";
   name = "";
   password = "";
+  errorMessage = "";
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -86,9 +89,15 @@ export default class SignUp extends Vue {
     router.replace(route);
   }
 
-  async signUp() {
-    await Authentication.instance.signUp(this.email, this.password, this.name);
-    await this.tryGetFamilyAndForward();
+  signUp() {
+    Authentication.instance
+      .signUp(this.email, this.password, this.name)
+      .then(() => {
+        return this.tryGetFamilyAndForward();
+      })
+      .catch(error => {
+        this.errorMessage = authErrors[error.code] ?? error.message;
+      });
   }
 
   async signUpThroughGoogle() {

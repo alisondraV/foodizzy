@@ -17,5 +17,6 @@ export const monthList = [
 ];
 
 export const authErrors = {
-  "auth/invalid-email": "Please enter a valid email"
+  "auth/invalid-email": "Please enter a valid email.",
+  "auth/invalid-password": "Wrong password. Please try again."
 };

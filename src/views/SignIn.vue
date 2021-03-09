@@ -72,7 +72,7 @@ import { authErrors } from "@/utils/consts";
 export default class SignIn extends Vue {
   email = "";
   password = "";
-  errorMessage = "I am an error";
+  errorMessage = "";
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
