@@ -5,13 +5,13 @@
       <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <v-input
-          class="mb-6"
+          class="mb-6 w-full"
           type="password"
           label="Old Password"
           v-model="oldPassword"
         />
         <v-input
-          class="mb-6"
+          class="mb-6 w-full"
           type="password"
           label="New Password"
           v-model="newPassword"
