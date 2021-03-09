@@ -97,7 +97,7 @@ export default class SignIn extends Vue {
         return this.tryGetFamilyAndForward();
       })
       .catch(error => {
-        this.errorMessage = authErrors[error.code];
+        this.errorMessage = authErrors[error.code] ?? error.message;
       });
   }
 
