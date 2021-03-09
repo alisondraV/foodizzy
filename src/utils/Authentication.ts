@@ -31,16 +31,8 @@ export default class Authentication {
     });
   }
 
-  public async signIn(email: string, password: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-
-      return cred.user;
-    } catch (error) {
-      console.log("SignIn failed: ", error);
-    }
+  public signIn(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
   public async signOut() {

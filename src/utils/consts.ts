@@ -15,3 +15,7 @@ export const monthList = [
   "November",
   "December"
 ];
+
+export const authErrors = {
+  "auth/invalid-email": "Please enter a valid email"
+};

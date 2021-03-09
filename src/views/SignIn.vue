@@ -22,6 +22,7 @@
         label="Type in your password"
         v-model="password"
       />
+      <div class="text-dark-peach">{{ errorMessage }}</div>
       <div
         class="cursor-pointer underline text-right text-sm text-secondary-text"
         @click="resetPassword"
@@ -45,7 +46,7 @@
       </button>
     </div>
     <div class="text-center">
-      <span class="text-sm mb-4 mr-5">Don't have account yet?</span>
+      <span class="text-sm mb-4 mr-5">Don't have an account yet?</span>
       <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage"
         >Sign Up</span
       >
@@ -60,6 +61,7 @@ import router from "@/router";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import { CurrentFamily } from "@/types";
+import { authErrors } from "@/utils/consts";
 
 @Component({
   components: {
@@ -70,6 +72,7 @@ import { CurrentFamily } from "@/types";
 export default class SignIn extends Vue {
   email = "";
   password = "";
+  errorMessage = "I am an error";
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -88,8 +91,14 @@ export default class SignIn extends Vue {
   }
 
   async signIn() {
-    await Authentication.instance.signIn(this.email, this.password);
-    await this.tryGetFamilyAndForward();
+    Authentication.instance
+      .signIn(this.email, this.password)
+      .then(() => {
+        return this.tryGetFamilyAndForward();
+      })
+      .catch(error => {
+        this.errorMessage = authErrors[error.code];
+      });
   }
 
   async signInThroughGoogle() {
