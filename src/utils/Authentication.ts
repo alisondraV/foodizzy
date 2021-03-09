@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import { CurrentFamily } from "@/types";
+import Firestore from "@/utils/Firestore";
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
@@ -72,5 +73,17 @@ export default class Authentication {
     } catch (error) {
       console.log("Sign Up with Google failed: ", error);
     }
+  }
+
+  public async updateCurrentUser(prevUser: firebase.User, name: string, email: string) {
+    const familyRef = Firestore.instance.db
+        .collection("family")
+        .doc((await CurrentFamily.instance.getCurrentFamily()).id);
+
+    await familyRef.update("members", firebase.firestore.FieldValue.arrayRemove(prevUser.email));
+    await familyRef.update("members", firebase.firestore.FieldValue.arrayUnion(email));
+
+    await firebase.auth().currentUser!.updateProfile({ displayName: name });
+    await firebase.auth().currentUser!.updateEmail(email);
   }
 }
