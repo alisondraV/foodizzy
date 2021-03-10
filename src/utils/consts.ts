@@ -17,6 +17,20 @@ export const monthList = [
 ];
 
 export const authErrors = {
-  "auth/invalid-email": "Please enter a valid email.",
-  "auth/invalid-password": "Wrong password. Please try again."
+  "auth/invalid-email": {
+    type: "email",
+    message: "Please enter a valid email."
+  },
+  "auth/invalid-password": {
+    type: "password",
+    message: "Wrong password. Please try again."
+  },
+  "auth/wrong-password": {
+    type: "password",
+    message: "Wrong password. Please try again."
+  },
+  "auth/user-not-found": {
+    message:
+      "We could not find a user that corresponds to this email. Try signing up."
+  }
 };

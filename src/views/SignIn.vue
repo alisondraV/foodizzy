@@ -14,13 +14,14 @@
         class="mb-6"
         type="email"
         label="Type in your email"
-        :error="true"
+        :error="errorType === 'email'"
         v-model="email"
       />
       <v-input
         class="mb-6"
         type="password"
         label="Type in your password"
+        :error="errorType === 'password'"
         v-model="password"
       />
       <div class="text-dark-peach">{{ errorMessage }}</div>
@@ -74,6 +75,7 @@ export default class SignIn extends Vue {
   email = "";
   password = "";
   errorMessage = "";
+  errorType = "";
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -98,7 +100,10 @@ export default class SignIn extends Vue {
         return this.tryGetFamilyAndForward();
       })
       .catch(error => {
-        this.errorMessage = authErrors[error.code] ?? error.message;
+        console.log(`Auth error: ${error.code}`);
+
+        this.errorMessage = authErrors[error.code]?.message ?? error.message;
+        this.errorType = authErrors[error.code]?.type ?? "";
       });
   }
 
