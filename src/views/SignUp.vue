@@ -17,18 +17,21 @@
         type="email"
         label="Type in your email"
         v-model="email"
+        :error="errorType === 'email'"
       />
       <v-input
         class="mb-6"
         type="name"
         label="Type in your name"
         v-model="name"
+        :error="errorType === 'displayName'"
       />
       <v-input
         class="mb-6"
         type="password"
         label="Type in your password"
         v-model="password"
+        :error="errorType === 'password'"
       />
     </div>
     <div class="text-dark-peach">{{ errorMessage }}</div>
@@ -76,6 +79,7 @@ export default class SignUp extends Vue {
   name = "";
   password = "";
   errorMessage = "";
+  errorType = "";
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -96,7 +100,10 @@ export default class SignUp extends Vue {
         return this.tryGetFamilyAndForward();
       })
       .catch(error => {
-        this.errorMessage = authErrors[error.code] ?? error.message;
+        console.log(`Auth error: ${error.code}`);
+
+        this.errorMessage = authErrors[error.code]?.message ?? error.message;
+        this.errorType = authErrors[error.code]?.type ?? "";
       });
   }
 
