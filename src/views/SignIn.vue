@@ -14,6 +14,7 @@
         class="mb-6"
         type="email"
         label="Type in your email"
+        :error="true"
         v-model="email"
       />
       <v-input
