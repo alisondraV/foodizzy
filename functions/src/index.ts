@@ -76,7 +76,10 @@ async function updateTotalProducts(
       .update('totalProducts', thisMonthData.totalProducts);
 }
 
-async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference, family: any) {
+async function getThisMonthStats(
+    statsCollection: FirebaseFirestore.CollectionReference,
+    family: any
+) {
   const thisMonthStatsCollection = await statsCollection
       .where('month', '==', new Date().getMonth())
       .where('year', '==', new Date().getFullYear())
@@ -88,7 +91,7 @@ async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionRe
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      totalProducts
+      totalProducts,
     });
   } else {
     thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
