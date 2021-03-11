@@ -71,7 +71,12 @@ import Authentication from '@/utils/Authentication';
 import VInput from '@/components/VInput.vue';
 import VButton from '@/components/VButton.vue';
 import { CurrentFamily } from '@/types';
-import { authErrors, emailPattern, ErrorCode, passwordValidation } from '@/utils/consts';
+import {
+  authErrors,
+  emailPattern,
+  ErrorCode,
+  passwordValidation
+} from '@/utils/consts';
 
 interface ValidationError {
   code: string;
@@ -105,12 +110,12 @@ export default class SignUp extends Vue {
 
   get validationFailed(): boolean {
     if (!this.email.trim().match(emailPattern)) {
-      this.displayError({ code: ErrorCode.InvalidEmail })
+      this.displayError({ code: ErrorCode.InvalidEmail });
       return true;
     }
 
     if (this.name.trim() === '') {
-      this.displayError({ code: ErrorCode.InvalidDisplayName })
+      this.displayError({ code: ErrorCode.InvalidDisplayName });
       return true;
     }
 
@@ -118,7 +123,7 @@ export default class SignUp extends Vue {
       Boolean(this.password.match(pattern))
     );
     if (!passwordCorrect) {
-      this.displayError({ code: ErrorCode.WeakPassword })
+      this.displayError({ code: ErrorCode.WeakPassword });
       return true;
     }
 
