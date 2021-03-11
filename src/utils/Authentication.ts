@@ -85,5 +85,6 @@ export default class Authentication {
 
     await firebase.auth().currentUser!.updateProfile({ displayName: name });
     await firebase.auth().currentUser!.updateEmail(email);
+    CurrentFamily.instance.family = null;
   }
 }
