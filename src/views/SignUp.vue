@@ -31,6 +31,7 @@
         type="password"
         label="Type in your password"
         v-model="password"
+        @input="updatePasswordValidation"
         :error="errorType === 'password'"
       />
       <div class="grid grid-cols-2">
@@ -160,6 +161,13 @@ export default class SignUp extends Vue {
     router.replace(route);
   }
 
+  updatePasswordValidation() {
+    Object.keys(this.passwordValidation).forEach(rule => {
+      const pattern = passwordValidationPatterns[rule];
+      this.passwordValidation[rule] = Boolean(this.password.match(pattern));
+    });
+  }
+
   get validationFailed(): boolean {
     if (!this.email.trim().match(emailPattern)) {
       this.displayError({ code: ErrorCode.InvalidEmail });
@@ -170,11 +178,6 @@ export default class SignUp extends Vue {
       this.displayError({ code: ErrorCode.InvalidDisplayName });
       return true;
     }
-
-    Object.keys(this.passwordValidation).forEach(rule => {
-      const pattern = passwordValidationPatterns[rule];
-      this.passwordValidation[rule] = Boolean(this.password.match(pattern));
-    });
 
     const passwordCorrect = Object.values(this.passwordValidation).every(
       v => v
