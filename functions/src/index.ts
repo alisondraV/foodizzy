@@ -1,10 +1,10 @@
-import * as functions from "firebase-functions";
-import sendEmail from "./sendEmail";
-import axios from "axios";
-import {db} from "./admin";
+import * as functions from 'firebase-functions';
+import sendEmail from './sendEmail';
+import axios from 'axios';
+import {db} from './admin';
 
 export const onFamilyUpdate = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onUpdate(async (change, context) => {
       const oldFamily = change.before.data();
       const newFamily = change.after.data();
@@ -27,7 +27,7 @@ export const onFamilyUpdate = functions.firestore
     });
 
 export const onFamilyCreate = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onCreate((snapshot, context) => {
       const newFamily = snapshot.data();
 
@@ -35,11 +35,11 @@ export const onFamilyCreate = functions.firestore
     });
 
 export const onFamilyDelete = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onDelete(async (snapshot, context) => {
       const wasteBucketQueryResults = await db
-          .collection("wasteBuckets")
-          .where("familyId", "==", snapshot.id)
+          .collection('wasteBuckets')
+          .where('familyId', '==', snapshot.id)
           .get();
 
       return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
@@ -56,14 +56,14 @@ async function updateTotalProducts(
       addedProduct = newProduct;
     }
   });
-  console.log("A new product added: ", addedProduct);
+  console.log('A new product added: ', addedProduct);
 
   if (addedProduct == null) {
-    throw new Error("The storages were the same");
+    throw new Error('The storages were the same');
   }
 
-  const categoryName = addedProduct!.category.toLowerCase() ?? "general";
-  const updatedFamilyStats = change.after.ref.collection("statistics");
+  const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
+  const updatedFamilyStats = change.after.ref.collection('statistics');
 
   const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
   const thisMonthData = thisMonthStatsDoc.data() ?? {};
@@ -75,13 +75,13 @@ async function updateTotalProducts(
 
   return await updatedFamilyStats
       .doc(thisMonthStatsDoc.id)
-      .update("totalProducts", thisMonthData.totalProducts);
+      .update('totalProducts', thisMonthData.totalProducts);
 }
 
 async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
   const thisMonthStatsCollection = await statsCollection
-      .where("month", "==", new Date().getMonth())
-      .where("year", "==", new Date().getFullYear())
+      .where('month', '==', new Date().getMonth())
+      .where('year', '==', new Date().getFullYear())
       .get();
 
   let thisMonthStatsDocRef;
@@ -107,20 +107,20 @@ async function sendWelcomeEmails(
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
 
-  console.log("New Members: ", newEmails);
+  console.log('New Members: ', newEmails);
 
-  const htmlURL = "https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083";
+  const htmlURL = 'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083';
   const response = await axios.get(htmlURL);
   let emailTemplate = response.data;
 
-  emailTemplate = emailTemplate.replace("{PERSON}", "Somebody");
-  emailTemplate = emailTemplate.replace("{FAMILY NAME}", `"${newFamily.name}"`);
+  emailTemplate = emailTemplate.replace('{PERSON}', 'Somebody');
+  emailTemplate = emailTemplate.replace('{FAMILY NAME}', `"${newFamily.name}"`);
 
   return Promise.all(newEmails.map((email: string) => {
     return sendEmail({
       to: [email],
       message: {
-        subject: "Welcome to Foodizzy!",
+        subject: 'Welcome to Foodizzy!',
         html: emailTemplate,
       },
     });
@@ -130,7 +130,7 @@ async function sendWelcomeEmails(
 async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
-    const statisticsRefs = await newDoc.ref.collection("statistics").get();
+    const statisticsRefs = await newDoc.ref.collection('statistics').get();
     await Promise.all(statisticsRefs.docs.map((doc) => doc.ref.delete()));
     return newDoc.ref.delete();
   }

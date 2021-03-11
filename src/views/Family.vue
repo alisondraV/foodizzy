@@ -9,7 +9,7 @@
         <div>
           <div v-for="member in allMembers" :key="member.email">
             <div>
-              {{ member.email + (member.isPending ? " (pending)" : "") }}
+              {{ member.email + (member.isPending ? ' (pending)' : '') }}
             </div>
           </div>
           <div>
@@ -31,12 +31,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import VHeader from "@/components/VHeader.vue";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import Family, { CurrentFamily } from "@/types/Family";
-import router from "@/router";
+import { Component, Vue } from 'vue-property-decorator';
+import VHeader from '@/components/VHeader.vue';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import Family, { CurrentFamily } from '@/types/Family';
+import router from '@/router';
 
 @Component({
   components: { VHeader, VButton, VInput }
@@ -45,7 +45,7 @@ export default class AppMain extends Vue {
   members: string[] = [];
   pendingMembers: string[] = [];
   family: Family | null = null;
-  familyNameInputValue = "";
+  familyNameInputValue = '';
 
   async mounted() {
     this.family = await CurrentFamily.instance.getCurrentFamily();
@@ -57,12 +57,12 @@ export default class AppMain extends Vue {
   }
 
   async addNewMembers() {
-    router.push("/new-family-members");
+    router.push('/new-family-members');
   }
 
   async handleQuit() {
     await CurrentFamily.instance.quit();
-    router.push("/");
+    router.push('/');
   }
 
   get allMembers() {

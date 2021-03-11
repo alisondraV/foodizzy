@@ -48,12 +48,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import router from "@/router";
-import SkipHeader from "@/components/SkipHeader.vue";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types";
+import { Component, Vue } from 'vue-property-decorator';
+import router from '@/router';
+import SkipHeader from '@/components/SkipHeader.vue';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { CurrentFamily } from '@/types';
 
 @Component({
   components: {
@@ -63,9 +63,9 @@ import { CurrentFamily } from "@/types";
   }
 })
 export default class SignIn extends Vue {
-  familyName = "";
+  familyName = '';
   memberEmails: string[] = [];
-  currentEmail = "";
+  currentEmail = '';
 
   async createFamily() {
     await CurrentFamily.instance.create(this.familyName, this.memberEmails);
@@ -74,11 +74,11 @@ export default class SignIn extends Vue {
 
   addEmail() {
     this.memberEmails.push(this.currentEmail);
-    this.currentEmail = "";
+    this.currentEmail = '';
   }
 
   goToTheNextPage() {
-    router.push("/fridge-setup");
+    router.push('/fridge-setup');
   }
 
   removeEmail(email: string) {

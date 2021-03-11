@@ -1,0 +1,4265 @@
+The following files have been auto-fixed:
+
+  src/components/AlertMixin.ts
+  src/components/DonutChart.vue
+  src/components/ListItem.vue
+  src/components/NavigationMenu.vue
+  src/components/RecipeComponent.vue
+  src/components/SearchInput.vue
+  src/components/SkipHeader.vue
+  src/components/VAlert.vue
+  src/components/VButton.vue
+  src/components/VHeader.vue
+  src/components/VInput.vue
+  src/main.ts
+  src/registerServiceWorker.ts
+  src/router/index.ts
+  src/shims-tsx.d.ts
+  src/shims-vue.d.ts
+  src/types/Family.ts
+  src/types/Recipe.ts
+  src/types/ShoppingListItem.ts
+  src/types/WastedProduct.ts
+  src/types/index.ts
+  src/utils/Authentication.ts
+  src/utils/Firestore.ts
+  src/utils/consts.ts
+  src/views/CustomProduct.vue
+  src/views/Family.vue
+  src/views/Fridge.vue
+  src/views/FridgeSetup.vue
+  src/views/Home.vue
+  src/views/Invites.vue
+  src/views/NewFamily.vue
+  src/views/NewFamilyMembers.vue
+  src/views/NewProduct.vue
+  src/views/Recipes.vue
+  src/views/ShoppingList.vue
+  src/views/SignIn.vue
+  src/views/SignUp.vue
+  src/views/UserProfile.vue
+  .eslintrc.js
+  babel.config.js
+  tailwind.config.js
+  vue.config.js
+
+warning: Strings must use singlequote (quotes) at src/components/AlertMixin.ts:1:32:
+> 1 | import { Component, Vue } from "vue-property-decorator";
+    |                                ^
+  2 | 
+  3 | @Component
+  4 | export class AlertMixin extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/AlertMixin.ts:5:18:
+  3 | @Component
+  4 | export class AlertMixin extends Vue {
+> 5 |   alertMessage = "";
+    |                  ^
+  6 |   prevTimeout: number | undefined;
+  7 | 
+  8 |   showAlert(message: string) {
+
+
+warning: Strings must use singlequote (quotes) at src/components/AlertMixin.ts:15:38:
+  13 | 
+  14 |       this.prevTimeout = setTimeout(() => {
+> 15 |         resolve((this.alertMessage = ""));
+     |                                      ^
+  16 |       }, 3000);
+  17 |     });
+  18 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:6:38:
+  4 | 
+  5 | <script lang="ts">
+> 6 | import { Component, Prop, Vue } from "vue-property-decorator";
+    |                                      ^
+  7 | import Chart from "chart.js";
+  8 | 
+  9 | @Component
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:7:19:
+   5 | <script lang="ts">
+   6 | import { Component, Prop, Vue } from "vue-property-decorator";
+>  7 | import Chart from "chart.js";
+     |                   ^
+   8 | 
+   9 | @Component
+  10 | export default class DoughnutChart extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:30:13:
+  28 |     );
+  29 |     Chart.controllers.CentralDoughnut = Chart.controllers.doughnut.extend({
+> 30 |       name: "CentralDoughnut",
+     |             ^
+  31 |       showTooltip: function({ ...parameters }) {
+  32 |         this.chart.ctx.save();
+  33 |         Chart.controllers.doughnut.prototype.showTooltip.apply(
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:46:42:
+  44 | 
+  45 |         const fontSize = (height / 114).toFixed(2);
+> 46 |         this.chart.ctx.font = fontSize + "em Poppins";
+     |                                          ^
+  47 |         this.chart.ctx.textBaseline = "middle";
+  48 | 
+  49 |         const text = (centerNumber * 100).toFixed(1) + "%",
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:47:39:
+  45 |         const fontSize = (height / 114).toFixed(2);
+  46 |         this.chart.ctx.font = fontSize + "em Poppins";
+> 47 |         this.chart.ctx.textBaseline = "middle";
+     |                                       ^
+  48 | 
+  49 |         const text = (centerNumber * 100).toFixed(1) + "%",
+  50 |           textX = Math.round(
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:49:56:
+  47 |         this.chart.ctx.textBaseline = "middle";
+  48 | 
+> 49 |         const text = (centerNumber * 100).toFixed(1) + "%",
+     |                                                        ^
+  50 |           textX = Math.round(
+  51 |             (width - this.chart.ctx.measureText(text).width) / 2
+  52 |           ),
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:73:13:
+  71 |     const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement;
+  72 |     const options = {
+> 73 |       type: "CentralDoughnut",
+     |             ^
+  74 |       data: chartData,
+  75 |       borderWidth: 1,
+  76 |       borderColor: "#ff0",
+
+
+warning: Strings must use singlequote (quotes) at src/components/DonutChart.vue:76:20:
+  74 |       data: chartData,
+  75 |       borderWidth: 1,
+> 76 |       borderColor: "#ff0",
+     |                    ^
+  77 |       options: {
+  78 |         ...this.options,
+  79 |         cutoutPercentage: 80,
+
+
+warning: Strings must use singlequote (quotes) at src/components/ListItem.vue:42:38:
+  40 | 
+  41 | <script lang="ts">
+> 42 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  43 | import ShoppingListItem from "@/types/ShoppingListItem";
+  44 | import { CurrentFamily } from "@/types";
+  45 | 
+
+
+warning: Strings must use singlequote (quotes) at src/components/ListItem.vue:43:30:
+  41 | <script lang="ts">
+  42 | import { Component, Prop, Vue } from "vue-property-decorator";
+> 43 | import ShoppingListItem from "@/types/ShoppingListItem";
+     |                              ^
+  44 | import { CurrentFamily } from "@/types";
+  45 | 
+  46 | @Component
+
+
+warning: Strings must use singlequote (quotes) at src/components/ListItem.vue:44:31:
+  42 | import { Component, Prop, Vue } from "vue-property-decorator";
+  43 | import ShoppingListItem from "@/types/ShoppingListItem";
+> 44 | import { CurrentFamily } from "@/types";
+     |                               ^
+  45 | 
+  46 | @Component
+  47 | export default class ListItem extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/ListItem.vue:57:32:
+  55 | 
+  56 |   isShoppingListPage() {
+> 57 |     return this.currentPage == "ShoppingList";
+     |                                ^
+  58 |   }
+  59 | 
+  60 |   isNewProductPage() {
+
+
+warning: Strings must use singlequote (quotes) at src/components/ListItem.vue:61:32:
+  59 | 
+  60 |   isNewProductPage() {
+> 61 |     return this.currentPage == "NewProduct";
+     |                                ^
+  62 |   }
+  63 | 
+  64 |   async isInStorageOrShoppingList() {
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:37:38:
+  35 | 
+  36 | <script lang="ts">
+> 37 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  38 | import router from "../router";
+  39 | 
+  40 | @Component
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:38:20:
+  36 | <script lang="ts">
+  37 | import { Component, Prop, Vue } from "vue-property-decorator";
+> 38 | import router from "../router";
+     |                    ^
+  39 | 
+  40 | @Component
+  41 | export default class NavigationMenu extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:46:9:
+  44 |   isCurrentPageStyle(page: string) {
+  45 |     return page == this.currentPage
+> 46 |       ? "filter: invert(31%) sepia(38%) saturate(6483%) " +
+     |         ^
+  47 |           "hue-rotate(160deg) brightness(91%) contrast(99%)"
+  48 |       : "";
+  49 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:47:11:
+  45 |     return page == this.currentPage
+  46 |       ? "filter: invert(31%) sepia(38%) saturate(6483%) " +
+> 47 |           "hue-rotate(160deg) brightness(91%) contrast(99%)"
+     |           ^
+  48 |       : "";
+  49 |   }
+  50 |   goToTheHomePage() {
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:48:9:
+  46 |       ? "filter: invert(31%) sepia(38%) saturate(6483%) " +
+  47 |           "hue-rotate(160deg) brightness(91%) contrast(99%)"
+> 48 |       : "";
+     |         ^
+  49 |   }
+  50 |   goToTheHomePage() {
+  51 |     router.push("/");
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:51:17:
+  49 |   }
+  50 |   goToTheHomePage() {
+> 51 |     router.push("/");
+     |                 ^
+  52 |   }
+  53 |   goToTheFridgePage() {
+  54 |     router.push("/fridge");
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:54:17:
+  52 |   }
+  53 |   goToTheFridgePage() {
+> 54 |     router.push("/fridge");
+     |                 ^
+  55 |   }
+  56 |   goToTheShoppingList() {
+  57 |     router.push("/shopping-list");
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:57:17:
+  55 |   }
+  56 |   goToTheShoppingList() {
+> 57 |     router.push("/shopping-list");
+     |                 ^
+  58 |   }
+  59 |   goToTheRecipesPage() {
+  60 |     router.push("/recipes");
+
+
+warning: Strings must use singlequote (quotes) at src/components/NavigationMenu.vue:60:17:
+  58 |   }
+  59 |   goToTheRecipesPage() {
+> 60 |     router.push("/recipes");
+     |                 ^
+  61 |   }
+  62 | }
+  63 | </script>
+
+
+warning: Strings must use singlequote (quotes) at src/components/RecipeComponent.vue:16:38:
+  14 | 
+  15 | <script lang="ts">
+> 16 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  17 | import Recipe from "@/types/Recipe";
+  18 | 
+  19 | @Component
+
+
+warning: Strings must use singlequote (quotes) at src/components/RecipeComponent.vue:17:20:
+  15 | <script lang="ts">
+  16 | import { Component, Prop, Vue } from "vue-property-decorator";
+> 17 | import Recipe from "@/types/Recipe";
+     |                    ^
+  18 | 
+  19 | @Component
+  20 | export default class RecipeComponent extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/SearchInput.vue:17:38:
+  15 | 
+  16 | <script lang="ts">
+> 17 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  18 | 
+  19 | @Component
+  20 | export default class SearchInput extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/SkipHeader.vue:10:32:
+   8 | 
+   9 | <script lang="ts">
+> 10 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  11 | 
+  12 | @Component
+  13 | export default class SkipHeader extends Vue {}
+
+
+warning: Strings must use singlequote (quotes) at src/components/VAlert.vue:16:38:
+  14 | 
+  15 | <script lang="ts">
+> 16 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  17 | 
+  18 | @Component
+  19 | export default class VAlert extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/VButton.vue:15:38:
+  13 | 
+  14 | <script lang="ts">
+> 15 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  16 | 
+  17 | @Component
+  18 | export default class VButton extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:27:38:
+  25 | 
+  26 | <script lang="ts">
+> 27 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  28 | import router from "../router";
+  29 | 
+  30 | @Component
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:28:20:
+  26 | <script lang="ts">
+  27 | import { Component, Prop, Vue } from "vue-property-decorator";
+> 28 | import router from "../router";
+     |                    ^
+  29 | 
+  30 | @Component
+  31 | export default class VHeader extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:36:29:
+  34 |   isProfileOrNewProductPage() {
+  35 |     return (
+> 36 |       this.heading.includes("Profile") ||
+     |                             ^
+  37 |       this.heading.includes("New Item") ||
+  38 |       this.heading.includes("Custom Item")
+  39 |     );
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:37:29:
+  35 |     return (
+  36 |       this.heading.includes("Profile") ||
+> 37 |       this.heading.includes("New Item") ||
+     |                             ^
+  38 |       this.heading.includes("Custom Item")
+  39 |     );
+  40 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:38:29:
+  36 |       this.heading.includes("Profile") ||
+  37 |       this.heading.includes("New Item") ||
+> 38 |       this.heading.includes("Custom Item")
+     |                             ^
+  39 |     );
+  40 |   }
+  41 | 
+
+
+warning: Strings must use singlequote (quotes) at src/components/VHeader.vue:47:17:
+  45 | 
+  46 |   goToTheProfilePage() {
+> 47 |     router.push("/profile");
+     |                 ^
+  48 |   }
+  49 | }
+  50 | </script>
+
+
+warning: Strings must use singlequote (quotes) at src/components/VInput.vue:19:38:
+  17 | 
+  18 | <script lang="ts">
+> 19 | import { Component, Prop, Vue } from "vue-property-decorator";
+     |                                      ^
+  20 | 
+  21 | @Component
+  22 | export default class VInput extends Vue {
+
+
+warning: Strings must use singlequote (quotes) at src/components/VInput.vue:25:20:
+  23 |   @Prop() value!: null;
+  24 |   @Prop() label!: string;
+> 25 |   @Prop({ default: "text" }) type?: string;
+     |                    ^
+  26 |   focused = false;
+  27 | 
+  28 |   get isFocused() {
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:1:17:
+> 1 | import Vue from "vue";
+    |                 ^
+  2 | import App from "./App.vue";
+  3 | import "./registerServiceWorker";
+  4 | import router from "./router";
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:2:17:
+  1 | import Vue from "vue";
+> 2 | import App from "./App.vue";
+    |                 ^
+  3 | import "./registerServiceWorker";
+  4 | import router from "./router";
+  5 | import firebase from "firebase";
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:3:8:
+  1 | import Vue from "vue";
+  2 | import App from "./App.vue";
+> 3 | import "./registerServiceWorker";
+    |        ^
+  4 | import router from "./router";
+  5 | import firebase from "firebase";
+  6 | import "./assets/tailwind.css";
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:4:20:
+  2 | import App from "./App.vue";
+  3 | import "./registerServiceWorker";
+> 4 | import router from "./router";
+    |                    ^
+  5 | import firebase from "firebase";
+  6 | import "./assets/tailwind.css";
+  7 | 
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:5:22:
+  3 | import "./registerServiceWorker";
+  4 | import router from "./router";
+> 5 | import firebase from "firebase";
+    |                      ^
+  6 | import "./assets/tailwind.css";
+  7 | 
+  8 | const firebaseConfig = {
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:6:8:
+  4 | import router from "./router";
+  5 | import firebase from "firebase";
+> 6 | import "./assets/tailwind.css";
+    |        ^
+  7 | 
+  8 | const firebaseConfig = {
+  9 |   apiKey: process.env.VUE_APP_API_KEY,
+
+
+warning: Strings must use singlequote (quotes) at src/main.ts:24:11:
+  22 |   router,
+  23 |   render: h => h(App)
+> 24 | }).$mount("#app");
+     |           ^
+  25 | 
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:3:26:
+  1 | /* eslint-disable no-console */
+  2 | 
+> 3 | import { register } from "register-service-worker";
+    |                          ^
+  4 | 
+  5 | if (process.env.NODE_ENV === "production") {
+  6 |   register(`${process.env.BASE_URL}service-worker.js`, {
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:5:30:
+  3 | import { register } from "register-service-worker";
+  4 | 
+> 5 | if (process.env.NODE_ENV === "production") {
+    |                              ^
+  6 |   register(`${process.env.BASE_URL}service-worker.js`, {
+  7 |     ready() {
+  8 |       console.log(
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:9:9:
+   7 |     ready() {
+   8 |       console.log(
+>  9 |         "App is being served from cache by a service worker.\n" +
+     |         ^
+  10 |           "For more details, visit https://goo.gl/AFskqB"
+  11 |       );
+  12 |     },
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:10:11:
+   8 |       console.log(
+   9 |         "App is being served from cache by a service worker.\n" +
+> 10 |           "For more details, visit https://goo.gl/AFskqB"
+     |           ^
+  11 |       );
+  12 |     },
+  13 |     registered() {
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:14:19:
+  12 |     },
+  13 |     registered() {
+> 14 |       console.log("Service worker has been registered.");
+     |                   ^
+  15 |     },
+  16 |     cached() {
+  17 |       console.log("Content has been cached for offline use.");
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:17:19:
+  15 |     },
+  16 |     cached() {
+> 17 |       console.log("Content has been cached for offline use.");
+     |                   ^
+  18 |     },
+  19 |     updatefound() {
+  20 |       console.log("New content is downloading.");
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:20:19:
+  18 |     },
+  19 |     updatefound() {
+> 20 |       console.log("New content is downloading.");
+     |                   ^
+  21 |     },
+  22 |     updated() {
+  23 |       console.log("New content is available; please refresh.");
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:23:19:
+  21 |     },
+  22 |     updated() {
+> 23 |       console.log("New content is available; please refresh.");
+     |                   ^
+  24 |     },
+  25 |     offline() {
+  26 |       console.log(
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:27:9:
+  25 |     offline() {
+  26 |       console.log(
+> 27 |         "No internet connection found. App is running in offline mode."
+     |         ^
+  28 |       );
+  29 |     },
+  30 |     error(error) {
+
+
+warning: Strings must use singlequote (quotes) at src/registerServiceWorker.ts:31:21:
+  29 |     },
+  30 |     error(error) {
+> 31 |       console.error("Error during service worker registration:", error);
+     |                     ^
+  32 |     }
+  33 |   });
+  34 | }
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:1:31:
+> 1 | import { CurrentFamily } from "@/types";
+    |                               ^
+  2 | import Authentication from "@/utils/Authentication";
+  3 | import Vue from "vue";
+  4 | import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:2:28:
+  1 | import { CurrentFamily } from "@/types";
+> 2 | import Authentication from "@/utils/Authentication";
+    |                            ^
+  3 | import Vue from "vue";
+  4 | import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
+  5 | 
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:3:17:
+  1 | import { CurrentFamily } from "@/types";
+  2 | import Authentication from "@/utils/Authentication";
+> 3 | import Vue from "vue";
+    |                 ^
+  4 | import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
+  5 | 
+  6 | Vue.use(VueRouter);
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:4:68:
+  2 | import Authentication from "@/utils/Authentication";
+  3 | import Vue from "vue";
+> 4 | import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
+    |                                                                    ^
+  5 | 
+  6 | Vue.use(VueRouter);
+  7 | 
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:10:11:
+   8 | const routes: Array<RouteConfig> = [
+   9 |   {
+> 10 |     path: "/sign-in",
+     |           ^
+  11 |     name: "SignIn",
+  12 |     component: () => import("../views/SignIn.vue")
+  13 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:11:11:
+   9 |   {
+  10 |     path: "/sign-in",
+> 11 |     name: "SignIn",
+     |           ^
+  12 |     component: () => import("../views/SignIn.vue")
+  13 |   },
+  14 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:12:29:
+  10 |     path: "/sign-in",
+  11 |     name: "SignIn",
+> 12 |     component: () => import("../views/SignIn.vue")
+     |                             ^
+  13 |   },
+  14 |   {
+  15 |     path: "/sign-up",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:15:11:
+  13 |   },
+  14 |   {
+> 15 |     path: "/sign-up",
+     |           ^
+  16 |     name: "SignUp",
+  17 |     component: () => import("../views/SignUp.vue")
+  18 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:16:11:
+  14 |   {
+  15 |     path: "/sign-up",
+> 16 |     name: "SignUp",
+     |           ^
+  17 |     component: () => import("../views/SignUp.vue")
+  18 |   },
+  19 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:17:29:
+  15 |     path: "/sign-up",
+  16 |     name: "SignUp",
+> 17 |     component: () => import("../views/SignUp.vue")
+     |                             ^
+  18 |   },
+  19 |   {
+  20 |     path: "/fridge-setup",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:20:11:
+  18 |   },
+  19 |   {
+> 20 |     path: "/fridge-setup",
+     |           ^
+  21 |     name: "FridgeSetup",
+  22 |     component: () => import("../views/FridgeSetup.vue")
+  23 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:21:11:
+  19 |   {
+  20 |     path: "/fridge-setup",
+> 21 |     name: "FridgeSetup",
+     |           ^
+  22 |     component: () => import("../views/FridgeSetup.vue")
+  23 |   },
+  24 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:22:29:
+  20 |     path: "/fridge-setup",
+  21 |     name: "FridgeSetup",
+> 22 |     component: () => import("../views/FridgeSetup.vue")
+     |                             ^
+  23 |   },
+  24 |   {
+  25 |     path: "/create-family",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:25:11:
+  23 |   },
+  24 |   {
+> 25 |     path: "/create-family",
+     |           ^
+  26 |     name: "NewFamily",
+  27 |     component: () => import("../views/NewFamily.vue")
+  28 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:26:11:
+  24 |   {
+  25 |     path: "/create-family",
+> 26 |     name: "NewFamily",
+     |           ^
+  27 |     component: () => import("../views/NewFamily.vue")
+  28 |   },
+  29 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:27:29:
+  25 |     path: "/create-family",
+  26 |     name: "NewFamily",
+> 27 |     component: () => import("../views/NewFamily.vue")
+     |                             ^
+  28 |   },
+  29 |   {
+  30 |     path: "/",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:30:11:
+  28 |   },
+  29 |   {
+> 30 |     path: "/",
+     |           ^
+  31 |     name: "Home",
+  32 |     component: () => import("../views/Home.vue")
+  33 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:31:11:
+  29 |   {
+  30 |     path: "/",
+> 31 |     name: "Home",
+     |           ^
+  32 |     component: () => import("../views/Home.vue")
+  33 |   },
+  34 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:32:29:
+  30 |     path: "/",
+  31 |     name: "Home",
+> 32 |     component: () => import("../views/Home.vue")
+     |                             ^
+  33 |   },
+  34 |   {
+  35 |     path: "/fridge",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:35:11:
+  33 |   },
+  34 |   {
+> 35 |     path: "/fridge",
+     |           ^
+  36 |     name: "Fridge",
+  37 |     component: () => import("../views/Fridge.vue")
+  38 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:36:11:
+  34 |   {
+  35 |     path: "/fridge",
+> 36 |     name: "Fridge",
+     |           ^
+  37 |     component: () => import("../views/Fridge.vue")
+  38 |   },
+  39 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:37:29:
+  35 |     path: "/fridge",
+  36 |     name: "Fridge",
+> 37 |     component: () => import("../views/Fridge.vue")
+     |                             ^
+  38 |   },
+  39 |   {
+  40 |     path: "/shopping-list",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:40:11:
+  38 |   },
+  39 |   {
+> 40 |     path: "/shopping-list",
+     |           ^
+  41 |     name: "ShoppingList",
+  42 |     component: () => import("../views/ShoppingList.vue")
+  43 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:41:11:
+  39 |   {
+  40 |     path: "/shopping-list",
+> 41 |     name: "ShoppingList",
+     |           ^
+  42 |     component: () => import("../views/ShoppingList.vue")
+  43 |   },
+  44 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:42:29:
+  40 |     path: "/shopping-list",
+  41 |     name: "ShoppingList",
+> 42 |     component: () => import("../views/ShoppingList.vue")
+     |                             ^
+  43 |   },
+  44 |   {
+  45 |     path: "/profile",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:45:11:
+  43 |   },
+  44 |   {
+> 45 |     path: "/profile",
+     |           ^
+  46 |     name: "UserProfile",
+  47 |     component: () => import("../views/UserProfile.vue")
+  48 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:46:11:
+  44 |   {
+  45 |     path: "/profile",
+> 46 |     name: "UserProfile",
+     |           ^
+  47 |     component: () => import("../views/UserProfile.vue")
+  48 |   },
+  49 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:47:29:
+  45 |     path: "/profile",
+  46 |     name: "UserProfile",
+> 47 |     component: () => import("../views/UserProfile.vue")
+     |                             ^
+  48 |   },
+  49 |   {
+  50 |     path: "/family",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:50:11:
+  48 |   },
+  49 |   {
+> 50 |     path: "/family",
+     |           ^
+  51 |     name: "Family",
+  52 |     component: () => import("../views/Family.vue")
+  53 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:51:11:
+  49 |   {
+  50 |     path: "/family",
+> 51 |     name: "Family",
+     |           ^
+  52 |     component: () => import("../views/Family.vue")
+  53 |   },
+  54 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:52:29:
+  50 |     path: "/family",
+  51 |     name: "Family",
+> 52 |     component: () => import("../views/Family.vue")
+     |                             ^
+  53 |   },
+  54 |   {
+  55 |     path: "/new-family-members",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:55:11:
+  53 |   },
+  54 |   {
+> 55 |     path: "/new-family-members",
+     |           ^
+  56 |     name: "NewFamilyMembers",
+  57 |     component: () => import("../views/NewFamilyMembers.vue")
+  58 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:56:11:
+  54 |   {
+  55 |     path: "/new-family-members",
+> 56 |     name: "NewFamilyMembers",
+     |           ^
+  57 |     component: () => import("../views/NewFamilyMembers.vue")
+  58 |   },
+  59 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:57:29:
+  55 |     path: "/new-family-members",
+  56 |     name: "NewFamilyMembers",
+> 57 |     component: () => import("../views/NewFamilyMembers.vue")
+     |                             ^
+  58 |   },
+  59 |   {
+  60 |     path: "/recipes",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:60:11:
+  58 |   },
+  59 |   {
+> 60 |     path: "/recipes",
+     |           ^
+  61 |     name: "Recipes",
+  62 |     component: () => import("../views/Recipes.vue")
+  63 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:61:11:
+  59 |   {
+  60 |     path: "/recipes",
+> 61 |     name: "Recipes",
+     |           ^
+  62 |     component: () => import("../views/Recipes.vue")
+  63 |   },
+  64 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:62:29:
+  60 |     path: "/recipes",
+  61 |     name: "Recipes",
+> 62 |     component: () => import("../views/Recipes.vue")
+     |                             ^
+  63 |   },
+  64 |   {
+  65 |     path: "/new-product",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:65:11:
+  63 |   },
+  64 |   {
+> 65 |     path: "/new-product",
+     |           ^
+  66 |     name: "NewProduct",
+  67 |     component: () => import("../views/NewProduct.vue"),
+  68 |     props: route => ({ query: route.params.location })
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:66:11:
+  64 |   {
+  65 |     path: "/new-product",
+> 66 |     name: "NewProduct",
+     |           ^
+  67 |     component: () => import("../views/NewProduct.vue"),
+  68 |     props: route => ({ query: route.params.location })
+  69 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:67:29:
+  65 |     path: "/new-product",
+  66 |     name: "NewProduct",
+> 67 |     component: () => import("../views/NewProduct.vue"),
+     |                             ^
+  68 |     props: route => ({ query: route.params.location })
+  69 |   },
+  70 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:71:11:
+  69 |   },
+  70 |   {
+> 71 |     path: "/custom-product",
+     |           ^
+  72 |     name: "CustomProduct",
+  73 |     component: () => import("../views/CustomProduct.vue"),
+  74 |     props: route => ({ query: route.params.location })
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:72:11:
+  70 |   {
+  71 |     path: "/custom-product",
+> 72 |     name: "CustomProduct",
+     |           ^
+  73 |     component: () => import("../views/CustomProduct.vue"),
+  74 |     props: route => ({ query: route.params.location })
+  75 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:73:29:
+  71 |     path: "/custom-product",
+  72 |     name: "CustomProduct",
+> 73 |     component: () => import("../views/CustomProduct.vue"),
+     |                             ^
+  74 |     props: route => ({ query: route.params.location })
+  75 |   },
+  76 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:77:11:
+  75 |   },
+  76 |   {
+> 77 |     path: "/invites",
+     |           ^
+  78 |     name: "Invites",
+  79 |     component: () => import("../views/Invites.vue")
+  80 |   },
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:78:11:
+  76 |   {
+  77 |     path: "/invites",
+> 78 |     name: "Invites",
+     |           ^
+  79 |     component: () => import("../views/Invites.vue")
+  80 |   },
+  81 |   {
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:79:29:
+  77 |     path: "/invites",
+  78 |     name: "Invites",
+> 79 |     component: () => import("../views/Invites.vue")
+     |                             ^
+  80 |   },
+  81 |   {
+  82 |     path: "*",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:82:11:
+  80 |   },
+  81 |   {
+> 82 |     path: "*",
+     |           ^
+  83 |     name: "404",
+  84 |     component: () => import("../views/404.vue")
+  85 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:83:11:
+  81 |   {
+  82 |     path: "*",
+> 83 |     name: "404",
+     |           ^
+  84 |     component: () => import("../views/404.vue")
+  85 |   }
+  86 | ];
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:84:29:
+  82 |     path: "*",
+  83 |     name: "404",
+> 84 |     component: () => import("../views/404.vue")
+     |                             ^
+  85 |   }
+  86 | ];
+  87 | 
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:89:9:
+  87 | 
+  88 | const router = new VueRouter({
+> 89 |   mode: "history",
+     |         ^
+  90 |   base: process.env.BASE_URL,
+  91 |   routes
+  92 | });
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:103:32:
+  101 |         userHasFamily = await CurrentFamily.instance.existsFor(user!);
+  102 |       }
+> 103 |       const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      |                                ^
+  104 |       const authWithoutFamilyRoutes = [
+  105 |         "SignIn",
+  106 |         "SignUp",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:103:42:
+  101 |         userHasFamily = await CurrentFamily.instance.existsFor(user!);
+  102 |       }
+> 103 |       const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      |                                          ^
+  104 |       const authWithoutFamilyRoutes = [
+  105 |         "SignIn",
+  106 |         "SignUp",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:103:52:
+  101 |         userHasFamily = await CurrentFamily.instance.existsFor(user!);
+  102 |       }
+> 103 |       const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      |                                                    ^
+  104 |       const authWithoutFamilyRoutes = [
+  105 |         "SignIn",
+  106 |         "SignUp",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:105:9:
+  103 |       const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+  104 |       const authWithoutFamilyRoutes = [
+> 105 |         "SignIn",
+      |         ^
+  106 |         "SignUp",
+  107 |         "Invites",
+  108 |         "NewFamily",
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:106:9:
+  104 |       const authWithoutFamilyRoutes = [
+  105 |         "SignIn",
+> 106 |         "SignUp",
+      |         ^
+  107 |         "Invites",
+  108 |         "NewFamily",
+  109 |         "UserProfile"
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:107:9:
+  105 |         "SignIn",
+  106 |         "SignUp",
+> 107 |         "Invites",
+      |         ^
+  108 |         "NewFamily",
+  109 |         "UserProfile"
+  110 |       ];
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:108:9:
+  106 |         "SignUp",
+  107 |         "Invites",
+> 108 |         "NewFamily",
+      |         ^
+  109 |         "UserProfile"
+  110 |       ];
+  111 | 
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:109:9:
+  107 |         "Invites",
+  108 |         "NewFamily",
+> 109 |         "UserProfile"
+      |         ^
+  110 |       ];
+  111 | 
+  112 |       const destinationIsOneOf = routes =>
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:116:14:
+  114 | 
+  115 |       if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
+> 116 |         next("/sign-in");
+      |              ^
+  117 |       } else if (
+  118 |         userLoggedIn &&
+  119 |         !userHasFamily &&
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:122:14:
+  120 |         !destinationIsOneOf(authWithoutFamilyRoutes)
+  121 |       ) {
+> 122 |         next("/profile");
+      |              ^
+  123 |       } else {
+  124 |         next();
+  125 |       }
+
+
+warning: Strings must use singlequote (quotes) at src/router/index.ts:128:12:
+  126 |     } catch (e) {
+  127 |       console.error(e.message);
+> 128 |       next("sign-in");
+      |            ^
+  129 |     }
+  130 |   }
+  131 | );
+
+
+warning: Strings must use singlequote (quotes) at src/shims-tsx.d.ts:1:28:
+> 1 | import Vue, { VNode } from "vue";
+    |                            ^
+  2 | 
+  3 | declare global {
+  4 |   namespace JSX {
+
+
+warning: Strings must use singlequote (quotes) at src/shims-vue.d.ts:1:16:
+> 1 | declare module "*.vue" {
+    |                ^
+  2 |   import Vue from "vue";
+  3 |   export default Vue;
+  4 | }
+
+
+warning: Strings must use singlequote (quotes) at src/shims-vue.d.ts:2:19:
+  1 | declare module "*.vue" {
+> 2 |   import Vue from "vue";
+    |                   ^
+  3 |   export default Vue;
+  4 | }
+  5 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:1:22:
+> 1 | import firebase from "firebase";
+    |                      ^
+  2 | import Authentication from "@/utils/Authentication";
+  3 | import DocumentReference = firebase.firestore.DocumentReference;
+  4 | import Firestore from "@/utils/Firestore";
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:2:28:
+  1 | import firebase from "firebase";
+> 2 | import Authentication from "@/utils/Authentication";
+    |                            ^
+  3 | import DocumentReference = firebase.firestore.DocumentReference;
+  4 | import Firestore from "@/utils/Firestore";
+  5 | import Product from "./Product";
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:4:23:
+  2 | import Authentication from "@/utils/Authentication";
+  3 | import DocumentReference = firebase.firestore.DocumentReference;
+> 4 | import Firestore from "@/utils/Firestore";
+    |                       ^
+  5 | import Product from "./Product";
+  6 | import Recipe from "@/types/Recipe";
+  7 | import ShoppingListItem from "./ShoppingListItem";
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:5:21:
+  3 | import DocumentReference = firebase.firestore.DocumentReference;
+  4 | import Firestore from "@/utils/Firestore";
+> 5 | import Product from "./Product";
+    |                     ^
+  6 | import Recipe from "@/types/Recipe";
+  7 | import ShoppingListItem from "./ShoppingListItem";
+  8 | import WastedProduct from "@/types/WastedProduct";
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:6:20:
+  4 | import Firestore from "@/utils/Firestore";
+  5 | import Product from "./Product";
+> 6 | import Recipe from "@/types/Recipe";
+    |                    ^
+  7 | import ShoppingListItem from "./ShoppingListItem";
+  8 | import WastedProduct from "@/types/WastedProduct";
+  9 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:7:30:
+   5 | import Product from "./Product";
+   6 | import Recipe from "@/types/Recipe";
+>  7 | import ShoppingListItem from "./ShoppingListItem";
+     |                              ^
+   8 | import WastedProduct from "@/types/WastedProduct";
+   9 | 
+  10 | export default interface Family {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:8:27:
+   6 | import Recipe from "@/types/Recipe";
+   7 | import ShoppingListItem from "./ShoppingListItem";
+>  8 | import WastedProduct from "@/types/WastedProduct";
+     |                           ^
+   9 | 
+  10 | export default interface Family {
+  11 |   id?: string;
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:35:19:
+  33 |     const user = await Authentication.instance.getCurrentUser();
+  34 |     const newFamilyRef: DocumentReference = await Firestore.instance.db
+> 35 |       .collection("family")
+     |                   ^
+  36 |       .add({
+  37 |         members: [user?.email],
+  38 |         pendingMembers: members,
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:44:44:
+  42 |       });
+  43 | 
+> 44 |     await Firestore.instance.db.collection("wasteBuckets").add({
+     |                                            ^
+  45 |       familyId: newFamilyRef.id,
+  46 |       wasted: []
+  47 |     });
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:52:19:
+  50 |   public async existsFor(user: firebase.User): Promise<boolean> {
+  51 |     const familiesSnap = await Firestore.instance.db
+> 52 |       .collection("family")
+     |                   ^
+  53 |       .where("members", "array-contains", user.email)
+  54 |       .get();
+  55 |     return familiesSnap.docs.length > 0;
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:53:14:
+  51 |     const familiesSnap = await Firestore.instance.db
+  52 |       .collection("family")
+> 53 |       .where("members", "array-contains", user.email)
+     |              ^
+  54 |       .get();
+  55 |     return familiesSnap.docs.length > 0;
+  56 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:53:25:
+  51 |     const familiesSnap = await Firestore.instance.db
+  52 |       .collection("family")
+> 53 |       .where("members", "array-contains", user.email)
+     |                         ^
+  54 |       .get();
+  55 |     return familiesSnap.docs.length > 0;
+  56 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:65:23:
+  63 |     const user = await Authentication.instance.getCurrentUser();
+  64 |     if (!user) {
+> 65 |       throw new Error("Unauthorized");
+     |                       ^
+  66 |     }
+  67 | 
+  68 |     const snap = await Firestore.instance.db
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:69:19:
+  67 | 
+  68 |     const snap = await Firestore.instance.db
+> 69 |       .collection("family")
+     |                   ^
+  70 |       .where("members", "array-contains", user.email)
+  71 |       .get();
+  72 |     if (snap.docs.length === 0) {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:70:14:
+  68 |     const snap = await Firestore.instance.db
+  69 |       .collection("family")
+> 70 |       .where("members", "array-contains", user.email)
+     |              ^
+  71 |       .get();
+  72 |     if (snap.docs.length === 0) {
+  73 |       throw new Error(`Family for UID:${user.uid} was not found`);
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:70:25:
+  68 |     const snap = await Firestore.instance.db
+  69 |       .collection("family")
+> 70 |       .where("members", "array-contains", user.email)
+     |                         ^
+  71 |       .get();
+  72 |     if (snap.docs.length === 0) {
+  73 |       throw new Error(`Family for UID:${user.uid} was not found`);
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:99:19:
+   97 | 
+   98 |     const docSnaps = await Firestore.instance.db
+>  99 |       .collection("recipes")
+      |                   ^
+  100 |       .where("familyId", "==", family.id)
+  101 |       .get();
+  102 |     return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:100:14:
+   98 |     const docSnaps = await Firestore.instance.db
+   99 |       .collection("recipes")
+> 100 |       .where("familyId", "==", family.id)
+      |              ^
+  101 |       .get();
+  102 |     return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
+  103 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:100:26:
+   98 |     const docSnaps = await Firestore.instance.db
+   99 |       .collection("recipes")
+> 100 |       .where("familyId", "==", family.id)
+      |                          ^
+  101 |       .get();
+  102 |     return docSnaps.docs.map<Recipe>(doc => doc.data() as Recipe);
+  103 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:115:14:
+  113 |     );
+  114 |     const thisMonthStatsCollection = await statistics
+> 115 |       .where("month", "==", monthData.month)
+      |              ^
+  116 |       .where("year", "==", monthData.year)
+  117 |       .get();
+  118 |     if (thisMonthStatsCollection.docs.length === 0) {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:115:23:
+  113 |     );
+  114 |     const thisMonthStatsCollection = await statistics
+> 115 |       .where("month", "==", monthData.month)
+      |                       ^
+  116 |       .where("year", "==", monthData.year)
+  117 |       .get();
+  118 |     if (thisMonthStatsCollection.docs.length === 0) {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:116:14:
+  114 |     const thisMonthStatsCollection = await statistics
+  115 |       .where("month", "==", monthData.month)
+> 116 |       .where("year", "==", monthData.year)
+      |              ^
+  117 |       .get();
+  118 |     if (thisMonthStatsCollection.docs.length === 0) {
+  119 |       return {};
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:116:22:
+  114 |     const thisMonthStatsCollection = await statistics
+  115 |       .where("month", "==", monthData.month)
+> 116 |       .where("year", "==", monthData.year)
+      |                      ^
+  117 |       .get();
+  118 |     if (thisMonthStatsCollection.docs.length === 0) {
+  119 |       return {};
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:129:19:
+  127 | 
+  128 |     const documents = await Firestore.instance.db
+> 129 |       .collection("wasteBuckets")
+      |                   ^
+  130 |       .where("familyId", "==", family?.id)
+  131 |       .get();
+  132 |     if (documents.docs.length === 0) {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:130:14:
+  128 |     const documents = await Firestore.instance.db
+  129 |       .collection("wasteBuckets")
+> 130 |       .where("familyId", "==", family?.id)
+      |              ^
+  131 |       .get();
+  132 |     if (documents.docs.length === 0) {
+  133 |       throw new Error(`WasteBucket for family: ${family?.id} was not found`);
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:130:26:
+  128 |     const documents = await Firestore.instance.db
+  129 |       .collection("wasteBuckets")
+> 130 |       .where("familyId", "==", family?.id)
+      |                          ^
+  131 |       .get();
+  132 |     if (documents.docs.length === 0) {
+  133 |       throw new Error(`WasteBucket for family: ${family?.id} was not found`);
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:145:9:
+  143 |       .doc(`family/${family.id}`)
+  144 |       .update(
+> 145 |         "members",
+      |         ^
+  146 |         firebase.firestore.FieldValue.arrayRemove(user!.email)
+  147 |       );
+  148 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:155:9:
+  153 |       .doc(`family/${family.id}`)
+  154 |       .update(
+> 155 |         "pendingMembers",
+      |         ^
+  156 |         firebase.firestore.FieldValue.arrayUnion(...memberEmails)
+  157 |       );
+  158 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:179:11:
+  177 |         .doc(`family/${family.id}`)
+  178 |         .update(
+> 179 |           "members",
+      |           ^
+  180 |           firebase.firestore.FieldValue.arrayRemove(userEmail)
+  181 |         );
+  182 |     } catch (e) {
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:189:9:
+  187 |       .doc(`family/${newFamilyId}`)
+  188 |       .update(
+> 189 |         "pendingMembers",
+      |         ^
+  190 |         firebase.firestore.FieldValue.arrayRemove(userEmail)
+  191 |       );
+  192 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/Family.ts:195:15:
+  193 |     await Firestore.instance.db
+  194 |       .doc(`family/${newFamilyId}`)
+> 195 |       .update("members", firebase.firestore.FieldValue.arrayUnion(userEmail));
+      |               ^
+  196 |   }
+  197 | }
+  198 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/Recipe.ts:1:30:
+> 1 | import RecipeIngredient from "./RecipeIngredient";
+    |                              ^
+  2 | 
+  3 | export default interface Recipe {
+  4 |   name: string;
+
+
+warning: Strings must use singlequote (quotes) at src/types/ShoppingListItem.ts:1:21:
+> 1 | import Product from "@/types/Product";
+    |                     ^
+  2 | 
+  3 | export default interface ShoppingListItem extends Product {
+  4 |   acquired: boolean;
+
+
+warning: Strings must use singlequote (quotes) at src/types/WastedProduct.ts:1:21:
+> 1 | import Product from "./Product";
+    |                     ^
+  2 | import firebase from "firebase";
+  3 | import Timestamp = firebase.firestore.Timestamp;
+  4 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/WastedProduct.ts:2:22:
+  1 | import Product from "./Product";
+> 2 | import firebase from "firebase";
+    |                      ^
+  3 | import Timestamp = firebase.firestore.Timestamp;
+  4 | 
+  5 | export default interface WastedProduct extends Product {
+
+
+warning: Strings must use singlequote (quotes) at src/types/index.ts:1:15:
+> 1 | export * from "./Family";
+    |               ^
+  2 | export * from "./Product";
+  3 | export * from "./ShoppingListItem";
+  4 | export * from "./Recipe";
+
+
+warning: Strings must use singlequote (quotes) at src/types/index.ts:2:15:
+  1 | export * from "./Family";
+> 2 | export * from "./Product";
+    |               ^
+  3 | export * from "./ShoppingListItem";
+  4 | export * from "./Recipe";
+  5 | export * from "./RecipeIngredient";
+
+
+warning: Strings must use singlequote (quotes) at src/types/index.ts:3:15:
+  1 | export * from "./Family";
+  2 | export * from "./Product";
+> 3 | export * from "./ShoppingListItem";
+    |               ^
+  4 | export * from "./Recipe";
+  5 | export * from "./RecipeIngredient";
+  6 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/index.ts:4:15:
+  2 | export * from "./Product";
+  3 | export * from "./ShoppingListItem";
+> 4 | export * from "./Recipe";
+    |               ^
+  5 | export * from "./RecipeIngredient";
+  6 | 
+
+
+warning: Strings must use singlequote (quotes) at src/types/index.ts:5:15:
+  3 | export * from "./ShoppingListItem";
+  4 | export * from "./Recipe";
+> 5 | export * from "./RecipeIngredient";
+    |               ^
+  6 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:1:22:
+> 1 | import firebase from "firebase";
+    |                      ^
+  2 | import { CurrentFamily } from "@/types";
+  3 | 
+  4 | export default class Authentication {
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:2:31:
+  1 | import firebase from "firebase";
+> 2 | import { CurrentFamily } from "@/types";
+    |                               ^
+  3 | 
+  4 | export default class Authentication {
+  5 |   public auth: firebase.auth.Auth;
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:19:34:
+  17 |     this.auth = firebase.auth();
+  18 | 
+> 19 |     if (process.env.NODE_ENV === "development") {
+     |                                  ^
+  20 |       this.auth.useEmulator("http://localhost:9099/");
+  21 |       // TODO: use the below option, when the type issue is resolved
+  22 |       //  (https://github.com/firebase/firebase-js-sdk/issues/4223)
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:20:29:
+  18 | 
+  19 |     if (process.env.NODE_ENV === "development") {
+> 20 |       this.auth.useEmulator("http://localhost:9099/");
+     |                             ^
+  21 |       // TODO: use the below option, when the type issue is resolved
+  22 |       //  (https://github.com/firebase/firebase-js-sdk/issues/4223)
+  23 |       // this.auth.useEmulator('http://localhost:9099/', { disableWarnings: true });
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:30:31:
+  28 |     return new Promise((resolve, reject) => {
+  29 |       firebase.auth().onAuthStateChanged(resolve);
+> 30 |       setTimeout(() => reject("Timeout"), 5000);
+     |                               ^
+  31 |     });
+  32 |   }
+  33 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:42:19:
+  40 |       return cred.user;
+  41 |     } catch (error) {
+> 42 |       console.log("SignIn failed: ", error);
+     |                   ^
+  43 |     }
+  44 |   }
+  45 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:51:19:
+  49 |       CurrentFamily.instance.family = null;
+  50 |     } catch (error) {
+> 51 |       console.log("SignOut failed: ", error);
+     |                   ^
+  52 |     }
+  53 |   }
+  54 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:63:19:
+  61 |       return cred.user;
+  62 |     } catch (error) {
+> 63 |       console.log("Sign Up failed: ", error);
+     |                   ^
+  64 |     }
+  65 |   }
+  66 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Authentication.ts:73:19:
+  71 |       return userCred.user;
+  72 |     } catch (error) {
+> 73 |       console.log("Sign Up with Google failed: ", error);
+     |                   ^
+  74 |     }
+  75 |   }
+  76 | }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:1:22:
+> 1 | import firebase from "firebase";
+    |                      ^
+  2 | import Family, { CurrentFamily } from "@/types/Family";
+  3 | import Product from "@/types/Product";
+  4 | import ShoppingListItem from "@/types/ShoppingListItem";
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:2:39:
+  1 | import firebase from "firebase";
+> 2 | import Family, { CurrentFamily } from "@/types/Family";
+    |                                       ^
+  3 | import Product from "@/types/Product";
+  4 | import ShoppingListItem from "@/types/ShoppingListItem";
+  5 | import WastedProduct from "@/types/WastedProduct";
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:3:21:
+  1 | import firebase from "firebase";
+  2 | import Family, { CurrentFamily } from "@/types/Family";
+> 3 | import Product from "@/types/Product";
+    |                     ^
+  4 | import ShoppingListItem from "@/types/ShoppingListItem";
+  5 | import WastedProduct from "@/types/WastedProduct";
+  6 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:4:30:
+  2 | import Family, { CurrentFamily } from "@/types/Family";
+  3 | import Product from "@/types/Product";
+> 4 | import ShoppingListItem from "@/types/ShoppingListItem";
+    |                              ^
+  5 | import WastedProduct from "@/types/WastedProduct";
+  6 | 
+  7 | export default class Firestore {
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:5:27:
+  3 | import Product from "@/types/Product";
+  4 | import ShoppingListItem from "@/types/ShoppingListItem";
+> 5 | import WastedProduct from "@/types/WastedProduct";
+    |                           ^
+  6 | 
+  7 | export default class Firestore {
+  8 |   public db!: firebase.firestore.Firestore;
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:22:34:
+  20 |     this.db = firebase.firestore();
+  21 | 
+> 22 |     if (process.env.NODE_ENV === "development") {
+     |                                  ^
+  23 |       console.log("Emulator connected");
+  24 | 
+  25 |       this.db.useEmulator("localhost", 8888);
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:23:19:
+  21 | 
+  22 |     if (process.env.NODE_ENV === "development") {
+> 23 |       console.log("Emulator connected");
+     |                   ^
+  24 | 
+  25 |       this.db.useEmulator("localhost", 8888);
+  26 |     }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:25:27:
+  23 |       console.log("Emulator connected");
+  24 | 
+> 25 |       this.db.useEmulator("localhost", 8888);
+     |                           ^
+  26 |     }
+  27 |   }
+  28 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:30:48:
+  28 | 
+  29 |   public async getAllProducts(): Promise<Product[]> {
+> 30 |     const querySnap = await this.db.collection("allProducts").get();
+     |                                                ^
+  31 |     return querySnap.docs.map(doc => doc.data() as Product);
+  32 |   }
+  33 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:39:19:
+  37 |     family.storage.push(product);
+  38 |     await this.db
+> 39 |       .collection("family")
+     |                   ^
+  40 |       .doc(family.id)
+  41 |       .set(family);
+  42 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:51:19:
+  49 |     );
+  50 |     await this.db
+> 51 |       .collection("family")
+     |                   ^
+  52 |       .doc(family.id)
+  53 |       .set(family);
+  54 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:59:19:
+  57 |     const seconds = new Date().getTime() / 1000;
+  58 |     const documents = await this.db
+> 59 |       .collection("wasteBuckets")
+     |                   ^
+  60 |       .where(
+  61 |         "familyId",
+  62 |         "==",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:61:9:
+  59 |       .collection("wasteBuckets")
+  60 |       .where(
+> 61 |         "familyId",
+     |         ^
+  62 |         "==",
+  63 |         (await CurrentFamily.instance.getCurrentFamily())!.id
+  64 |       )
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:62:9:
+  60 |       .where(
+  61 |         "familyId",
+> 62 |         "==",
+     |         ^
+  63 |         (await CurrentFamily.instance.getCurrentFamily())!.id
+  64 |       )
+  65 |       .get();
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:74:19:
+  72 | 
+  73 |     await this.db
+> 74 |       .collection("wasteBuckets")
+     |                   ^
+  75 |       .doc(bucket.id)
+  76 |       .update("wasted", updatedWastedList);
+  77 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:76:15:
+  74 |       .collection("wasteBuckets")
+  75 |       .doc(bucket.id)
+> 76 |       .update("wasted", updatedWastedList);
+     |               ^
+  77 |   }
+  78 | 
+  79 |   public async removeFromShoppingList(product: Product) {
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:86:19:
+  84 |     );
+  85 |     await this.db
+> 86 |       .collection("family")
+     |                   ^
+  87 |       .doc(family.id)
+  88 |       .set(family);
+  89 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:99:19:
+   97 |     });
+   98 |     await this.db
+>  99 |       .collection("family")
+      |                   ^
+  100 |       .doc(family.id)
+  101 |       .set(family);
+  102 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:106:19:
+  104 |   public async updateShoppingList(products: ShoppingListItem[]) {
+  105 |     await this.db
+> 106 |       .collection("family")
+      |                   ^
+  107 |       .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)
+  108 |       .update("shoppingList", products);
+  109 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:108:15:
+  106 |       .collection("family")
+  107 |       .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)
+> 108 |       .update("shoppingList", products);
+      |               ^
+  109 |   }
+  110 | 
+  111 |   public async getAllRecipes() {
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:112:48:
+  110 | 
+  111 |   public async getAllRecipes() {
+> 112 |     const documents = await this.db.collection("recipes").get();
+      |                                                ^
+  113 |     return documents.docs.map<string>(qds => qds.data().name);
+  114 |   }
+  115 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:118:19:
+  116 |   public async getInvites(userEmail: string): Promise<Family[]> {
+  117 |     const familyQuerySnap = await this.db
+> 118 |       .collection("family")
+      |                   ^
+  119 |       .where("pendingMembers", "array-contains", userEmail)
+  120 |       .get();
+  121 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:119:14:
+  117 |     const familyQuerySnap = await this.db
+  118 |       .collection("family")
+> 119 |       .where("pendingMembers", "array-contains", userEmail)
+      |              ^
+  120 |       .get();
+  121 | 
+  122 |     return familyQuerySnap.docs.map(snap => snap.data() as Family);
+
+
+warning: Strings must use singlequote (quotes) at src/utils/Firestore.ts:119:32:
+  117 |     const familyQuerySnap = await this.db
+  118 |       .collection("family")
+> 119 |       .where("pendingMembers", "array-contains", userEmail)
+      |                                ^
+  120 |       .get();
+  121 | 
+  122 |     return familyQuerySnap.docs.map(snap => snap.data() as Family);
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:1:22:
+> 1 | import tailwind from "../../tailwind.config";
+    |                      ^
+  2 | export const colors: string[] = Object.values(tailwind.theme.colors);
+  3 | 
+  4 | export const monthList = [
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:5:3:
+  3 | 
+  4 | export const monthList = [
+> 5 |   "January",
+    |   ^
+  6 |   "February",
+  7 |   "March",
+  8 |   "April",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:6:3:
+  4 | export const monthList = [
+  5 |   "January",
+> 6 |   "February",
+    |   ^
+  7 |   "March",
+  8 |   "April",
+  9 |   "May",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:7:3:
+   5 |   "January",
+   6 |   "February",
+>  7 |   "March",
+     |   ^
+   8 |   "April",
+   9 |   "May",
+  10 |   "June",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:8:3:
+   6 |   "February",
+   7 |   "March",
+>  8 |   "April",
+     |   ^
+   9 |   "May",
+  10 |   "June",
+  11 |   "July",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:9:3:
+   7 |   "March",
+   8 |   "April",
+>  9 |   "May",
+     |   ^
+  10 |   "June",
+  11 |   "July",
+  12 |   "August",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:10:3:
+   8 |   "April",
+   9 |   "May",
+> 10 |   "June",
+     |   ^
+  11 |   "July",
+  12 |   "August",
+  13 |   "September",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:11:3:
+   9 |   "May",
+  10 |   "June",
+> 11 |   "July",
+     |   ^
+  12 |   "August",
+  13 |   "September",
+  14 |   "October",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:12:3:
+  10 |   "June",
+  11 |   "July",
+> 12 |   "August",
+     |   ^
+  13 |   "September",
+  14 |   "October",
+  15 |   "November",
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:13:3:
+  11 |   "July",
+  12 |   "August",
+> 13 |   "September",
+     |   ^
+  14 |   "October",
+  15 |   "November",
+  16 |   "December"
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:14:3:
+  12 |   "August",
+  13 |   "September",
+> 14 |   "October",
+     |   ^
+  15 |   "November",
+  16 |   "December"
+  17 | ];
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:15:3:
+  13 |   "September",
+  14 |   "October",
+> 15 |   "November",
+     |   ^
+  16 |   "December"
+  17 | ];
+  18 | 
+
+
+warning: Strings must use singlequote (quotes) at src/utils/consts.ts:16:3:
+  14 |   "October",
+  15 |   "November",
+> 16 |   "December"
+     |   ^
+  17 | ];
+  18 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:28:28:
+  26 | 
+  27 | <script lang="ts">
+> 28 | import { AlertMixin } from "@/components/AlertMixin";
+     |                            ^
+  29 | import { Component, Mixins } from "vue-property-decorator";
+  30 | import { CurrentFamily } from "@/types";
+  31 | import Firestore from "@/utils/Firestore";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:29:35:
+  27 | <script lang="ts">
+  28 | import { AlertMixin } from "@/components/AlertMixin";
+> 29 | import { Component, Mixins } from "vue-property-decorator";
+     |                                   ^
+  30 | import { CurrentFamily } from "@/types";
+  31 | import Firestore from "@/utils/Firestore";
+  32 | import Product from "@/types/Product";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:30:31:
+  28 | import { AlertMixin } from "@/components/AlertMixin";
+  29 | import { Component, Mixins } from "vue-property-decorator";
+> 30 | import { CurrentFamily } from "@/types";
+     |                               ^
+  31 | import Firestore from "@/utils/Firestore";
+  32 | import Product from "@/types/Product";
+  33 | import VAlert from "@/components/VAlert.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:31:23:
+  29 | import { Component, Mixins } from "vue-property-decorator";
+  30 | import { CurrentFamily } from "@/types";
+> 31 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  32 | import Product from "@/types/Product";
+  33 | import VAlert from "@/components/VAlert.vue";
+  34 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:32:21:
+  30 | import { CurrentFamily } from "@/types";
+  31 | import Firestore from "@/utils/Firestore";
+> 32 | import Product from "@/types/Product";
+     |                     ^
+  33 | import VAlert from "@/components/VAlert.vue";
+  34 | import VButton from "@/components/VButton.vue";
+  35 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:33:20:
+  31 | import Firestore from "@/utils/Firestore";
+  32 | import Product from "@/types/Product";
+> 33 | import VAlert from "@/components/VAlert.vue";
+     |                    ^
+  34 | import VButton from "@/components/VButton.vue";
+  35 | import VHeader from "@/components/VHeader.vue";
+  36 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:34:21:
+  32 | import Product from "@/types/Product";
+  33 | import VAlert from "@/components/VAlert.vue";
+> 34 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  35 | import VHeader from "@/components/VHeader.vue";
+  36 | import VInput from "@/components/VInput.vue";
+  37 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:35:21:
+  33 | import VAlert from "@/components/VAlert.vue";
+  34 | import VButton from "@/components/VButton.vue";
+> 35 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  36 | import VInput from "@/components/VInput.vue";
+  37 | 
+  38 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:36:20:
+  34 | import VButton from "@/components/VButton.vue";
+  35 | import VHeader from "@/components/VHeader.vue";
+> 36 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  37 | 
+  38 | @Component({
+  39 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:48:30:
+  46 | export default class CustomProduct extends Mixins(AlertMixin) {
+  47 |   location?: string;
+> 48 |   product: Product = { name: "" };
+     |                              ^
+  49 | 
+  50 |   mounted() {
+  51 |     this.location = this.$route.query.location as string;
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:69:27:
+  67 | 
+  68 |   async addProductToStorageOrShoppingList() {
+> 69 |     if (this.location === "storage") {
+     |                           ^
+  70 |       await Firestore.instance.addProductToStorage(this.product);
+  71 |     } else if (this.location === "shoppingList") {
+  72 |       await Firestore.instance.addToShoppingList(this.product);
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:71:34:
+  69 |     if (this.location === "storage") {
+  70 |       await Firestore.instance.addProductToStorage(this.product);
+> 71 |     } else if (this.location === "shoppingList") {
+     |                                  ^
+  72 |       await Firestore.instance.addToShoppingList(this.product);
+  73 |     }
+  74 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/CustomProduct.vue:78:28:
+  76 |       `${this.product.name} was added to the ${this.location}`
+  77 |     );
+> 78 |     this.product = { name: "" };
+     |                            ^
+  79 |   }
+  80 | 
+  81 |   async isInStorageOrShoppingList() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:34:32:
+  32 | 
+  33 | <script lang="ts">
+> 34 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  35 | import VHeader from "@/components/VHeader.vue";
+  36 | import VButton from "@/components/VButton.vue";
+  37 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:35:21:
+  33 | <script lang="ts">
+  34 | import { Component, Vue } from "vue-property-decorator";
+> 35 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  36 | import VButton from "@/components/VButton.vue";
+  37 | import VInput from "@/components/VInput.vue";
+  38 | import Family, { CurrentFamily } from "@/types/Family";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:36:21:
+  34 | import { Component, Vue } from "vue-property-decorator";
+  35 | import VHeader from "@/components/VHeader.vue";
+> 36 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  37 | import VInput from "@/components/VInput.vue";
+  38 | import Family, { CurrentFamily } from "@/types/Family";
+  39 | import router from "@/router";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:37:20:
+  35 | import VHeader from "@/components/VHeader.vue";
+  36 | import VButton from "@/components/VButton.vue";
+> 37 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  38 | import Family, { CurrentFamily } from "@/types/Family";
+  39 | import router from "@/router";
+  40 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:38:39:
+  36 | import VButton from "@/components/VButton.vue";
+  37 | import VInput from "@/components/VInput.vue";
+> 38 | import Family, { CurrentFamily } from "@/types/Family";
+     |                                       ^
+  39 | import router from "@/router";
+  40 | 
+  41 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:39:20:
+  37 | import VInput from "@/components/VInput.vue";
+  38 | import Family, { CurrentFamily } from "@/types/Family";
+> 39 | import router from "@/router";
+     |                    ^
+  40 | 
+  41 | @Component({
+  42 |   components: { VHeader, VButton, VInput }
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:48:26:
+  46 |   pendingMembers: string[] = [];
+  47 |   family: Family | null = null;
+> 48 |   familyNameInputValue = "";
+     |                          ^
+  49 | 
+  50 |   async mounted() {
+  51 |     this.family = await CurrentFamily.instance.getCurrentFamily();
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:60:17:
+  58 | 
+  59 |   async addNewMembers() {
+> 60 |     router.push("/new-family-members");
+     |                 ^
+  61 |   }
+  62 | 
+  63 |   async handleQuit() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Family.vue:65:17:
+  63 |   async handleQuit() {
+  64 |     await CurrentFamily.instance.quit();
+> 65 |     router.push("/");
+     |                 ^
+  66 |   }
+  67 | 
+  68 |   get allMembers() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:58:20:
+  56 | 
+  57 | <script lang="ts">
+> 58 | import router from "@/router";
+     |                    ^
+  59 | import { AlertMixin } from "@/components/AlertMixin";
+  60 | import { Component, Mixins } from "vue-property-decorator";
+  61 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:59:28:
+  57 | <script lang="ts">
+  58 | import router from "@/router";
+> 59 | import { AlertMixin } from "@/components/AlertMixin";
+     |                            ^
+  60 | import { Component, Mixins } from "vue-property-decorator";
+  61 | import { CurrentFamily } from "@/types";
+  62 | import Firestore from "@/utils/Firestore";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:60:35:
+  58 | import router from "@/router";
+  59 | import { AlertMixin } from "@/components/AlertMixin";
+> 60 | import { Component, Mixins } from "vue-property-decorator";
+     |                                   ^
+  61 | import { CurrentFamily } from "@/types";
+  62 | import Firestore from "@/utils/Firestore";
+  63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:61:31:
+  59 | import { AlertMixin } from "@/components/AlertMixin";
+  60 | import { Component, Mixins } from "vue-property-decorator";
+> 61 | import { CurrentFamily } from "@/types";
+     |                               ^
+  62 | import Firestore from "@/utils/Firestore";
+  63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  64 | import Product from "@/types/Product";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:62:23:
+  60 | import { Component, Mixins } from "vue-property-decorator";
+  61 | import { CurrentFamily } from "@/types";
+> 62 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  64 | import Product from "@/types/Product";
+  65 | import SearchInput from "@/components/SearchInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:63:28:
+  61 | import { CurrentFamily } from "@/types";
+  62 | import Firestore from "@/utils/Firestore";
+> 63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+     |                            ^
+  64 | import Product from "@/types/Product";
+  65 | import SearchInput from "@/components/SearchInput.vue";
+  66 | import VAlert from "@/components/VAlert.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:64:21:
+  62 | import Firestore from "@/utils/Firestore";
+  63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+> 64 | import Product from "@/types/Product";
+     |                     ^
+  65 | import SearchInput from "@/components/SearchInput.vue";
+  66 | import VAlert from "@/components/VAlert.vue";
+  67 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:65:25:
+  63 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  64 | import Product from "@/types/Product";
+> 65 | import SearchInput from "@/components/SearchInput.vue";
+     |                         ^
+  66 | import VAlert from "@/components/VAlert.vue";
+  67 | import VHeader from "@/components/VHeader.vue";
+  68 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:66:20:
+  64 | import Product from "@/types/Product";
+  65 | import SearchInput from "@/components/SearchInput.vue";
+> 66 | import VAlert from "@/components/VAlert.vue";
+     |                    ^
+  67 | import VHeader from "@/components/VHeader.vue";
+  68 | 
+  69 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:67:21:
+  65 | import SearchInput from "@/components/SearchInput.vue";
+  66 | import VAlert from "@/components/VAlert.vue";
+> 67 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  68 | 
+  69 | @Component({
+  70 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:78:24:
+  76 | })
+  77 | export default class Fridge extends Mixins(AlertMixin) {
+> 78 |   newProductCategory = "";
+     |                        ^
+  79 |   newProductName = "";
+  80 |   products: Product[] = [];
+  81 |   productWasWasted = false;
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:79:20:
+  77 | export default class Fridge extends Mixins(AlertMixin) {
+  78 |   newProductCategory = "";
+> 79 |   newProductName = "";
+     |                    ^
+  80 |   products: Product[] = [];
+  81 |   productWasWasted = false;
+  82 |   searchQuery = "";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:82:17:
+  80 |   products: Product[] = [];
+  81 |   productWasWasted = false;
+> 82 |   searchQuery = "";
+     |                 ^
+  83 | 
+  84 |   async mounted() {
+  85 |     this.products = await this.getProductsWithCategory();
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:97:48:
+   95 |     type Category = { [category: string]: Product[] };
+   96 |     return reducedProducts.reduce<Category>((acc, product) => {
+>  97 |       const categoryName = product.category ?? "General";
+      |                                                ^
+   98 |       if (!Object.keys(acc).includes(categoryName)) {
+   99 |         acc[categoryName] = [];
+  100 |       }
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:128:25:
+  126 | 
+  127 |   addNewProduct() {
+> 128 |     router.push({ path: "/new-product", query: { location: "storage" } });
+      |                         ^
+  129 |   }
+  130 | 
+  131 |   async getProductsWithCategory(): Promise<Product[]> {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:128:60:
+  126 | 
+  127 |   addNewProduct() {
+> 128 |     router.push({ path: "/new-product", query: { location: "storage" } });
+      |                                                            ^
+  129 |   }
+  130 | 
+  131 |   async getProductsWithCategory(): Promise<Product[]> {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Fridge.vue:140:51:
+  138 | 
+  139 |     return allProducts.map(product => {
+> 140 |       const productCategory = product.category ?? "General";
+      |                                                   ^
+  141 |       return { name: product.name, category: productCategory };
+  142 |     });
+  143 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:37:32:
+  35 | 
+  36 | <script lang="ts">
+> 37 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  38 | import Firestore from "@/utils/Firestore";
+  39 | import Product from "@/types/Product";
+  40 | import SearchInput from "@/components/SearchInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:38:23:
+  36 | <script lang="ts">
+  37 | import { Component, Vue } from "vue-property-decorator";
+> 38 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  39 | import Product from "@/types/Product";
+  40 | import SearchInput from "@/components/SearchInput.vue";
+  41 | import SkipHeader from "@/components/SkipHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:39:21:
+  37 | import { Component, Vue } from "vue-property-decorator";
+  38 | import Firestore from "@/utils/Firestore";
+> 39 | import Product from "@/types/Product";
+     |                     ^
+  40 | import SearchInput from "@/components/SearchInput.vue";
+  41 | import SkipHeader from "@/components/SkipHeader.vue";
+  42 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:40:25:
+  38 | import Firestore from "@/utils/Firestore";
+  39 | import Product from "@/types/Product";
+> 40 | import SearchInput from "@/components/SearchInput.vue";
+     |                         ^
+  41 | import SkipHeader from "@/components/SkipHeader.vue";
+  42 | import VButton from "@/components/VButton.vue";
+  43 | import router from "@/router";
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:41:24:
+  39 | import Product from "@/types/Product";
+  40 | import SearchInput from "@/components/SearchInput.vue";
+> 41 | import SkipHeader from "@/components/SkipHeader.vue";
+     |                        ^
+  42 | import VButton from "@/components/VButton.vue";
+  43 | import router from "@/router";
+  44 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:42:21:
+  40 | import SearchInput from "@/components/SearchInput.vue";
+  41 | import SkipHeader from "@/components/SkipHeader.vue";
+> 42 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  43 | import router from "@/router";
+  44 | 
+  45 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:43:20:
+  41 | import SkipHeader from "@/components/SkipHeader.vue";
+  42 | import VButton from "@/components/VButton.vue";
+> 43 | import router from "@/router";
+     |                    ^
+  44 | 
+  45 | @Component({
+  46 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:56:13:
+  54 |   products: Product[] = [];
+  55 |   productsToAdd: Product[] = [];
+> 56 |   colors = ["#B6DDDA", "#FFE6A3"];
+     |             ^
+  57 |   searchQuery = "";
+  58 | 
+  59 |   async mounted() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:56:24:
+  54 |   products: Product[] = [];
+  55 |   productsToAdd: Product[] = [];
+> 56 |   colors = ["#B6DDDA", "#FFE6A3"];
+     |                        ^
+  57 |   searchQuery = "";
+  58 | 
+  59 |   async mounted() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:57:17:
+  55 |   productsToAdd: Product[] = [];
+  56 |   colors = ["#B6DDDA", "#FFE6A3"];
+> 57 |   searchQuery = "";
+     |                 ^
+  58 | 
+  59 |   async mounted() {
+  60 |     this.products = await this.getProductsWithCategory();
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:73:51:
+  71 |     const allProducts = await Firestore.instance.getAllProducts();
+  72 |     return allProducts.map(product => {
+> 73 |       const productCategory = product.category ?? "General";
+     |                                                   ^
+  74 |       return { name: product.name, category: productCategory };
+  75 |     });
+  76 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:92:23:
+  90 | 
+  91 |   getProductColor(product, category) {
+> 92 |     const defaultBg = "#E7E7E7";
+     |                       ^
+  93 | 
+  94 |     return {
+  95 |       background: this.isInProductsList(product)
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:111:48:
+  109 |     let categoryCount = 0;
+  110 |     return reducedProducts.reduce<Category>((acc, product) => {
+> 111 |       const categoryName = product.category ?? "General";
+      |                                                ^
+  112 |       if (!Object.keys(acc).includes(categoryName)) {
+  113 |         acc[categoryName] = [];
+  114 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/FridgeSetup.vue:129:17:
+  127 | 
+  128 |   goToTheNextPage() {
+> 129 |     router.push("/");
+      |                 ^
+  130 |   }
+  131 | }
+  132 | </script>
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:82:32:
+  80 | 
+  81 | <script lang="ts">
+> 82 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  83 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  84 | import Authentication from "@/utils/Authentication";
+  85 | import WastedProduct from "@/types/WastedProduct";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:83:28:
+  81 | <script lang="ts">
+  82 | import { Component, Vue } from "vue-property-decorator";
+> 83 | import NavigationMenu from "@/components/NavigationMenu.vue";
+     |                            ^
+  84 | import Authentication from "@/utils/Authentication";
+  85 | import WastedProduct from "@/types/WastedProduct";
+  86 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:84:28:
+  82 | import { Component, Vue } from "vue-property-decorator";
+  83 | import NavigationMenu from "@/components/NavigationMenu.vue";
+> 84 | import Authentication from "@/utils/Authentication";
+     |                            ^
+  85 | import WastedProduct from "@/types/WastedProduct";
+  86 | import VHeader from "@/components/VHeader.vue";
+  87 | import firebase from "firebase";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:85:27:
+  83 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  84 | import Authentication from "@/utils/Authentication";
+> 85 | import WastedProduct from "@/types/WastedProduct";
+     |                           ^
+  86 | import VHeader from "@/components/VHeader.vue";
+  87 | import firebase from "firebase";
+  88 | import DonutChart from "@/components/DonutChart.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:86:21:
+  84 | import Authentication from "@/utils/Authentication";
+  85 | import WastedProduct from "@/types/WastedProduct";
+> 86 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  87 | import firebase from "firebase";
+  88 | import DonutChart from "@/components/DonutChart.vue";
+  89 | import { colors, monthList } from "@/utils/consts";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:87:22:
+  85 | import WastedProduct from "@/types/WastedProduct";
+  86 | import VHeader from "@/components/VHeader.vue";
+> 87 | import firebase from "firebase";
+     |                      ^
+  88 | import DonutChart from "@/components/DonutChart.vue";
+  89 | import { colors, monthList } from "@/utils/consts";
+  90 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:88:24:
+  86 | import VHeader from "@/components/VHeader.vue";
+  87 | import firebase from "firebase";
+> 88 | import DonutChart from "@/components/DonutChart.vue";
+     |                        ^
+  89 | import { colors, monthList } from "@/utils/consts";
+  90 | import { CurrentFamily } from "@/types";
+  91 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:89:35:
+  87 | import firebase from "firebase";
+  88 | import DonutChart from "@/components/DonutChart.vue";
+> 89 | import { colors, monthList } from "@/utils/consts";
+     |                                   ^
+  90 | import { CurrentFamily } from "@/types";
+  91 | 
+  92 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:90:31:
+  88 | import DonutChart from "@/components/DonutChart.vue";
+  89 | import { colors, monthList } from "@/utils/consts";
+> 90 | import { CurrentFamily } from "@/types";
+     |                               ^
+  91 | 
+  92 | @Component({
+  93 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:111:15:
+  109 |     year: new Date().getFullYear()
+  110 |   };
+> 111 |   firstName = "";
+      |               ^
+  112 |   defaultColor = "#E7E7E7";
+  113 | 
+  114 |   async mounted() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:112:18:
+  110 |   };
+  111 |   firstName = "";
+> 112 |   defaultColor = "#E7E7E7";
+      |                  ^
+  113 | 
+  114 |   async mounted() {
+  115 |     this.user = await Authentication.instance.getCurrentUser();
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:121:43:
+  119 |         this.user!.displayName.substr(
+  120 |           0,
+> 121 |           this.user!.displayName?.indexOf(" ")
+      |                                           ^
+  122 |         ) || this.user!.displayName;
+  123 |     }
+  124 |     await this.getWastedProductsForSelectedMonth();
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:185:49:
+  183 | 
+  184 |     return this.wastedProducts.reduce<Category>((acc, product) => {
+> 185 |       const categoryName = (product.category ?? "General").toLowerCase();
+      |                                                 ^
+  186 |       if (!Object.keys(acc).includes(categoryName)) {
+  187 |         acc[categoryName] = 0;
+  188 |         this.categoryColors[categoryName] = colors[categoryCount];
+
+
+warning: Strings must use singlequote (quotes) at src/views/Home.vue:216:13:
+  214 | 
+  215 |   get chartLabels() {
+> 216 |     return ["Eaten", ...Object.keys(this.statistics)];
+      |             ^
+  217 |   }
+  218 | 
+  219 |   getWastePercentage(category?: string) {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:34:32:
+  32 | 
+  33 | <script lang="ts">
+> 34 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  35 | import firebase from "firebase";
+  36 | import Authentication from "@/utils/Authentication";
+  37 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:35:22:
+  33 | <script lang="ts">
+  34 | import { Component, Vue } from "vue-property-decorator";
+> 35 | import firebase from "firebase";
+     |                      ^
+  36 | import Authentication from "@/utils/Authentication";
+  37 | import VHeader from "@/components/VHeader.vue";
+  38 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:36:28:
+  34 | import { Component, Vue } from "vue-property-decorator";
+  35 | import firebase from "firebase";
+> 36 | import Authentication from "@/utils/Authentication";
+     |                            ^
+  37 | import VHeader from "@/components/VHeader.vue";
+  38 | import VButton from "@/components/VButton.vue";
+  39 | import Family, { CurrentFamily } from "@/types/Family";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:37:21:
+  35 | import firebase from "firebase";
+  36 | import Authentication from "@/utils/Authentication";
+> 37 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  38 | import VButton from "@/components/VButton.vue";
+  39 | import Family, { CurrentFamily } from "@/types/Family";
+  40 | import Firestore from "@/utils/Firestore";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:38:21:
+  36 | import Authentication from "@/utils/Authentication";
+  37 | import VHeader from "@/components/VHeader.vue";
+> 38 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  39 | import Family, { CurrentFamily } from "@/types/Family";
+  40 | import Firestore from "@/utils/Firestore";
+  41 | import router from "@/router";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:39:39:
+  37 | import VHeader from "@/components/VHeader.vue";
+  38 | import VButton from "@/components/VButton.vue";
+> 39 | import Family, { CurrentFamily } from "@/types/Family";
+     |                                       ^
+  40 | import Firestore from "@/utils/Firestore";
+  41 | import router from "@/router";
+  42 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:40:23:
+  38 | import VButton from "@/components/VButton.vue";
+  39 | import Family, { CurrentFamily } from "@/types/Family";
+> 40 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  41 | import router from "@/router";
+  42 | 
+  43 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:41:20:
+  39 | import Family, { CurrentFamily } from "@/types/Family";
+  40 | import Firestore from "@/utils/Firestore";
+> 41 | import router from "@/router";
+     |                    ^
+  42 | 
+  43 | @Component({
+  44 |   components: { VHeader, VButton }
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:52:76:
+  50 |   async mounted() {
+  51 |     this.user = await Authentication.instance.getCurrentUser();
+> 52 |     this.invites = await Firestore.instance.getInvites(this.user?.email ?? "");
+     |                                                                            ^
+  53 |   }
+  54 | 
+  55 |   async handleAcceptInvite(familyId: string) {
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:56:57:
+  54 | 
+  55 |   async handleAcceptInvite(familyId: string) {
+> 56 |     if (!this.user || !this.user.email) throw new Error("Unauthorized!");
+     |                                                         ^
+  57 | 
+  58 |     await CurrentFamily.instance.switchTo(familyId, this.user.email);
+  59 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Invites.vue:60:23:
+  58 |     await CurrentFamily.instance.switchTo(familyId, this.user.email);
+  59 | 
+> 60 |     await router.push("/");
+     |                       ^
+  61 |   }
+  62 | }
+  63 | </script>
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:51:32:
+  49 | 
+  50 | <script lang="ts">
+> 51 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  52 | import router from "@/router";
+  53 | import SkipHeader from "@/components/SkipHeader.vue";
+  54 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:52:20:
+  50 | <script lang="ts">
+  51 | import { Component, Vue } from "vue-property-decorator";
+> 52 | import router from "@/router";
+     |                    ^
+  53 | import SkipHeader from "@/components/SkipHeader.vue";
+  54 | import VButton from "@/components/VButton.vue";
+  55 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:53:24:
+  51 | import { Component, Vue } from "vue-property-decorator";
+  52 | import router from "@/router";
+> 53 | import SkipHeader from "@/components/SkipHeader.vue";
+     |                        ^
+  54 | import VButton from "@/components/VButton.vue";
+  55 | import VInput from "@/components/VInput.vue";
+  56 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:54:21:
+  52 | import router from "@/router";
+  53 | import SkipHeader from "@/components/SkipHeader.vue";
+> 54 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  55 | import VInput from "@/components/VInput.vue";
+  56 | import { CurrentFamily } from "@/types";
+  57 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:55:20:
+  53 | import SkipHeader from "@/components/SkipHeader.vue";
+  54 | import VButton from "@/components/VButton.vue";
+> 55 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  56 | import { CurrentFamily } from "@/types";
+  57 | 
+  58 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:56:31:
+  54 | import VButton from "@/components/VButton.vue";
+  55 | import VInput from "@/components/VInput.vue";
+> 56 | import { CurrentFamily } from "@/types";
+     |                               ^
+  57 | 
+  58 | @Component({
+  59 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:66:16:
+  64 | })
+  65 | export default class SignIn extends Vue {
+> 66 |   familyName = "";
+     |                ^
+  67 |   memberEmails: string[] = [];
+  68 |   currentEmail = "";
+  69 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:68:18:
+  66 |   familyName = "";
+  67 |   memberEmails: string[] = [];
+> 68 |   currentEmail = "";
+     |                  ^
+  69 | 
+  70 |   async createFamily() {
+  71 |     await CurrentFamily.instance.create(this.familyName, this.memberEmails);
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:77:25:
+  75 |   addEmail() {
+  76 |     this.memberEmails.push(this.currentEmail);
+> 77 |     this.currentEmail = "";
+     |                         ^
+  78 |   }
+  79 | 
+  80 |   goToTheNextPage() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamily.vue:81:17:
+  79 | 
+  80 |   goToTheNextPage() {
+> 81 |     router.push("/fridge-setup");
+     |                 ^
+  82 |   }
+  83 | 
+  84 |   removeEmail(email: string) {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:39:32:
+  37 | 
+  38 | <script lang="ts">
+> 39 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  40 | import router from "@/router";
+  41 | import VButton from "@/components/VButton.vue";
+  42 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:40:20:
+  38 | <script lang="ts">
+  39 | import { Component, Vue } from "vue-property-decorator";
+> 40 | import router from "@/router";
+     |                    ^
+  41 | import VButton from "@/components/VButton.vue";
+  42 | import VInput from "@/components/VInput.vue";
+  43 | import { CurrentFamily } from "@/types/Family";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:41:21:
+  39 | import { Component, Vue } from "vue-property-decorator";
+  40 | import router from "@/router";
+> 41 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  42 | import VInput from "@/components/VInput.vue";
+  43 | import { CurrentFamily } from "@/types/Family";
+  44 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:42:20:
+  40 | import router from "@/router";
+  41 | import VButton from "@/components/VButton.vue";
+> 42 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  43 | import { CurrentFamily } from "@/types/Family";
+  44 | 
+  45 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:43:31:
+  41 | import VButton from "@/components/VButton.vue";
+  42 | import VInput from "@/components/VInput.vue";
+> 43 | import { CurrentFamily } from "@/types/Family";
+     |                               ^
+  44 | 
+  45 | @Component({
+  46 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:53:18:
+  51 | export default class SignIn extends Vue {
+  52 |   memberEmails: string[] = [];
+> 53 |   currentEmail = "";
+     |                  ^
+  54 | 
+  55 |   async inviteMembers() {
+  56 |     await CurrentFamily.instance.inviteMembers(this.memberEmails);
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewFamilyMembers.vue:62:25:
+  60 |   addEmail() {
+  61 |     this.memberEmails.push(this.currentEmail);
+> 62 |     this.currentEmail = "";
+     |                         ^
+  63 |   }
+  64 | 
+  65 |   removeEmail(email: string) {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:34:32:
+  32 | 
+  33 | <script lang="ts">
+> 34 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  35 | import Firestore from "@/utils/Firestore";
+  36 | import Product from "@/types/Product";
+  37 | import router from "@/router";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:35:23:
+  33 | <script lang="ts">
+  34 | import { Component, Vue } from "vue-property-decorator";
+> 35 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  36 | import Product from "@/types/Product";
+  37 | import router from "@/router";
+  38 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:36:21:
+  34 | import { Component, Vue } from "vue-property-decorator";
+  35 | import Firestore from "@/utils/Firestore";
+> 36 | import Product from "@/types/Product";
+     |                     ^
+  37 | import router from "@/router";
+  38 | import VHeader from "@/components/VHeader.vue";
+  39 | import SearchInput from "@/components/SearchInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:37:20:
+  35 | import Firestore from "@/utils/Firestore";
+  36 | import Product from "@/types/Product";
+> 37 | import router from "@/router";
+     |                    ^
+  38 | import VHeader from "@/components/VHeader.vue";
+  39 | import SearchInput from "@/components/SearchInput.vue";
+  40 | import ListItem from "@/components/ListItem.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:38:21:
+  36 | import Product from "@/types/Product";
+  37 | import router from "@/router";
+> 38 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  39 | import SearchInput from "@/components/SearchInput.vue";
+  40 | import ListItem from "@/components/ListItem.vue";
+  41 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:39:25:
+  37 | import router from "@/router";
+  38 | import VHeader from "@/components/VHeader.vue";
+> 39 | import SearchInput from "@/components/SearchInput.vue";
+     |                         ^
+  40 | import ListItem from "@/components/ListItem.vue";
+  41 | import VButton from "@/components/VButton.vue";
+  42 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:40:22:
+  38 | import VHeader from "@/components/VHeader.vue";
+  39 | import SearchInput from "@/components/SearchInput.vue";
+> 40 | import ListItem from "@/components/ListItem.vue";
+     |                      ^
+  41 | import VButton from "@/components/VButton.vue";
+  42 | 
+  43 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:41:21:
+  39 | import SearchInput from "@/components/SearchInput.vue";
+  40 | import ListItem from "@/components/ListItem.vue";
+> 41 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  42 | 
+  43 | @Component({
+  44 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:54:17:
+  52 |   location?: string;
+  53 |   products: Product[] = [];
+> 54 |   searchQuery = "";
+     |                 ^
+  55 | 
+  56 |   async mounted() {
+  57 |     this.products = await this.getProductsWithCategory();
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:62:25:
+  60 | 
+  61 |   addCustomProduct() {
+> 62 |     router.push({ path: "custom-product", query: { location: this.location } });
+     |                         ^
+  63 |   }
+  64 | 
+  65 |   async removeExistingProduct(product: Product) {
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:66:27:
+  64 | 
+  65 |   async removeExistingProduct(product: Product) {
+> 66 |     if (this.location === "storage") {
+     |                           ^
+  67 |       await Firestore.instance.removeFromStorage(product);
+  68 |     } else if (this.location === "shoppingList") {
+  69 |       await Firestore.instance.removeFromShoppingList(product);
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:68:34:
+  66 |     if (this.location === "storage") {
+  67 |       await Firestore.instance.removeFromStorage(product);
+> 68 |     } else if (this.location === "shoppingList") {
+     |                                  ^
+  69 |       await Firestore.instance.removeFromShoppingList(product);
+  70 |     }
+  71 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:74:27:
+  72 | 
+  73 |   async resolveNewProduct(product: Product) {
+> 74 |     if (this.location === "storage") {
+     |                           ^
+  75 |       await Firestore.instance.addProductToStorage(product);
+  76 |     } else if (this.location === "shoppingList") {
+  77 |       await Firestore.instance.addToShoppingList(product);
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:76:34:
+  74 |     if (this.location === "storage") {
+  75 |       await Firestore.instance.addProductToStorage(product);
+> 76 |     } else if (this.location === "shoppingList") {
+     |                                  ^
+  77 |       await Firestore.instance.addToShoppingList(product);
+  78 |     }
+  79 |     router.back();
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:91:48:
+  89 |     type Category = { [category: string]: Product[] };
+  90 |     return reducedProducts.reduce<Category>((acc, product) => {
+> 91 |       const categoryName = product.category ?? "General";
+     |                                                ^
+  92 |       if (!Object.keys(acc).includes(categoryName)) {
+  93 |         acc[categoryName] = [];
+  94 |       }
+
+
+warning: Strings must use singlequote (quotes) at src/views/NewProduct.vue:105:51:
+  103 |     const allProducts = await Firestore.instance.getAllProducts();
+  104 |     return allProducts.map(product => {
+> 105 |       const productCategory = product.category ?? "General";
+      |                                                   ^
+  106 |       return { name: product.name, category: productCategory };
+  107 |     });
+  108 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:14:32:
+  12 | 
+  13 | <script lang="ts">
+> 14 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  15 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  16 | import Recipe from "@/types/Recipe";
+  17 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:15:28:
+  13 | <script lang="ts">
+  14 | import { Component, Vue } from "vue-property-decorator";
+> 15 | import NavigationMenu from "@/components/NavigationMenu.vue";
+     |                            ^
+  16 | import Recipe from "@/types/Recipe";
+  17 | import VHeader from "@/components/VHeader.vue";
+  18 | import RecipeComponent from "@/components/RecipeComponent.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:16:20:
+  14 | import { Component, Vue } from "vue-property-decorator";
+  15 | import NavigationMenu from "@/components/NavigationMenu.vue";
+> 16 | import Recipe from "@/types/Recipe";
+     |                    ^
+  17 | import VHeader from "@/components/VHeader.vue";
+  18 | import RecipeComponent from "@/components/RecipeComponent.vue";
+  19 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:17:21:
+  15 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  16 | import Recipe from "@/types/Recipe";
+> 17 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  18 | import RecipeComponent from "@/components/RecipeComponent.vue";
+  19 | import { CurrentFamily } from "@/types";
+  20 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:18:29:
+  16 | import Recipe from "@/types/Recipe";
+  17 | import VHeader from "@/components/VHeader.vue";
+> 18 | import RecipeComponent from "@/components/RecipeComponent.vue";
+     |                             ^
+  19 | import { CurrentFamily } from "@/types";
+  20 | 
+  21 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/Recipes.vue:19:31:
+  17 | import VHeader from "@/components/VHeader.vue";
+  18 | import RecipeComponent from "@/components/RecipeComponent.vue";
+> 19 | import { CurrentFamily } from "@/types";
+     |                               ^
+  20 | 
+  21 | @Component({
+  22 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:42:20:
+  40 | 
+  41 | <script lang="ts">
+> 42 | import router from "@/router";
+     |                    ^
+  43 | import { AlertMixin } from "@/components/AlertMixin";
+  44 | import { Component, Mixins } from "vue-property-decorator";
+  45 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:43:28:
+  41 | <script lang="ts">
+  42 | import router from "@/router";
+> 43 | import { AlertMixin } from "@/components/AlertMixin";
+     |                            ^
+  44 | import { Component, Mixins } from "vue-property-decorator";
+  45 | import { CurrentFamily } from "@/types";
+  46 | import Firestore from "@/utils/Firestore";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:44:35:
+  42 | import router from "@/router";
+  43 | import { AlertMixin } from "@/components/AlertMixin";
+> 44 | import { Component, Mixins } from "vue-property-decorator";
+     |                                   ^
+  45 | import { CurrentFamily } from "@/types";
+  46 | import Firestore from "@/utils/Firestore";
+  47 | import ListItem from "@/components/ListItem.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:45:31:
+  43 | import { AlertMixin } from "@/components/AlertMixin";
+  44 | import { Component, Mixins } from "vue-property-decorator";
+> 45 | import { CurrentFamily } from "@/types";
+     |                               ^
+  46 | import Firestore from "@/utils/Firestore";
+  47 | import ListItem from "@/components/ListItem.vue";
+  48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:46:23:
+  44 | import { Component, Mixins } from "vue-property-decorator";
+  45 | import { CurrentFamily } from "@/types";
+> 46 | import Firestore from "@/utils/Firestore";
+     |                       ^
+  47 | import ListItem from "@/components/ListItem.vue";
+  48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  49 | import SearchInput from "@/components/SearchInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:47:22:
+  45 | import { CurrentFamily } from "@/types";
+  46 | import Firestore from "@/utils/Firestore";
+> 47 | import ListItem from "@/components/ListItem.vue";
+     |                      ^
+  48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  49 | import SearchInput from "@/components/SearchInput.vue";
+  50 | import ShoppingListItem from "@/types/ShoppingListItem";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:48:28:
+  46 | import Firestore from "@/utils/Firestore";
+  47 | import ListItem from "@/components/ListItem.vue";
+> 48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+     |                            ^
+  49 | import SearchInput from "@/components/SearchInput.vue";
+  50 | import ShoppingListItem from "@/types/ShoppingListItem";
+  51 | import VAlert from "@/components/VAlert.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:49:25:
+  47 | import ListItem from "@/components/ListItem.vue";
+  48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+> 49 | import SearchInput from "@/components/SearchInput.vue";
+     |                         ^
+  50 | import ShoppingListItem from "@/types/ShoppingListItem";
+  51 | import VAlert from "@/components/VAlert.vue";
+  52 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:50:30:
+  48 | import NavigationMenu from "@/components/NavigationMenu.vue";
+  49 | import SearchInput from "@/components/SearchInput.vue";
+> 50 | import ShoppingListItem from "@/types/ShoppingListItem";
+     |                              ^
+  51 | import VAlert from "@/components/VAlert.vue";
+  52 | import VButton from "@/components/VButton.vue";
+  53 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:51:20:
+  49 | import SearchInput from "@/components/SearchInput.vue";
+  50 | import ShoppingListItem from "@/types/ShoppingListItem";
+> 51 | import VAlert from "@/components/VAlert.vue";
+     |                    ^
+  52 | import VButton from "@/components/VButton.vue";
+  53 | import VHeader from "@/components/VHeader.vue";
+  54 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:52:21:
+  50 | import ShoppingListItem from "@/types/ShoppingListItem";
+  51 | import VAlert from "@/components/VAlert.vue";
+> 52 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  53 | import VHeader from "@/components/VHeader.vue";
+  54 | 
+  55 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:53:21:
+  51 | import VAlert from "@/components/VAlert.vue";
+  52 | import VButton from "@/components/VButton.vue";
+> 53 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  54 | 
+  55 | @Component({
+  56 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:67:17:
+  65 | export default class ShoppingList extends Mixins(AlertMixin) {
+  66 |   products: ShoppingListItem[] = [];
+> 67 |   searchQuery = "";
+     |                 ^
+  68 | 
+  69 |   async mounted() {
+  70 |     this.products = await this.getProductsWithCategory();
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:74:25:
+  72 | 
+  73 |   addNewProduct() {
+> 74 |     router.push({ path: "new-product", query: { location: "shoppingList" } });
+     |                         ^
+  75 |   }
+  76 | 
+  77 |   get filteredCategoryProducts() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:74:59:
+  72 | 
+  73 |   addNewProduct() {
+> 74 |     router.push({ path: "new-product", query: { location: "shoppingList" } });
+     |                                                           ^
+  75 |   }
+  76 | 
+  77 |   get filteredCategoryProducts() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:86:48:
+  84 |     type Category = { [category: string]: ShoppingListItem[] };
+  85 |     return reducedProducts.reduce<Category>((acc, product) => {
+> 86 |       const categoryName = product.category ?? "General";
+     |                                                ^
+  87 |       if (!Object.keys(acc).includes(categoryName)) {
+  88 |         acc[categoryName] = [];
+  89 |       }
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:110:51:
+  108 | 
+  109 |     return allProducts.map(product => {
+> 110 |       const productCategory = product.category ?? "General";
+      |                                                   ^
+  111 |       return {
+  112 |         name: product.name,
+  113 |         category: productCategory,
+
+
+warning: Strings must use singlequote (quotes) at src/views/ShoppingList.vue:135:26:
+  133 |     }
+  134 | 
+> 135 |     await this.showAlert("Products were added to the Shopping List");
+      |                          ^
+  136 |   }
+  137 | }
+  138 | </script>
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:57:32:
+  55 | 
+  56 | <script lang="ts">
+> 57 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  58 | import Authentication from "@/utils/Authentication";
+  59 | import router from "@/router";
+  60 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:58:28:
+  56 | <script lang="ts">
+  57 | import { Component, Vue } from "vue-property-decorator";
+> 58 | import Authentication from "@/utils/Authentication";
+     |                            ^
+  59 | import router from "@/router";
+  60 | import VButton from "@/components/VButton.vue";
+  61 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:59:20:
+  57 | import { Component, Vue } from "vue-property-decorator";
+  58 | import Authentication from "@/utils/Authentication";
+> 59 | import router from "@/router";
+     |                    ^
+  60 | import VButton from "@/components/VButton.vue";
+  61 | import VInput from "@/components/VInput.vue";
+  62 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:60:21:
+  58 | import Authentication from "@/utils/Authentication";
+  59 | import router from "@/router";
+> 60 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  61 | import VInput from "@/components/VInput.vue";
+  62 | import { CurrentFamily } from "@/types";
+  63 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:61:20:
+  59 | import router from "@/router";
+  60 | import VButton from "@/components/VButton.vue";
+> 61 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  62 | import { CurrentFamily } from "@/types";
+  63 | 
+  64 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:62:31:
+  60 | import VButton from "@/components/VButton.vue";
+  61 | import VInput from "@/components/VInput.vue";
+> 62 | import { CurrentFamily } from "@/types";
+     |                               ^
+  63 | 
+  64 | @Component({
+  65 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:71:11:
+  69 | })
+  70 | export default class SignIn extends Vue {
+> 71 |   email = "";
+     |           ^
+  72 |   password = "";
+  73 | 
+  74 |   get redirect(): string | null {
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:72:14:
+  70 | export default class SignIn extends Vue {
+  71 |   email = "";
+> 72 |   password = "";
+     |              ^
+  73 | 
+  74 |   get redirect(): string | null {
+  75 |     return (this.$route.query.redirect as string) ?? null;
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:79:17:
+  77 | 
+  78 |   goToSignUpPage() {
+> 79 |     let route = "/sign-up";
+     |                 ^
+  80 |     if (this.redirect) {
+  81 |       route += "?redirect=" + this.redirect;
+  82 |     }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:81:16:
+  79 |     let route = "/sign-up";
+  80 |     if (this.redirect) {
+> 81 |       route += "?redirect=" + this.redirect;
+     |                ^
+  82 |     }
+  83 |     router.replace(route);
+  84 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:87:17:
+  85 | 
+  86 |   resetPassword() {
+> 87 |     console.log("Reset Password");
+     |                 ^
+  88 |   }
+  89 | 
+  90 |   async signIn() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:105:31:
+  103 |       await this.finishSignIn();
+  104 |     } catch (err) {
+> 105 |       await this.finishSignIn("create-family");
+      |                               ^
+  106 |     }
+  107 |   }
+  108 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:109:36:
+  107 |   }
+  108 | 
+> 109 |   async finishSignIn(targetRoute = "") {
+      |                                    ^
+  110 |     const route = "/" + (this.redirect ?? targetRoute);
+  111 |     await router.replace(route);
+  112 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignIn.vue:110:19:
+  108 | 
+  109 |   async finishSignIn(targetRoute = "") {
+> 110 |     const route = "/" + (this.redirect ?? targetRoute);
+      |                   ^
+  111 |     await router.replace(route);
+  112 |   }
+  113 | }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:59:32:
+  57 | 
+  58 | <script lang="ts">
+> 59 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  60 | import router from "@/router";
+  61 | import Authentication from "@/utils/Authentication";
+  62 | import VInput from "@/components/VInput.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:60:20:
+  58 | <script lang="ts">
+  59 | import { Component, Vue } from "vue-property-decorator";
+> 60 | import router from "@/router";
+     |                    ^
+  61 | import Authentication from "@/utils/Authentication";
+  62 | import VInput from "@/components/VInput.vue";
+  63 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:61:28:
+  59 | import { Component, Vue } from "vue-property-decorator";
+  60 | import router from "@/router";
+> 61 | import Authentication from "@/utils/Authentication";
+     |                            ^
+  62 | import VInput from "@/components/VInput.vue";
+  63 | import VButton from "@/components/VButton.vue";
+  64 | import { CurrentFamily } from "@/types";
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:62:20:
+  60 | import router from "@/router";
+  61 | import Authentication from "@/utils/Authentication";
+> 62 | import VInput from "@/components/VInput.vue";
+     |                    ^
+  63 | import VButton from "@/components/VButton.vue";
+  64 | import { CurrentFamily } from "@/types";
+  65 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:63:21:
+  61 | import Authentication from "@/utils/Authentication";
+  62 | import VInput from "@/components/VInput.vue";
+> 63 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  64 | import { CurrentFamily } from "@/types";
+  65 | 
+  66 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:64:31:
+  62 | import VInput from "@/components/VInput.vue";
+  63 | import VButton from "@/components/VButton.vue";
+> 64 | import { CurrentFamily } from "@/types";
+     |                               ^
+  65 | 
+  66 | @Component({
+  67 |   components: {
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:73:11:
+  71 | })
+  72 | export default class SignUp extends Vue {
+> 73 |   email = "";
+     |           ^
+  74 |   name = "";
+  75 |   password = "";
+  76 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:74:10:
+  72 | export default class SignUp extends Vue {
+  73 |   email = "";
+> 74 |   name = "";
+     |          ^
+  75 |   password = "";
+  76 | 
+  77 |   get redirect(): string | null {
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:75:14:
+  73 |   email = "";
+  74 |   name = "";
+> 75 |   password = "";
+     |              ^
+  76 | 
+  77 |   get redirect(): string | null {
+  78 |     return (this.$route.query.redirect as string) ?? null;
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:82:17:
+  80 | 
+  81 |   goToSignInPage() {
+> 82 |     let route = "/sign-in";
+     |                 ^
+  83 |     if (this.redirect) {
+  84 |       route += "?redirect=" + this.redirect;
+  85 |     }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:84:16:
+  82 |     let route = "/sign-in";
+  83 |     if (this.redirect) {
+> 84 |       route += "?redirect=" + this.redirect;
+     |                ^
+  85 |     }
+  86 |     router.replace(route);
+  87 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:104:31:
+  102 |       await this.finishSignUp();
+  103 |     } catch (err) {
+> 104 |       await this.finishSignUp("create-family");
+      |                               ^
+  105 |     }
+  106 |   }
+  107 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:108:36:
+  106 |   }
+  107 | 
+> 108 |   async finishSignUp(targetRoute = "") {
+      |                                    ^
+  109 |     const route = "/" + (this.redirect ?? targetRoute);
+  110 |     await router.replace(route);
+  111 |   }
+
+
+warning: Strings must use singlequote (quotes) at src/views/SignUp.vue:109:19:
+  107 | 
+  108 |   async finishSignUp(targetRoute = "") {
+> 109 |     const route = "/" + (this.redirect ?? targetRoute);
+      |                   ^
+  110 |     await router.replace(route);
+  111 |   }
+  112 | }
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:31:32:
+  29 | 
+  30 | <script lang="ts">
+> 31 | import { Component, Vue } from "vue-property-decorator";
+     |                                ^
+  32 | import firebase from "firebase";
+  33 | import Authentication from "@/utils/Authentication";
+  34 | import VHeader from "@/components/VHeader.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:32:22:
+  30 | <script lang="ts">
+  31 | import { Component, Vue } from "vue-property-decorator";
+> 32 | import firebase from "firebase";
+     |                      ^
+  33 | import Authentication from "@/utils/Authentication";
+  34 | import VHeader from "@/components/VHeader.vue";
+  35 | import VButton from "@/components/VButton.vue";
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:33:28:
+  31 | import { Component, Vue } from "vue-property-decorator";
+  32 | import firebase from "firebase";
+> 33 | import Authentication from "@/utils/Authentication";
+     |                            ^
+  34 | import VHeader from "@/components/VHeader.vue";
+  35 | import VButton from "@/components/VButton.vue";
+  36 | import Family, { CurrentFamily } from "@/types/Family";
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:34:21:
+  32 | import firebase from "firebase";
+  33 | import Authentication from "@/utils/Authentication";
+> 34 | import VHeader from "@/components/VHeader.vue";
+     |                     ^
+  35 | import VButton from "@/components/VButton.vue";
+  36 | import Family, { CurrentFamily } from "@/types/Family";
+  37 | import router from "@/router";
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:35:21:
+  33 | import Authentication from "@/utils/Authentication";
+  34 | import VHeader from "@/components/VHeader.vue";
+> 35 | import VButton from "@/components/VButton.vue";
+     |                     ^
+  36 | import Family, { CurrentFamily } from "@/types/Family";
+  37 | import router from "@/router";
+  38 | 
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:36:39:
+  34 | import VHeader from "@/components/VHeader.vue";
+  35 | import VButton from "@/components/VButton.vue";
+> 36 | import Family, { CurrentFamily } from "@/types/Family";
+     |                                       ^
+  37 | import router from "@/router";
+  38 | 
+  39 | @Component({
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:37:20:
+  35 | import VButton from "@/components/VButton.vue";
+  36 | import Family, { CurrentFamily } from "@/types/Family";
+> 37 | import router from "@/router";
+     |                    ^
+  38 | 
+  39 | @Component({
+  40 |   components: { VHeader, VButton }
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:52:23:
+  50 | 
+  51 |   async viewFamily() {
+> 52 |     await router.push("/family");
+     |                       ^
+  53 |   }
+  54 | 
+  55 |   async viewInvites() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:56:23:
+  54 | 
+  55 |   async viewInvites() {
+> 56 |     await router.push("/invites");
+     |                       ^
+  57 |   }
+  58 | 
+  59 |   async logOut() {
+
+
+warning: Strings must use singlequote (quotes) at src/views/UserProfile.vue:61:23:
+  59 |   async logOut() {
+  60 |     await Authentication.instance.signOut();
+> 61 |     await router.push("/sign-in");
+     |                       ^
+  62 |   }
+  63 | }
+  64 | </script>
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:7:5:
+   5 |   },
+   6 |   extends: [
+>  7 |     "plugin:vue/essential",
+     |     ^
+   8 |     "eslint:recommended",
+   9 |     "@vue/typescript/recommended",
+  10 |     "@vue/prettier",
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:8:5:
+   6 |   extends: [
+   7 |     "plugin:vue/essential",
+>  8 |     "eslint:recommended",
+     |     ^
+   9 |     "@vue/typescript/recommended",
+  10 |     "@vue/prettier",
+  11 |     "@vue/prettier/@typescript-eslint"
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:9:5:
+   7 |     "plugin:vue/essential",
+   8 |     "eslint:recommended",
+>  9 |     "@vue/typescript/recommended",
+     |     ^
+  10 |     "@vue/prettier",
+  11 |     "@vue/prettier/@typescript-eslint"
+  12 |   ],
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:10:5:
+   8 |     "eslint:recommended",
+   9 |     "@vue/typescript/recommended",
+> 10 |     "@vue/prettier",
+     |     ^
+  11 |     "@vue/prettier/@typescript-eslint"
+  12 |   ],
+  13 |   parserOptions: {
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:11:5:
+   9 |     "@vue/typescript/recommended",
+  10 |     "@vue/prettier",
+> 11 |     "@vue/prettier/@typescript-eslint"
+     |     ^
+  12 |   ],
+  13 |   parserOptions: {
+  14 |     ecmaVersion: 2020
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:17:5:
+  15 |   },
+  16 |   rules: {
+> 17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+     |     ^
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:17:17:
+  15 |   },
+  16 |   rules: {
+> 17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+     |                 ^
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:18:5:
+  16 |   rules: {
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+> 18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |     ^
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:18:44:
+  16 |   rules: {
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+> 18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                            ^
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:18:59:
+  16 |   rules: {
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+> 18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                                           ^
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:18:68:
+  16 |   rules: {
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+> 18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                                                    ^
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:19:5:
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |     ^
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:19:45:
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                             ^
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:19:60:
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                                            ^
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:19:69:
+  17 |     "max-len": ["warn", { code: 110, tabWidth: 4 }],
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+     |                                                                     ^
+  20 |     quotes: ["warn", "single"],
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:20:14:
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 20 |     quotes: ["warn", "single"],
+     |              ^
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+  23 | };
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:20:22:
+  18 |     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+> 20 |     quotes: ["warn", "single"],
+     |                      ^
+  21 |     "@typescript-eslint/no-non-null-assertion": "off"
+  22 |   }
+  23 | };
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:21:5:
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+> 21 |     "@typescript-eslint/no-non-null-assertion": "off"
+     |     ^
+  22 |   }
+  23 | };
+  24 | 
+
+
+warning: Strings must use singlequote (quotes) at .eslintrc.js:21:49:
+  19 |     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  20 |     quotes: ["warn", "single"],
+> 21 |     "@typescript-eslint/no-non-null-assertion": "off"
+     |                                                 ^
+  22 |   }
+  23 | };
+  24 | 
+
+
+warning: Strings must use singlequote (quotes) at babel.config.js:2:13:
+  1 | module.exports = {
+> 2 |   presets: ["@vue/cli-plugin-babel/preset"]
+    |             ^
+  3 | };
+  4 | 
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:6:7:
+  4 |   theme: {
+  5 |     colors: {
+> 6 |       "primary-green": "#01877E",
+    |       ^
+  7 |       "primary-peach": "#FFB0A9",
+  8 |       "primary-yellow": "#F9D678",
+  9 |       "light-green": "#B6DDDA",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:6:24:
+  4 |   theme: {
+  5 |     colors: {
+> 6 |       "primary-green": "#01877E",
+    |                        ^
+  7 |       "primary-peach": "#FFB0A9",
+  8 |       "primary-yellow": "#F9D678",
+  9 |       "light-green": "#B6DDDA",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:7:7:
+   5 |     colors: {
+   6 |       "primary-green": "#01877E",
+>  7 |       "primary-peach": "#FFB0A9",
+     |       ^
+   8 |       "primary-yellow": "#F9D678",
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:7:24:
+   5 |     colors: {
+   6 |       "primary-green": "#01877E",
+>  7 |       "primary-peach": "#FFB0A9",
+     |                        ^
+   8 |       "primary-yellow": "#F9D678",
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:8:7:
+   6 |       "primary-green": "#01877E",
+   7 |       "primary-peach": "#FFB0A9",
+>  8 |       "primary-yellow": "#F9D678",
+     |       ^
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:8:25:
+   6 |       "primary-green": "#01877E",
+   7 |       "primary-peach": "#FFB0A9",
+>  8 |       "primary-yellow": "#F9D678",
+     |                         ^
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:9:7:
+   7 |       "primary-peach": "#FFB0A9",
+   8 |       "primary-yellow": "#F9D678",
+>  9 |       "light-green": "#B6DDDA",
+     |       ^
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:9:22:
+   7 |       "primary-peach": "#FFB0A9",
+   8 |       "primary-yellow": "#F9D678",
+>  9 |       "light-green": "#B6DDDA",
+     |                      ^
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:10:7:
+   8 |       "primary-yellow": "#F9D678",
+   9 |       "light-green": "#B6DDDA",
+> 10 |       "dark-green": "#13313D",
+     |       ^
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:10:21:
+   8 |       "primary-yellow": "#F9D678",
+   9 |       "light-green": "#B6DDDA",
+> 10 |       "dark-green": "#13313D",
+     |                     ^
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:11:7:
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+> 11 |       "light-peach": "#FFE9E7",
+     |       ^
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:11:22:
+   9 |       "light-green": "#B6DDDA",
+  10 |       "dark-green": "#13313D",
+> 11 |       "light-peach": "#FFE9E7",
+     |                      ^
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:12:7:
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+> 12 |       "dark-peach": "#D98B84",
+     |       ^
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:12:21:
+  10 |       "dark-green": "#13313D",
+  11 |       "light-peach": "#FFE9E7",
+> 12 |       "dark-peach": "#D98B84",
+     |                     ^
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:13:7:
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+> 13 |       "dark-yellow": "#D0AA45",
+     |       ^
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:13:22:
+  11 |       "light-peach": "#FFE9E7",
+  12 |       "dark-peach": "#D98B84",
+> 13 |       "dark-yellow": "#D0AA45",
+     |                      ^
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:14:7:
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+> 14 |       "light-yellow": "#FFE6A3",
+     |       ^
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+  17 |       "secondary-text": "#9A9A9C",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:14:23:
+  12 |       "dark-peach": "#D98B84",
+  13 |       "dark-yellow": "#D0AA45",
+> 14 |       "light-yellow": "#FFE6A3",
+     |                       ^
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+  17 |       "secondary-text": "#9A9A9C",
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:15:7:
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+> 15 |       "light-grey": "#E7E7E7",
+     |       ^
+  16 |       "primary-text": "#383838",
+  17 |       "secondary-text": "#9A9A9C",
+  18 |       background: "#FFFFFFFF"
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:15:21:
+  13 |       "dark-yellow": "#D0AA45",
+  14 |       "light-yellow": "#FFE6A3",
+> 15 |       "light-grey": "#E7E7E7",
+     |                     ^
+  16 |       "primary-text": "#383838",
+  17 |       "secondary-text": "#9A9A9C",
+  18 |       background: "#FFFFFFFF"
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:16:7:
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+> 16 |       "primary-text": "#383838",
+     |       ^
+  17 |       "secondary-text": "#9A9A9C",
+  18 |       background: "#FFFFFFFF"
+  19 |     },
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:16:23:
+  14 |       "light-yellow": "#FFE6A3",
+  15 |       "light-grey": "#E7E7E7",
+> 16 |       "primary-text": "#383838",
+     |                       ^
+  17 |       "secondary-text": "#9A9A9C",
+  18 |       background: "#FFFFFFFF"
+  19 |     },
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:17:7:
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+> 17 |       "secondary-text": "#9A9A9C",
+     |       ^
+  18 |       background: "#FFFFFFFF"
+  19 |     },
+  20 |     extend: {
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:17:25:
+  15 |       "light-grey": "#E7E7E7",
+  16 |       "primary-text": "#383838",
+> 17 |       "secondary-text": "#9A9A9C",
+     |                         ^
+  18 |       background: "#FFFFFFFF"
+  19 |     },
+  20 |     extend: {
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:18:19:
+  16 |       "primary-text": "#383838",
+  17 |       "secondary-text": "#9A9A9C",
+> 18 |       background: "#FFFFFFFF"
+     |                   ^
+  19 |     },
+  20 |     extend: {
+  21 |       fontSize: {
+
+
+warning: Strings must use singlequote (quotes) at tailwind.config.js:22:17:
+  20 |     extend: {
+  21 |       fontSize: {
+> 22 |         header: "1.4rem"
+     |                 ^
+  23 |       }
+  24 |     }
+  25 |   },
+
+
+warning: Strings must use singlequote (quotes) at vue.config.js:4:20:
+  2 |   pwa: {
+  3 |     iconPaths: {
+> 4 |       msTileImage: "img/icons/mstile-150x150.png"
+    |                    ^
+  5 |     }
+  6 |   }
+  7 | };
+
+
+426 warnings found.
+426 warnings potentially fixable with the `--fix` option.

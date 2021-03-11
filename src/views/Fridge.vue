@@ -55,16 +55,16 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { AlertMixin } from "@/components/AlertMixin";
-import { Component, Mixins } from "vue-property-decorator";
-import { CurrentFamily } from "@/types";
-import Firestore from "@/utils/Firestore";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import Product from "@/types/Product";
-import SearchInput from "@/components/SearchInput.vue";
-import VAlert from "@/components/VAlert.vue";
-import VHeader from "@/components/VHeader.vue";
+import router from '@/router';
+import { AlertMixin } from '@/components/AlertMixin';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import Product from '@/types/Product';
+import SearchInput from '@/components/SearchInput.vue';
+import VAlert from '@/components/VAlert.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
@@ -75,11 +75,11 @@ import VHeader from "@/components/VHeader.vue";
   }
 })
 export default class Fridge extends Mixins(AlertMixin) {
-  newProductCategory = "";
-  newProductName = "";
+  newProductCategory = '';
+  newProductName = '';
   products: Product[] = [];
   productWasWasted = false;
-  searchQuery = "";
+  searchQuery = '';
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
@@ -94,7 +94,7 @@ export default class Fridge extends Mixins(AlertMixin) {
 
     type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? "General";
+      const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
       }
@@ -125,7 +125,7 @@ export default class Fridge extends Mixins(AlertMixin) {
   }
 
   addNewProduct() {
-    router.push({ path: "/new-product", query: { location: "storage" } });
+    router.push({ path: '/new-product', query: { location: 'storage' } });
   }
 
   async getProductsWithCategory(): Promise<Product[]> {
@@ -137,7 +137,7 @@ export default class Fridge extends Mixins(AlertMixin) {
     }
 
     return allProducts.map(product => {
-      const productCategory = product.category ?? "General";
+      const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });
   }

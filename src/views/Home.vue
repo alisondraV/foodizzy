@@ -79,15 +79,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import Authentication from "@/utils/Authentication";
-import WastedProduct from "@/types/WastedProduct";
-import VHeader from "@/components/VHeader.vue";
-import firebase from "firebase";
-import DonutChart from "@/components/DonutChart.vue";
-import { colors, monthList } from "@/utils/consts";
-import { CurrentFamily } from "@/types";
+import { Component, Vue } from 'vue-property-decorator';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import Authentication from '@/utils/Authentication';
+import WastedProduct from '@/types/WastedProduct';
+import VHeader from '@/components/VHeader.vue';
+import firebase from 'firebase';
+import DonutChart from '@/components/DonutChart.vue';
+import { colors, monthList } from '@/utils/consts';
+import { CurrentFamily } from '@/types';
 
 @Component({
   components: {
@@ -108,8 +108,8 @@ export default class Home extends Vue {
     month: new Date().getMonth(),
     year: new Date().getFullYear()
   };
-  firstName = "";
-  defaultColor = "#E7E7E7";
+  firstName = '';
+  defaultColor = '#E7E7E7';
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
@@ -118,7 +118,7 @@ export default class Home extends Vue {
       this.firstName =
         this.user!.displayName.substr(
           0,
-          this.user!.displayName?.indexOf(" ")
+          this.user!.displayName?.indexOf(' ')
         ) || this.user!.displayName;
     }
     await this.getWastedProductsForSelectedMonth();
@@ -182,7 +182,7 @@ export default class Home extends Vue {
     let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
-      const categoryName = (product.category ?? "General").toLowerCase();
+      const categoryName = (product.category ?? 'General').toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
         this.categoryColors[categoryName] = colors[categoryCount];
@@ -213,7 +213,7 @@ export default class Home extends Vue {
   }
 
   get chartLabels() {
-    return ["Eaten", ...Object.keys(this.statistics)];
+    return ['Eaten', ...Object.keys(this.statistics)];
   }
 
   getWastePercentage(category?: string) {

@@ -34,13 +34,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import SearchInput from "@/components/SearchInput.vue";
-import SkipHeader from "@/components/SkipHeader.vue";
-import VButton from "@/components/VButton.vue";
-import router from "@/router";
+import { Component, Vue } from 'vue-property-decorator';
+import Firestore from '@/utils/Firestore';
+import Product from '@/types/Product';
+import SearchInput from '@/components/SearchInput.vue';
+import SkipHeader from '@/components/SkipHeader.vue';
+import VButton from '@/components/VButton.vue';
+import router from '@/router';
 
 @Component({
   components: {
@@ -53,8 +53,8 @@ export default class Fridge extends Vue {
   categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
   productsToAdd: Product[] = [];
-  colors = ["#B6DDDA", "#FFE6A3"];
-  searchQuery = "";
+  colors = ['#B6DDDA', '#FFE6A3'];
+  searchQuery = '';
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
@@ -70,7 +70,7 @@ export default class Fridge extends Vue {
   async getProductsWithCategory() {
     const allProducts = await Firestore.instance.getAllProducts();
     return allProducts.map(product => {
-      const productCategory = product.category ?? "General";
+      const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });
   }
@@ -89,7 +89,7 @@ export default class Fridge extends Vue {
   }
 
   getProductColor(product, category) {
-    const defaultBg = "#E7E7E7";
+    const defaultBg = '#E7E7E7';
 
     return {
       background: this.isInProductsList(product)
@@ -108,7 +108,7 @@ export default class Fridge extends Vue {
     type Category = { [category: string]: Product[] };
     let categoryCount = 0;
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? "General";
+      const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
 
@@ -126,7 +126,7 @@ export default class Fridge extends Vue {
   }
 
   goToTheNextPage() {
-    router.push("/");
+    router.push('/');
   }
 }
 </script>

@@ -1,8 +1,8 @@
-import firebase from "firebase";
-import Family, { CurrentFamily } from "@/types/Family";
-import Product from "@/types/Product";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import WastedProduct from "@/types/WastedProduct";
+import firebase from 'firebase';
+import Family, { CurrentFamily } from '@/types/Family';
+import Product from '@/types/Product';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import WastedProduct from '@/types/WastedProduct';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -19,15 +19,15 @@ export default class Firestore {
   private constructor() {
     this.db = firebase.firestore();
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("Emulator connected");
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Emulator connected');
 
-      this.db.useEmulator("localhost", 8888);
+      this.db.useEmulator('localhost', 8888);
     }
   }
 
   public async getAllProducts(): Promise<Product[]> {
-    const querySnap = await this.db.collection("allProducts").get();
+    const querySnap = await this.db.collection('allProducts').get();
     return querySnap.docs.map(doc => doc.data() as Product);
   }
 
@@ -36,7 +36,7 @@ export default class Firestore {
 
     family.storage.push(product);
     await this.db
-      .collection("family")
+      .collection('family')
       .doc(family.id)
       .set(family);
   }
@@ -48,7 +48,7 @@ export default class Firestore {
       candidate => candidate.name != product.name
     );
     await this.db
-      .collection("family")
+      .collection('family')
       .doc(family.id)
       .set(family);
   }
@@ -56,10 +56,10 @@ export default class Firestore {
   public async moveToWasted(product: Product) {
     const seconds = new Date().getTime() / 1000;
     const documents = await this.db
-      .collection("wasteBuckets")
+      .collection('wasteBuckets')
       .where(
-        "familyId",
-        "==",
+        'familyId',
+        '==',
         (await CurrentFamily.instance.getCurrentFamily())!.id
       )
       .get();
@@ -71,9 +71,9 @@ export default class Firestore {
     const updatedWastedList = [...bucket.data().wasted, wastedProduct];
 
     await this.db
-      .collection("wasteBuckets")
+      .collection('wasteBuckets')
       .doc(bucket.id)
-      .update("wasted", updatedWastedList);
+      .update('wasted', updatedWastedList);
   }
 
   public async removeFromShoppingList(product: Product) {
@@ -83,7 +83,7 @@ export default class Firestore {
       candidate => candidate.name != product.name
     );
     await this.db
-      .collection("family")
+      .collection('family')
       .doc(family.id)
       .set(family);
   }
@@ -96,27 +96,27 @@ export default class Firestore {
       acquired: false
     });
     await this.db
-      .collection("family")
+      .collection('family')
       .doc(family.id)
       .set(family);
   }
 
   public async updateShoppingList(products: ShoppingListItem[]) {
     await this.db
-      .collection("family")
+      .collection('family')
       .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)
-      .update("shoppingList", products);
+      .update('shoppingList', products);
   }
 
   public async getAllRecipes() {
-    const documents = await this.db.collection("recipes").get();
+    const documents = await this.db.collection('recipes').get();
     return documents.docs.map<string>(qds => qds.data().name);
   }
 
   public async getInvites(userEmail: string): Promise<Family[]> {
     const familyQuerySnap = await this.db
-      .collection("family")
-      .where("pendingMembers", "array-contains", userEmail)
+      .collection('family')
+      .where('pendingMembers', 'array-contains', userEmail)
       .get();
 
     return familyQuerySnap.docs.map(snap => snap.data() as Family);

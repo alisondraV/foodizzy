@@ -39,9 +39,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import { CurrentFamily } from "@/types";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import { CurrentFamily } from '@/types';
 
 @Component
 export default class ListItem extends Vue {
@@ -54,11 +54,11 @@ export default class ListItem extends Vue {
   }
 
   isShoppingListPage() {
-    return this.currentPage == "ShoppingList";
+    return this.currentPage == 'ShoppingList';
   }
 
   isNewProductPage() {
-    return this.currentPage == "NewProduct";
+    return this.currentPage == 'NewProduct';
   }
 
   async isInStorageOrShoppingList() {
