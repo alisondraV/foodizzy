@@ -36,7 +36,12 @@
     </div>
     <div class="text-dark-peach">{{ errorMessage }}</div>
     <div class="mb-8">
-      <v-button class="mb-6" label="Sign Up" @click="signUp" />
+      <v-button
+        class="mb-6"
+        label="Sign Up"
+        :disabled="validationFailed"
+        @click="signUp"
+      />
       <div class="flex items-center text-secondary-text">
         <hr class="w-1/2 border-gray mb-6" />
         <span class="w-1/5 text-center mb-6">OR</span>
@@ -68,6 +73,14 @@ import VButton from "@/components/VButton.vue";
 import { CurrentFamily } from "@/types";
 import { authErrors } from "@/utils/consts";
 
+interface PasswordValidation {
+  hasNumber: boolean;
+  hasUpperCase: boolean;
+  hasLowerCase: boolean;
+  hasSpecial: boolean;
+  isLong: boolean;
+}
+
 @Component({
   components: {
     VInput,
@@ -91,6 +104,35 @@ export default class SignUp extends Vue {
       route += "?redirect=" + this.redirect;
     }
     router.replace(route);
+  }
+
+  get validationFailed(): boolean {
+    if (this.name === "") {
+      this.errorMessage = "Please provide a name";
+      this.errorType = "displayName";
+      return true;
+    }
+
+    const passwordValidation = {
+      hasNumber: /\d/,
+      hasUpperCase: /[A-Z]/,
+      hasLowerCase: /[a-z]/,
+      hasSpecial: /[!"#$%&'()*+,-.]/,
+      isLong: /^.{8,}$/
+    };
+
+    const passwordCorrect = Object.values(passwordValidation).every(pattern =>
+      Boolean(this.password.match(pattern))
+    );
+    if (!passwordCorrect) {
+      this.errorMessage = "Password is weak";
+      this.errorType = "password";
+      return true;
+    }
+
+    this.errorMessage = "";
+    this.errorType = "";
+    return false;
   }
 
   signUp() {
