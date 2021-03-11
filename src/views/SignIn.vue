@@ -57,13 +57,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import router from '@/router';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import { CurrentFamily } from '@/types';
-import { authErrors } from '@/utils/consts';
+import { ValidationMixin } from '@/mixins';
 
 @Component({
   components: {
@@ -71,11 +71,9 @@ import { authErrors } from '@/utils/consts';
     VButton
   }
 })
-export default class SignIn extends Vue {
+export default class SignIn extends Mixins(ValidationMixin) {
   email = '';
   password = '';
-  errorMessage = '';
-  errorType = '';
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -101,9 +99,7 @@ export default class SignIn extends Vue {
       })
       .catch(error => {
         console.log(`Auth error: ${error.code}`);
-
-        this.errorMessage = authErrors[error.code]?.message ?? error.message;
-        this.errorType = authErrors[error.code]?.type ?? '';
+        this.displayError(error);
       });
   }
 

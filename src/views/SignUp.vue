@@ -111,23 +111,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import router from '@/router';
-import Authentication from '@/utils/Authentication';
-import VInput from '@/components/VInput.vue';
 import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 import { CurrentFamily } from '@/types';
+import Authentication from '@/utils/Authentication';
 import {
-  authErrors,
   emailPattern,
   ErrorCode,
   passwordValidationPatterns
 } from '@/utils/consts';
-
-interface ValidationError {
-  code: string;
-  message?: string;
-}
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -135,7 +130,7 @@ interface ValidationError {
     VButton
   }
 })
-export default class SignUp extends Vue {
+export default class SignUp extends Mixins(ValidationMixin) {
   email = '';
   name = '';
   password = '';
@@ -203,11 +198,6 @@ export default class SignUp extends Vue {
         console.log(`Auth error: ${error.code}`);
         this.displayError(error);
       });
-  }
-
-  displayError(error: ValidationError) {
-    this.errorMessage = authErrors[error.code]?.message ?? error.message;
-    this.errorType = authErrors[error.code]?.type ?? '';
   }
 
   async signUpThroughGoogle() {
