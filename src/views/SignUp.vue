@@ -65,21 +65,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import router from "@/router";
-import Authentication from "@/utils/Authentication";
-import VInput from "@/components/VInput.vue";
-import VButton from "@/components/VButton.vue";
-import { CurrentFamily } from "@/types";
-import { authErrors } from "@/utils/consts";
-
-interface PasswordValidation {
-  hasNumber: boolean;
-  hasUpperCase: boolean;
-  hasLowerCase: boolean;
-  hasSpecial: boolean;
-  isLong: boolean;
-}
+import { Component, Vue } from 'vue-property-decorator';
+import router from '@/router';
+import Authentication from '@/utils/Authentication';
+import VInput from '@/components/VInput.vue';
+import VButton from '@/components/VButton.vue';
+import { CurrentFamily } from '@/types';
+import { authErrors } from '@/utils/consts';
 
 @Component({
   components: {
@@ -88,28 +80,28 @@ interface PasswordValidation {
   }
 })
 export default class SignUp extends Vue {
-  email = "";
-  name = "";
-  password = "";
-  errorMessage = "";
-  errorType = "";
+  email = '';
+  name = '';
+  password = '';
+  errorMessage = '';
+  errorType = '';
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
   }
 
   goToSignInPage() {
-    let route = "/sign-in";
+    let route = '/sign-in';
     if (this.redirect) {
-      route += "?redirect=" + this.redirect;
+      route += '?redirect=' + this.redirect;
     }
     router.replace(route);
   }
 
   get validationFailed(): boolean {
-    if (this.name === "") {
-      this.errorMessage = "Please provide a name";
-      this.errorType = "displayName";
+    if (this.name === '') {
+      this.errorMessage = 'Please provide a name';
+      this.errorType = 'displayName';
       return true;
     }
 
@@ -125,13 +117,13 @@ export default class SignUp extends Vue {
       Boolean(this.password.match(pattern))
     );
     if (!passwordCorrect) {
-      this.errorMessage = "Password is weak";
-      this.errorType = "password";
+      this.errorMessage = 'Password is weak';
+      this.errorType = 'password';
       return true;
     }
 
-    this.errorMessage = "";
-    this.errorType = "";
+    this.errorMessage = '';
+    this.errorType = '';
     return false;
   }
 
@@ -145,7 +137,7 @@ export default class SignUp extends Vue {
         console.log(`Auth error: ${error.code}`);
 
         this.errorMessage = authErrors[error.code]?.message ?? error.message;
-        this.errorType = authErrors[error.code]?.type ?? "";
+        this.errorType = authErrors[error.code]?.type ?? '';
       });
   }
 
@@ -159,12 +151,12 @@ export default class SignUp extends Vue {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignUp();
     } catch (err) {
-      await this.finishSignUp("create-family");
+      await this.finishSignUp('create-family');
     }
   }
 
-  async finishSignUp(targetRoute = "") {
-    const route = "/" + (this.redirect ?? targetRoute);
+  async finishSignUp(targetRoute = '') {
+    const route = '/' + (this.redirect ?? targetRoute);
     await router.replace(route);
   }
 }

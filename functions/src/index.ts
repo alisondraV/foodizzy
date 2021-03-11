@@ -1,10 +1,10 @@
-import * as functions from "firebase-functions";
-import sendEmail from "./sendEmail";
-import axios from "axios";
-import {db} from "./admin";
+import * as functions from 'firebase-functions';
+import sendEmail from './sendEmail';
+import axios from 'axios';
+import {db} from './admin';
 
 export const onFamilyUpdate = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onUpdate(async (change, context) => {
       const oldFamily = change.before.data();
       const newFamily = change.after.data();
@@ -21,13 +21,11 @@ export const onFamilyUpdate = functions.firestore
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
-      checkForFamilyRemoval(change.after);
-
-      return null;
+      return checkForFamilyRemoval(change.after);
     });
 
 export const onFamilyCreate = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onCreate((snapshot, context) => {
       const newFamily = snapshot.data();
 
@@ -35,11 +33,11 @@ export const onFamilyCreate = functions.firestore
     });
 
 export const onFamilyDelete = functions.firestore
-    .document("/family/{familyId}")
+    .document('/family/{familyId}')
     .onDelete(async (snapshot, context) => {
       const wasteBucketQueryResults = await db
-          .collection("wasteBuckets")
-          .where("familyId", "==", snapshot.id)
+          .collection('wasteBuckets')
+          .where('familyId', '==', snapshot.id)
           .get();
 
       return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
@@ -56,16 +54,16 @@ async function updateTotalProducts(
       addedProduct = newProduct;
     }
   });
-  console.log("A new product added: ", addedProduct);
+  console.log('A new product added: ', addedProduct);
 
   if (addedProduct == null) {
-    throw new Error("The storages were the same");
+    throw new Error('The storages were the same');
   }
 
-  const categoryName = addedProduct!.category.toLowerCase() ?? "general";
-  const updatedFamilyStats = change.after.ref.collection("statistics");
+  const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
+  const updatedFamilyStats = change.after.ref.collection('statistics');
 
-  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
+  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats, newFamily);
   const thisMonthData = thisMonthStatsDoc.data() ?? {};
 
   if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
@@ -75,26 +73,41 @@ async function updateTotalProducts(
 
   return await updatedFamilyStats
       .doc(thisMonthStatsDoc.id)
-      .update("totalProducts", thisMonthData.totalProducts);
+      .update('totalProducts', thisMonthData.totalProducts);
 }
 
-async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
+async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference, family: any) {
   const thisMonthStatsCollection = await statsCollection
-      .where("month", "==", new Date().getMonth())
-      .where("year", "==", new Date().getFullYear())
+      .where('month', '==', new Date().getMonth())
+      .where('year', '==', new Date().getFullYear())
       .get();
 
   let thisMonthStatsDocRef;
   if (thisMonthStatsCollection.docs.length === 0) {
+    const totalProducts = await getTotalProductsFromStorage(family);
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      totalProducts: {},
+      totalProducts
     });
   } else {
     thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
   }
   return await thisMonthStatsDocRef.get();
+}
+
+async function getTotalProductsFromStorage(family: any) {
+  const familyDocRef = await db.collection('family').doc(family.id).get();
+  const storage = await familyDocRef.data()?.storage;
+
+  return storage.reduce((currentStatistics: any, product: any) => {
+    const category = (product.category ?? 'general').toLowerCase();
+    if (!Object.keys(currentStatistics).includes(category)) {
+      currentStatistics[category] = 0;
+    }
+    currentStatistics[category]++;
+    return currentStatistics;
+  }, {});
 }
 
 async function sendWelcomeEmails(
@@ -107,20 +120,20 @@ async function sendWelcomeEmails(
     return !oldMembers.find((oldEmail: any) => oldEmail === email);
   });
 
-  console.log("New Members: ", newEmails);
+  console.log('New Members: ', newEmails);
 
-  const htmlURL = "https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083";
+  const htmlURL = 'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083';
   const response = await axios.get(htmlURL);
   let emailTemplate = response.data;
 
-  emailTemplate = emailTemplate.replace("{PERSON}", "Somebody");
-  emailTemplate = emailTemplate.replace("{FAMILY NAME}", `"${newFamily.name}"`);
+  emailTemplate = emailTemplate.replace('{PERSON}', 'Somebody');
+  emailTemplate = emailTemplate.replace('{FAMILY NAME}', `"${newFamily.name}"`);
 
   return Promise.all(newEmails.map((email: string) => {
     return sendEmail({
       to: [email],
       message: {
-        subject: "Welcome to Foodizzy!",
+        subject: 'Welcome to Foodizzy!',
         html: emailTemplate,
       },
     });
@@ -130,7 +143,7 @@ async function sendWelcomeEmails(
 async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
-    const statisticsRefs = await newDoc.ref.collection("statistics").get();
+    const statisticsRefs = await newDoc.ref.collection('statistics').get();
     await Promise.all(statisticsRefs.docs.map((doc) => doc.ref.delete()));
     return newDoc.ref.delete();
   }

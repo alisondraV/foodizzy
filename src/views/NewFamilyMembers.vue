@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import router from "@/router";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types/Family";
+import { Component, Vue } from 'vue-property-decorator';
+import router from '@/router';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { CurrentFamily } from '@/types/Family';
 
 @Component({
   components: {
@@ -50,7 +50,7 @@ import { CurrentFamily } from "@/types/Family";
 })
 export default class SignIn extends Vue {
   memberEmails: string[] = [];
-  currentEmail = "";
+  currentEmail = '';
 
   async inviteMembers() {
     await CurrentFamily.instance.inviteMembers(this.memberEmails);
@@ -59,7 +59,7 @@ export default class SignIn extends Vue {
 
   addEmail() {
     this.memberEmails.push(this.currentEmail);
-    this.currentEmail = "";
+    this.currentEmail = '';
   }
 
   removeEmail(email: string) {

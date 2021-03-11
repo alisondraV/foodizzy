@@ -19,13 +19,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class VInput extends Vue {
   @Prop() value!: null;
   @Prop() label!: string;
-  @Prop({ default: "text" }) type?: string;
+  @Prop({ default: 'text' }) type?: string;
   @Prop({ default: false }) error?: boolean;
   focused = false;
 
