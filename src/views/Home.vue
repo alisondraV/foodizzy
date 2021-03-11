@@ -122,11 +122,32 @@ export default class Home extends Vue {
         ) || this.user!.displayName;
     }
     await this.getWastedProductsForSelectedMonth();
-    const availableMonthData = await CurrentFamily.instance.getAvailableMonthData();
-    this.monthData = [
-      ...new Set([...availableMonthData, this.selectedMonthData])
-    ];
+    await this.getMonthData();
     this.loading = false;
+  }
+
+  async getMonthData() {
+    const availableMonthData = await CurrentFamily.instance.getAvailableMonthData();
+    this.monthData = availableMonthData;
+
+    const currentMonthIsPresent = Boolean(
+      availableMonthData.find(
+        data =>
+          data.month === this.selectedMonthData.month &&
+          data.year === this.selectedMonthData.year
+      )
+    );
+
+    if (!currentMonthIsPresent) {
+      this.monthData.push(this.selectedMonthData);
+    }
+
+    this.monthData.sort((data1, data2) => {
+      if (data1.year === data2.year) {
+        return data2.month - data1.month;
+      }
+      return data2.year - data1.year;
+    });
   }
 
   async getTotalProductsForMonth() {
