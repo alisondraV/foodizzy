@@ -21,9 +21,7 @@ export const onFamilyUpdate = functions.firestore
         return sendWelcomeEmails(newFamily, oldFamily);
       }
 
-      checkForFamilyRemoval(change.after);
-
-      return null;
+      return checkForFamilyRemoval(change.after);
     });
 
 export const onFamilyCreate = functions.firestore
