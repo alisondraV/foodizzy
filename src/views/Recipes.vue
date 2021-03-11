@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import Recipe from "@/types/Recipe";
-import VHeader from "@/components/VHeader.vue";
-import RecipeComponent from "@/components/RecipeComponent.vue";
-import { CurrentFamily } from "@/types";
+import { Component, Vue } from 'vue-property-decorator';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import Recipe from '@/types/Recipe';
+import VHeader from '@/components/VHeader.vue';
+import RecipeComponent from '@/components/RecipeComponent.vue';
+import { CurrentFamily } from '@/types';
 
 @Component({
   components: {

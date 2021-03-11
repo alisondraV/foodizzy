@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import router from "../router";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import router from '../router';
 
 @Component
 export default class VHeader extends Vue {
@@ -33,9 +33,9 @@ export default class VHeader extends Vue {
 
   isProfileOrNewProductPage() {
     return (
-      this.heading.includes("Profile") ||
-      this.heading.includes("New Item") ||
-      this.heading.includes("Custom Item")
+      this.heading.includes('Profile') ||
+      this.heading.includes('New Item') ||
+      this.heading.includes('Custom Item')
     );
   }
 
@@ -44,7 +44,7 @@ export default class VHeader extends Vue {
   }
 
   goToTheProfilePage() {
-    router.push("/profile");
+    router.push('/profile');
   }
 }
 </script>

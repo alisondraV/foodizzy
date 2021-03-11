@@ -54,12 +54,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
-import router from "@/router";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types";
+import { Component, Vue } from 'vue-property-decorator';
+import Authentication from '@/utils/Authentication';
+import router from '@/router';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { CurrentFamily } from '@/types';
 
 @Component({
   components: {
@@ -68,23 +68,23 @@ import { CurrentFamily } from "@/types";
   }
 })
 export default class SignIn extends Vue {
-  email = "";
-  password = "";
+  email = '';
+  password = '';
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
   }
 
   goToSignUpPage() {
-    let route = "/sign-up";
+    let route = '/sign-up';
     if (this.redirect) {
-      route += "?redirect=" + this.redirect;
+      route += '?redirect=' + this.redirect;
     }
     router.replace(route);
   }
 
   resetPassword() {
-    console.log("Reset Password");
+    console.log('Reset Password');
   }
 
   async signIn() {
@@ -102,12 +102,12 @@ export default class SignIn extends Vue {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignIn();
     } catch (err) {
-      await this.finishSignIn("create-family");
+      await this.finishSignIn('create-family');
     }
   }
 
-  async finishSignIn(targetRoute = "") {
-    const route = "/" + (this.redirect ?? targetRoute);
+  async finishSignIn(targetRoute = '') {
+    const route = '/' + (this.redirect ?? targetRoute);
     await router.replace(route);
   }
 }

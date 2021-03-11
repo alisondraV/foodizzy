@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Recipe from "@/types/Recipe";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Recipe from '@/types/Recipe';
 
 @Component
 export default class RecipeComponent extends Vue {

@@ -39,18 +39,18 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { AlertMixin } from "@/components/AlertMixin";
-import { Component, Mixins } from "vue-property-decorator";
-import { CurrentFamily } from "@/types";
-import Firestore from "@/utils/Firestore";
-import ListItem from "@/components/ListItem.vue";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import SearchInput from "@/components/SearchInput.vue";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VHeader from "@/components/VHeader.vue";
+import router from '@/router';
+import { AlertMixin } from '@/components/AlertMixin';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
+import ListItem from '@/components/ListItem.vue';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import SearchInput from '@/components/SearchInput.vue';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
@@ -64,14 +64,14 @@ import VHeader from "@/components/VHeader.vue";
 })
 export default class ShoppingList extends Mixins(AlertMixin) {
   products: ShoppingListItem[] = [];
-  searchQuery = "";
+  searchQuery = '';
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
   }
 
   addNewProduct() {
-    router.push({ path: "new-product", query: { location: "shoppingList" } });
+    router.push({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 
   get filteredCategoryProducts() {
@@ -83,7 +83,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
 
     type Category = { [category: string]: ShoppingListItem[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? "General";
+      const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
       }
@@ -107,7 +107,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     }
 
     return allProducts.map(product => {
-      const productCategory = product.category ?? "General";
+      const productCategory = product.category ?? 'General';
       return {
         name: product.name,
         category: productCategory,
@@ -132,7 +132,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
       await Firestore.instance.addProductToStorage(product);
     }
 
-    await this.showAlert("Products were added to the Shopping List");
+    await this.showAlert('Products were added to the Shopping List');
   }
 }
 </script>

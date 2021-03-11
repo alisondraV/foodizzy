@@ -56,12 +56,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import router from "@/router";
-import Authentication from "@/utils/Authentication";
-import VInput from "@/components/VInput.vue";
-import VButton from "@/components/VButton.vue";
-import { CurrentFamily } from "@/types";
+import { Component, Vue } from 'vue-property-decorator';
+import router from '@/router';
+import Authentication from '@/utils/Authentication';
+import VInput from '@/components/VInput.vue';
+import VButton from '@/components/VButton.vue';
+import { CurrentFamily } from '@/types';
 
 @Component({
   components: {
@@ -70,18 +70,18 @@ import { CurrentFamily } from "@/types";
   }
 })
 export default class SignUp extends Vue {
-  email = "";
-  name = "";
-  password = "";
+  email = '';
+  name = '';
+  password = '';
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
   }
 
   goToSignInPage() {
-    let route = "/sign-in";
+    let route = '/sign-in';
     if (this.redirect) {
-      route += "?redirect=" + this.redirect;
+      route += '?redirect=' + this.redirect;
     }
     router.replace(route);
   }
@@ -101,12 +101,12 @@ export default class SignUp extends Vue {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignUp();
     } catch (err) {
-      await this.finishSignUp("create-family");
+      await this.finishSignUp('create-family');
     }
   }
 
-  async finishSignUp(targetRoute = "") {
-    const route = "/" + (this.redirect ?? targetRoute);
+  async finishSignUp(targetRoute = '') {
+    const route = '/' + (this.redirect ?? targetRoute);
     await router.replace(route);
   }
 }

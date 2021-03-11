@@ -31,14 +31,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import firebase from "firebase";
-import Authentication from "@/utils/Authentication";
-import VHeader from "@/components/VHeader.vue";
-import VButton from "@/components/VButton.vue";
-import Family, { CurrentFamily } from "@/types/Family";
-import Firestore from "@/utils/Firestore";
-import router from "@/router";
+import { Component, Vue } from 'vue-property-decorator';
+import firebase from 'firebase';
+import Authentication from '@/utils/Authentication';
+import VHeader from '@/components/VHeader.vue';
+import VButton from '@/components/VButton.vue';
+import Family, { CurrentFamily } from '@/types/Family';
+import Firestore from '@/utils/Firestore';
+import router from '@/router';
 
 @Component({
   components: { VHeader, VButton }
@@ -49,15 +49,15 @@ export default class AppMain extends Vue {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.invites = await Firestore.instance.getInvites(this.user?.email ?? "");
+    this.invites = await Firestore.instance.getInvites(this.user?.email ?? '');
   }
 
   async handleAcceptInvite(familyId: string) {
-    if (!this.user || !this.user.email) throw new Error("Unauthorized!");
+    if (!this.user || !this.user.email) throw new Error('Unauthorized!');
 
     await CurrentFamily.instance.switchTo(familyId, this.user.email);
 
-    await router.push("/");
+    await router.push('/');
   }
 }
 </script>

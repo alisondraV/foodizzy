@@ -1,4 +1,4 @@
-import RecipeIngredient from "./RecipeIngredient";
+import RecipeIngredient from './RecipeIngredient';
 
 export default interface Recipe {
   name: string;

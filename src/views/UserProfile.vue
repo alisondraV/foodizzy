@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import firebase from "firebase";
-import Authentication from "@/utils/Authentication";
-import VHeader from "@/components/VHeader.vue";
-import VButton from "@/components/VButton.vue";
-import Family, { CurrentFamily } from "@/types/Family";
-import router from "@/router";
+import { Component, Vue } from 'vue-property-decorator';
+import firebase from 'firebase';
+import Authentication from '@/utils/Authentication';
+import VHeader from '@/components/VHeader.vue';
+import VButton from '@/components/VButton.vue';
+import Family, { CurrentFamily } from '@/types/Family';
+import router from '@/router';
 
 @Component({
   components: { VHeader, VButton }
@@ -49,16 +49,16 @@ export default class AppMain extends Vue {
   }
 
   async viewFamily() {
-    await router.push("/family");
+    await router.push('/family');
   }
 
   async viewInvites() {
-    await router.push("/invites");
+    await router.push('/invites');
   }
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.push("/sign-in");
+    await router.push('/sign-in');
   }
 }
 </script>
