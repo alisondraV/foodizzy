@@ -71,7 +71,12 @@ import Authentication from '@/utils/Authentication';
 import VInput from '@/components/VInput.vue';
 import VButton from '@/components/VButton.vue';
 import { CurrentFamily } from '@/types';
-import { authErrors } from '@/utils/consts';
+import { authErrors, emailPattern, ErrorCode, passwordValidation } from '@/utils/consts';
+
+interface ValidationError {
+  code: string;
+  message?: string;
+}
 
 @Component({
   components: {
@@ -99,26 +104,21 @@ export default class SignUp extends Vue {
   }
 
   get validationFailed(): boolean {
-    if (this.name === '') {
-      this.errorMessage = 'Please provide a name';
-      this.errorType = 'displayName';
+    if (!this.email.trim().match(emailPattern)) {
+      this.displayError({ code: ErrorCode.InvalidEmail })
       return true;
     }
 
-    const passwordValidation = {
-      hasNumber: /\d/,
-      hasUpperCase: /[A-Z]/,
-      hasLowerCase: /[a-z]/,
-      hasSpecial: /[!"#$%&'()*+,-.]/,
-      isLong: /^.{8,}$/
-    };
+    if (this.name.trim() === '') {
+      this.displayError({ code: ErrorCode.InvalidDisplayName })
+      return true;
+    }
 
     const passwordCorrect = Object.values(passwordValidation).every(pattern =>
       Boolean(this.password.match(pattern))
     );
     if (!passwordCorrect) {
-      this.errorMessage = 'Password is weak';
-      this.errorType = 'password';
+      this.displayError({ code: ErrorCode.WeakPassword })
       return true;
     }
 
@@ -135,10 +135,13 @@ export default class SignUp extends Vue {
       })
       .catch(error => {
         console.log(`Auth error: ${error.code}`);
-
-        this.errorMessage = authErrors[error.code]?.message ?? error.message;
-        this.errorType = authErrors[error.code]?.type ?? '';
+        this.displayError(error);
       });
+  }
+
+  displayError(error: ValidationError) {
+    this.errorMessage = authErrors[error.code]?.message ?? error.message;
+    this.errorType = authErrors[error.code]?.type ?? '';
   }
 
   async signUpThroughGoogle() {

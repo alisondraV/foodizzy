@@ -16,6 +16,26 @@ export const monthList = [
   'December'
 ];
 
+export const passwordValidation = {
+  hasNumber: /\d/,
+  hasUpperCase: /[A-Z]/,
+  hasLowerCase: /[a-z]/,
+  hasSpecial: /[!"#$%&'()*+,-.<=>?@~^]/,
+  isLong: /^.{8,}$/
+};
+
+// eslint-disable-next-line max-len
+export const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export enum ErrorCode {
+  InvalidEmail = 'auth/invalid-email',
+  InvalidPassword = 'auth/invalid-password',
+  WrongPassword = 'auth/wrong-password',
+  WeakPassword = 'auth/weak-password',
+  InvalidDisplayName = 'auth/invalid-display-name',
+  UserNotFound = 'auth/user-not-found'
+}
+
 export const authErrors = {
   'auth/invalid-email': {
     type: 'email',
@@ -28,6 +48,14 @@ export const authErrors = {
   'auth/wrong-password': {
     type: 'password',
     message: 'Wrong password. Please try again.'
+  },
+  'auth/weak-password': {
+    type: 'password',
+    message: 'Password is too weak.'
+  },
+  'auth/invalid-display-name': {
+    type: 'displayName',
+    message: 'Please provide a valid name.'
   },
   'auth/user-not-found': {
     message:
