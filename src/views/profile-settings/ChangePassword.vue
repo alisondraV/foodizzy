@@ -7,8 +7,8 @@
         <v-input
           class="mb-6 w-full"
           type="password"
-          label="Old Password"
-          v-model="oldPassword"
+          label="Current Password"
+          v-model="currentPassword"
         />
         <v-input
           class="mb-6 w-full"
@@ -16,6 +16,7 @@
           label="New Password"
           v-model="newPassword"
         />
+        <div v-if="error">{{ error }}</div>
         <div class="bg-background h-24 w-full bottom-0 fixed">
           <v-button
             class="mx-8 mt-3"
@@ -45,8 +46,9 @@ import firebase from "firebase";
   }
 })
 export default class SignIn extends Vue {
+  error = "";
   newPassword = "";
-  oldPassword = "";
+  currentPassword = "";
   user: firebase.User | null = null;
 
   async mounted() {
@@ -54,7 +56,20 @@ export default class SignIn extends Vue {
   }
 
   async changePassword() {
-    await router.push("/profile");
+    if (!this.currentPassword || !this.newPassword) {
+      this.error = "Please provide you current password and the new one";
+      return;
+    }
+
+    try {
+      await Authentication.instance.changePassword(
+        this.user!.email!,
+        this.currentPassword,
+        this.newPassword
+      );
+    } catch (e) {
+      this.error = "We couldn't update your password";
+    }
   }
 }
 </script>

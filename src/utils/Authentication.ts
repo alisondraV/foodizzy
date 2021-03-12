@@ -91,4 +91,18 @@ export default class Authentication {
   public async sendPasswordReset(email: string) {
     await this.auth.sendPasswordResetEmail(email);
   }
+
+  public async changePassword(
+      email: string,
+      currentPassword: string,
+      newPassword: string
+  ) {
+    const user = firebase.auth().currentUser;
+    const cred = firebase.auth.EmailAuthProvider.credential(
+        email,
+        currentPassword
+    );
+    await user!.reauthenticateWithCredential(cred);
+    await user!.updatePassword(newPassword);
+  }
 }
