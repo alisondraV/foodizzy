@@ -22,6 +22,7 @@
         label="Type in your password"
         v-model="password"
       />
+      <div v-if="error">{{ error }}</div>
       <div
         class="cursor-pointer underline text-right text-sm text-secondary-text"
         @click="resetPassword"
@@ -54,12 +55,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
 import router from "@/router";
+import { Component, Vue } from "vue-property-decorator";
+import { CurrentFamily } from "@/types";
+import Authentication from "@/utils/Authentication";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types";
 
 @Component({
   components: {
@@ -68,6 +69,7 @@ import { CurrentFamily } from "@/types";
   }
 })
 export default class SignIn extends Vue {
+  error = "";
   email = "";
   password = "";
 
@@ -83,8 +85,13 @@ export default class SignIn extends Vue {
     router.replace(route);
   }
 
-  resetPassword() {
-    console.log("Reset Password");
+  async resetPassword() {
+    // TODO: add validation
+    if (!this.email) {
+      this.error = "Please provide your email to send a password reset";
+      return;
+    }
+    await Authentication.instance.sendPasswordReset(this.email);
   }
 
   async signIn() {
