@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-header heading="Change Password" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert v-if="alertMessage" :label="alertMessage" :success="success" />
+    </div>
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <v-input
@@ -9,14 +12,15 @@
           type="password"
           label="Current Password"
           v-model="currentPassword"
+          @focus="clearTheMessage"
         />
         <v-input
           class="mb-6 w-full"
           type="password"
           label="New Password"
           v-model="newPassword"
+          @focus="clearTheMessage"
         />
-        <div v-if="error">{{ error }}</div>
         <div class="bg-background h-24 w-full bottom-0 fixed">
           <v-button
             class="mx-8 mt-3"
@@ -30,9 +34,9 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
+import VAlert from "@/components/VAlert.vue";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import VHeader from "@/components/VHeader.vue";
@@ -40,35 +44,44 @@ import firebase from "firebase";
 
 @Component({
   components: {
+    VAlert,
     VButton,
     VInput,
     VHeader
   }
 })
 export default class SignIn extends Vue {
-  error = "";
+  alertMessage = "";
   newPassword = "";
   currentPassword = "";
+  success = false;
   user: firebase.User | null = null;
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
   }
 
+  clearTheMessage() {
+    this.alertMessage = "";
+  }
+
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
-      this.error = "Please provide you current password and the new one";
+      this.success = false;
+      this.alertMessage = "Please provide both your current password and the new one";
       return;
     }
 
     try {
-      await Authentication.instance.changePassword(
-        this.user!.email!,
-        this.currentPassword,
-        this.newPassword
-      );
+      await Authentication.instance.changePassword(this.user!.email!, this.currentPassword, this.newPassword);
+
+      this.success = true;
+      this.currentPassword = "";
+      this.newPassword = "";
+      this.alertMessage = "Password has been successfully updated";
     } catch (e) {
-      this.error = "We couldn't update your password";
+      this.success = false;
+      this.alertMessage = "We couldn't update your password";
     }
   }
 }
