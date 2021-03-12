@@ -31,7 +31,6 @@
         type="password"
         label="Type in your password"
         v-model="password"
-        @input="updatePasswordValidation"
         :error="errorType === 'password'"
       />
       <div class="grid grid-cols-2">
@@ -117,11 +116,6 @@ import { ValidationMixin } from '@/mixins';
 import router from '@/router';
 import { CurrentFamily } from '@/types';
 import Authentication from '@/utils/Authentication';
-import {
-  emailPattern,
-  ErrorCode,
-  passwordValidationPatterns
-} from '@/utils/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
@@ -134,15 +128,6 @@ export default class SignUp extends Mixins(ValidationMixin) {
   email = '';
   name = '';
   password = '';
-  errorMessage = '';
-  errorType = '';
-  passwordValidation = {
-    hasNumber: false,
-    hasUpperCase: false,
-    hasLowerCase: false,
-    hasSpecial: false,
-    isLong: false
-  };
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
@@ -156,36 +141,17 @@ export default class SignUp extends Mixins(ValidationMixin) {
     router.replace(route);
   }
 
-  updatePasswordValidation() {
-    Object.keys(this.passwordValidation).forEach(rule => {
-      const pattern = passwordValidationPatterns[rule];
-      this.passwordValidation[rule] = Boolean(this.password.match(pattern));
-    });
-  }
-
   get validationFailed(): boolean {
-    if (!this.email.trim().match(emailPattern)) {
-      this.displayError({ code: ErrorCode.InvalidEmail });
-      return true;
+    if (
+      this.isEmailValid(this.email) &&
+      this.isDisplayNameValid(this.name) &&
+      this.isPasswordValid()
+    ) {
+      this.errorMessage = '';
+      this.errorType = '';
+      return false;
     }
-
-    if (this.name.trim() === '') {
-      this.displayError({ code: ErrorCode.InvalidDisplayName });
-      return true;
-    }
-
-    const passwordCorrect = Object.values(this.passwordValidation).every(
-      v => v
-    );
-
-    if (!passwordCorrect) {
-      this.displayError({ code: ErrorCode.WeakPassword });
-      return true;
-    }
-
-    this.errorMessage = '';
-    this.errorType = '';
-    return false;
+    return true;
   }
 
   signUp() {
