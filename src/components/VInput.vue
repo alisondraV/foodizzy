@@ -5,6 +5,7 @@
         class="focus:outline-none rounded-md text-primary-text h-10 p-4
                 border border-secondary-text focus:border-primary-green"
         @input="$emit('input', $event.target.value)"
+        @focus="$emit('focus')"
         :placeholder="label"
         :type="type"
         :value="value"
