@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Change Password" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" :success="success" />
+      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">Loading...</div>
@@ -54,7 +54,7 @@ export default class SignIn extends Vue {
   alertMessage = "";
   newPassword = "";
   currentPassword = "";
-  success = false;
+  isPositive = false;
   user: firebase.User | null = null;
 
   async mounted() {
@@ -67,7 +67,7 @@ export default class SignIn extends Vue {
 
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
-      this.success = false;
+      this.isPositive = false;
       this.alertMessage = "Please provide both your current password and the new one";
       return;
     }
@@ -75,12 +75,12 @@ export default class SignIn extends Vue {
     try {
       await Authentication.instance.changePassword(this.user!.email!, this.currentPassword, this.newPassword);
 
-      this.success = true;
+      this.isPositive = true;
       this.currentPassword = "";
       this.newPassword = "";
       this.alertMessage = "Password has been successfully updated";
     } catch (e) {
-      this.success = false;
+      this.isPositive = false;
       this.alertMessage = "We couldn't update your password";
     }
   }

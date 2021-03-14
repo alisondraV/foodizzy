@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex w-full text-primary-text text-lg font-bold h-14 p-3 pl-6"
-    :class="success ? 'bg-light-green' : 'bg-light-peach'"
+    :class="isPositive ? 'bg-light-green' : 'bg-light-peach'"
   >
     {{ label }}
     <img
@@ -19,7 +19,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class VAlert extends Vue {
   @Prop() label!: string;
-  @Prop({ default: false }) success?: boolean;
+  @Prop({ default: true }) isPositive?: boolean;
   @Prop({ default: false }) wasted?: boolean;
 }
 </script>

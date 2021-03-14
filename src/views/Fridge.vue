@@ -4,6 +4,7 @@
     <div class="mt-20">
       <v-alert
         v-if="alertMessage"
+        :isPositive="!productWasWasted"
         :label="alertMessage"
         :wasted="productWasWasted"
       />
