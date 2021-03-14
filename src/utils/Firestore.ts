@@ -113,12 +113,20 @@ export default class Firestore {
     return documents.docs.map<string>(qds => qds.data().name);
   }
 
-  public async getInvites(userEmail: string): Promise<Family[]> {
+  public async getInvitations(userEmail: string): Promise<Family[]> {
     const familyQuerySnap = await this.db
       .collection("family")
       .where("pendingMembers", "array-contains", userEmail)
       .get();
 
     return familyQuerySnap.docs.map(snap => snap.data() as Family);
+  }
+
+  public async declineInvitation(familyId: string, userEmail: string) {
+    const familyRef = this.db
+        .collection("family")
+        .doc(familyId);
+
+    await familyRef.update("pendingMembers", firebase.firestore.FieldValue.arrayRemove(userEmail));
   }
 }

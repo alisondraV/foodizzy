@@ -1,29 +1,32 @@
 <template>
   <div>
     <v-header heading="My Invitations" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20">
+      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+    </div>
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">
         <!-- TODO: redirect to log-in and back -->
         <a href="/sign-in?redirect=invites" class="underline">Log in</a> to
         accept your invite.
       </div>
-      <div v-else-if="invites.length === 0">
-        You don't have any pending invites.
+      <div v-else-if="invitations.length === 0" class="text-dark-peach -mt-2">
+        No pending invitations.
       </div>
-      <div v-else class="w-full grid gap-2 justify-items-center">
-        <div
-          v-for="family in invites"
-          :key="family.id"
-          class="w-3/4 grid grid-cols-5 gap-3"
-        >
+      <div v-else>
+        <div v-for="family in invitations" :key="family.id" class="flex w-full">
           <div class="text-lg align-text-bottom col-span-3">
             {{ family.name }}
           </div>
-          <v-button
-            class="button col-span-2"
+          <div
+            class="text-primary-green"
             @click="handleAcceptInvite(family.id)"
-            label="Accept"
-          ></v-button>
+          >
+            Accept
+          </div>
+          <div class="text-dark-peach" @click="handleDeclineInvitation(family.id)">
+            Decline
+          </div>
         </div>
       </div>
     </div>
@@ -34,30 +37,50 @@
 import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
+import VAlert from "@/components/VAlert.vue";
 import VHeader from "@/components/VHeader.vue";
 import VButton from "@/components/VButton.vue";
 import Family, { CurrentFamily } from "@/types/Family";
 import Firestore from "@/utils/Firestore";
-import router from "@/router";
 
 @Component({
-  components: { VHeader, VButton }
+  components: { VAlert, VHeader, VButton }
 })
 export default class AppMain extends Vue {
+  alertMessage = "";
+  isPositive = false;
+  invitations: Family[] = [];
   user: firebase.User | null = null;
-  invites: Family[] = [];
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.invites = await Firestore.instance.getInvites(this.user?.email ?? "");
+    this.invitations = await Firestore.instance.getInvitations(
+      this.user?.email ?? ""
+    );
   }
 
   async handleAcceptInvite(familyId: string) {
     if (!this.user || !this.user.email) throw new Error("Unauthorized!");
 
-    await CurrentFamily.instance.switchTo(familyId, this.user.email);
+    try {
+      await CurrentFamily.instance.switchTo(familyId, this.user.email);
+      this.isPositive = true;
+      this.alertMessage = "You've accepted the invitation";
+    } catch (e) {
+      this.alertMessage = "Couldn't accept the invitation";
+    }
+  }
 
-    await router.push("/");
+  async handleDeclineInvitation(familyId: string) {
+    if (!this.user || !this.user.email) throw new Error("Unauthorized!");
+
+    try {
+      await Firestore.instance.declineInvitation(familyId, this.user.email);
+      this.isPositive = false;
+      this.alertMessage = "The invitation has been declined";
+    } catch (e) {
+      this.alertMessage = "Couldn't decline the invitation";
+    }
   }
 }
 </script>
