@@ -12,6 +12,7 @@
           label="Family Name"
           v-model="familyName"
         />
+        <div class="text-dark-peach">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
@@ -42,18 +43,24 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Create Family" @click="createFamily" />
+      <v-button
+        class="mx-8 mt-3"
+        label="Create Family"
+        :disabled="validationFailed"
+        @click="createFamily"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import router from '@/router';
 import SkipHeader from '@/components/SkipHeader.vue';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
+import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 import { CurrentFamily } from '@/types';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -62,7 +69,7 @@ import { CurrentFamily } from '@/types';
     VButton
   }
 })
-export default class CreateFamily extends Vue {
+export default class CreateFamily extends Mixins(ValidationMixin) {
   familyName = '';
   memberEmails: string[] = [];
   currentEmail = '';
@@ -70,6 +77,18 @@ export default class CreateFamily extends Vue {
   async createFamily() {
     await CurrentFamily.instance.create(this.familyName, this.memberEmails);
     this.goToTheNextPage();
+  }
+
+  get validationFailed(): boolean {
+    if (
+      (this.currentEmail === '' || this.isEmailValid(this.currentEmail)) &&
+      this.isDisplayNameValid(this.familyName)
+    ) {
+      this.errorMessage = '';
+      this.errorType = '';
+      return false;
+    }
+    return true;
   }
 
   addEmail() {
