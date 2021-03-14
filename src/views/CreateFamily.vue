@@ -62,7 +62,7 @@ import { CurrentFamily } from '@/types';
     VButton
   }
 })
-export default class SignIn extends Vue {
+export default class CreateFamily extends Vue {
   familyName = '';
   memberEmails: string[] = [];
   currentEmail = '';
