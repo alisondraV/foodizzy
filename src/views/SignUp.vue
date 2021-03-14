@@ -17,22 +17,76 @@
         type="email"
         label="Type in your email"
         v-model="email"
+        :error="errorType === 'email'"
       />
       <v-input
         class="mb-6"
         type="name"
         label="Type in your name"
         v-model="name"
+        :error="errorType === 'displayName'"
       />
       <v-input
         class="mb-6"
         type="password"
         label="Type in your password"
         v-model="password"
+        :error="errorType === 'password'"
       />
+      <div class="grid grid-cols-2">
+        <div
+          :class="
+            passwordValidation.hasLowerCase
+              ? 'text-primary-green'
+              : 'text-dark-peach'
+          "
+        >
+          1 lowercase
+        </div>
+        <div
+          :class="
+            passwordValidation.hasUpperCase
+              ? 'text-primary-green'
+              : 'text-dark-peach'
+          "
+        >
+          1 uppercase
+        </div>
+        <div
+          :class="
+            passwordValidation.hasSpecial
+              ? 'text-primary-green'
+              : 'text-dark-peach'
+          "
+        >
+          1 special
+        </div>
+        <div
+          :class="
+            passwordValidation.hasNumber
+              ? 'text-primary-green'
+              : 'text-dark-peach'
+          "
+        >
+          1 number
+        </div>
+        <div
+          :class="
+            passwordValidation.isLong ? 'text-primary-green' : 'text-dark-peach'
+          "
+        >
+          8 characters
+        </div>
+      </div>
     </div>
+    <div class="text-dark-peach">{{ errorMessage }}</div>
     <div class="mb-8">
-      <v-button class="mb-6" label="Sign Up" @click="signUp" />
+      <v-button
+        class="mb-6"
+        label="Sign Up"
+        :disabled="validationFailed"
+        @click="signUp"
+      />
       <div class="flex items-center text-secondary-text">
         <hr class="w-1/2 border-gray mb-6" />
         <span class="w-1/5 text-center mb-6">OR</span>
@@ -56,12 +110,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import router from '@/router';
-import Authentication from '@/utils/Authentication';
-import VInput from '@/components/VInput.vue';
 import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 import { CurrentFamily } from '@/types';
+import Authentication from '@/utils/Authentication';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -69,7 +124,7 @@ import { CurrentFamily } from '@/types';
     VButton
   }
 })
-export default class SignUp extends Vue {
+export default class SignUp extends Mixins(ValidationMixin) {
   email = '';
   name = '';
   password = '';
@@ -86,9 +141,29 @@ export default class SignUp extends Vue {
     router.replace(route);
   }
 
-  async signUp() {
-    await Authentication.instance.signUp(this.email, this.password, this.name);
-    await this.tryGetFamilyAndForward();
+  get validationFailed(): boolean {
+    if (
+      this.isEmailValid(this.email) &&
+      this.isDisplayNameValid(this.name) &&
+      this.isPasswordValid()
+    ) {
+      this.errorMessage = '';
+      this.errorType = '';
+      return false;
+    }
+    return true;
+  }
+
+  signUp() {
+    Authentication.instance
+      .signUp(this.email, this.password, this.name)
+      .then(() => {
+        return this.tryGetFamilyAndForward();
+      })
+      .catch(error => {
+        console.log(`Auth error: ${error.code}`);
+        this.displayError(error);
+      });
   }
 
   async signUpThroughGoogle() {

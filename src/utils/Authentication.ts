@@ -31,16 +31,8 @@ export default class Authentication {
     });
   }
 
-  public async signIn(email: string, password: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-
-      return cred.user;
-    } catch (error) {
-      console.log('SignIn failed: ', error);
-    }
+  public signIn(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
   public async signOut() {
@@ -52,16 +44,15 @@ export default class Authentication {
     }
   }
 
-  public async signUp(email: string, password: string, name: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      firebase.auth().currentUser?.updateProfile({ displayName: name });
-      return cred.user;
-    } catch (error) {
-      console.log('Sign Up failed: ', error);
-    }
+  public signUp(email: string, password: string, name: string) {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        return firebase
+          .auth()
+          .currentUser?.updateProfile({ displayName: name });
+      });
   }
 
   public async authWithGoogle() {

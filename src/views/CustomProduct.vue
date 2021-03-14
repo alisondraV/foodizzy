@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { AlertMixin } from '@/components/AlertMixin';
+import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
 import Firestore from '@/utils/Firestore';
