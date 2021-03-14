@@ -79,16 +79,11 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
     this.goToTheNextPage();
   }
 
-  get validationFailed(): boolean {
-    if (
+  get isFormInValidState() {
+    return (
       (this.currentEmail === '' || this.isEmailValid(this.currentEmail)) &&
       this.isDisplayNameValid(this.familyName)
-    ) {
-      this.errorMessage = '';
-      this.errorType = '';
-      return false;
-    }
-    return true;
+    );
   }
 
   addEmail() {
