@@ -11,8 +11,14 @@
             class="mb-4 rounded-full w-1/3"
             :src="user.photoURL"
           />
+          <img
+            v-else
+            alt="profile-image"
+            class="mb-4 rounded-full w-1/3"
+            src="@/assets/images/DefaultProfile.svg"
+          />
           <p
-            class="text-xl place-self-center font-extrabold text-primary-text mb-8"
+            class="text-xl place-self-center font-extrabold text-primary-text mb-12"
           >
             {{ user.displayName }}
           </p>
