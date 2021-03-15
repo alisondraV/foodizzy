@@ -2,9 +2,13 @@
   <div>
     <v-header heading="My Invitations" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+      <v-alert
+        v-if="alertMessage"
+        :isPositive="isPositive"
+        :label="alertMessage"
+      />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">
         <!-- TODO: redirect to log-in and back -->
         <a href="/sign-in?redirect=invites" class="underline">Log in</a> to
@@ -14,19 +18,25 @@
         No pending invitations.
       </div>
       <div v-else>
-        <div v-for="family in invitations" :key="family.id" class="flex w-full">
-          <div class="text-lg align-text-bottom col-span-3">
-            {{ family.name }}
+        <div v-for="family in invitations" :key="family.id">
+          <div class="flex w-full justify-between mb-3">
+            <div class="flex-1 text-lg align-text-bottom col-span-3">
+              {{ family.name }}
+            </div>
+            <div
+              class="text-primary-green mr-4"
+              @click="handleAcceptInvite(family.id)"
+            >
+              Accept
+            </div>
+            <div
+              class="text-dark-peach"
+              @click="handleDeclineInvitation(family.id)"
+            >
+              Decline
+            </div>
           </div>
-          <div
-            class="text-primary-green"
-            @click="handleAcceptInvite(family.id)"
-          >
-            Accept
-          </div>
-          <div class="text-dark-peach" @click="handleDeclineInvitation(family.id)">
-            Decline
-          </div>
+          <hr class="w-full border-secondary-text mb-6" />
         </div>
       </div>
     </div>
