@@ -11,7 +11,7 @@
     <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">
         <!-- TODO: redirect to log-in and back -->
-        <a href="/sign-in?redirect=invites" class="underline">Log in</a> to
+        <a href="/sign-in?redirect=invitations" class="underline">Log in</a> to
         accept your invite.
       </div>
       <div v-else-if="invitations.length === 0" class="text-dark-peach -mt-2">

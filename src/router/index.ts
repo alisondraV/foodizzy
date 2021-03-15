@@ -110,11 +110,12 @@ router.beforeEach(
       if (userLoggedIn) {
         userHasFamily = await CurrentFamily.instance.existsFor(user!);
       }
-      const anonymousRoutes = ["SignIn", "SignUp", "Invites"];
+      const anonymousRoutes = ["SignIn", "SignUp", "Invitations"];
       const authWithoutFamilyRoutes = [
         "SignIn",
         "SignUp",
         "Invitations",
+        "Family",
         "NewFamily",
         "UserProfile",
         "ChangePassword",

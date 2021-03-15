@@ -2,7 +2,11 @@
   <div>
     <v-header heading="My Family" />
     <div class="mt-24 mb-20 mx-8">
-      <div v-if="!family">Loading...</div>
+      <div v-if="!user">Loading...</div>
+      <div v-else-if="!family" class="flex text-primary-text">
+        <span>You don’t have a family yet</span>
+        <img class="ml-3" src="@/assets/images/SadFace.svg" alt="No Family" />
+      </div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <h1>{{ family.name }}</h1>
         <h2>Members</h2>
@@ -20,23 +24,34 @@
           label="Enter the family name to quit"
           v-model="familyNameInputValue"
         />
-        <v-button
-          label="Quit Family"
-          @click="handleQuit"
-          :disabled="!familyNameInputMatch"
-        />
       </div>
+    </div>
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button
+        v-if="family"
+        class="mx-8 mt-3"
+        label="Quit My Family"
+        @click="handleQuit"
+      />
+      <v-button
+        v-else
+        class="mx-8 mt-3"
+        label="Create Family"
+        @click="goToCreateFamily"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import VHeader from "@/components/VHeader.vue";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import Family, { CurrentFamily } from "@/types/Family";
+import firebase from "firebase";
 import router from "@/router";
+import { Component, Vue } from "vue-property-decorator";
+import Authentication from "@/utils/Authentication";
+import Family, { CurrentFamily } from "@/types/Family";
+import VButton from "@/components/VButton.vue";
+import VHeader from "@/components/VHeader.vue";
+import VInput from "@/components/VInput.vue";
 
 @Component({
   components: { VHeader, VButton, VInput }
@@ -46,8 +61,11 @@ export default class AppMain extends Vue {
   pendingMembers: string[] = [];
   family: Family | null = null;
   familyNameInputValue = "";
+  user: firebase.User | null = null;
 
   async mounted() {
+    this.user = await Authentication.instance.getCurrentUser();
+
     this.family = await CurrentFamily.instance.getCurrentFamily();
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
@@ -57,12 +75,16 @@ export default class AppMain extends Vue {
   }
 
   async addNewMembers() {
-    router.push("/new-family-members");
+    await router.push("/new-family-members");
   }
 
   async handleQuit() {
     await CurrentFamily.instance.quit();
-    router.push("/");
+    await router.push("/");
+  }
+
+  async goToCreateFamily() {
+    await router.push("/create-family");
   }
 
   get allMembers() {

@@ -35,11 +35,7 @@
 
           <hr class="w-full border-secondary-text mb-5" />
 
-          <li
-            v-if="family"
-            class="flex justify-between mb-5"
-            @click="viewFamily"
-          >
+          <li class="flex justify-between mb-5" @click="viewFamily">
             <img src="@/assets/images/Family.svg" alt="Family" />
             <span class="flex-1 text-left ml-4">My Family</span>
             <img src="@/assets/images/Arrow.svg" alt="Go" />
