@@ -44,7 +44,7 @@ export default class VHeader extends Vue {
   }
 
   goToTheProfilePage() {
-    router.push('/profile');
+    router.safePush('/profile');
   }
 }
 </script>

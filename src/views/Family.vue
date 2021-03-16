@@ -57,12 +57,12 @@ export default class AppMain extends Vue {
   }
 
   async addNewMembers() {
-    router.push('/new-family-members');
+    router.safePush('/new-family-members');
   }
 
   async handleQuit() {
     await CurrentFamily.instance.quit();
-    router.push('/');
+    router.safePush('/');
   }
 
   get allMembers() {

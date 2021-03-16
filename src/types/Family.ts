@@ -6,6 +6,7 @@ import Product from './Product';
 import Recipe from '@/types/Recipe';
 import ShoppingListItem from './ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
+import { AuthorizationError, NotFoundError } from '@/utils/errors';
 
 export default interface Family {
   id?: string;
@@ -62,7 +63,7 @@ export class CurrentFamily {
 
     const user = await Authentication.instance.getCurrentUser();
     if (!user) {
-      throw new Error('Unauthorized');
+      throw new AuthorizationError();
     }
 
     const snap = await Firestore.instance.db
@@ -70,7 +71,7 @@ export class CurrentFamily {
       .where('members', 'array-contains', user.email)
       .get();
     if (snap.docs.length === 0) {
-      throw new Error(`Family for UID:${user.uid} was not found`);
+      throw new NotFoundError(`Family for UID:${user.uid}`);
     }
     return (this.family = {
       id: snap.docs[0].id,
@@ -130,7 +131,7 @@ export class CurrentFamily {
       .where('familyId', '==', family?.id)
       .get();
     if (documents.docs.length === 0) {
-      throw new Error(`WasteBucket for family: ${family?.id} was not found`);
+      throw new NotFoundError(`WasteBucket for family: ${family?.id}`);
     }
 
     return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);

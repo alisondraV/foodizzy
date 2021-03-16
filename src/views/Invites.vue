@@ -39,6 +39,7 @@ import VButton from '@/components/VButton.vue';
 import Family, { CurrentFamily } from '@/types/Family';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
+import { AuthorizationError } from '@/utils/errors';
 
 @Component({
   components: { VHeader, VButton }
@@ -53,11 +54,11 @@ export default class AppMain extends Vue {
   }
 
   async handleAcceptInvite(familyId: string) {
-    if (!this.user || !this.user.email) throw new Error('Unauthorized!');
+    if (!this.user || !this.user.email) throw new AuthorizationError();
 
     await CurrentFamily.instance.switchTo(familyId, this.user.email);
 
-    await router.push('/');
+    await router.safePush('/');
   }
 }
 </script>

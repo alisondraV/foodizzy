@@ -48,16 +48,16 @@ export default class NavigationMenu extends Vue {
       : '';
   }
   goToTheHomePage() {
-    router.push('/');
+    router.safePush('/');
   }
   goToTheFridgePage() {
-    router.push('/fridge');
+    router.safePush('/fridge');
   }
   goToTheShoppingList() {
-    router.push('/shopping-list');
+    router.safePush('/shopping-list');
   }
   goToTheRecipesPage() {
-    router.push('/recipes');
+    router.safePush('/recipes');
   }
 }
 </script>

@@ -125,7 +125,7 @@ export default class Fridge extends Mixins(AlertMixin) {
   }
 
   addNewProduct() {
-    router.push({ path: '/new-product', query: { location: 'storage' } });
+    router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
   async getProductsWithCategory(): Promise<Product[]> {

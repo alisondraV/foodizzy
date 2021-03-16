@@ -59,7 +59,10 @@ export default class NewProduct extends Vue {
   }
 
   addCustomProduct() {
-    router.push({ path: 'custom-product', query: { location: this.location } });
+    router.safePush({
+      path: 'custom-product',
+      query: { location: this.location }
+    });
   }
 
   async removeExistingProduct(product: Product) {

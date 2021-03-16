@@ -92,7 +92,7 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   goToTheNextPage() {
-    router.push('/fridge-setup');
+    router.safePush('/fridge-setup');
   }
 
   removeEmail(email: string) {
