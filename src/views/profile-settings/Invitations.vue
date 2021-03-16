@@ -44,7 +44,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component } from "vue-property-decorator";
 import firebase from "firebase";
 import Authentication from "@/utils/Authentication";
 import VAlert from "@/components/VAlert.vue";
@@ -56,14 +57,17 @@ import Firestore from "@/utils/Firestore";
 @Component({
   components: { VAlert, VHeader, VButton }
 })
-export default class AppMain extends Vue {
-  alertMessage = "";
+export default class AppMain extends AlertMixin {
   isPositive = false;
   invitations: Family[] = [];
   user: firebase.User | null = null;
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
+    await this.getInvitations();
+  }
+
+  private async getInvitations() {
     this.invitations = await Firestore.instance.getInvitations(
       this.user?.email ?? ""
     );
@@ -73,11 +77,13 @@ export default class AppMain extends Vue {
     if (!this.user || !this.user.email) throw new Error("Unauthorized!");
 
     try {
+      // TODO: update user's family
       await CurrentFamily.instance.switchTo(familyId, this.user.email);
+      await this.getInvitations();
       this.isPositive = true;
-      this.alertMessage = "You've accepted the invitation";
+      await this.showAlert("You've accepted the invitation");
     } catch (e) {
-      this.alertMessage = "Couldn't accept the invitation";
+      await this.showAlert("Couldn't accept the invitation");
     }
   }
 
@@ -86,10 +92,11 @@ export default class AppMain extends Vue {
 
     try {
       await Firestore.instance.declineInvitation(familyId, this.user.email);
+      await this.getInvitations();
       this.isPositive = false;
-      this.alertMessage = "The invitation has been declined";
+      await this.showAlert("The invitation has been declined");
     } catch (e) {
-      this.alertMessage = "Couldn't decline the invitation";
+      await this.showAlert("Couldn't decline the invitation");
     }
   }
 }
