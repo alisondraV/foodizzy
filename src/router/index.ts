@@ -23,8 +23,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/create-family',
-    name: 'NewFamily',
-    component: () => import('../views/NewFamily.vue')
+    name: 'CreateFamily',
+    component: () => import('../views/CreateFamily.vue')
   },
   {
     path: '/',
