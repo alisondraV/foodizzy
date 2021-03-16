@@ -49,16 +49,16 @@ export default class AppMain extends Vue {
   }
 
   async viewFamily() {
-    await router.push('/family');
+    await router.safePush('/family');
   }
 
   async viewInvites() {
-    await router.push('/invites');
+    await router.safePush('/invites');
   }
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.push('/sign-in');
+    await router.safePush('/sign-in');
   }
 }
 </script>

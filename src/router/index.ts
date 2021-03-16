@@ -2,6 +2,7 @@ import { CurrentFamily } from '@/types';
 import Authentication from '@/utils/Authentication';
 import Vue from 'vue';
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from 'vue-router';
+const { isNavigationFailure, NavigationFailureType } = VueRouter;
 
 Vue.use(VueRouter);
 
@@ -85,7 +86,12 @@ const routes: Array<RouteConfig> = [
   }
 ];
 
-const router = new VueRouter({
+type ExtendedRouter = VueRouter & {
+  safePush?;
+  safeReplace?;
+};
+
+const router: ExtendedRouter = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
@@ -129,5 +135,21 @@ router.beforeEach(
     }
   }
 );
+
+function handleError(error) {
+  if (isNavigationFailure(error, NavigationFailureType.redirected)) {
+    console.warn('You do not have access to this page');
+  } else {
+    console.error(`An error occured during navigation: ${error.message}`);
+  }
+}
+
+router.safePush = async params => {
+  return router.push(params).catch(handleError);
+};
+
+router.safeReplace = async params => {
+  return router.replace(params).catch(handleError);
+};
 
 export default router;

@@ -57,7 +57,7 @@ export default class AppMain extends Vue {
 
     await CurrentFamily.instance.switchTo(familyId, this.user.email);
 
-    await router.push('/');
+    await router.safePush('/');
   }
 }
 </script>

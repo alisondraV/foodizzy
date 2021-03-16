@@ -71,7 +71,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
   }
 
   addNewProduct() {
-    router.push({ path: 'new-product', query: { location: 'shoppingList' } });
+    router.safePush({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 
   get filteredCategoryProducts() {

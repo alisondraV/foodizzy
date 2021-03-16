@@ -138,7 +138,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     if (this.redirect) {
       route += '?redirect=' + this.redirect;
     }
-    router.replace(route);
+    router.safeReplace(route);
   }
 
   get validationFailed(): boolean {
@@ -182,7 +182,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
 
   async finishSignUp(targetRoute = '') {
     const route = '/' + (this.redirect ?? targetRoute);
-    await router.replace(route);
+    await router.safeReplace(route);
   }
 }
 </script>

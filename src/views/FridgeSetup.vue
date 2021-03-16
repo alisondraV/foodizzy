@@ -126,7 +126,7 @@ export default class Fridge extends Vue {
   }
 
   goToTheNextPage() {
-    router.push('/');
+    router.safePush('/');
   }
 }
 </script>

@@ -84,7 +84,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
     if (this.redirect) {
       route += '?redirect=' + this.redirect;
     }
-    router.replace(route);
+    router.safeReplace(route);
   }
 
   resetPassword() {
@@ -119,7 +119,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
 
   async finishSignIn(targetRoute = '') {
     const route = '/' + (this.redirect ?? targetRoute);
-    await router.replace(route);
+    await router.safeReplace(route);
   }
 }
 </script>
