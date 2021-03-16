@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import sendEmail from './sendEmail';
 import axios from 'axios';
-import {db} from './admin';
+import {db, auth} from './admin';
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -43,6 +43,7 @@ export const onFamilyDelete = functions.firestore
       return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
     });
 
+      
 export const syncEmulatorAllProducts = functions.https.onCall(async (data, context) => {
   const allProductsRef = db.collection('allProducts');
   const allProductsSnap = await allProductsRef.get();
@@ -53,6 +54,12 @@ export const syncEmulatorAllProducts = functions.https.onCall(async (data, conte
     delete product.id;
     return db.doc(`allProducts/${id}`).set(product);
   }));
+      
+export const getUsersByEmail = functions.https.onCall((data, context) => {
+  if (!data.emails) {
+    return [];
+  }
+  return Promise.all(data.emails.map((email: string) => auth.getUserByEmail(email)));
 })
 
 async function updateTotalProducts(
