@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import firebase from 'firebase';
 require('dotenv').config();
 import serviceAccountKey from './data.json';
@@ -14,18 +14,28 @@ const firebaseConfig = {
 };
 
 const productionApp = admin.initializeApp(
-  { credential: admin.credential.cert(JSON.stringify(serviceAccountKey)) },
+  {
+    credential: admin.credential.cert(serviceAccountKey as admin.ServiceAccount)
+  },
   'prod'
 );
 const productionDB = productionApp.firestore();
 
-const emulatorApp = firebase.initializeApp(firebaseConfig, 'emulators');
+const emulatorApp = firebase.initializeApp(firebaseConfig, 'emulators2');
 const emulatorDB = emulatorApp.firestore();
+const emulatorFunctions = emulatorApp.functions();
+emulatorFunctions.useEmulator('localhost', 5001);
 emulatorDB.useEmulator('localhost', 8888);
 
 (async function() {
-  const allProductsCollectionRef = await emulatorDB
+  const allProductsCollectionRef = await productionDB
     .collection('allProducts')
     .get();
-  console.log(allProductsCollectionRef.docs.map(doc => doc.data()));
+  const productionData = allProductsCollectionRef.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+  const sync = emulatorFunctions.httpsCallable('syncEmulatorAllProducts');
+  await sync(productionData);
+  emulatorApp.delete();
 })();
