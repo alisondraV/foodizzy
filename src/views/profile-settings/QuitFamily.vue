@@ -10,21 +10,22 @@
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!family">Loading...</div>
-      <div v-else class="w-full flex flex-col items-center text-center">
+      <div v-else class="w-full">
+        <div class="text-primary-text mb-3">Enter the family name to quit.</div>
         <v-input
           class="w-full"
           label="Enter the family name to quit"
           v-model="familyNameInputValue"
         />
-        <div class="bg-background h-24 w-full bottom-0 fixed">
-          <v-button
-            class="mx-8 mt-3"
-            label="Quit My Family"
-            :disabled="!familyNameInputMatch"
-            @click="handleQuit"
-          />
-        </div>
       </div>
+    </div>
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button
+        class="mx-8 mt-3"
+        label="Quit My Family"
+        :disabled="!familyNameInputMatch"
+        @click="handleQuit"
+      />
     </div>
   </div>
 </template>
