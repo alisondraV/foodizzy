@@ -13,7 +13,7 @@
       class="cursor-pointer p-4 w-1/5"
     />
     <img
-      v-else
+      v-if="showClose()"
       src="@/assets/images/Close.svg"
       alt="Close"
       @click="goBack"
@@ -26,10 +26,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import router from "../router";
+import Family, { CurrentFamily } from "@/types/Family";
 
 @Component
 export default class VHeader extends Vue {
   @Prop() heading!: string;
+  family: Family | null = null;
+
   pagesWithoutProfileLink = [
     "Your Profile",
     "Item",
@@ -39,11 +42,20 @@ export default class VHeader extends Vue {
     "My Invitations"
   ];
 
+  async mounted() {
+    this.family = await CurrentFamily.instance.getCurrentFamily();
+  }
+
   showProfile() {
     const filteredPages = this.pagesWithoutProfileLink.filter(page =>
       this.heading.includes(page)
     );
     return filteredPages.length === 0;
+  }
+
+  showClose() {
+    if (this.heading.includes("Your Profile")) return this.family;
+    return !this.showProfile();
   }
 
   goBack() {
