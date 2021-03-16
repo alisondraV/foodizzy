@@ -20,7 +20,7 @@
       <div v-else>
         <div v-for="family in invitations" :key="family.id">
           <div class="flex w-full justify-between mb-3">
-            <div class="flex-1 text-lg align-text-bottom col-span-3">
+            <div class="flex-1">
               {{ family.name }}
             </div>
             <div

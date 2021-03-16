@@ -194,4 +194,26 @@ export class CurrentFamily {
       .doc(`family/${newFamilyId}`)
       .update("members", firebase.firestore.FieldValue.arrayUnion(userEmail));
   }
+
+  async cancelInvitation(email: string) {
+    const family = await this.getCurrentFamily();
+
+    await Firestore.instance.db
+        .doc(`family/${family.id}`)
+        .update(
+            "pendingMembers",
+            firebase.firestore.FieldValue.arrayRemove(email)
+        );
+  }
+
+  async resendInvitation(email: string) {
+    const family = await this.getCurrentFamily();
+
+    await Firestore.instance.db
+        .doc(`family/${family.id}`)
+        .update(
+            "pendingMembers",
+            firebase.firestore.FieldValue.arrayRemove(email)
+        );
+  }
 }
