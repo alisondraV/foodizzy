@@ -28,7 +28,7 @@
         </div>
         <h2 class="mt-6 text-lg">Members</h2>
         <div class="mt-3 flex flex-wrap -mx-4">
-          <div class="mx-4" v-for="member in members" :key="member.email">
+          <div class="mx-4" v-for="member in familyMembers" :key="member.email">
             <img
               v-if="member.photoURL"
               alt="profile-image"
@@ -104,6 +104,7 @@ import router from "@/router";
 import { Component, Vue } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import Family, { CurrentFamily } from "@/types/Family";
+import Firestore from "@/utils/Firestore";
 import VAlert from "@/components/VAlert.vue";
 import VButton from "@/components/VButton.vue";
 import VHeader from "@/components/VHeader.vue";
@@ -169,16 +170,10 @@ export default class AppMain extends Vue {
     await router.push("/");
   }
 
-  async goToCreateFamily() {
-    await router.push("/create-family");
-  }
-
-  get allMembers() {
-    const allEmails = [...this.members, ...this.pendingMembers];
-    return allEmails.map(email => ({
-      email,
-      isPending: this.pendingMembers.includes(email)
-    }));
+  get familyMembers() {
+    return this.members.map(email => {
+      return Firestore.instance.getUserByEmail(email);
+    });
   }
 
   get familyNameInputMatch() {

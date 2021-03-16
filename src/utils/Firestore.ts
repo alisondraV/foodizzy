@@ -31,6 +31,11 @@ export default class Firestore {
     return querySnap.docs.map(doc => doc.data() as Product);
   }
 
+  public getUserByEmail(email: string) {
+    // TODO: get user from user collection
+    return { email };
+  }
+
   public async addProductToStorage(product: Product) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
