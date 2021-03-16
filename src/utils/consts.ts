@@ -62,3 +62,7 @@ export const authErrors = {
       'We could not find a user that corresponds to this email. Try signing up.'
   }
 };
+
+export enum CallableFunctions {
+  GetUsersByEmail = 'getUsersByEmail'
+}

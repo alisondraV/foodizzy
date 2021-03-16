@@ -3,10 +3,11 @@ import Family, { CurrentFamily } from '@/types/Family';
 import Product from '@/types/Product';
 import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
+import { CallableFunctions } from './consts';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
-
+  private functions!: firebase.functions.Functions;
   private static _instance: Firestore | null = null;
 
   public static get instance(): Firestore {
@@ -17,13 +18,23 @@ export default class Firestore {
   }
 
   private constructor() {
+    this.functions = firebase.functions();
     this.db = firebase.firestore();
 
     if (process.env.NODE_ENV === 'development') {
       console.log('Emulator connected');
 
       this.db.useEmulator('localhost', 8888);
+      this.functions.useEmulator('localhost', 5001);
     }
+  }
+
+  public async getUsersByEmail(emails: string[]) {
+    const getUsersByEmailFunction = this.functions.httpsCallable(
+      CallableFunctions.GetUsersByEmail
+    );
+    const response = await getUsersByEmailFunction({ emails });
+    return response.data;
   }
 
   public async getAllProducts(): Promise<Product[]> {
