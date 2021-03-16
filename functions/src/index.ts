@@ -43,6 +43,18 @@ export const onFamilyDelete = functions.firestore
       return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
     });
 
+export const syncEmulatorAllProducts = functions.https.onCall(async (data, context) => {
+  const allProductsRef = db.collection('allProducts');
+  const allProductsSnap = await allProductsRef.get();
+  await Promise.all((await allProductsSnap).docs.map(doc => doc.ref.delete()));
+  
+  return Promise.all(data.products.map((product: FirebaseFirestore.DocumentData) => {
+    const id = product.id;
+    delete product.id;
+    return db.doc(`allProducts/${id}`).set(product);
+  }));
+})
+
 async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,
     oldFamily: FirebaseFirestore.DocumentData,

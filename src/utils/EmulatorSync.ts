@@ -36,6 +36,6 @@ emulatorDB.useEmulator('localhost', 8888);
     ...doc.data()
   }));
   const sync = emulatorFunctions.httpsCallable('syncEmulatorAllProducts');
-  await sync(productionData);
+  await sync({ products: productionData });
   emulatorApp.delete();
 })();
