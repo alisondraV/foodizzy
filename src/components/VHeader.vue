@@ -39,7 +39,8 @@ export default class VHeader extends Vue {
     "Personal Information",
     "Change Password",
     "My Family",
-    "My Invitations"
+    "My Invitations",
+    "Invite Family Members"
   ];
 
   async mounted() {
