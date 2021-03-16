@@ -54,7 +54,10 @@
         </div>
 
         <h2 class="mb-4 mt-6 text-lg">Your Family’s Invitations</h2>
-        <div v-for="invitation in pendingMembers" :key="invitation">
+        <div v-if="pendingMembers.length === 0" class="text-dark-peach -mt-2">
+          No pending invitations.
+        </div>
+        <div v-else v-for="invitation in pendingMembers" :key="invitation">
           <div class="flex w-full justify-between mb-3">
             <div class="flex-1">
               {{ invitation }}
@@ -96,7 +99,7 @@
 <script lang="ts">
 import firebase from "firebase";
 import router from "@/router";
-import { Component, Vue } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import Authentication from "@/utils/Authentication";
 import Family, { CurrentFamily } from "@/types/Family";
 import Firestore from "@/utils/Firestore";
@@ -104,12 +107,12 @@ import VAlert from "@/components/VAlert.vue";
 import VButton from "@/components/VButton.vue";
 import VHeader from "@/components/VHeader.vue";
 import VInput from "@/components/VInput.vue";
+import { AlertMixin } from "@/components/AlertMixin";
 
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
 })
-export default class AppMain extends Vue {
-  alertMessage = "";
+export default class AppMain extends AlertMixin {
   family: Family | null = null;
   isPositive = false;
   members: string[] = [];
@@ -143,9 +146,9 @@ export default class AppMain extends Vue {
     try {
       this.isPositive = true;
       await CurrentFamily.instance.inviteMembers([invitation]);
-      this.alertMessage = "The invitation has been resent";
+      await this.showAlert("The invitation has been resent");
     } catch (e) {
-      this.alertMessage = "Couldn't resend the invitation";
+      await this.showAlert("Couldn't resend the invitation");
     }
   }
 
@@ -153,9 +156,9 @@ export default class AppMain extends Vue {
     try {
       await CurrentFamily.instance.cancelInvitation(invitation);
       this.isPositive = false;
-      this.alertMessage = "The invitation has been canceled";
+      await this.showAlert("The invitation has been canceled");
     } catch (e) {
-      this.alertMessage = "Couldn't cancel the invitation";
+      await this.showAlert("Couldn't cancel the invitation");
     }
   }
 
