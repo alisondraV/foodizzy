@@ -24,8 +24,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/create-family',
-    name: 'NewFamily',
-    component: () => import('../views/NewFamily.vue')
+    name: 'CreateFamily',
+    component: () => import('../views/CreateFamily.vue')
   },
   {
     path: '/',
@@ -114,21 +114,23 @@ router.beforeEach(
         'NewFamily',
         'UserProfile'
       ];
+      const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'NewFamily'];
 
       const destinationIsOneOf = routes =>
         routes.some(routeName => to.name === routeName);
 
-      if (!userLoggedIn && !destinationIsOneOf(anonymousRoutes)) {
-        next('/sign-in');
-      } else if (
-        userLoggedIn &&
-        !userHasFamily &&
-        !destinationIsOneOf(authWithoutFamilyRoutes)
-      ) {
-        next('/profile');
-      } else {
-        next();
+      if (!userLoggedIn) {
+        if (!destinationIsOneOf(anonymousRoutes)) {
+          next('/sign-in');
+        }
+      } else if (!userHasFamily) {
+        if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
+          next('/profile');
+        }
+      } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
+        next('/');
       }
+      next();
     } catch (e) {
       console.error(e.message);
       next('sign-in');

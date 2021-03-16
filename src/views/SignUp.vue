@@ -141,17 +141,12 @@ export default class SignUp extends Mixins(ValidationMixin) {
     router.safeReplace(route);
   }
 
-  get validationFailed(): boolean {
-    if (
+  get isFormInValidState() {
+    return (
       this.isEmailValid(this.email) &&
       this.isDisplayNameValid(this.name) &&
       this.isPasswordValid()
-    ) {
-      this.errorMessage = '';
-      this.errorType = '';
-      return false;
-    }
-    return true;
+    );
   }
 
   signUp() {

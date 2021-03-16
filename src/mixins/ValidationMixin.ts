@@ -32,6 +32,18 @@ export class ValidationMixin extends Vue {
     });
   }
 
+  get isFormInValidState() {
+    return true;
+  }
+
+  get validationFailed(): boolean {
+    if (this.isFormInValidState) {
+      this.errorMessage = '';
+      this.errorType = '';
+    }
+    return !this.isFormInValidState;
+  }
+
   isDisplayNameValid(displayName: string) {
     if (displayName.trim() === '') {
       this.displayError({ code: ErrorCode.InvalidDisplayName });
