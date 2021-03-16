@@ -148,7 +148,7 @@ export default class AppMain extends AlertMixin {
   }
 
   async addNewMembers() {
-    await router.push("/new-family-members");
+    await router.push("/invite-members");
   }
 
   editFamilyName() {

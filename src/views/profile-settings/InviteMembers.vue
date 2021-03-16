@@ -1,7 +1,7 @@
 <template>
   <div class="m-8 flex flex-col h-screen">
     <p class="text-2xl font-bold text-primary-text mb-6">
-      Invite Family Member
+      Invite Family Members
     </p>
     <div class="mb-8 flex-start">
       <div class="flex flex-row justify-between mb-4">
@@ -36,19 +36,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
+import { AlertMixin } from "@/components/AlertMixin";
+import { Component } from "vue-property-decorator";
+import { CurrentFamily } from "@/types/Family";
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types/Family";
 
 @Component({
   components: {
-    VInput,
-    VButton
+    VButton,
+    VInput
   }
 })
-export default class SignIn extends Vue {
+export default class InviteMembers extends AlertMixin {
   memberEmails: string[] = [];
   currentEmail = "";
 

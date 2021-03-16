@@ -67,9 +67,9 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/profile-settings/ChangePassword.vue")
   },
   {
-    path: "/new-family-members",
-    name: "NewFamilyMembers",
-    component: () => import("../views/NewFamilyMembers.vue")
+    path: "/invite-members",
+    name: "InviteMembers",
+    component: () => import("../views/profile-settings/InviteMembers.vue")
   },
   {
     path: "/quit-family",
