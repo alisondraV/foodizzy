@@ -16,15 +16,31 @@
       </div>
       <div v-else>
         <div
-          class="w-screen -mx-8 flex bg-light-yellow text-header font-extrabold py-5 pl-8"
+          class="w-screen -mx-8 bg-light-yellow text-header font-extrabold py-5 pl-8"
         >
-          {{ family.name }}
-          <img
-            alt="Edit"
-            class="ml-4"
-            src="@/assets/images/Edit.svg"
-            @click="editFamilyName"
-          />
+          <div class="flex" v-if="!newFamilyName">
+            {{ family.name }}
+            <img
+              alt="Edit"
+              class="ml-4"
+              src="@/assets/images/Edit.svg"
+              @click="editFamilyName"
+            />
+          </div>
+          <div v-else class="flex justify-between">
+            <label>
+              <input
+                class="w-3/4 bg-light-yellow border-b"
+                type="text"
+                v-model="newFamilyName"
+              />
+            </label>
+            <v-button
+              class="mr-8 w-1/4 h-10 -mt-2"
+              label="Done"
+              @click="updateFamilyName"
+            />
+          </div>
         </div>
         <h2 class="mt-6 text-lg">Members</h2>
         <div class="mt-3 flex flex-wrap -mx-4">
@@ -114,6 +130,7 @@ import { AlertMixin } from "@/components/AlertMixin";
 })
 export default class AppMain extends AlertMixin {
   family: Family | null = null;
+  newFamilyName = "";
   isPositive = false;
   members: string[] = [];
   pendingMembers: string[] = [];
@@ -135,7 +152,7 @@ export default class AppMain extends AlertMixin {
   }
 
   editFamilyName() {
-    console.log("Edit");
+    this.newFamilyName = this.family?.name;
   }
 
   async goToCreateFamily() {
@@ -164,6 +181,19 @@ export default class AppMain extends AlertMixin {
 
   async handleQuit() {
     await router.push("/quit-family");
+  }
+
+  async updateFamilyName() {
+    try {
+      await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
+      this.isPositive = true;
+      this.family = await CurrentFamily.instance.getCurrentFamily();
+      this.newFamilyName = "";
+      await this.showAlert("Your family name has been updated");
+    } catch (e) {
+      this.isPositive = false;
+      await this.showAlert("Couldn't update the family name");
+    }
   }
 
   get familyMembers() {

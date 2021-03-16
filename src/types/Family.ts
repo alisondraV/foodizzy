@@ -206,14 +206,11 @@ export class CurrentFamily {
         );
   }
 
-  async resendInvitation(email: string) {
+  async updateFamilyName(newName: string) {
     const family = await this.getCurrentFamily();
 
     await Firestore.instance.db
         .doc(`family/${family.id}`)
-        .update(
-            "pendingMembers",
-            firebase.firestore.FieldValue.arrayRemove(email)
-        );
+        .update("name", newName);
   }
 }
