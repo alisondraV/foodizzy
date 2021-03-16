@@ -74,11 +74,6 @@
           </div>
           <hr class="w-full border-secondary-text mb-6" />
         </div>
-        <v-input
-          class="w-full"
-          label="Enter the family name to quit"
-          v-model="familyNameInputValue"
-        />
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
@@ -116,7 +111,6 @@ import VInput from "@/components/VInput.vue";
 export default class AppMain extends Vue {
   alertMessage = "";
   family: Family | null = null;
-  familyNameInputValue = "";
   isPositive = false;
   members: string[] = [];
   pendingMembers: string[] = [];
@@ -166,8 +160,7 @@ export default class AppMain extends Vue {
   }
 
   async handleQuit() {
-    await CurrentFamily.instance.quit();
-    await router.push("/");
+    await router.push("/quit-family");
   }
 
   get familyMembers() {

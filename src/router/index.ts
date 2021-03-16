@@ -72,6 +72,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/NewFamilyMembers.vue")
   },
   {
+    path: "/quit-family",
+    name: "QuitFamily",
+    component: () => import("../views/profile-settings/QuitFamily.vue")
+  },
+  {
     path: "/recipes",
     name: "Recipes",
     component: () => import("../views/Recipes.vue")
