@@ -20,8 +20,7 @@ firebase.initializeApp(firebaseConfig);
 Vue.config.productionTip = false;
 
 Vue.config.errorHandler = error => {
-  if (error instanceof AuthorizationError || 
-      error instanceof NotFoundError) {
+  if (error instanceof AuthorizationError || error instanceof NotFoundError) {
     console.warn(`${error.name}: ${error.message}\n${error.stack}`);
   } else {
     console.error(error);
