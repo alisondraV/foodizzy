@@ -8,7 +8,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "emulate": "firebase emulators:start --import ./emulator_data",
-    "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data"
+    "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data",
+    "emulators:export-data": "firebase emulators:export ./emulator_data",
+    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp"
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
