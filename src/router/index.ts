@@ -138,9 +138,11 @@ router.beforeEach(
 
 function handleError(error) {
   if (isNavigationFailure(error, NavigationFailureType.redirected)) {
-    console.warn('You do not have access to this page');
+    console.warn('Router Error: You do not have access to this page');
   } else {
-    console.error(`An error occured during navigation: ${error.message}`);
+    console.error(
+      `Router Error: An error occured during navigation: ${error.message}`
+    );
   }
 }
 
