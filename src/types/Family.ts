@@ -144,10 +144,11 @@ export class CurrentFamily {
   }
 
   public async listenForChanges(
-    callback: (snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>) => void
+    callback?: (snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>) => void
   ) {
-    const family = await this.getCurrentFamily();
-    Firestore.instance.db.doc(`family/${family.id}`).onSnapshot({ next: callback });
+    this.family = null;
+    this.family = await this.getCurrentFamily();
+    Firestore.instance.db.doc(`family/${this.family.id}`).onSnapshot({ next: callback });
   }
 
   public async switchTo(newFamilyId: string, userEmail: string): Promise<void> {

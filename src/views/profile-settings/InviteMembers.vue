@@ -40,6 +40,7 @@ import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
+import router from "@/router";
 
 @Component({
   components: {
@@ -60,6 +61,7 @@ export default class InviteMembers extends AlertMixin {
       this.memberEmails = [];
       this.isPositive = true;
       await this.showAlert('Invites have been sent');
+      router.safePush('/family');
     } catch (e) {
       this.isPositive = false;
       await this.showAlert("Couldn't send the invites");

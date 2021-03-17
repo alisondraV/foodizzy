@@ -126,12 +126,12 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
       'SignUp',
       'Invitations',
       'Family',
-      'NewFamily',
+      'CreateFamily',
       'UserProfile',
       'ChangePassword',
       'PersonalInformation'
     ];
-    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'NewFamily'];
+    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
 
     const destinationIsOneOf = routes => routes.some(routeName => to.name === routeName);
 

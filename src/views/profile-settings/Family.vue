@@ -88,6 +88,7 @@ import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
+import Firestore from '@/utils/Firestore';
 
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
@@ -103,10 +104,7 @@ export default class AppMain extends AlertMixin {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-
     this.family = await CurrentFamily.instance.getCurrentFamily();
-    // TODO: resolve CORS
-    // this.familyMembers = await Firestore.instance.getUsersByEmail(this.members);
 
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
@@ -114,6 +112,13 @@ export default class AppMain extends AlertMixin {
       this.pendingMembers = family?.pendingMembers ?? [];
       this.family = family;
     });
+
+    try {
+      // TODO: resolve CORS
+      this.familyMembers = await Firestore.instance.getUsersByEmail(this.members);
+    } catch (e) {
+      console.log("Couldn't getUsersByEmail: ", e.message);
+    }
   }
 
   async addNewMembers() {

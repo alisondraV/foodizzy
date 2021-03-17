@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { AlertMixin } from '@/mixins/AlertMixin';
+import { AuthorizationError } from '@/utils/errors';
 import { Component } from 'vue-property-decorator';
 import firebase from 'firebase';
 import Authentication from '@/utils/Authentication';
@@ -53,6 +54,8 @@ export default class AppMain extends AlertMixin {
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
     await this.getInvitations();
+
+    await CurrentFamily.instance.listenForChanges();
   }
 
   private async getInvitations() {
@@ -60,10 +63,9 @@ export default class AppMain extends AlertMixin {
   }
 
   async handleAcceptInvite(familyId: string) {
-    if (!this.user || !this.user.email) throw new Error('Unauthorized!');
+    if (!this.user || !this.user.email) throw new AuthorizationError();
 
     try {
-      // TODO: update user's family
       await CurrentFamily.instance.switchTo(familyId, this.user.email);
       await this.getInvitations();
       this.isPositive = true;
@@ -74,7 +76,7 @@ export default class AppMain extends AlertMixin {
   }
 
   async handleDeclineInvitation(familyId: string) {
-    if (!this.user || !this.user.email) throw new Error('Unauthorized!');
+    if (!this.user || !this.user.email) throw new AuthorizationError();
 
     try {
       await Firestore.instance.declineInvitation(familyId, this.user.email);

@@ -32,13 +32,13 @@ export default class VHeader extends Vue {
   family: Family | null = null;
 
   pagesWithoutProfileLink = [
-    'Your Profile',
-    'Item',
-    'Personal Information',
-    'Change Password',
-    'My Family',
-    'My Invitations',
-    'Invite Family Members'
+    'profile',
+    'product',
+    'personal-info',
+    'change-password',
+    'family',
+    'invitations',
+    'invite-members'
   ];
 
   async mounted() {
@@ -46,7 +46,7 @@ export default class VHeader extends Vue {
   }
 
   showProfile() {
-    const filteredPages = this.pagesWithoutProfileLink.filter(page => this.heading.includes(page));
+    const filteredPages = this.pagesWithoutProfileLink.filter(page => this.$route.path.includes(page));
     return filteredPages.length === 0;
   }
 

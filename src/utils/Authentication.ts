@@ -65,12 +65,14 @@ export default class Authentication {
   }
 
   public async updateCurrentUser(prevUser: firebase.User, name: string, email: string) {
-    const familyRef = Firestore.instance.db
-      .collection('family')
-      .doc((await CurrentFamily.instance.getCurrentFamily()).id);
+    if (CurrentFamily.instance.family) {
+      const familyRef = Firestore.instance.db
+        .collection('family')
+        .doc((await CurrentFamily.instance.getCurrentFamily()).id);
 
-    await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
-    await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+      await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
+      await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+    }
 
     await firebase.auth().currentUser!.updateProfile({ displayName: name });
     await firebase.auth().currentUser!.updateEmail(email);
