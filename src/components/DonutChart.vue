@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Chart from "chart.js";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Chart from 'chart.js';
 
 @Component
 export default class DoughnutChart extends Vue {
@@ -23,17 +23,12 @@ export default class DoughnutChart extends Vue {
 
   mounted() {
     const centerNumber = this.centerNumber;
-    Chart.defaults.CentralDoughnut = Chart.helpers.clone(
-      Chart.defaults.doughnut
-    );
+    Chart.defaults.CentralDoughnut = Chart.helpers.clone(Chart.defaults.doughnut);
     Chart.controllers.CentralDoughnut = Chart.controllers.doughnut.extend({
-      name: "CentralDoughnut",
+      name: 'CentralDoughnut',
       showTooltip: function({ ...parameters }) {
         this.chart.ctx.save();
-        Chart.controllers.doughnut.prototype.showTooltip.apply(
-          this,
-          parameters
-        );
+        Chart.controllers.doughnut.prototype.showTooltip.apply(this, parameters);
         this.chart.ctx.restore();
       },
       draw: function({ ...parameters }) {
@@ -43,13 +38,11 @@ export default class DoughnutChart extends Vue {
           height = this.chart.height;
 
         const fontSize = (height / 114).toFixed(2);
-        this.chart.ctx.font = fontSize + "em Poppins";
-        this.chart.ctx.textBaseline = "middle";
+        this.chart.ctx.font = fontSize + 'em Poppins';
+        this.chart.ctx.textBaseline = 'middle';
 
-        const text = (centerNumber * 100).toFixed(1) + "%",
-          textX = Math.round(
-            (width - this.chart.ctx.measureText(text).width) / 2
-          ),
+        const text = (centerNumber * 100).toFixed(1) + '%',
+          textX = Math.round((width - this.chart.ctx.measureText(text).width) / 2),
           textY = height / 2;
 
         this.chart.ctx.fillText(text, textX, textY);
@@ -70,10 +63,10 @@ export default class DoughnutChart extends Vue {
   createChart(chartData: object) {
     const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement;
     const options = {
-      type: "CentralDoughnut",
+      type: 'CentralDoughnut',
       data: chartData,
       borderWidth: 1,
-      borderColor: "#ff0",
+      borderColor: '#ff0',
       options: {
         ...this.options,
         cutoutPercentage: 80,

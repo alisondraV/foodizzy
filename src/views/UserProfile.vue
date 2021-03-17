@@ -4,21 +4,14 @@
     <div class="mt-24 mb-20 mx-8">
       <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
-        <img
-          v-if="user.photoURL"
-          alt="profile-image"
-          class="mb-4 rounded-full w-1/3"
-          :src="user.photoURL"
-        />
+        <img v-if="user.photoURL" alt="profile-image" class="mb-4 rounded-full w-1/3" :src="user.photoURL" />
         <img
           v-else
           alt="profile-image"
           class="mb-4 rounded-full w-1/3"
           src="@/assets/images/DefaultProfile.svg"
         />
-        <p
-          class="text-xl place-self-center font-extrabold text-primary-text mb-12"
-        >
+        <p class="text-xl place-self-center font-extrabold text-primary-text mb-12">
           {{ user.displayName }}
         </p>
         <ul class="w-full text-primary-text ">
@@ -60,13 +53,13 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase";
-import router from "@/router";
-import { Component, Vue } from "vue-property-decorator";
-import Family, { CurrentFamily } from "@/types/Family";
-import Authentication from "@/utils/Authentication";
-import VButton from "@/components/VButton.vue";
-import VHeader from "@/components/VHeader.vue";
+import firebase from 'firebase';
+import router from '@/router';
+import { Component, Vue } from 'vue-property-decorator';
+import Family, { CurrentFamily } from '@/types/Family';
+import Authentication from '@/utils/Authentication';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: { VButton, VHeader }
@@ -81,24 +74,24 @@ export default class AppMain extends Vue {
   }
 
   async changePassword() {
-    await router.push("/change-password");
+    await router.push('/change-password');
   }
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.push("/sign-in");
+    await router.safePush('/sign-in');
   }
 
   async viewFamily() {
-    await router.push("/family");
+    await router.push('/family');
   }
 
   async viewInvitations() {
-    await router.push("/invitations");
+    await router.push('/invitations');
   }
 
   async viewPersonalInfo() {
-    await router.push("/personal-info");
+    await router.push('/personal-info');
   }
 }
 </script>

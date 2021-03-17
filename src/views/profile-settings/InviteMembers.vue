@@ -2,20 +2,11 @@
   <div>
     <v-header heading="Invite Family Members" />
     <div class="mt-20">
-      <v-alert
-        v-if="alertMessage"
-        :isPositive="isPositive"
-        :label="alertMessage"
-      />
+      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div class="flex flex-row justify-between mb-4">
-        <v-input
-          class="w-4/5"
-          type="email"
-          label="Email Address"
-          v-model="currentEmail"
-        />
+        <v-input class="w-4/5" type="email" label="Email Address" v-model="currentEmail" />
         <img src="@/assets/images/Plus.svg" alt="Add" @click="addEmail" />
       </div>
       <ul>
@@ -26,12 +17,7 @@
                   bg-light-yellow py-2 px-4 rounded text-sm mb-2"
         >
           <p>{{ email }}</p>
-          <img
-            src="@/assets/images/Remove.svg"
-            alt="remove"
-            @click="removeEmail(email)"
-            class="w-4 h-4"
-          />
+          <img src="@/assets/images/Remove.svg" alt="remove" @click="removeEmail(email)" class="w-4 h-4" />
         </li>
       </ul>
     </div>
@@ -47,13 +33,13 @@
 </template>
 
 <script lang="ts">
-import { AlertMixin } from "@/components/AlertMixin";
-import { Component } from "vue-property-decorator";
-import { CurrentFamily } from "@/types/Family";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import VHeader from "@/components/VHeader.vue";
+import { AlertMixin } from '@/mixins/AlertMixin';
+import { Component } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types/Family';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
@@ -64,7 +50,7 @@ import VHeader from "@/components/VHeader.vue";
   }
 })
 export default class InviteMembers extends AlertMixin {
-  currentEmail = "";
+  currentEmail = '';
   isPositive = false;
   memberEmails: string[] = [];
 
@@ -73,16 +59,16 @@ export default class InviteMembers extends AlertMixin {
       await CurrentFamily.instance.inviteMembers(this.memberEmails);
       this.memberEmails = [];
       this.isPositive = true;
-      await this.showAlert("Invites have been sent");
+      await this.showAlert('Invites have been sent');
     } catch (e) {
       this.isPositive = false;
-      await this.showAlert("Couldn't send the invites");
+      await this.showAlert('Couldn\'t send the invites');
     }
   }
 
   addEmail() {
     this.memberEmails.push(this.currentEmail);
-    this.currentEmail = "";
+    this.currentEmail = '';
   }
 
   removeEmail(email: string) {

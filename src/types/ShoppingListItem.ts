@@ -1,4 +1,4 @@
-import Product from "@/types/Product";
+import Product from '@/types/Product';
 
 export default interface ShoppingListItem extends Product {
   acquired: boolean;

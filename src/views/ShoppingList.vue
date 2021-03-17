@@ -7,11 +7,7 @@
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-6" v-model="searchQuery" />
       <v-button class="mb-4" @click="updateFridge" label="Update Fridge" />
-      <div
-        class="mb-4"
-        v-for="category in Object.keys(filteredCategoryProducts)"
-        :key="category"
-      >
+      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
         <div>
@@ -26,12 +22,7 @@
         </div>
       </div>
       <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-        <img
-          @click="addNewProduct"
-          src="@/assets/images/AddNew.svg"
-          alt="Add"
-          class="cursor-pointer p-4"
-        />
+        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="cursor-pointer p-4" />
       </div>
     </div>
     <navigation-menu current-page="ShoppingList" />
@@ -39,18 +30,18 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { AlertMixin } from "@/components/AlertMixin";
-import { Component, Mixins } from "vue-property-decorator";
-import { CurrentFamily } from "@/types";
-import Firestore from "@/utils/Firestore";
-import ListItem from "@/components/ListItem.vue";
-import NavigationMenu from "@/components/NavigationMenu.vue";
-import SearchInput from "@/components/SearchInput.vue";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VHeader from "@/components/VHeader.vue";
+import router from '@/router';
+import { AlertMixin } from '@/mixins/AlertMixin';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
+import ListItem from '@/components/ListItem.vue';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import SearchInput from '@/components/SearchInput.vue';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
@@ -64,26 +55,24 @@ import VHeader from "@/components/VHeader.vue";
 })
 export default class ShoppingList extends Mixins(AlertMixin) {
   products: ShoppingListItem[] = [];
-  searchQuery = "";
+  searchQuery = '';
 
   async mounted() {
     this.products = await this.getProductsWithCategory();
   }
 
   addNewProduct() {
-    router.push({ path: "new-product", query: { location: "shoppingList" } });
+    router.safePush({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
     type Category = { [category: string]: ShoppingListItem[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? "General";
+      const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
       }
@@ -107,7 +96,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     }
 
     return allProducts.map(product => {
-      const productCategory = product.category ?? "General";
+      const productCategory = product.category ?? 'General';
       return {
         name: product.name,
         category: productCategory,
@@ -118,9 +107,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
 
   async checkShoppingItem(shoppingItem: ShoppingListItem) {
     this.products = this.products.map(product => {
-      return product.name == shoppingItem.name
-        ? { ...product, acquired: !product.acquired }
-        : product;
+      return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
     });
     await Firestore.instance.updateShoppingList(this.products);
   }
@@ -132,7 +119,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
       await Firestore.instance.addProductToStorage(product);
     }
 
-    await this.showAlert("Products were added to the Shopping List");
+    await this.showAlert('Products were added to the Shopping List');
   }
 }
 </script>

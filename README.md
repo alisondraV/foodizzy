@@ -29,3 +29,9 @@ npm run build
 ```
 npm run lint
 ```
+
+### Seeds the `allProducts` collection
+(make sure you have your Firebase Admin Service Account credentials in `src/utils/data.json`)
+```
+npm run emulator-sync:allProducts
+```

@@ -1,8 +1,6 @@
 <template>
   <div class="bg-background flex h-20 px-5 w-full top-0 fixed pt-4">
-    <span
-      class="ml-4 w-4/5 text-header place-self-center font-extrabold text-primary-text"
-    >
+    <span class="ml-4 w-4/5 text-header place-self-center font-extrabold text-primary-text">
       {{ heading }}
     </span>
     <img
@@ -24,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import router from "../router";
-import Family, { CurrentFamily } from "@/types/Family";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import router from '../router';
+import Family, { CurrentFamily } from '@/types/Family';
 
 @Component
 export default class VHeader extends Vue {
@@ -34,13 +32,13 @@ export default class VHeader extends Vue {
   family: Family | null = null;
 
   pagesWithoutProfileLink = [
-    "Your Profile",
-    "Item",
-    "Personal Information",
-    "Change Password",
-    "My Family",
-    "My Invitations",
-    "Invite Family Members"
+    'Your Profile',
+    'Item',
+    'Personal Information',
+    'Change Password',
+    'My Family',
+    'My Invitations',
+    'Invite Family Members'
   ];
 
   async mounted() {
@@ -48,14 +46,12 @@ export default class VHeader extends Vue {
   }
 
   showProfile() {
-    const filteredPages = this.pagesWithoutProfileLink.filter(page =>
-      this.heading.includes(page)
-    );
+    const filteredPages = this.pagesWithoutProfileLink.filter(page => this.heading.includes(page));
     return filteredPages.length === 0;
   }
 
   showClose() {
-    if (this.heading.includes("Your Profile")) return this.family;
+    if (this.heading.includes('Your Profile')) return this.family;
     return !this.showProfile();
   }
 
@@ -64,7 +60,7 @@ export default class VHeader extends Vue {
   }
 
   goToTheProfilePage() {
-    router.push("/profile");
+    router.safePush('/profile');
   }
 }
 </script>

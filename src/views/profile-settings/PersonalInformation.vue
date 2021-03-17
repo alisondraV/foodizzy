@@ -17,16 +17,14 @@
             class="mb-4 rounded-full w-1/3"
             src="@/assets/images/DefaultProfile.svg"
           />
-          <p
-            class="text-xl place-self-center font-extrabold text-primary-text mb-12"
-          >
+          <p class="text-xl place-self-center font-extrabold text-primary-text mb-12">
             {{ user.displayName }}
           </p>
         </div>
         <div class="flex justify-between mb-4">
           <p class="text-primary-text">Personal Information</p>
           <p class="text-dark-peach underline" @click="flipEditMode">
-            {{ editMode ? "Cancel" : "Edit" }}
+            {{ editMode ? 'Cancel' : 'Edit' }}
           </p>
         </div>
 
@@ -52,20 +50,20 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase";
-import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import VHeader from "@/components/VHeader.vue";
+import firebase from 'firebase';
+import { Component, Vue } from 'vue-property-decorator';
+import Authentication from '@/utils/Authentication';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: { VButton, VInput, VHeader }
 })
 export default class PersonalInformation extends Vue {
   editMode = false;
-  newName: string | null = "";
-  newEmail: string | null = "";
+  newName: string | null = '';
+  newEmail: string | null = '';
   user: firebase.User | null = null;
 
   async mounted() {
@@ -73,11 +71,7 @@ export default class PersonalInformation extends Vue {
   }
 
   async saveChanges() {
-    await Authentication.instance.updateCurrentUser(
-      this.user!,
-      this.newName,
-      this.newEmail
-    );
+    await Authentication.instance.updateCurrentUser(this.user!, this.newName, this.newEmail);
     this.flipEditMode();
   }
 

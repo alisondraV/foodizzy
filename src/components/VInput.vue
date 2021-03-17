@@ -4,6 +4,7 @@
       <input
         class="focus:outline-none rounded-md text-primary-text h-10 p-4
                 border border-secondary-text focus:border-primary-green"
+        :class="error ? 'border-2 border-dark-peach' : 'border border-secondary-text'"
         @input="$emit('input', $event.target.value)"
         @focus="$emit('focus')"
         :placeholder="label"
@@ -15,12 +16,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class VInput extends Vue {
   @Prop() value!: null;
   @Prop() label!: string;
-  @Prop({ default: "text" }) type?: string;
+  @Prop({ default: 'text' }) type?: string;
+  @Prop({ default: false }) error?: boolean;
+  focused = false;
+
+  get isFocused() {
+    return this.focused;
+  }
 }
 </script>

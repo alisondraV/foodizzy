@@ -25,15 +25,15 @@
 </template>
 
 <script lang="ts">
-import { AlertMixin } from "@/components/AlertMixin";
-import { Component, Mixins } from "vue-property-decorator";
-import { CurrentFamily } from "@/types";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VHeader from "@/components/VHeader.vue";
-import VInput from "@/components/VInput.vue";
+import { AlertMixin } from '@/mixins/AlertMixin';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
+import Product from '@/types/Product';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
+import VInput from '@/components/VInput.vue';
 
 @Component({
   components: {
@@ -46,7 +46,7 @@ import VInput from "@/components/VInput.vue";
 export default class CustomProduct extends Mixins(AlertMixin) {
   isPositive = false;
   location?: string;
-  product: Product = { name: "" };
+  product: Product = { name: '' };
 
   mounted() {
     this.location = this.$route.query.location as string;
@@ -59,26 +59,22 @@ export default class CustomProduct extends Mixins(AlertMixin) {
 
     if (await this.isInStorageOrShoppingList()) {
       this.isPositive = false;
-      return await this.showAlert(
-        `${this.product.name} already exists in the ${this.location}`
-      );
+      return await this.showAlert(`${this.product.name} already exists in the ${this.location}`);
     }
 
     await this.addProductToStorageOrShoppingList();
   }
 
   async addProductToStorageOrShoppingList() {
-    if (this.location === "storage") {
+    if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(this.product);
-    } else if (this.location === "shoppingList") {
+    } else if (this.location === 'shoppingList') {
       await Firestore.instance.addToShoppingList(this.product);
     }
 
     this.isPositive = true;
-    await this.showAlert(
-      `${this.product.name} was added to the ${this.location}`
-    );
-    this.product = { name: "" };
+    await this.showAlert(`${this.product.name} was added to the ${this.location}`);
+    this.product = { name: '' };
   }
 
   async isInStorageOrShoppingList() {

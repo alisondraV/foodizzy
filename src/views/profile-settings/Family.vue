@@ -2,11 +2,7 @@
   <div>
     <v-header heading="My Family" />
     <div class="mt-20">
-      <v-alert
-        v-if="alertMessage"
-        :isPositive="isPositive"
-        :label="alertMessage"
-      />
+      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
     <div class="mx-8 text-primary-text" :class="alertMessage ? '' : 'mt-24'">
       <div v-if="!user">Loading...</div>
@@ -15,31 +11,16 @@
         <img class="ml-3" src="@/assets/images/SadFace.svg" alt="No Family" />
       </div>
       <div v-else>
-        <div
-          class="w-screen -mx-8 bg-light-yellow text-header font-extrabold py-5 pl-8"
-        >
+        <div class="w-screen -mx-8 bg-light-yellow text-header font-extrabold py-5 pl-8">
           <div class="flex" v-if="!newFamilyName">
             {{ family.name }}
-            <img
-              alt="Edit"
-              class="ml-4"
-              src="@/assets/images/Edit.svg"
-              @click="editFamilyName"
-            />
+            <img alt="Edit" class="ml-4" src="@/assets/images/Edit.svg" @click="editFamilyName" />
           </div>
           <div v-else class="flex justify-between">
             <label>
-              <input
-                class="w-3/4 bg-light-yellow border-b"
-                type="text"
-                v-model="newFamilyName"
-              />
+              <input class="w-3/4 bg-light-yellow border-b" type="text" v-model="newFamilyName" />
             </label>
-            <v-button
-              class="mr-8 w-1/4 h-10 -mt-2"
-              label="Done"
-              @click="updateFamilyName"
-            />
+            <v-button class="mr-8 w-1/4 h-10 -mt-2" label="Done" @click="updateFamilyName" />
           </div>
         </div>
         <h2 class="mt-6 text-lg">Members</h2>
@@ -78,16 +59,10 @@
             <div class="flex-1">
               {{ invitation }}
             </div>
-            <div
-              class="text-primary-green mr-4"
-              @click="handleResendInvite(invitation)"
-            >
+            <div class="text-primary-green mr-4" @click="handleResendInvite(invitation)">
               Resend
             </div>
-            <div
-              class="text-dark-peach"
-              @click="handleCancelInvitation(invitation)"
-            >
+            <div class="text-dark-peach" @click="handleCancelInvitation(invitation)">
               Cancel
             </div>
           </div>
@@ -96,41 +71,31 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button
-        v-if="family"
-        class="mx-8 mt-3"
-        label="Quit My Family"
-        @click="handleQuit"
-      />
-      <v-button
-        v-else
-        class="mx-8 mt-3"
-        label="Create Family"
-        @click="goToCreateFamily"
-      />
+      <v-button v-if="family" class="mx-8 mt-3" label="Quit My Family" @click="handleQuit" />
+      <v-button v-else class="mx-8 mt-3" label="Create Family" @click="goToCreateFamily" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import firebase from "firebase";
-import router from "@/router";
-import { Component } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
-import Family, { CurrentFamily } from "@/types/Family";
-import Firestore from "@/utils/Firestore";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VHeader from "@/components/VHeader.vue";
-import VInput from "@/components/VInput.vue";
-import { AlertMixin } from "@/components/AlertMixin";
+import firebase from 'firebase';
+import router from '@/router';
+import { AlertMixin } from '@/mixins/AlertMixin';
+import { Component } from 'vue-property-decorator';
+import Authentication from '@/utils/Authentication';
+import Family, { CurrentFamily } from '@/types/Family';
+import Firestore from '@/utils/Firestore';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
+import VInput from '@/components/VInput.vue';
 
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
 })
 export default class AppMain extends AlertMixin {
   family: Family | null = null;
-  newFamilyName = "";
+  newFamilyName = '';
   isPositive = false;
   members: string[] = [];
   pendingMembers: string[] = [];
@@ -148,24 +113,24 @@ export default class AppMain extends AlertMixin {
   }
 
   async addNewMembers() {
-    await router.push("/invite-members");
+    await router.push('/invite-members');
   }
 
   editFamilyName() {
-    this.newFamilyName = this.family?.name;
+    this.newFamilyName = this.family!.name;
   }
 
   async goToCreateFamily() {
-    await router.push("/create-family");
+    await router.push('/create-family');
   }
 
   async handleResendInvite(invitation: string) {
     try {
       this.isPositive = true;
       await CurrentFamily.instance.inviteMembers([invitation]);
-      await this.showAlert("The invitation has been resent");
+      await this.showAlert('The invitation has been resent');
     } catch (e) {
-      await this.showAlert("Couldn't resend the invitation");
+      await this.showAlert('Couldn\'t resend the invitation');
     }
   }
 
@@ -173,14 +138,14 @@ export default class AppMain extends AlertMixin {
     try {
       await CurrentFamily.instance.cancelInvitation(invitation);
       this.isPositive = false;
-      await this.showAlert("The invitation has been canceled");
+      await this.showAlert('The invitation has been canceled');
     } catch (e) {
-      await this.showAlert("Couldn't cancel the invitation");
+      await this.showAlert('Couldn\'t cancel the invitation');
     }
   }
 
   async handleQuit() {
-    await router.push("/quit-family");
+    await router.push('/quit-family');
   }
 
   async updateFamilyName() {
@@ -188,11 +153,11 @@ export default class AppMain extends AlertMixin {
       await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
       this.isPositive = true;
       this.family = await CurrentFamily.instance.getCurrentFamily();
-      this.newFamilyName = "";
-      await this.showAlert("Your family name has been updated");
+      this.newFamilyName = '';
+      await this.showAlert('Your family name has been updated');
     } catch (e) {
       this.isPositive = false;
-      await this.showAlert("Couldn't update the family name");
+      await this.showAlert('Couldn\'t update the family name');
     }
   }
 

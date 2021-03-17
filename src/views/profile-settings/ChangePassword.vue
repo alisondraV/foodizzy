@@ -22,11 +22,7 @@
           @focus="clearTheMessage"
         />
         <div class="bg-background h-24 w-full bottom-0 fixed">
-          <v-button
-            class="mx-8 mt-3"
-            label="Change Password"
-            @click="changePassword"
-          />
+          <v-button class="mx-8 mt-3" label="Change Password" @click="changePassword" />
         </div>
       </div>
     </div>
@@ -34,13 +30,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
-import VAlert from "@/components/VAlert.vue";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import VHeader from "@/components/VHeader.vue";
-import firebase from "firebase";
+import { Component, Vue } from 'vue-property-decorator';
+import Authentication from '@/utils/Authentication';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import VHeader from '@/components/VHeader.vue';
+import firebase from 'firebase';
 
 @Component({
   components: {
@@ -51,9 +47,9 @@ import firebase from "firebase";
   }
 })
 export default class SignIn extends Vue {
-  alertMessage = "";
-  newPassword = "";
-  currentPassword = "";
+  alertMessage = '';
+  newPassword = '';
+  currentPassword = '';
   isPositive = false;
   user: firebase.User | null = null;
 
@@ -62,13 +58,13 @@ export default class SignIn extends Vue {
   }
 
   clearTheMessage() {
-    this.alertMessage = "";
+    this.alertMessage = '';
   }
 
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
       this.isPositive = false;
-      this.alertMessage = "Please provide both your current password and the new one";
+      this.alertMessage = 'Please provide both your current password and the new one';
       return;
     }
 
@@ -76,12 +72,12 @@ export default class SignIn extends Vue {
       await Authentication.instance.changePassword(this.user!.email!, this.currentPassword, this.newPassword);
 
       this.isPositive = true;
-      this.currentPassword = "";
-      this.newPassword = "";
-      this.alertMessage = "Password has been successfully updated";
+      this.currentPassword = '';
+      this.newPassword = '';
+      this.alertMessage = 'Password has been successfully updated';
     } catch (e) {
       this.isPositive = false;
-      this.alertMessage = "We couldn't update your password";
+      this.alertMessage = 'We couldn\'t update your password';
     }
   }
 }

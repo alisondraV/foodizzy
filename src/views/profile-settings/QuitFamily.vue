@@ -5,11 +5,7 @@
       <div v-if="!family">Loading...</div>
       <div v-else class="w-full">
         <div class="text-primary-text mb-3">Enter the family name to quit.</div>
-        <v-input
-          class="w-full"
-          label="Enter the family name to quit"
-          v-model="familyNameInputValue"
-        />
+        <v-input class="w-full" label="Enter the family name to quit" v-model="familyNameInputValue" />
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
@@ -24,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { CurrentFamily } from "@/types";
-import Family from "@/types/Family";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import VHeader from "@/components/VHeader.vue";
+import { Component, Vue } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Family from '@/types/Family';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
@@ -40,7 +36,7 @@ import VHeader from "@/components/VHeader.vue";
 })
 export default class QuitFamily extends Vue {
   family: Family | null = null;
-  familyNameInputValue = "";
+  familyNameInputValue = '';
 
   async mounted() {
     this.family = await CurrentFamily.instance.getCurrentFamily();
