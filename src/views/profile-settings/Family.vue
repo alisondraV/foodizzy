@@ -84,7 +84,6 @@ import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import Family, { CurrentFamily } from '@/types/Family';
-import Firestore from '@/utils/Firestore';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -95,6 +94,7 @@ import VInput from '@/components/VInput.vue';
 })
 export default class AppMain extends AlertMixin {
   family: Family | null = null;
+  familyMembers: firebase.User[] = [];
   newFamilyName = '';
   isPositive = false;
   members: string[] = [];
@@ -105,10 +105,14 @@ export default class AppMain extends AlertMixin {
     this.user = await Authentication.instance.getCurrentUser();
 
     this.family = await CurrentFamily.instance.getCurrentFamily();
+    // TODO: resolve CORS
+    // this.familyMembers = await Firestore.instance.getUsersByEmail(this.members);
+
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
       this.members = family?.members ?? [];
       this.pendingMembers = family?.pendingMembers ?? [];
+      this.family = family;
     });
   }
 
@@ -152,19 +156,12 @@ export default class AppMain extends AlertMixin {
     try {
       await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
       this.isPositive = true;
-      this.family = await CurrentFamily.instance.getCurrentFamily();
       this.newFamilyName = '';
       await this.showAlert('Your family name has been updated');
     } catch (e) {
       this.isPositive = false;
       await this.showAlert("Couldn't update the family name");
     }
-  }
-
-  get familyMembers() {
-    return this.members.map(email => {
-      return Firestore.instance.getUserByEmail(email);
-    });
   }
 }
 </script>
