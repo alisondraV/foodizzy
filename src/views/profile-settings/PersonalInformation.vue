@@ -71,7 +71,8 @@ export default class PersonalInformation extends Vue {
   }
 
   async saveChanges() {
-    await Authentication.instance.updateCurrentUser(this.user!, this.newName, this.newEmail);
+    // TODO: add validation
+    await Authentication.instance.updateCurrentUser(this.user!, this.newName!, this.newEmail!);
     this.flipEditMode();
   }
 

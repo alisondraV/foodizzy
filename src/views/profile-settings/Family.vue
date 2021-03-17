@@ -130,7 +130,7 @@ export default class AppMain extends AlertMixin {
       await CurrentFamily.instance.inviteMembers([invitation]);
       await this.showAlert('The invitation has been resent');
     } catch (e) {
-      await this.showAlert('Couldn\'t resend the invitation');
+      await this.showAlert("Couldn't resend the invitation");
     }
   }
 
@@ -140,7 +140,7 @@ export default class AppMain extends AlertMixin {
       this.isPositive = false;
       await this.showAlert('The invitation has been canceled');
     } catch (e) {
-      await this.showAlert('Couldn\'t cancel the invitation');
+      await this.showAlert("Couldn't cancel the invitation");
     }
   }
 
@@ -157,7 +157,7 @@ export default class AppMain extends AlertMixin {
       await this.showAlert('Your family name has been updated');
     } catch (e) {
       this.isPositive = false;
-      await this.showAlert('Couldn\'t update the family name');
+      await this.showAlert("Couldn't update the family name");
     }
   }
 
@@ -165,10 +165,6 @@ export default class AppMain extends AlertMixin {
     return this.members.map(email => {
       return Firestore.instance.getUserByEmail(email);
     });
-  }
-
-  get familyNameInputMatch() {
-    return this.familyNameInputValue === this.family?.name;
   }
 }
 </script>

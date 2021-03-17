@@ -3,10 +3,12 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export class AlertMixin extends Vue {
   alertMessage = '';
-  prevTimeout: number | undefined;
+  prevTimeout: NodeJS.Timeout | undefined;
 
   showAlert(message: string) {
-    clearTimeout(this.prevTimeout);
+    if (this.prevTimeout) {
+      clearTimeout(this.prevTimeout);
+    }
 
     return new Promise(resolve => {
       this.alertMessage = message;

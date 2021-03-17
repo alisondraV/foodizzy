@@ -62,7 +62,7 @@ export default class InviteMembers extends AlertMixin {
       await this.showAlert('Invites have been sent');
     } catch (e) {
       this.isPositive = false;
-      await this.showAlert('Couldn\'t send the invites');
+      await this.showAlert("Couldn't send the invites");
     }
   }
 

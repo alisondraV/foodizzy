@@ -6,7 +6,6 @@
     </div>
     <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">
-        <!-- TODO: redirect to log-in and back -->
         <a href="/sign-in?redirect=invitations" class="underline">Log in</a> to accept your invite.
       </div>
       <div v-else-if="invitations.length === 0" class="text-dark-peach -mt-2">
@@ -68,9 +67,9 @@ export default class AppMain extends AlertMixin {
       await CurrentFamily.instance.switchTo(familyId, this.user.email);
       await this.getInvitations();
       this.isPositive = true;
-      await this.showAlert('You\'ve accepted the invitation');
+      await this.showAlert("You've accepted the invitation");
     } catch (e) {
-      await this.showAlert('Couldn\'t accept the invitation');
+      await this.showAlert("Couldn't accept the invitation");
     }
   }
 
@@ -83,7 +82,7 @@ export default class AppMain extends AlertMixin {
       this.isPositive = false;
       await this.showAlert('The invitation has been declined');
     } catch (e) {
-      await this.showAlert('Couldn\'t decline the invitation');
+      await this.showAlert("Couldn't decline the invitation");
     }
   }
 }

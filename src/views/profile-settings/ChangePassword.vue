@@ -77,7 +77,7 @@ export default class SignIn extends Vue {
       this.alertMessage = 'Password has been successfully updated';
     } catch (e) {
       this.isPositive = false;
-      this.alertMessage = 'We couldn\'t update your password';
+      this.alertMessage = "We couldn't update your password";
     }
   }
 }
