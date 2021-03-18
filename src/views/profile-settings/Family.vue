@@ -98,7 +98,6 @@ export default class AppMain extends AlertMixin {
   familyMembers: firebase.User[] = [];
   newFamilyName = '';
   isPositive = false;
-  members: string[] = [];
   pendingMembers: string[] = [];
   user: firebase.User | null = null;
 
@@ -108,14 +107,13 @@ export default class AppMain extends AlertMixin {
 
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
-      this.members = family?.members ?? [];
       this.pendingMembers = family?.pendingMembers ?? [];
       this.family = family;
     });
 
     try {
       // TODO: resolve CORS
-      this.familyMembers = await Firestore.instance.getUsersByEmail(this.members);
+      this.familyMembers = await Firestore.instance.getUsersByEmail(this.family.members);
     } catch (e) {
       console.log("Couldn't getUsersByEmail: ", e.message);
     }
