@@ -7,8 +7,11 @@
     "serve-dev": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "lint:fix": "vue-cli-service lint --fix",
     "emulate": "firebase emulators:start --import ./emulator_data",
-    "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data"
+    "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data",
+    "emulators:export-data": "firebase emulators:export ./emulator_data",
+    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp"
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
@@ -16,6 +19,8 @@
     "autoprefixer": "^9",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
+    "firebase-admin": "^9.5.0",
     "postcss": "^7",
     "register-service-worker": "^1.7.1",
     "tailwindcss": "^1.9.4",

@@ -1,10 +1,6 @@
 <template>
   <div>
-    <img
-      class="h-40 w-full object-cover rounded-md mb-4"
-      src="@/assets/images/Pasta.jpg"
-      alt="recipe-img"
-    />
+    <img class="h-40 w-full object-cover rounded-md mb-4" src="@/assets/images/Pasta.jpg" alt="recipe-img" />
     <h2 class="text-lg font-semibold mb-2 text-primary-text">
       {{ recipe.name }}
     </h2>
@@ -13,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Recipe from "@/types/Recipe";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Recipe from '@/types/Recipe';
 
 @Component
 export default class RecipeComponent extends Vue {

@@ -14,18 +14,18 @@
         class="mb-6"
         type="email"
         label="Type in your email"
+        :error="errorType === 'email'"
         v-model="email"
       />
       <v-input
         class="mb-6"
         type="password"
         label="Type in your password"
+        :error="errorType === 'password'"
         v-model="password"
       />
-      <div
-        class="cursor-pointer underline text-right text-sm text-secondary-text"
-        @click="resetPassword"
-      >
+      <div class="text-dark-peach">{{ errorMessage }}</div>
+      <div class="cursor-pointer underline text-right text-sm text-secondary-text" @click="resetPassword">
         Forgot password?
       </div>
     </div>
@@ -45,21 +45,20 @@
       </button>
     </div>
     <div class="text-center">
-      <span class="text-sm mb-4 mr-5">Don't have account yet?</span>
-      <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage"
-        >Sign Up</span
-      >
+      <span class="text-sm mb-4 mr-5">Don't have an account yet?</span>
+      <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage">Sign Up</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Authentication from "@/utils/Authentication";
-import router from "@/router";
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-import { CurrentFamily } from "@/types";
+import { Component, Mixins } from 'vue-property-decorator';
+import Authentication from '@/utils/Authentication';
+import router from '@/router';
+import VButton from '@/components/VButton.vue';
+import VInput from '@/components/VInput.vue';
+import { CurrentFamily } from '@/types';
+import { ValidationMixin } from '@/mixins';
 
 @Component({
   components: {
@@ -67,29 +66,37 @@ import { CurrentFamily } from "@/types";
     VButton
   }
 })
-export default class SignIn extends Vue {
-  email = "";
-  password = "";
+export default class SignIn extends Mixins(ValidationMixin) {
+  email = '';
+  password = '';
 
   get redirect(): string | null {
     return (this.$route.query.redirect as string) ?? null;
   }
 
   goToSignUpPage() {
-    let route = "/sign-up";
+    let route = '/sign-up';
     if (this.redirect) {
-      route += "?redirect=" + this.redirect;
+      route += '?redirect=' + this.redirect;
     }
-    router.replace(route);
+    router.safeReplace(route);
   }
 
-  resetPassword() {
-    console.log("Reset Password");
+  async resetPassword() {
+    // TODO: add validation
+    await Authentication.instance.sendPasswordReset(this.email);
   }
 
   async signIn() {
-    await Authentication.instance.signIn(this.email, this.password);
-    await this.tryGetFamilyAndForward();
+    Authentication.instance
+      .signIn(this.email, this.password)
+      .then(() => {
+        return this.tryGetFamilyAndForward();
+      })
+      .catch(error => {
+        console.log(`Auth error: ${error.code}`);
+        this.displayError(error);
+      });
   }
 
   async signInThroughGoogle() {
@@ -102,13 +109,13 @@ export default class SignIn extends Vue {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignIn();
     } catch (err) {
-      await this.finishSignIn("/create-family");
+      await this.finishSignIn('create-family');
     }
   }
 
-  async finishSignIn(targetRoute = "") {
-    const route = "/" + (this.redirect ?? targetRoute);
-    await router.replace(route);
+  async finishSignIn(targetRoute = '') {
+    const route = '/' + (this.redirect ?? targetRoute);
+    await router.safeReplace(route);
   }
 }
 </script>

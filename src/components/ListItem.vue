@@ -7,26 +7,11 @@
         alt="Acquired"
         @click="$emit('update', product)"
       />
-      <img
-        v-else
-        src="@/assets/images/Empty.svg"
-        alt="Acquired"
-        @click="$emit('update', product)"
-      />
+      <img v-else src="@/assets/images/Empty.svg" alt="Acquired" @click="$emit('update', product)" />
     </div>
     <div v-if="isNewProductPage()">
-      <img
-        v-if="inAnyLists"
-        src="@/assets/images/Minus.svg"
-        alt="Remove"
-        @click="$emit('remove', product)"
-      />
-      <img
-        v-else
-        src="@/assets/images/Plus.svg"
-        alt="Add"
-        @click="$emit('add', product)"
-      />
+      <img v-if="inAnyLists" src="@/assets/images/Minus.svg" alt="Remove" @click="$emit('remove', product)" />
+      <img v-else src="@/assets/images/Plus.svg" alt="Add" @click="$emit('add', product)" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
     <img
@@ -39,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import ShoppingListItem from "@/types/ShoppingListItem";
-import { CurrentFamily } from "@/types";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import { CurrentFamily } from '@/types';
 
 @Component
 export default class ListItem extends Vue {
@@ -54,11 +39,11 @@ export default class ListItem extends Vue {
   }
 
   isShoppingListPage() {
-    return this.currentPage == "ShoppingList";
+    return this.currentPage == 'ShoppingList';
   }
 
   isNewProductPage() {
-    return this.currentPage == "NewProduct";
+    return this.currentPage == 'NewProduct';
   }
 
   async isInStorageOrShoppingList() {

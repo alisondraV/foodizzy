@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :is-positive="isPositive" :label="alertMessage" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <v-input
@@ -25,14 +25,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import VHeader from "@/components/VHeader.vue";
-import VInput from "@/components/VInput.vue";
-import VButton from "@/components/VButton.vue";
-import VAlert from "@/components/VAlert.vue";
-import { CurrentFamily } from "@/types";
+import { AlertMixin } from '@/mixins/AlertMixin';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
+import Product from '@/types/Product';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
+import VInput from '@/components/VInput.vue';
 
 @Component({
   components: {
@@ -42,10 +43,10 @@ import { CurrentFamily } from "@/types";
     VHeader
   }
 })
-export default class CustomProduct extends Vue {
-  alertMessage: string | null = null;
+export default class CustomProduct extends Mixins(AlertMixin) {
+  isPositive = false;
   location?: string;
-  product: Product = { name: "" };
+  product: Product = { name: '' };
 
   mounted() {
     this.location = this.$route.query.location as string;
@@ -56,18 +57,24 @@ export default class CustomProduct extends Vue {
       return;
     }
 
-    if (this.isInStorageOrShoppingList()) {
-      this.alertMessage = `${this.product.name} already exists in the ${this.location}`;
-      return;
+    if (await this.isInStorageOrShoppingList()) {
+      this.isPositive = false;
+      return await this.showAlert(`${this.product.name} already exists in the ${this.location}`);
     }
 
-    if (this.location === "storage") {
+    await this.addProductToStorageOrShoppingList();
+  }
+
+  async addProductToStorageOrShoppingList() {
+    if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(this.product);
-    } else if (this.location === "shoppingList") {
+    } else if (this.location === 'shoppingList') {
       await Firestore.instance.addToShoppingList(this.product);
     }
-    this.alertMessage = `${this.product.name} was added to the ${this.location}`;
-    this.product = { name: "" };
+
+    this.isPositive = true;
+    await this.showAlert(`${this.product.name} was added to the ${this.location}`);
+    this.product = { name: '' };
   }
 
   async isInStorageOrShoppingList() {
