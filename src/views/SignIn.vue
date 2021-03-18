@@ -25,10 +25,7 @@
         v-model="password"
       />
       <div class="text-dark-peach">{{ errorMessage }}</div>
-      <div
-        class="cursor-pointer underline text-right text-sm text-secondary-text"
-        @click="resetPassword"
-      >
+      <div class="cursor-pointer underline text-right text-sm text-secondary-text" @click="resetPassword">
         Forgot password?
       </div>
     </div>
@@ -49,9 +46,7 @@
     </div>
     <div class="text-center">
       <span class="text-sm mb-4 mr-5">Don't have an account yet?</span>
-      <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage"
-        >Sign Up</span
-      >
+      <span class="text-dark-peach cursor-pointer" @click="goToSignUpPage">Sign Up</span>
     </div>
   </div>
 </template>
@@ -87,8 +82,9 @@ export default class SignIn extends Mixins(ValidationMixin) {
     router.safeReplace(route);
   }
 
-  resetPassword() {
-    console.log('Reset Password');
+  async resetPassword() {
+    // TODO: add validation
+    await Authentication.instance.sendPasswordReset(this.email);
   }
 
   async signIn() {

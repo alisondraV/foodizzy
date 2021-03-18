@@ -3,16 +3,8 @@
     <v-header heading="Add New Item" />
     <div class="mt-24 mb-20 mx-8">
       <search-input class="mb-4" v-model="searchQuery" />
-      <v-button
-        class="mb-4"
-        label="Add Custom Product"
-        @click="addCustomProduct"
-      />
-      <div
-        class="mb-4"
-        v-for="category in Object.keys(filteredCategoryProducts)"
-        :key="category"
-      >
+      <v-button class="mb-4" label="Add Custom Product" @click="addCustomProduct" />
+      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
         <div>
@@ -84,9 +76,7 @@ export default class NewProduct extends Vue {
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
     type Category = { [category: string]: Product[] };

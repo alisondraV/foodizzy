@@ -4,6 +4,7 @@
     <div class="mt-20">
       <v-alert
         v-if="alertMessage"
+        :isPositive="!productWasWasted"
         :label="alertMessage"
         :wasted="productWasWasted"
       />
@@ -11,11 +12,7 @@
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
       <ul>
-        <li
-          class="mb-4"
-          v-for="category in Object.keys(filteredCategoryProducts)"
-          :key="category"
-        >
+        <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
           <h2 class="text-primary-green mb-1">{{ category }}</h2>
           <hr class="text-secondary-text mb-2" />
           <ul>
@@ -24,30 +21,15 @@
               v-for="product in filteredCategoryProducts[category]"
               :key="product.name"
             >
-              <img
-                src="@/assets/images/Check.svg"
-                alt="Finished"
-                @click="markAsFinished(product)"
-              />
-              <span class="flex-1 ml-4 text-primary-text">{{
-                product.name
-              }}</span>
-              <img
-                src="@/assets/images/Waste.svg"
-                alt="Wasted"
-                @click="markAsWasted(product)"
-              />
+              <img src="@/assets/images/Check.svg" alt="Finished" @click="markAsFinished(product)" />
+              <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
+              <img src="@/assets/images/Waste.svg" alt="Wasted" @click="markAsWasted(product)" />
             </li>
           </ul>
         </li>
       </ul>
       <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-        <img
-          @click="addNewProduct"
-          src="@/assets/images/AddNew.svg"
-          alt="Add"
-          class="cursor-pointer p-4"
-        />
+        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="cursor-pointer p-4" />
       </div>
     </div>
     <navigation-menu current-page="Fridge" />
@@ -87,9 +69,7 @@ export default class Fridge extends Mixins(AlertMixin) {
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
     type Category = { [category: string]: Product[] };

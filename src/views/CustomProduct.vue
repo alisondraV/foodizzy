@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :is-positive="isPositive" :label="alertMessage" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <v-input
@@ -44,6 +44,7 @@ import VInput from '@/components/VInput.vue';
   }
 })
 export default class CustomProduct extends Mixins(AlertMixin) {
+  isPositive = false;
   location?: string;
   product: Product = { name: '' };
 
@@ -57,9 +58,8 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     }
 
     if (await this.isInStorageOrShoppingList()) {
-      return await this.showAlert(
-        `${this.product.name} already exists in the ${this.location}`
-      );
+      this.isPositive = false;
+      return await this.showAlert(`${this.product.name} already exists in the ${this.location}`);
     }
 
     await this.addProductToStorageOrShoppingList();
@@ -72,9 +72,8 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       await Firestore.instance.addToShoppingList(this.product);
     }
 
-    await this.showAlert(
-      `${this.product.name} was added to the ${this.location}`
-    );
+    this.isPositive = true;
+    await this.showAlert(`${this.product.name} was added to the ${this.location}`);
     this.product = { name: '' };
   }
 

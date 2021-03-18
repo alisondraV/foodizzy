@@ -58,8 +58,7 @@ export const authErrors = {
     message: 'Please provide a valid name.'
   },
   'auth/user-not-found': {
-    message:
-      'We could not find a user that corresponds to this email. Try signing up.'
+    message: 'We could not find a user that corresponds to this email. Try signing up.'
   }
 };
 

@@ -28,9 +28,7 @@ emulatorFunctions.useEmulator('localhost', 5001);
 emulatorDB.useEmulator('localhost', 8888);
 
 (async function() {
-  const allProductsCollectionRef = await productionDB
-    .collection('allProducts')
-    .get();
+  const allProductsCollectionRef = await productionDB.collection('allProducts').get();
   const productionData = allProductsCollectionRef.docs.map(doc => ({
     id: doc.id,
     ...doc.data()

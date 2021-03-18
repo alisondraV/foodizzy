@@ -1,10 +1,5 @@
 import ValidationError from '@/types/ValidationError';
-import {
-  authErrors,
-  emailPattern,
-  ErrorCode,
-  passwordValidationPatterns
-} from '@/utils/consts';
+import { authErrors, emailPattern, ErrorCode, passwordValidationPatterns } from '@/utils/consts';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 
 @Component
@@ -61,9 +56,7 @@ export class ValidationMixin extends Vue {
   }
 
   isPasswordValid() {
-    const passwordCorrect = Object.values(this.passwordValidation).every(
-      v => v
-    );
+    const passwordCorrect = Object.values(this.passwordValidation).every(v => v);
 
     if (!passwordCorrect) {
       this.displayError({ code: ErrorCode.WeakPassword });

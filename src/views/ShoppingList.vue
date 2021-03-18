@@ -7,11 +7,7 @@
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-6" v-model="searchQuery" />
       <v-button class="mb-4" @click="updateFridge" label="Update Fridge" />
-      <div
-        class="mb-4"
-        v-for="category in Object.keys(filteredCategoryProducts)"
-        :key="category"
-      >
+      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
         <div>
@@ -26,12 +22,7 @@
         </div>
       </div>
       <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-        <img
-          @click="addNewProduct"
-          src="@/assets/images/AddNew.svg"
-          alt="Add"
-          class="cursor-pointer p-4"
-        />
+        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="cursor-pointer p-4" />
       </div>
     </div>
     <navigation-menu current-page="ShoppingList" />
@@ -76,9 +67,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
     type Category = { [category: string]: ShoppingListItem[] };
@@ -118,9 +107,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
 
   async checkShoppingItem(shoppingItem: ShoppingListItem) {
     this.products = this.products.map(product => {
-      return product.name == shoppingItem.name
-        ? { ...product, acquired: !product.acquired }
-        : product;
+      return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
     });
     await Firestore.instance.updateShoppingList(this.products);
   }

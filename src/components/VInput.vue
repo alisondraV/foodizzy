@@ -2,17 +2,14 @@
   <div>
     <label class="flex flex-col relative text-secondary-text">
       <input
-        class="focus:outline-none
-                rounded-md text-primary-text h-10 p-4"
-        :class="
-          error ? 'border-2 border-dark-peach' : 'border border-secondary-text'
-        "
-        :value="value"
-        @focus="focused = true"
-        @blur="focused = false"
+        class="focus:outline-none rounded-md text-primary-text h-10 p-4
+                border border-secondary-text focus:border-primary-green"
+        :class="error ? 'border-2 border-dark-peach' : 'border border-secondary-text'"
         @input="$emit('input', $event.target.value)"
-        :type="type"
+        @focus="$emit('focus')"
         :placeholder="label"
+        :type="type"
+        :value="value"
       />
     </label>
   </div>

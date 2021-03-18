@@ -50,12 +50,32 @@ const routes: Array<RouteConfig> = [
   {
     path: '/family',
     name: 'Family',
-    component: () => import('../views/Family.vue')
+    component: () => import('../views/profile-settings/Family.vue')
   },
   {
-    path: '/new-family-members',
-    name: 'NewFamilyMembers',
-    component: () => import('../views/NewFamilyMembers.vue')
+    path: '/invitations',
+    name: 'Invitations',
+    component: () => import('../views/profile-settings/Invitations.vue')
+  },
+  {
+    path: '/personal-info',
+    name: 'PersonalInformation',
+    component: () => import('../views/profile-settings/PersonalInformation.vue')
+  },
+  {
+    path: '/change-password',
+    name: 'ChangePassword',
+    component: () => import('../views/profile-settings/ChangePassword.vue')
+  },
+  {
+    path: '/invite-members',
+    name: 'InviteMembers',
+    component: () => import('../views/profile-settings/InviteMembers.vue')
+  },
+  {
+    path: '/quit-family',
+    name: 'QuitFamily',
+    component: () => import('../views/profile-settings/QuitFamily.vue')
   },
   {
     path: '/recipes',
@@ -75,11 +95,6 @@ const routes: Array<RouteConfig> = [
     props: route => ({ query: route.params.location })
   },
   {
-    path: '/invites',
-    name: 'Invites',
-    component: () => import('../views/Invites.vue')
-  },
-  {
     path: '*',
     name: '404',
     component: () => import('../views/404.vue')
@@ -97,54 +112,52 @@ const router: ExtendedRouter = new VueRouter({
   routes
 });
 
-router.beforeEach(
-  async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
-    try {
-      const user = await Authentication.instance.getCurrentUser();
-      const userLoggedIn = user != null;
-      let userHasFamily = false;
-      if (userLoggedIn) {
-        userHasFamily = await CurrentFamily.instance.existsFor(user!);
-      }
-      const anonymousRoutes = ['SignIn', 'SignUp', 'Invites'];
-      const authWithoutFamilyRoutes = [
-        'SignIn',
-        'SignUp',
-        'Invites',
-        'NewFamily',
-        'UserProfile'
-      ];
-      const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'NewFamily'];
-
-      const destinationIsOneOf = routes =>
-        routes.some(routeName => to.name === routeName);
-
-      if (!userLoggedIn) {
-        if (!destinationIsOneOf(anonymousRoutes)) {
-          next('/sign-in');
-        }
-      } else if (!userHasFamily) {
-        if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
-          next('/profile');
-        }
-      } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
-        next('/');
-      }
-      next();
-    } catch (e) {
-      console.error(e.message);
-      next('sign-in');
+router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
+  try {
+    const user = await Authentication.instance.getCurrentUser();
+    const userLoggedIn = user != null;
+    let userHasFamily = false;
+    if (userLoggedIn) {
+      userHasFamily = await CurrentFamily.instance.existsFor(user!);
     }
+    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations'];
+    const authWithoutFamilyRoutes = [
+      'SignIn',
+      'SignUp',
+      'Invitations',
+      'Family',
+      'CreateFamily',
+      'UserProfile',
+      'ChangePassword',
+      'PersonalInformation'
+    ];
+    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
+
+    const destinationIsOneOf = routes => routes.some(routeName => to.name === routeName);
+
+    if (!userLoggedIn) {
+      if (!destinationIsOneOf(anonymousRoutes)) {
+        next('/sign-in');
+      }
+    } else if (!userHasFamily) {
+      if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
+        next('/profile');
+      }
+    } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
+      next('/');
+    }
+    next();
+  } catch (e) {
+    console.error(e.message);
+    next('sign-in');
   }
-);
+});
 
 function handleError(error) {
   if (isNavigationFailure(error, NavigationFailureType.redirected)) {
     console.warn('Router Error: You do not have access to this page');
   } else {
-    console.error(
-      `Router Error: An error occured during navigation: ${error.message}`
-    );
+    console.error(`Router Error: An error occured during navigation: ${error.message}`);
   }
 }
 

@@ -6,30 +6,20 @@
         Create Your Family
       </p>
       <div class="mb-8 flex-start">
-        <v-input
-          class="mb-6"
-          type="text"
-          label="Family Name"
-          v-model="familyName"
-        />
+        <v-input class="mb-6" type="text" label="Family Name" v-model="familyName" />
         <div class="text-dark-peach">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
         <div class="flex flex-row justify-between mb-4">
-          <v-input
-            class="w-5/6"
-            type="email"
-            label="Email Address"
-            v-model="currentEmail"
-          />
+          <v-input class="w-5/6" type="email" label="Email Address" v-model="currentEmail" />
           <img src="@/assets/images/Plus.svg" alt="Add" @click="addEmail" />
         </div>
         <ul>
           <li
             v-for="email in memberEmails"
             :key="email"
-            class="flex justify-between items-center bg-light-peach py-2 px-4 rounded text-sm mb-2"
+            class="flex justify-between items-center bg-light-yellow py-2 px-4 rounded text-sm mb-2"
           >
             <p>{{ email }}</p>
             <img
@@ -43,12 +33,7 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button
-        class="mx-8 mt-3"
-        label="Create Family"
-        :disabled="validationFailed"
-        @click="createFamily"
-      />
+      <v-button class="mx-8 mt-3" label="Create Family" :disabled="validationFailed" @click="createFamily" />
     </div>
   </div>
 </template>

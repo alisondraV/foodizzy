@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bg-background flex justify-between h-16 px-5 w-full bottom-0 fixed"
-  >
+  <div class="bg-background flex justify-between h-16 px-5 w-full bottom-0 fixed">
     <img
       src="@/assets/images/Home.svg"
       alt="Home"
@@ -43,8 +41,7 @@ export default class NavigationMenu extends Vue {
 
   isCurrentPageStyle(page: string) {
     return page == this.currentPage
-      ? 'filter: invert(31%) sepia(38%) saturate(6483%) ' +
-          'hue-rotate(160deg) brightness(91%) contrast(99%)'
+      ? 'filter: invert(31%) sepia(38%) saturate(6483%) ' + 'hue-rotate(160deg) brightness(91%) contrast(99%)'
       : '';
   }
   goToTheHomePage() {

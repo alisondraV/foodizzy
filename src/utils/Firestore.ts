@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import 'firebase/functions';
 import Family, { CurrentFamily } from '@/types/Family';
 import Product from '@/types/Product';
 import ShoppingListItem from '@/types/ShoppingListItem';
@@ -30,9 +31,7 @@ export default class Firestore {
   }
 
   public async getUsersByEmail(emails: string[]) {
-    const getUsersByEmailFunction = this.functions.httpsCallable(
-      CallableFunctions.GetUsersByEmail
-    );
+    const getUsersByEmailFunction = this.functions.httpsCallable(CallableFunctions.GetUsersByEmail);
     const response = await getUsersByEmailFunction({ emails });
     return response.data;
   }
@@ -55,9 +54,7 @@ export default class Firestore {
   public async removeFromStorage(product: Product) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.storage = family.storage.filter(
-      candidate => candidate.name != product.name
-    );
+    family.storage = family.storage.filter(candidate => candidate.name != product.name);
     await this.db
       .collection('family')
       .doc(family.id)
@@ -68,11 +65,7 @@ export default class Firestore {
     const seconds = new Date().getTime() / 1000;
     const documents = await this.db
       .collection('wasteBuckets')
-      .where(
-        'familyId',
-        '==',
-        (await CurrentFamily.instance.getCurrentFamily())!.id
-      )
+      .where('familyId', '==', (await CurrentFamily.instance.getCurrentFamily())!.id)
       .get();
     const wastedProduct: WastedProduct = {
       ...product,
@@ -90,9 +83,7 @@ export default class Firestore {
   public async removeFromShoppingList(product: Product) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.shoppingList = family.shoppingList.filter(
-      candidate => candidate.name != product.name
-    );
+    family.shoppingList = family.shoppingList.filter(candidate => candidate.name != product.name);
     await this.db
       .collection('family')
       .doc(family.id)
@@ -124,12 +115,18 @@ export default class Firestore {
     return documents.docs.map<string>(qds => qds.data().name);
   }
 
-  public async getInvites(userEmail: string): Promise<Family[]> {
+  public async getInvitations(userEmail: string): Promise<Family[]> {
     const familyQuerySnap = await this.db
       .collection('family')
       .where('pendingMembers', 'array-contains', userEmail)
       .get();
 
     return familyQuerySnap.docs.map(snap => snap.data() as Family);
+  }
+
+  public async declineInvitation(familyId: string, userEmail: string) {
+    const familyRef = this.db.collection('family').doc(familyId);
+
+    await familyRef.update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
   }
 }

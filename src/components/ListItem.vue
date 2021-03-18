@@ -7,26 +7,11 @@
         alt="Acquired"
         @click="$emit('update', product)"
       />
-      <img
-        v-else
-        src="@/assets/images/Empty.svg"
-        alt="Acquired"
-        @click="$emit('update', product)"
-      />
+      <img v-else src="@/assets/images/Empty.svg" alt="Acquired" @click="$emit('update', product)" />
     </div>
     <div v-if="isNewProductPage()">
-      <img
-        v-if="inAnyLists"
-        src="@/assets/images/Minus.svg"
-        alt="Remove"
-        @click="$emit('remove', product)"
-      />
-      <img
-        v-else
-        src="@/assets/images/Plus.svg"
-        alt="Add"
-        @click="$emit('add', product)"
-      />
+      <img v-if="inAnyLists" src="@/assets/images/Minus.svg" alt="Remove" @click="$emit('remove', product)" />
+      <img v-else src="@/assets/images/Plus.svg" alt="Add" @click="$emit('add', product)" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
     <img
