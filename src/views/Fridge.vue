@@ -90,7 +90,7 @@ export default class Fridge extends Mixins(AlertMixin) {
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
 
-    await this.showAlert(`${product.name} was added to the Shopping List`);
+    await this.showAlert(`${product.name} was added to the shopping list`);
   }
 
   async markAsWasted(product: Product) {

@@ -119,7 +119,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
       await Firestore.instance.addProductToStorage(product);
     }
 
-    await this.showAlert('Products were added to the Shopping List');
+    await this.showAlert('Products were added to the fridge');
   }
 }
 </script>
