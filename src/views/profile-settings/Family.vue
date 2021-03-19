@@ -25,11 +25,12 @@
         </div>
         <h2 class="mt-6 text-lg">Members</h2>
         <div class="mt-3 flex flex-wrap -mx-4">
-          <div class="mx-4" v-for="member in familyMembers" :key="member.email">
+          <div class="flex flex-col items-center mx-4" v-for="member in familyMembers" :key="member.email">
             <img
               v-if="member.photoURL"
               alt="profile-image"
               class="mb-4 rounded-full"
+              width="45px"
               :src="member.photoURL"
             />
             <img
@@ -37,14 +38,15 @@
               alt="Profile Image"
               class="mb-4 rounded-full"
               src="@/assets/images/DefaultMember.svg"
+              width="45px"
             />
             <div>
-              {{ member.displayName }}
+              {{ getFirstName(user) }}
             </div>
           </div>
           <img
             alt="Add New"
-            class="mb-4 rounded-full mx-4"
+            class="-mt-6 mb-4 rounded-full mx-4"
             src="@/assets/images/AddNewMember.svg"
             @click="addNewMembers"
           />
@@ -112,7 +114,6 @@ export default class AppMain extends AlertMixin {
     });
 
     try {
-      // TODO: resolve CORS
       this.familyMembers = await Firestore.instance.getUsersByEmail(this.family.members);
     } catch (e) {
       console.log("Couldn't getUsersByEmail: ", e.message);
@@ -165,6 +166,10 @@ export default class AppMain extends AlertMixin {
       this.isPositive = false;
       await this.showAlert("Couldn't update the family name");
     }
+  }
+
+  getFirstName(member: firebase.User) {
+    return member.displayName.substr(0, this.user!.displayName?.indexOf(' ')) || this.user!.displayName;
   }
 }
 </script>
