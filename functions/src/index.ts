@@ -165,7 +165,7 @@ async function sendWelcomeEmails(
   console.log('New Members: ', newEmails);
 
   const htmlURL =
-    'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083';
+    'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/Foodizzy.html?alt=media&token=53d69dc9-3b9a-42fc-a6d8-9a89efdcc26b';
   const response = await axios.get(htmlURL);
   let emailTemplate = response.data;
 
