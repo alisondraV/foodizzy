@@ -3,7 +3,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export class AlertMixin extends Vue {
   alertMessage = '';
-  prevTimeout: NodeJS.Timeout | undefined;
+  prevTimeout: number | undefined;
 
   showAlert(message: string) {
     if (this.prevTimeout) {
