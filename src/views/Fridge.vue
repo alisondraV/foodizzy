@@ -68,7 +68,7 @@ export default class Fridge extends Mixins(AlertMixin) {
   async mounted() {
     this.unsubFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
-      this.products = family.storage;
+      this.products = this.getProductsWithCategory(family.storage);
     });
   }
 
@@ -113,12 +113,12 @@ export default class Fridge extends Mixins(AlertMixin) {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
-  get productsWithCategory(): Product[] {
-    if (!this.products) {
+  getProductsWithCategory(products: Product[]): Product[] {
+    if (!products) {
       return [];
     }
 
-    return this.products.map(product => {
+    return products.map(product => {
       const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });

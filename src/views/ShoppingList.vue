@@ -42,6 +42,7 @@ import ShoppingListItem from '@/types/ShoppingListItem';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
+import Family from '@/types/Family';
 
 @Component({
   components: {
@@ -56,9 +57,13 @@ import VHeader from '@/components/VHeader.vue';
 export default class ShoppingList extends Mixins(AlertMixin) {
   products: ShoppingListItem[] = [];
   searchQuery = '';
+  unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.unsubFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
+      const family = snapshot.data() as Family;
+      this.products = this.getProductsWithCategory(family.shoppingList);
+    });
   }
 
   addNewProduct() {
@@ -88,14 +93,12 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     await Firestore.instance.removeFromShoppingList(product);
   }
 
-  async getProductsWithCategory(): Promise<ShoppingListItem[]> {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-    const allProducts = family.shoppingList;
-    if (!allProducts) {
+  getProductsWithCategory(products: ShoppingListItem[]): ShoppingListItem[] {
+    if (!products) {
       return [];
     }
 
-    return allProducts.map(product => {
+    return products.map(product => {
       const productCategory = product.category ?? 'General';
       return {
         name: product.name,
@@ -120,6 +123,12 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     }
 
     await this.showAlert('Products were added to the fridge');
+  }
+
+  destroyed() {
+    if (this.unsubFamilyListener) {
+      this.unsubFamilyListener();
+    }
   }
 }
 </script>
