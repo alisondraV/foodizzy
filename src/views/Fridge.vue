@@ -47,6 +47,7 @@ import Product from '@/types/Product';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
+import Family from '@/types/Family';
 
 @Component({
   components: {
@@ -62,9 +63,13 @@ export default class Fridge extends Mixins(AlertMixin) {
   products: Product[] = [];
   productWasWasted = false;
   searchQuery = '';
+  unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.unsubFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
+      const family = snapshot.data() as Family;
+      this.products = family.storage;
+    });
   }
 
   get filteredCategoryProducts() {
@@ -108,18 +113,21 @@ export default class Fridge extends Mixins(AlertMixin) {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
-  async getProductsWithCategory(): Promise<Product[]> {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-    const allProducts = family.storage;
-
-    if (!allProducts) {
+  get productsWithCategory(): Product[] {
+    if (!this.products) {
       return [];
     }
 
-    return allProducts.map(product => {
+    return this.products.map(product => {
       const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });
+  }
+
+  destroyed() {
+    if (this.unsubFamilyListener) {
+      this.unsubFamilyListener();
+    }
   }
 }
 </script>

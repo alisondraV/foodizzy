@@ -148,7 +148,7 @@ export class CurrentFamily {
   ) {
     this.family = null;
     this.family = await this.getCurrentFamily();
-    Firestore.instance.db.doc(`family/${this.family.id}`).onSnapshot({ next: callback });
+    return Firestore.instance.db.doc(`family/${this.family.id}`).onSnapshot({ next: callback });
   }
 
   public async switchTo(newFamilyId: string, userEmail: string): Promise<void> {
