@@ -1,31 +1,31 @@
 <template>
-  <div class="bg-background flex justify-between h-16 px-5 w-full bottom-0 fixed">
+  <div class="bg-background flex justify-between h-20 px-5 w-full bottom-0 fixed">
     <img
       src="@/assets/images/Home.svg"
       alt="Home"
       @click="goToTheHomePage"
-      class="cursor-pointer p-4"
+      class="mb-6 p-3"
       :style="isCurrentPageStyle('Home')"
     />
     <img
       src="@/assets/images/Fridge.svg"
       alt="Fridge"
       @click="goToTheFridgePage"
-      class="cursor-pointer p-4"
+      class="mb-6 p-3"
       :style="isCurrentPageStyle('Fridge')"
     />
     <img
       src="@/assets/images/ShoppingList.svg"
       alt="ShoppingList"
       @click="goToTheShoppingList"
-      class="cursor-pointer p-4"
+      class="mb-6 p-3"
       :style="isCurrentPageStyle('ShoppingList')"
     />
     <img
       src="@/assets/images/Recipes.svg"
       alt="Recipes"
       @click="goToTheRecipesPage"
-      class="cursor-pointer p-4"
+      class="mb-6 p-3"
       :style="isCurrentPageStyle('Recipes')"
     />
   </div>
