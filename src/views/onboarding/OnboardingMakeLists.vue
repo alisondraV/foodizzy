@@ -2,15 +2,15 @@
   <div>
     <skip-header @click="goToTheFridgeSetup" />
     <div class="mt-16 mx-6 flex flex-col items-center text-primary-text text-center">
-      <img src="@/assets/images/TrackWaste.svg" alt="Track Waste" class="mb-4" />
+      <img src="@/assets/images/MakeLists.svg" alt="Shopping Lists" class="mb-10" />
       <h1 class="text-header-onboarding font-extrabold mb-3">
-        Track Your Food Waste
+        Make Shopping Lists
       </h1>
       <p class="mb-6">
-        How much of food waste do you produce every month? We will help you to reduce the amount of food
-        waste. Let’s save this planet together!
+        Are you struggling with your grocery shopping experience? Our app will help you to improve your
+        shopping habits.
       </p>
-      <img src="@/assets/images/DotsFirst.svg" alt="Track Waste" class="mb-8" />
+      <img src="@/assets/images/DotsSecond.svg" alt="Shopping Lists" class="mb-8" />
       <v-button class="w-full" label="Next" @click="goToTheNextOnboarding" />
     </div>
   </div>
@@ -30,13 +30,13 @@ import VInput from '@/components/VInput.vue';
     VInput
   }
 })
-export default class OnboardingTrackWaste extends Vue {
+export default class OnboardingMakeLists extends Vue {
   goToTheFridgeSetup() {
     router.safePush('/fridge-setup');
   }
 
   goToTheNextOnboarding() {
-    router.safePush('/onboarding-make-lists');
+    router.safePush('/onboarding-invite-members');
   }
 }
 </script>
