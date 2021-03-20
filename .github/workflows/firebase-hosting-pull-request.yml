@@ -4,5 +4,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm i && npm run lint
+      - name: Install dependencies and lint
+        uses: actions/checkout@v2
+        run: npm i && npm run lint:no-fix
+      - name: Build
+        run: npm run build
+    
