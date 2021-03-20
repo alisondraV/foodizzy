@@ -147,7 +147,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
       'PersonalInformation',
       'OnboardingTrackWaste',
       'OnboardingMakeLists',
-      'OnboardingInviteMembers',
+      'OnboardingInviteMembers'
     ];
     const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
 
