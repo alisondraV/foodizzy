@@ -9,5 +9,7 @@ jobs:
       - name: Install dependencies and lint
         run: npm i && npm run lint:no-fix
       - name: Build
-        run: npm run build
+        run: |
+          touch ./src/utils.data.json 
+          npm run build
     
