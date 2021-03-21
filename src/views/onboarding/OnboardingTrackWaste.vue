@@ -6,12 +6,12 @@
       <h1 class="text-header-onboarding font-extrabold mb-3">
         Track Your Food Waste
       </h1>
-      <p class="mb-8">
+      <p class="mb-10">
         How much of food waste do you produce every month? We will help you to reduce the amount of food
         waste. Let’s save this planet together!
       </p>
-      <img src="@/assets/images/DotsFirst.svg" alt="Track Waste" class="mb-10" />
-      <v-button class="w-full" label="Next" @click="goToTheNextOnboarding" />
+      <v-button class="w-full mb-16" label="Next" @click="goToTheNextOnboarding" />
+      <img src="@/assets/images/DotsFirst.svg" alt="Track Waste" />
     </div>
   </div>
 </template>
