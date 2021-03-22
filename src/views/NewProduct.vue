@@ -13,8 +13,8 @@
             current-page="NewProduct"
             :key="product.name"
             :product="product"
-            @remove="removeExistingProduct"
             @add="resolveNewProduct"
+            @remove="removeExistingProduct"
           />
         </div>
       </div>
@@ -48,6 +48,8 @@ export default class NewProduct extends Vue {
   async mounted() {
     this.products = await this.getProductsWithCategory();
     this.location = this.$route.query.location as string;
+
+    // TODO: add listener to update products data
   }
 
   addCustomProduct() {
@@ -71,7 +73,6 @@ export default class NewProduct extends Vue {
     } else if (this.location === 'shoppingList') {
       await Firestore.instance.addToShoppingList(product);
     }
-    router.back();
   }
 
   get filteredCategoryProducts() {
