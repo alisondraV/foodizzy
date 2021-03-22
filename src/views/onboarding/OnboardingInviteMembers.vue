@@ -6,12 +6,12 @@
       <h1 class="text-header-onboarding font-extrabold mb-3">
         Invite Family Members
       </h1>
-      <p class="mb-8">
+      <p class="mb-10">
         Create family, invite your loved ones, track your food in the fridge together and share the shopping
         list.
       </p>
-      <img src="@/assets/images/DotsThird.svg" alt="InviteMembers" class="mb-10" />
-      <v-button class="w-full" label="Next" @click="goToTheCreateFamily" />
+      <v-button class="w-full mb-16" label="Next" @click="goToTheCreateFamily" />
+      <img src="@/assets/images/DotsThird.svg" alt="InviteMembers" />
     </div>
   </div>
 </template>

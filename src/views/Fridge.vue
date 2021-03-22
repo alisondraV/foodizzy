@@ -9,7 +9,7 @@
         :wasted="productWasWasted"
       />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
       <ul>
         <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
@@ -28,8 +28,8 @@
           </ul>
         </li>
       </ul>
-      <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="cursor-pointer p-4" />
+      <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
+        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
     </div>
     <navigation-menu current-page="Fridge" />
