@@ -105,7 +105,6 @@ export default class AppMain extends AlertMixin {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.family = await CurrentFamily.instance.getCurrentFamily();
 
     await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;

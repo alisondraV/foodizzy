@@ -26,6 +26,7 @@ import Family from '@/types/Family';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
+import router from '@/router';
 
 @Component({
   components: {
@@ -44,7 +45,7 @@ export default class QuitFamily extends Vue {
 
   async handleQuit() {
     await CurrentFamily.instance.quit();
-    window.location.reload();
+    router.back();
   }
 
   get familyNameInputMatch() {
