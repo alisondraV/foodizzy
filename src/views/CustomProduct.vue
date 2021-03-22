@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+import router from '@/router';
 import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
@@ -68,13 +69,11 @@ export default class CustomProduct extends Mixins(AlertMixin) {
   async addProductToStorageOrShoppingList() {
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(this.product);
+      await router.safePush('/fridge');
     } else if (this.location === 'shoppingList') {
       await Firestore.instance.addToShoppingList(this.product);
+      await router.safePush('/shopping-list');
     }
-
-    this.isPositive = true;
-    await this.showAlert(`${this.product.name} was added to the ${this.location}`);
-    this.product = { name: '' };
   }
 
   async isInStorageOrShoppingList() {
