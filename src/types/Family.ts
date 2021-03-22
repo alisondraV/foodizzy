@@ -54,8 +54,8 @@ export class CurrentFamily {
     return familiesSnap.docs.length > 0;
   }
 
-  public async getCurrentFamily() {
-    if (this.family) {
+  public async getCurrentFamily(fresh = false) {
+    if (this.family && !fresh) {
       return this.family;
     }
 
