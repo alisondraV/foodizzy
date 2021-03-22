@@ -1,6 +1,6 @@
 <template>
   <div class="m-8">
-    <div class="mb-4 flex">
+    <div class="mb-8 flex">
       <div>
         <p class="text-2xl font-extrabold text-primary-text mb-3">
           Create Account!
@@ -9,7 +9,7 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
+      <img src="@/assets/images/LogoMain.svg" alt="Logo" />
     </div>
     <div class="mb-8">
       <v-input
@@ -61,8 +61,8 @@
       </div>
       <button
         @click="signUpThroughGoogle"
-        class="text-black rounded-md h-12 w-full"
-        style="box-shadow: gray 1px 1px 10px"
+        class="text-black rounded-lg h-12 w-full"
+        style="box-shadow: #DFDFDF 1px 2px 12px"
       >
         Sign Up with Google
       </button>
@@ -130,15 +130,10 @@ export default class SignUp extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignUp();
-    } catch (err) {
-      await this.finishSignUp('create-family');
+    } catch (e) {
+      console.log('Could not get family: ', e.message);
     }
-  }
-
-  async finishSignUp(targetRoute = '') {
-    const route = '/' + (this.redirect ?? targetRoute);
-    await router.safeReplace(route);
+    await router.safePush('/onboarding-track-waste');
   }
 }
 </script>

@@ -168,7 +168,8 @@ export default class AppMain extends AlertMixin {
   }
 
   getFirstName(member: firebase.User) {
-    return member.displayName.substr(0, this.user!.displayName?.indexOf(' ')) || this.user!.displayName;
+    const name = member?.displayName ?? '';
+    return name.substr(0, name?.indexOf(' ')) || name;
   }
 }
 </script>

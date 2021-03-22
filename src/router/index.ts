@@ -98,6 +98,21 @@ const routes: Array<RouteConfig> = [
     path: '*',
     name: '404',
     component: () => import('../views/404.vue')
+  },
+  {
+    path: '/onboarding-track-waste',
+    name: 'OnboardingTrackWaste',
+    component: () => import('../views/onboarding/OnboardingTrackWaste.vue')
+  },
+  {
+    path: '/onboarding-make-lists',
+    name: 'OnboardingMakeLists',
+    component: () => import('../views/onboarding/OnboardingMakeLists.vue')
+  },
+  {
+    path: '/onboarding-invite-members',
+    name: 'OnboardingInviteMembers',
+    component: () => import('../views/onboarding/OnboardingInviteMembers.vue')
   }
 ];
 
@@ -124,12 +139,15 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
     const authWithoutFamilyRoutes = [
       'SignIn',
       'SignUp',
-      'Invitations',
       'Family',
-      'CreateFamily',
+      'Invitations',
       'UserProfile',
+      'CreateFamily',
       'ChangePassword',
-      'PersonalInformation'
+      'PersonalInformation',
+      'OnboardingTrackWaste',
+      'OnboardingMakeLists',
+      'OnboardingInviteMembers'
     ];
     const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
 

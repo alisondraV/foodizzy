@@ -39,7 +39,7 @@
       <button
         @click="signInThroughGoogle"
         class="text-black rounded-md h-12 w-full"
-        style="box-shadow: gray 1px 1px 10px"
+        style="box-shadow: #DFDFDF 1px 2px 12px"
       >
         Continue with Google
       </button>
