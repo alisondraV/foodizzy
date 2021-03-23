@@ -129,4 +129,15 @@ export default class Firestore {
 
     await familyRef.update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
   }
+
+  public async isProductInStorageOrShoppingList(product: Product) {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+
+    const storageProductNames = family.storage.map(p => p.name);
+    const shoppingListProductNames = family.shoppingList.map(p => p.name);
+    return (
+        storageProductNames?.includes(product.name) ||
+        shoppingListProductNames?.includes(product.name)
+    );
+  }
 }

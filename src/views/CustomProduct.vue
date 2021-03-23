@@ -28,7 +28,6 @@
 import router from '@/router';
 import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
 import Firestore from '@/utils/Firestore';
 import Product from '@/types/Product';
 import VAlert from '@/components/VAlert.vue';
@@ -58,7 +57,7 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       return;
     }
 
-    if (await this.isInStorageOrShoppingList()) {
+    if (await Firestore.instance.isProductInStorageOrShoppingList(this.product)) {
       this.isPositive = false;
       return await this.showAlert(`${this.product.name} already exists in the ${this.location}`);
     }
@@ -74,18 +73,6 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       await Firestore.instance.addToShoppingList(this.product);
       await router.safePush('/shopping-list');
     }
-  }
-
-  async isInStorageOrShoppingList() {
-    // TODO: move to Firestore?
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    const storageProductNames = family.storage.map(p => p.name);
-    const shoppingListProductNames = family.shoppingList.map(p => p.name);
-    return (
-      storageProductNames?.includes(this.product.name) ||
-      shoppingListProductNames?.includes(this.product.name)
-    );
   }
 }
 </script>
