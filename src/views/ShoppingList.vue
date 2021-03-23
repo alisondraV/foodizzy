@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-6" v-model="searchQuery" />
       <v-button class="mb-4" @click="updateFridge" label="Update Fridge" />
       <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
@@ -21,8 +21,8 @@
           />
         </div>
       </div>
-      <div class="bottom-0 right-0 mb-20 mr-3 fixed">
-        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="cursor-pointer p-4" />
+      <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
+        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
     </div>
     <navigation-menu current-page="ShoppingList" />
@@ -30,18 +30,17 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
-import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
 import SearchInput from '@/components/SearchInput.vue';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
+import { ListenerMixin, AlertMixin } from '@/mixins';
+import router from '@/router';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import Firestore from '@/utils/Firestore';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -53,12 +52,15 @@ import VHeader from '@/components/VHeader.vue';
     VHeader
   }
 })
-export default class ShoppingList extends Mixins(AlertMixin) {
+export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   products: ShoppingListItem[] = [];
   searchQuery = '';
+  unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.onFamilyUpdate = family => {
+      this.products = this.getProductsWithCategory(family.shoppingList);
+    };
   }
 
   addNewProduct() {
@@ -88,14 +90,12 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     await Firestore.instance.removeFromShoppingList(product);
   }
 
-  async getProductsWithCategory(): Promise<ShoppingListItem[]> {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-    const allProducts = family.shoppingList;
-    if (!allProducts) {
+  getProductsWithCategory(products: ShoppingListItem[]): ShoppingListItem[] {
+    if (!products) {
       return [];
     }
 
-    return allProducts.map(product => {
+    return products.map(product => {
       const productCategory = product.category ?? 'General';
       return {
         name: product.name,
@@ -119,7 +119,7 @@ export default class ShoppingList extends Mixins(AlertMixin) {
       await Firestore.instance.addProductToStorage(product);
     }
 
-    await this.showAlert('Products were added to the Shopping List');
+    await this.showAlert('Products were added to the fridge');
   }
 }
 </script>

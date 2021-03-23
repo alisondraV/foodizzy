@@ -25,11 +25,12 @@
         </div>
         <h2 class="mt-6 text-lg">Members</h2>
         <div class="mt-3 flex flex-wrap -mx-4">
-          <div class="mx-4" v-for="member in familyMembers" :key="member.email">
+          <div class="flex flex-col items-center mx-4" v-for="member in familyMembers" :key="member.email">
             <img
               v-if="member.photoURL"
               alt="profile-image"
               class="mb-4 rounded-full"
+              width="45px"
               :src="member.photoURL"
             />
             <img
@@ -37,14 +38,15 @@
               alt="Profile Image"
               class="mb-4 rounded-full"
               src="@/assets/images/DefaultMember.svg"
+              width="45px"
             />
             <div>
-              {{ member.displayName }}
+              {{ getFirstName(user) }}
             </div>
           </div>
           <img
             alt="Add New"
-            class="mb-4 rounded-full mx-4"
+            class="-mt-6 mb-4 rounded-full mx-4"
             src="@/assets/images/AddNewMember.svg"
             @click="addNewMembers"
           />
@@ -80,10 +82,10 @@
 <script lang="ts">
 import firebase from 'firebase';
 import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component } from 'vue-property-decorator';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import { Component, Mixins } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
-import Family, { CurrentFamily } from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -93,7 +95,7 @@ import Firestore from '@/utils/Firestore';
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
 })
-export default class AppMain extends AlertMixin {
+export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   family: Family | null = null;
   familyMembers: firebase.User[] = [];
   newFamilyName = '';
@@ -103,16 +105,13 @@ export default class AppMain extends AlertMixin {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.family = await CurrentFamily.instance.getCurrentFamily();
+    this.family = await CurrentFamily.instance.getCurrentFamily(true);
 
-    await CurrentFamily.instance.listenForChanges(snapshot => {
-      const family = snapshot.data() as Family;
+    this.onFamilyUpdate = family => {
       this.pendingMembers = family?.pendingMembers ?? [];
-      this.family = family;
-    });
+    };
 
     try {
-      // TODO: resolve CORS
       this.familyMembers = await Firestore.instance.getUsersByEmail(this.family.members);
     } catch (e) {
       console.log("Couldn't getUsersByEmail: ", e.message);
@@ -165,6 +164,11 @@ export default class AppMain extends AlertMixin {
       this.isPositive = false;
       await this.showAlert("Couldn't update the family name");
     }
+  }
+
+  getFirstName(member: firebase.User) {
+    const name = member?.displayName ?? '';
+    return name.substr(0, name?.indexOf(' ')) || name;
   }
 }
 </script>

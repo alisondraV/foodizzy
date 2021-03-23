@@ -40,7 +40,7 @@ import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
-import router from "@/router";
+import router from '@/router';
 
 @Component({
   components: {

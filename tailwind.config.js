@@ -19,7 +19,8 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        header: '1.4rem'
+        header: '1.4rem',
+        'header-onboarding': '1.75rem'
       }
     }
   },
