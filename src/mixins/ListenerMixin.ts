@@ -1,5 +1,4 @@
-import { CurrentFamily } from '@/types';
-import Family from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
