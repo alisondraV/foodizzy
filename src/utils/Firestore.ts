@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/functions';
-import Family, { CurrentFamily } from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import Product from '@/types/Product';
 import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';

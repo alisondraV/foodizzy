@@ -40,7 +40,7 @@ import Authentication from '@/utils/Authentication';
 import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
 import VButton from '@/components/VButton.vue';
-import Family, { CurrentFamily } from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import Firestore from '@/utils/Firestore';
 
 @Component({

@@ -85,7 +85,7 @@ import router from '@/router';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
-import Family, { CurrentFamily } from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
