@@ -32,7 +32,7 @@ import ShoppingListItem from '@/types/ShoppingListItem';
 export default class ListItem extends Vue {
   @Prop() product!: ShoppingListItem;
   @Prop() currentPage!: string;
-  family: Family;
+  family: Family | null = null;
   inList = false;
 
   async mounted() {
@@ -51,12 +51,12 @@ export default class ListItem extends Vue {
   }
 
   isInStorage() {
-    const storageProductNames = this.family.storage.map(p => p.name);
+    const storageProductNames = this.family!.storage.map(p => p.name);
     return storageProductNames?.includes(this.product.name);
   }
 
   isInShoppingList() {
-    const shoppingListProductNames = this.family.shoppingList.map(p => p.name);
+    const shoppingListProductNames = this.family!.shoppingList.map(p => p.name);
     return shoppingListProductNames?.includes(this.product.name);
   }
 }
