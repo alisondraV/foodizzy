@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :is-positive="isPositive" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :is-positive="false" :label="alertMessage" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <v-input
@@ -44,7 +44,6 @@ import VInput from '@/components/VInput.vue';
   }
 })
 export default class CustomProduct extends Mixins(AlertMixin) {
-  isPositive = false;
   location?: string;
   product: Product = { name: '' };
 
