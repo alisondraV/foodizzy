@@ -71,6 +71,7 @@ export default class NewProduct extends Vue {
     } else if (this.location === 'shoppingList') {
       await Firestore.instance.addToShoppingList(product);
     }
+    router.back();
   }
 
   get filteredCategoryProducts() {

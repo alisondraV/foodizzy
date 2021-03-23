@@ -19,7 +19,7 @@
         v-model="product.category"
         @input="alertMessage = null"
       />
-      <v-button label="Add" @click="resolveNewProduct" />
+      <v-button label="Add" @click="addNewProduct" />
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     this.location = this.$route.query.location as string;
   }
 
-  async resolveNewProduct() {
+  async addNewProduct() {
     if (!this.product) {
       return;
     }
