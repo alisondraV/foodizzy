@@ -4,7 +4,6 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export class ListenerMixin extends Vue {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onFamilyUpdate: ((family: Family) => void) | undefined;
   unsubscribeFamilyListener: (() => void) | undefined;
 
