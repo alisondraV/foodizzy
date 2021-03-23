@@ -82,8 +82,8 @@
 <script lang="ts">
 import firebase from 'firebase';
 import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component } from 'vue-property-decorator';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import { Component, Mixins } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import Family, { CurrentFamily } from '@/types/Family';
 import VAlert from '@/components/VAlert.vue';
@@ -95,7 +95,7 @@ import Firestore from '@/utils/Firestore';
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
 })
-export default class AppMain extends AlertMixin {
+export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   family: Family | null = null;
   familyMembers: firebase.User[] = [];
   newFamilyName = '';
@@ -105,13 +105,11 @@ export default class AppMain extends AlertMixin {
 
   async mounted() {
     this.user = await Authentication.instance.getCurrentUser();
-    this.family = await CurrentFamily.instance.getCurrentFamily();
+    this.family = await CurrentFamily.instance.getCurrentFamily(true);
 
-    await CurrentFamily.instance.listenForChanges(snapshot => {
-      const family = snapshot.data() as Family;
+    this.onFamilyUpdate = family => {
       this.pendingMembers = family?.pendingMembers ?? [];
-      this.family = family;
-    });
+    };
 
     try {
       this.familyMembers = await Firestore.instance.getUsersByEmail(this.family.members);

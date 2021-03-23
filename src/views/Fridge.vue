@@ -37,16 +37,15 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
-import Firestore from '@/utils/Firestore';
 import NavigationMenu from '@/components/NavigationMenu.vue';
-import Product from '@/types/Product';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import router from '@/router';
+import Product from '@/types/Product';
+import Firestore from '@/utils/Firestore';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -56,7 +55,7 @@ import VHeader from '@/components/VHeader.vue';
     VHeader
   }
 })
-export default class Fridge extends Mixins(AlertMixin) {
+export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
@@ -64,7 +63,9 @@ export default class Fridge extends Mixins(AlertMixin) {
   searchQuery = '';
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.onFamilyUpdate = family => {
+      this.products = this.getProductsWithCategory(family.storage);
+    };
   }
 
   get filteredCategoryProducts() {
@@ -108,15 +109,12 @@ export default class Fridge extends Mixins(AlertMixin) {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
-  async getProductsWithCategory(): Promise<Product[]> {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-    const allProducts = family.storage;
-
-    if (!allProducts) {
+  getProductsWithCategory(products: Product[]): Product[] {
+    if (!products) {
       return [];
     }
 
-    return allProducts.map(product => {
+    return products.map(product => {
       const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });
