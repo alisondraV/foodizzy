@@ -37,17 +37,15 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
-import Firestore from '@/utils/Firestore';
 import NavigationMenu from '@/components/NavigationMenu.vue';
-import Product from '@/types/Product';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
-import Family from '@/types/Family';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import router from '@/router';
+import Product from '@/types/Product';
+import Firestore from '@/utils/Firestore';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -57,19 +55,17 @@ import Family from '@/types/Family';
     VHeader
   }
 })
-export default class Fridge extends Mixins(AlertMixin) {
+export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
   productWasWasted = false;
   searchQuery = '';
-  unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
-    this.unsubFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
-      const family = snapshot.data() as Family;
+    this.onFamilyUpdate = family => {
       this.products = this.getProductsWithCategory(family.storage);
-    });
+    };
   }
 
   get filteredCategoryProducts() {
@@ -122,12 +118,6 @@ export default class Fridge extends Mixins(AlertMixin) {
       const productCategory = product.category ?? 'General';
       return { name: product.name, category: productCategory };
     });
-  }
-
-  destroyed() {
-    if (this.unsubFamilyListener) {
-      this.unsubFamilyListener();
-    }
   }
 }
 </script>

@@ -30,19 +30,18 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
-import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
 import SearchInput from '@/components/SearchInput.vue';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
-import Family from '@/types/Family';
+import { ListenerMixin } from '@/mixins';
+import { AlertMixin } from '@/mixins/AlertMixin';
+import router from '@/router';
+import ShoppingListItem from '@/types/ShoppingListItem';
+import Firestore from '@/utils/Firestore';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -54,16 +53,15 @@ import Family from '@/types/Family';
     VHeader
   }
 })
-export default class ShoppingList extends Mixins(AlertMixin) {
+export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   products: ShoppingListItem[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
-    this.unsubFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
-      const family = snapshot.data() as Family;
+    this.onFamilyUpdate = family => {
       this.products = this.getProductsWithCategory(family.shoppingList);
-    });
+    };
   }
 
   addNewProduct() {
@@ -123,12 +121,6 @@ export default class ShoppingList extends Mixins(AlertMixin) {
     }
 
     await this.showAlert('Products were added to the fridge');
-  }
-
-  destroyed() {
-    if (this.unsubFamilyListener) {
-      this.unsubFamilyListener();
-    }
   }
 }
 </script>
