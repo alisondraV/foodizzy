@@ -33,37 +33,39 @@
         <div class="mb-3">
           <p class="text-sm">Full Name</p>
           <p v-if="!editMode">{{ user.displayName }}</p>
-          <v-input v-else v-model="newName" class="w-full" />
+          <v-input v-else v-model="newName" class="w-full" :error="errorType === 'displayName'" />
         </div>
         <div>
           <p class="text-sm">Email</p>
           <p v-if="!editMode">{{ user.email }}</p>
-          <v-input v-else v-model="newEmail" class="mb-3 w-full" />
+          <v-input v-else v-model="newEmail" class="mb-3 w-full" :error="errorType === 'email'" />
         </div>
+        <div v-if="editMode" class="text-dark-peach">{{ errorMessage }}</div>
       </div>
     </div>
 
     <div v-if="editMode" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8" label="Save" @click="saveChanges" />
+      <v-button class="mx-8" label="Save" @click="saveChanges" :disabled="validationFailed" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import firebase from 'firebase';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
+import { ValidationMixin } from '@/mixins';
 
 @Component({
   components: { VButton, VInput, VHeader }
 })
-export default class PersonalInformation extends Vue {
+export default class PersonalInformation extends ValidationMixin {
   editMode = false;
-  newName: string | null = '';
-  newEmail: string | null = '';
+  newName = '';
+  newEmail = '';
   user: firebase.User | null = null;
 
   async mounted() {
@@ -71,14 +73,23 @@ export default class PersonalInformation extends Vue {
   }
 
   async saveChanges() {
-    // TODO: add validation
-    await Authentication.instance.updateCurrentUser(this.user!, this.newName!, this.newEmail!);
-    this.flipEditMode();
+    await Authentication.instance
+      .updateCurrentUser(this.user!, this.newName!, this.newEmail!)
+      .then(() => {
+        this.flipEditMode();
+      })
+      .catch(error => {
+        this.displayError(error);
+      });
+  }
+
+  get isFormInValidState() {
+    return this.isEmailValid(this.newEmail) && this.isDisplayNameValid(this.newName);
   }
 
   flipEditMode() {
-    this.newName = this.user!.displayName;
-    this.newEmail = this.user!.email;
+    this.newName = this.user!.displayName ?? '';
+    this.newEmail = this.user!.email ?? '';
     this.editMode = !this.editMode;
   }
 }
