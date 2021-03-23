@@ -21,8 +21,30 @@
           v-model="newPassword"
           @focus="clearTheMessage"
         />
+        <div class="grid grid-cols-2 self-start text-left">
+          <div :class="passwordValidation.hasLowerCase ? 'text-primary-green' : 'text-dark-peach'">
+            1 lowercase
+          </div>
+          <div :class="passwordValidation.hasUpperCase ? 'text-primary-green' : 'text-dark-peach'">
+            1 uppercase
+          </div>
+          <div :class="passwordValidation.hasSpecial ? 'text-primary-green' : 'text-dark-peach'">
+            1 special
+          </div>
+          <div :class="passwordValidation.hasNumber ? 'text-primary-green' : 'text-dark-peach'">1 number</div>
+          <div :class="passwordValidation.isLong ? 'text-primary-green' : 'text-dark-peach'">
+            8 characters
+          </div>
+        </div>
+        <div class="text-dark-peach self-start text-left">{{ errorMessage }}</div>
+
         <div class="bg-background h-24 w-full bottom-0 fixed">
-          <v-button class="mx-8 mt-3" label="Change Password" @click="changePassword" />
+          <v-button
+            class="mx-8 mt-3"
+            label="Change Password"
+            @click="changePassword"
+            :disabled="validationFailed"
+          />
         </div>
       </div>
     </div>
@@ -30,13 +52,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
 import firebase from 'firebase';
+import { ValidationMixin } from '@/mixins';
 
 @Component({
   components: {
@@ -46,7 +69,7 @@ import firebase from 'firebase';
     VHeader
   }
 })
-export default class SignIn extends Vue {
+export default class SignIn extends ValidationMixin {
   alertMessage = '';
   newPassword = '';
   currentPassword = '';
@@ -59,6 +82,15 @@ export default class SignIn extends Vue {
 
   clearTheMessage() {
     this.alertMessage = '';
+  }
+
+  @Watch('newPassword')
+  handlePasswordUpdate() {
+    this.updatePasswordValidation(this.newPassword);
+  }
+
+  get isFormInValidState() {
+    return this.isPasswordValid();
   }
 
   async changePassword() {
