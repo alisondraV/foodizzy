@@ -11,7 +11,6 @@ export class ListenerMixin extends Vue {
     this.unsubscribeFamilyListener = await CurrentFamily.instance.listenForChanges(snapshot => {
       const family = snapshot.data() as Family;
       if (this.onFamilyUpdate) {
-        console.log('Triggered onFamilyUpdate');
         this.onFamilyUpdate(family);
       }
     });
@@ -19,7 +18,6 @@ export class ListenerMixin extends Vue {
 
   destroyed() {
     if (this.unsubscribeFamilyListener) {
-      console.log('unsub');
       this.unsubscribeFamilyListener();
     }
   }
