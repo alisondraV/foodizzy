@@ -82,7 +82,7 @@
 <script lang="ts">
 import firebase from 'firebase';
 import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
+import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import Family, { CurrentFamily } from '@/types/Family';
@@ -91,7 +91,6 @@ import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
 import Firestore from '@/utils/Firestore';
-import { ListenerMixin } from '@/mixins';
 
 @Component({
   components: { VAlert, VHeader, VButton, VInput }
