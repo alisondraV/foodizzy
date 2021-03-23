@@ -41,7 +41,7 @@
               width="45px"
             />
             <div>
-              {{ getFirstName(user) }}
+              {{ getFirstName(member) }}
             </div>
           </div>
           <img
