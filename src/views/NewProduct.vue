@@ -13,7 +13,7 @@
             current-page="NewProduct"
             :key="product.name"
             :product="product"
-            @add="resolveNewProduct"
+            @add="addNewProduct"
             @remove="removeExistingProduct"
           />
         </div>
@@ -48,8 +48,6 @@ export default class NewProduct extends Vue {
   async mounted() {
     this.products = await this.getProductsWithCategory();
     this.location = this.$route.query.location as string;
-
-    // TODO: add listener to update products data
   }
 
   addCustomProduct() {
@@ -67,7 +65,7 @@ export default class NewProduct extends Vue {
     }
   }
 
-  async resolveNewProduct(product: Product) {
+  async addNewProduct(product: Product) {
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(product);
     } else if (this.location === 'shoppingList') {

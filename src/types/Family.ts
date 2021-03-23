@@ -8,7 +8,7 @@ import ShoppingListItem from './ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
 
-export default interface Family {
+export interface Family {
   id?: string;
   members: string[];
   pendingMembers: string[];
