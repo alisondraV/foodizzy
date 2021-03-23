@@ -57,9 +57,11 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       return;
     }
 
-    if (await Firestore.instance.isProductInStorageOrShoppingList(this.product)) {
-      this.isPositive = false;
-      return await this.showAlert(`${this.product.name} already exists in the ${this.location}`);
+    if (await Firestore.instance.isProductInStorage(this.product)) {
+      return await this.showAlert(`${this.product.name} already exists in the storage`);
+    }
+    if (await Firestore.instance.isProductInShoppingList(this.product)) {
+      return await this.showAlert(`${this.product.name} already exists in the shopping list`);
     }
 
     await this.addProductToStorageOrShoppingList();
