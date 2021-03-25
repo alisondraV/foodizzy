@@ -67,6 +67,8 @@ export default class CustomProduct extends Mixins(AlertMixin) {
   }
 
   async addProductToStorageOrShoppingList() {
+    this.trimProduct();
+
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(this.product);
       await router.safePush('/fridge');
@@ -74,6 +76,11 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       await Firestore.instance.addToShoppingList(this.product);
       await router.safePush('/shopping-list');
     }
+  }
+
+  private trimProduct() {
+    this.product.name = this.product.name.trim();
+    this.product.category = this.product.category.trim();
   }
 }
 </script>
