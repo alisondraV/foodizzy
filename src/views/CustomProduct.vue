@@ -9,6 +9,7 @@
         class="mb-4"
         type="text"
         label="Product Name"
+        placeholder="Enter product name"
         v-model="product.name"
         @input="alertMessage = null"
       />
@@ -16,6 +17,7 @@
         class="mb-10"
         type="text"
         label="Category"
+        placeholder="Enter category"
         v-model="product.category"
         @input="alertMessage = null"
       />
