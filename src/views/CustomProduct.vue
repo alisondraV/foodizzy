@@ -19,7 +19,9 @@
         v-model="product.category"
         @input="alertMessage = null"
       />
-      <v-button label="Add" @click="addNewProduct" />
+    </div>
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button label="Add" class="mx-8" @click="addNewProduct" />
     </div>
   </div>
 </template>
@@ -55,6 +57,7 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     if (!this.product) {
       return;
     }
+    this.trimProduct();
 
     if (await Firestore.instance.isProductInStorage(this.product)) {
       return await this.showAlert(`${this.product.name} already exists in the storage`);
