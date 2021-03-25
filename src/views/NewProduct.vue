@@ -3,16 +3,8 @@
     <v-header heading="Add New Item" />
     <div class="mt-24 mb-20 mx-8">
       <search-input class="mb-4" v-model="searchQuery" />
-      <v-button
-        class="mb-4"
-        label="Add Custom Product"
-        @click="addCustomProduct"
-      />
-      <div
-        class="mb-4"
-        v-for="category in Object.keys(filteredCategoryProducts)"
-        :key="category"
-      >
+      <v-button class="mb-4" label="Add Custom Product" @click="addCustomProduct" />
+      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
         <div>
@@ -21,8 +13,8 @@
             current-page="NewProduct"
             :key="product.name"
             :product="product"
+            @add="addNewProduct"
             @remove="removeExistingProduct"
-            @add="resolveNewProduct"
           />
         </div>
       </div>
@@ -59,7 +51,10 @@ export default class NewProduct extends Vue {
   }
 
   addCustomProduct() {
-    router.push({ path: 'custom-product', query: { location: this.location } });
+    router.safePush({
+      path: 'custom-product',
+      query: { location: this.location }
+    });
   }
 
   async removeExistingProduct(product: Product) {
@@ -70,7 +65,7 @@ export default class NewProduct extends Vue {
     }
   }
 
-  async resolveNewProduct(product: Product) {
+  async addNewProduct(product: Product) {
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(product);
     } else if (this.location === 'shoppingList') {
@@ -81,9 +76,7 @@ export default class NewProduct extends Vue {
 
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
-      return product.name
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
+      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
     type Category = { [category: string]: Product[] };

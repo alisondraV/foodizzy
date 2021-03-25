@@ -3,3 +3,4 @@ export * from './Product';
 export * from './ShoppingListItem';
 export * from './Recipe';
 export * from './RecipeIngredient';
+export * from './ValidationError';

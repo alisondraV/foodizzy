@@ -2,23 +2,14 @@
   <div>
     <v-header heading="" />
     <div class="mt-20 mb-20 mx-8 flex flex-col">
-      <h1 class="text-3xl mb-2 font-extrabold text-primary-text">
-        Welcome, {{ firstName }}!
-      </h1>
+      <h1 class="text-3xl mb-2 font-extrabold text-primary-text">Welcome, {{ firstName }}!</h1>
       <h2 class="mb-4 font-extrabold text-primary-text">
         Track your food waste here
       </h2>
       <div class="text-right w-full mb-4 text-primary-text">
         <label>
-          <select
-            v-model="selectedMonthData"
-            @change="getWastedProductsForSelectedMonth"
-          >
-            <option
-              v-for="data in monthData"
-              :value="data"
-              :key="`${data.month}-${data.year}`"
-            >
+          <select v-model="selectedMonthData" @change="getWastedProductsForSelectedMonth">
+            <option v-for="data in monthData" :value="data" :key="`${data.month}-${data.year}`">
               {{ getMonthDataString(data.month, data.year) }}
             </option>
           </select>
@@ -46,8 +37,7 @@
             </DonutChart>
           </div>
           <p class="text-secondary-text text-center mb-6">
-            {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted
-            in
+            {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted in
             {{ month }}
           </p>
           <div
@@ -59,8 +49,7 @@
               <DonutChart
                 :data="[
                   statistics[category.toLowerCase()],
-                  totalProductsForMonth[category.toLowerCase()] -
-                    statistics[category.toLowerCase()]
+                  totalProductsForMonth[category.toLowerCase()] - statistics[category.toLowerCase()]
                 ]"
                 :labels="['wasted', 'eaten']"
                 :colors="[categoryColors[category.toLowerCase()], defaultColor]"
@@ -116,10 +105,7 @@ export default class Home extends Vue {
 
     if (this.user!.displayName) {
       this.firstName =
-        this.user!.displayName.substr(
-          0,
-          this.user!.displayName?.indexOf(' ')
-        ) || this.user!.displayName;
+        this.user!.displayName.substr(0, this.user!.displayName?.indexOf(' ')) || this.user!.displayName;
     }
     await this.getWastedProductsForSelectedMonth();
     await this.getMonthData();
@@ -132,9 +118,7 @@ export default class Home extends Vue {
 
     const currentMonthIsPresent = Boolean(
       availableMonthData.find(
-        data =>
-          data.month === this.selectedMonthData.month &&
-          data.year === this.selectedMonthData.year
+        data => data.month === this.selectedMonthData.month && data.year === this.selectedMonthData.year
       )
     );
 
@@ -166,8 +150,7 @@ export default class Home extends Vue {
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
       return (
-        product.dateWasted.toDate().getMonth() ==
-          this.selectedMonthData.month &&
+        product.dateWasted.toDate().getMonth() == this.selectedMonthData.month &&
         product.dateWasted.toDate().getFullYear() == this.selectedMonthData.year
       );
     });
@@ -196,10 +179,7 @@ export default class Home extends Vue {
   }
 
   get totalProducts() {
-    return Object.values(this.totalProductsForMonth).reduce(
-      (acc, e) => e + acc,
-      0
-    );
+    return Object.values(this.totalProductsForMonth).reduce((acc, e) => e + acc, 0);
   }
 
   get totalWaste() {
@@ -207,9 +187,7 @@ export default class Home extends Vue {
   }
 
   get chartData() {
-    return [
-      [this.totalProducts - this.totalWaste, ...Object.values(this.statistics)]
-    ];
+    return [[this.totalProducts - this.totalWaste, ...Object.values(this.statistics)]];
   }
 
   get chartLabels() {

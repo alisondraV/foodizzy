@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { CurrentFamily } from '@/types';
+import Firestore from '@/utils/Firestore';
 
 export default class Authentication {
   public auth: firebase.auth.Auth;
@@ -31,16 +32,8 @@ export default class Authentication {
     });
   }
 
-  public async signIn(email: string, password: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-
-      return cred.user;
-    } catch (error) {
-      console.log('SignIn failed: ', error);
-    }
+  public signIn(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
   public async signOut() {
@@ -52,16 +45,13 @@ export default class Authentication {
     }
   }
 
-  public async signUp(email: string, password: string, name: string) {
-    try {
-      const cred = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      firebase.auth().currentUser?.updateProfile({ displayName: name });
-      return cred.user;
-    } catch (error) {
-      console.log('Sign Up failed: ', error);
-    }
+  public signUp(email: string, password: string, name: string) {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        return firebase.auth().currentUser?.updateProfile({ displayName: name });
+      });
   }
 
   public async authWithGoogle() {
@@ -72,5 +62,31 @@ export default class Authentication {
     } catch (error) {
       console.log('Sign Up with Google failed: ', error);
     }
+  }
+
+  public async updateCurrentUser(prevUser: firebase.User, name: string, email: string) {
+    if (CurrentFamily.instance.family) {
+      const familyRef = Firestore.instance.db
+        .collection('family')
+        .doc((await CurrentFamily.instance.getCurrentFamily()).id);
+
+      await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
+      await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+    }
+
+    await firebase.auth().currentUser!.updateProfile({ displayName: name });
+    await firebase.auth().currentUser!.updateEmail(email);
+    CurrentFamily.instance.family = null;
+  }
+
+  public async sendPasswordReset(email: string) {
+    await this.auth.sendPasswordResetEmail(email);
+  }
+
+  public async changePassword(email: string, currentPassword: string, newPassword: string) {
+    const user = firebase.auth().currentUser;
+    const cred = firebase.auth.EmailAuthProvider.credential(email, currentPassword);
+    await user!.reauthenticateWithCredential(cred);
+    await user!.updatePassword(newPassword);
   }
 }

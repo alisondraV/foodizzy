@@ -6,7 +6,9 @@ export class AlertMixin extends Vue {
   prevTimeout: number | undefined;
 
   showAlert(message: string) {
-    clearTimeout(this.prevTimeout);
+    if (this.prevTimeout) {
+      clearTimeout(this.prevTimeout);
+    }
 
     return new Promise(resolve => {
       this.alertMessage = message;

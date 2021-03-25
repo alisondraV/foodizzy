@@ -17,7 +17,7 @@ module.exports = {
     'max-len': ['warn', { code: 110, tabWidth: 4 }],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    quotes: ['warn', 'single'],
+    quotes: ['error', 'single', { avoidEscape: true }],
     '@typescript-eslint/no-non-null-assertion': 'off'
   }
 };

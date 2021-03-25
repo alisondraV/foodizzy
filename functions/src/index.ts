@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import sendEmail from './sendEmail';
 import axios from 'axios';
-import {db} from './admin';
+import {db, auth} from './admin';
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -40,8 +40,37 @@ export const onFamilyDelete = functions.firestore
           .where('familyId', '==', snapshot.id)
           .get();
 
-      return Promise.all(wasteBucketQueryResults.docs.map((doc) => doc.ref.delete()));
+      return Promise.all(
+          wasteBucketQueryResults.docs.map((doc) => doc.ref.delete())
+      );
     });
+
+export const syncEmulatorAllProducts = functions.https.onCall(
+    async (data, context) => {
+      const allProductsRef = db.collection('allProducts');
+      const allProductsSnap = await allProductsRef.get();
+      await Promise.all(
+          (await allProductsSnap).docs.map((doc) => doc.ref.delete())
+      );
+
+      return Promise.all(
+          data.products.map((product: FirebaseFirestore.DocumentData) => {
+            const id = product.id;
+            delete product.id;
+            return db.doc(`allProducts/${id}`).set(product);
+          })
+      );
+    }
+);
+
+export const getUsersByEmail = functions.https.onCall((data, context) => {
+  if (!data.emails) {
+    return [];
+  }
+  return Promise.all(
+      data.emails.map((email: string) => auth.getUserByEmail(email))
+  );
+});
 
 async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,
@@ -88,7 +117,6 @@ async function getThisMonthStats(
   let thisMonthStatsDocRef;
   if (thisMonthStatsCollection.docs.length === 0) {
     const totalProducts = await getTotalProductsFromStorage(family);
-    console.log('CREATE NEW: increasing number of ', totalProducts);
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
@@ -101,7 +129,10 @@ async function getThisMonthStats(
 }
 
 async function getTotalProductsFromStorage(family: any) {
-  const familyDocRef = await db.collection('family').doc(family.id).get();
+  const familyDocRef = await db
+      .collection('family')
+      .doc(family.id)
+      .get();
   const storage = await familyDocRef.data()?.storage;
 
   return storage.reduce((currentStatistics: any, product: any) => {
@@ -125,25 +156,30 @@ async function sendWelcomeEmails(
 
   console.log('New Members: ', newEmails);
 
-  const htmlURL = 'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/email.html?alt=media&token=4627cac6-f9d5-4729-b177-26b345a09083';
+  const htmlURL =
+    'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/Foodizzy.html?alt=media&token=53d69dc9-3b9a-42fc-a6d8-9a89efdcc26b';
   const response = await axios.get(htmlURL);
   let emailTemplate = response.data;
 
   emailTemplate = emailTemplate.replace('{PERSON}', 'Somebody');
   emailTemplate = emailTemplate.replace('{FAMILY NAME}', `"${newFamily.name}"`);
 
-  return Promise.all(newEmails.map((email: string) => {
-    return sendEmail({
-      to: [email],
-      message: {
-        subject: 'Welcome to Foodizzy!',
-        html: emailTemplate,
-      },
-    });
-  }));
+  return Promise.all(
+      newEmails.map((email: string) => {
+        return sendEmail({
+          to: [email],
+          message: {
+            subject: 'Welcome to Foodizzy!',
+            html: emailTemplate,
+          },
+        });
+      })
+  );
 }
 
-async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
+async function checkForFamilyRemoval(
+    newDoc: FirebaseFirestore.QueryDocumentSnapshot
+) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
     const statisticsRefs = await newDoc.ref.collection('statistics').get();
@@ -152,4 +188,3 @@ async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnap
   }
   return null;
 }
-
