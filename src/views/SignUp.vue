@@ -15,21 +15,24 @@
       <v-input
         class="mb-6"
         type="email"
-        label="Type in your email"
+        label="Email Address"
+        placeholder="Enter your email"
         v-model="email"
         :error="errorType === 'email'"
       />
       <v-input
         class="mb-6"
         type="name"
-        label="Type in your name"
+        label="Name"
+        placeholder="Enter your name"
         v-model="name"
         :error="errorType === 'displayName'"
       />
       <v-input
         class="mb-6"
         type="password"
-        label="Type in your password"
+        label="Password"
+        placeholder="Enter your password"
         v-model="password"
         :error="errorType === 'password'"
       />

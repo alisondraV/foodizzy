@@ -11,6 +11,7 @@
           class="mb-6 w-full"
           type="password"
           label="Current Password"
+          placeholder="Enter your current password"
           v-model="currentPassword"
           @focus="clearTheMessage"
         />
@@ -18,6 +19,7 @@
           class="mb-6 w-full"
           type="password"
           label="New Password"
+          placeholder="Enter your new password"
           v-model="newPassword"
           @focus="clearTheMessage"
         />
