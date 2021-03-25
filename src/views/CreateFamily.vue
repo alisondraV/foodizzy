@@ -6,14 +6,26 @@
         Create Your Family
       </p>
       <div class="mb-8 flex-start">
-        <v-input class="mb-6" type="text" label="Family Name" v-model="familyName" />
+        <v-input
+          class="mb-6"
+          type="text"
+          label="Family Name"
+          placeholder="Enter your family name"
+          v-model="familyName"
+        />
         <div class="text-dark-peach">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
         <div class="flex flex-row justify-between mb-4">
-          <v-input class="w-5/6" type="email" label="Email Address" v-model="currentEmail" />
-          <img src="@/assets/images/Plus.svg" alt="Add" @click="addEmail" />
+          <v-input
+            class="w-5/6"
+            type="email"
+            label="Email Address"
+            placeholder="Enter member's email"
+            v-model="currentEmail"
+          />
+          <img src="@/assets/images/Plus.svg" alt="Add" class="mt-6" @click="addEmail" />
         </div>
         <ul>
           <li

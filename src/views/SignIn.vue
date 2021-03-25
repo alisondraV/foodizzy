@@ -13,14 +13,16 @@
       <v-input
         class="mb-6"
         type="email"
-        label="Type in your email"
+        label="Email Address"
+        placeholder="Enter your email"
         :error="errorType === 'email'"
         v-model="email"
       />
       <v-input
         class="mb-6"
         type="password"
-        label="Type in your password"
+        label="Password"
+        placeholder="Enter your password"
         :error="errorType === 'password'"
         v-model="password"
       />
