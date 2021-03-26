@@ -13,7 +13,15 @@
         v-model="product.name"
         @input="alertMessage = null"
       />
+      <label>
+        <select v-model="selectedCategory" class="form-select w-full mb-4 text-primary-text">
+          <option v-for="category in categoriesList" :value="category" :key="category">
+            {{ category }}
+          </option>
+        </select>
+      </label>
       <v-input
+        v-if="customCategory"
         class="mb-10"
         type="text"
         label="Category"
@@ -48,11 +56,17 @@ import VInput from '@/components/VInput.vue';
   }
 })
 export default class CustomProduct extends Mixins(AlertMixin) {
+  categoriesList: string[] = [];
+  customCategory = false;
   location?: string;
   product: Product = { name: '' };
+  selectedCategory = '';
 
-  mounted() {
+  async mounted() {
     this.location = this.$route.query.location as string;
+
+    await this.getCategoriesList();
+    this.selectedCategory = this.categoriesList[0];
   }
 
   async addNewProduct() {
@@ -83,9 +97,15 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     }
   }
 
-  private trimProduct() {
+  async getCategoriesList() {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const productCategories = allProducts.map(product => product.category ?? 'General');
+    this.categoriesList = [...new Set(productCategories)];
+  }
+
+  trimProduct() {
     this.product.name = this.product.name.trim();
-    this.product.category = this.product.category.trim();
+    this.product.category = this.selectedCategory.trim();
   }
 }
 </script>
