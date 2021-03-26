@@ -23,14 +23,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Firestore from '@/utils/Firestore';
-import { ProductDTO } from '@/types/DTOs';
-import router from '@/router';
-import VHeader from '@/components/VHeader.vue';
-import SearchInput from '@/components/SearchInput.vue';
 import ListItem from '@/components/ListItem.vue';
+import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
+import router from '@/router';
+import { Product } from '@/types';
+import { ProductDTO } from '@/types/DTOs';
+import Firestore from '@/utils/Firestore';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -42,11 +43,11 @@ import VButton from '@/components/VButton.vue';
 })
 export default class NewProduct extends Vue {
   location?: string;
-  products: ProductDTO[] = [];
+  products: Product[] = [];
   searchQuery = '';
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.products = await Firestore.instance.getAllProducts();
     this.location = this.$route.query.location as string;
   }
 
@@ -79,9 +80,9 @@ export default class NewProduct extends Vue {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
-    type Category = { [category: string]: ProductDTO[] };
+    type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
+      const categoryName = product.category;
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
       }
@@ -90,14 +91,6 @@ export default class NewProduct extends Vue {
 
       return acc;
     }, {});
-  }
-
-  async getProductsWithCategory() {
-    const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
   }
 }
 </script>

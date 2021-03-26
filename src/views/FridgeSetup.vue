@@ -35,6 +35,7 @@ import SearchInput from '@/components/SearchInput.vue';
 import SkipHeader from '@/components/SkipHeader.vue';
 import VButton from '@/components/VButton.vue';
 import router from '@/router';
+import { Product } from '@/types';
 
 @Component({
   components: {
@@ -45,13 +46,13 @@ import router from '@/router';
 })
 export default class Fridge extends Vue {
   categoryColors: { [category: string]: string } = {};
-  products: ProductDTO[] = [];
+  products: Product[] = [];
   productsToAdd: ProductDTO[] = [];
   colors = ['#B6DDDA', '#FFE6A3'];
   searchQuery = '';
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.products = await Firestore.instance.getAllProducts();
   }
 
   async addProductsToStorage() {
@@ -59,14 +60,6 @@ export default class Fridge extends Vue {
       await Firestore.instance.addProductToStorage(product);
     }
     this.goToTheNextPage();
-  }
-
-  async getProductsWithCategory() {
-    const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
   }
 
   updateProductList(product: ProductDTO) {
@@ -93,10 +86,10 @@ export default class Fridge extends Vue {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
-    type Category = { [category: string]: ProductDTO[] };
+    type Category = { [category: string]: Product[] };
     let categoryCount = 0;
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
+      const categoryName = product.category;
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
 

@@ -3,13 +3,18 @@ import { ProductDTO } from './DTOs';
 
 export class Product implements ProductDTO {
   public name: string;
-  public category?: string | undefined;
+  private _category?: string | undefined;
+  public static defaultCategory = 'General';
   public selected: boolean;
 
   constructor(name: string, category?: string) {
     this.name = name;
-    this.category = category;
+    this._category = category;
     this.selected = false;
+  }
+
+  get category() {
+    return this._category ?? Product.defaultCategory;
   }
 
   static fromDTO(product: ProductDTO) {

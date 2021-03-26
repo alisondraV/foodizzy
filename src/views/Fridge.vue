@@ -43,7 +43,6 @@ import VHeader from '@/components/VHeader.vue';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import router from '@/router';
 import { Product } from '@/types';
-import { ProductDTO } from '@/types/DTOs';
 import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
@@ -60,7 +59,7 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = this.getProductsWithCategory(family.storage).map(Product.fromDTO);
+      this.products = (family.storage ?? []).map(Product.fromDTO);
     };
   }
 
@@ -93,12 +92,11 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
 
     type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
-      if (!Object.keys(acc).includes(categoryName)) {
-        acc[categoryName] = [];
+      if (!Object.keys(acc).includes(product.category)) {
+        acc[product.category] = [];
       }
 
-      acc[categoryName].push(product);
+      acc[product.category].push(product);
 
       return acc;
     }, {});
@@ -106,17 +104,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
 
   addNewProduct() {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
-  }
-
-  getProductsWithCategory(products: ProductDTO[]): ProductDTO[] {
-    if (!products) {
-      return [];
-    }
-
-    return products.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/functions';
-import { CurrentFamily, Family } from '@/types';
+import { CurrentFamily, Family, Product } from '@/types';
 import { ProductDTO } from '@/types/DTOs';
 import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
@@ -36,9 +36,9 @@ export default class Firestore {
     return response.data;
   }
 
-  public async getAllProducts(): Promise<ProductDTO[]> {
+  public async getAllProducts(): Promise<Product[]> {
     const querySnap = await this.db.collection('allProducts').get();
-    return querySnap.docs.map(doc => doc.data() as ProductDTO);
+    return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
   }
 
   public async addProductToStorage(product: ProductDTO) {

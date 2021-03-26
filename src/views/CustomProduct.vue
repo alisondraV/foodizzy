@@ -27,15 +27,15 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component, Mixins } from 'vue-property-decorator';
-import Firestore from '@/utils/Firestore';
-import {ProductDTO} from '@/types/DTOs';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
+import { AlertMixin } from '@/mixins/AlertMixin';
+import router from '@/router';
+import { ProductDTO } from '@/types/DTOs';
+import Firestore from '@/utils/Firestore';
+import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
