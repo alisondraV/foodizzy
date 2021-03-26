@@ -11,8 +11,10 @@
         label="Product Name"
         placeholder="Enter product name"
         v-model="product.name"
+        :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
+      <div v-if="errorMessage" class="-mt-3 ml-1 mb-3 text-dark-peach">{{ errorMessage }}</div>
       <v-select
         label="Category"
         :selection-list="categoriesList"
@@ -30,14 +32,14 @@
       />
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button label="Add" class="mx-8" @click="addNewProduct" />
+      <v-button label="Add" class="mx-8" @click="addNewProduct" :disabled="validationFailed" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
+import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import Product from '@/types/Product';
@@ -56,7 +58,7 @@ import VSelect from '@/components/VSelect.vue';
     VSelect
   }
 })
-export default class CustomProduct extends Mixins(AlertMixin) {
+export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   categoriesList: string[] = [];
   customCategory = false;
   location?: string;
@@ -102,6 +104,10 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     const allProducts = await Firestore.instance.getAllProducts();
     const productCategories = allProducts.map(product => product.category ?? 'General');
     this.categoriesList = [...new Set(productCategories)];
+  }
+
+  get isFormInValidState() {
+    return this.isDisplayNameValid(this.product.name);
   }
 
   setSelectedCategory(value) {
