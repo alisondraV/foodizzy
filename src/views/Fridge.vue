@@ -12,6 +12,8 @@
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
       <button class="border" @click="wasteSelected">waste</button>
+      <button class="border" @click="consumeSelected">consume</button>
+      <button class="border" @click="deleteSelected">delete</button>
       <ul>
         <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
           <h2 class="text-primary-green mb-1">{{ category }}</h2>
@@ -97,6 +99,24 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     this.products = this.products.filter(product => !product.selected);
   }
 
+  async consumeSelected() {
+    await Promise.all(
+      this.selectedProducts.map(product => {
+        this.markAsFinished(product);
+      })
+    );
+    this.products = this.products.filter(product => !product.selected);
+  }
+
+  async deleteSelected() {
+    await Promise.all(
+      this.selectedProducts.map(product => {
+        Firestore.instance.removeFromStorage(product);
+      })
+    );
+    this.products = this.products.filter(product => !product.selected);
+  }
+
   get filteredCategoryProducts() {
     const reducedProducts = this.products.filter(product => {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
@@ -116,7 +136,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async markAsFinished(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.addToShoppingList(product);
 
