@@ -2,12 +2,7 @@
   <div>
     <v-header heading="What's in your fridge?" />
     <div class="mt-20">
-      <v-alert
-        v-if="alertMessage"
-        :isPositive="!productWasWasted"
-        :label="alertMessage"
-        :wasted="productWasWasted"
-      />
+      <v-alert v-if="alertMessage" :isPositive="false" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
@@ -65,6 +60,21 @@ class FooProduct implements Product {
   static fromDTO(product: Product) {
     return new FooProduct(product.name, product.category);
   }
+
+  async delete() {
+    await Firestore.instance.removeFromStorage(this);
+  }
+
+  async consume() {
+    await Firestore.instance.removeFromStorage(this);
+    await Firestore.instance.addToShoppingList(this);
+  }
+
+  async waste() {
+    await Firestore.instance.removeFromStorage(this);
+    await Firestore.instance.moveToWasted(this);
+    await Firestore.instance.addToShoppingList(this);
+  }
 }
 
 @Component({
@@ -77,7 +87,6 @@ class FooProduct implements Product {
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   products: FooProduct[] = [];
-  productWasWasted = false;
   searchQuery = '';
 
   async mounted() {
@@ -91,30 +100,21 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async wasteSelected() {
-    await Promise.all(
-      this.selectedProducts.map(product => {
-        this.markAsWasted(product);
-      })
-    );
+    await Promise.all(this.selectedProducts.map(product => product.waste()));
     this.products = this.products.filter(product => !product.selected);
+    await this.showAlert('Products were wasted');
   }
 
   async consumeSelected() {
-    await Promise.all(
-      this.selectedProducts.map(product => {
-        this.markAsFinished(product);
-      })
-    );
+    await Promise.all(this.selectedProducts.map(product => product.consume()));
     this.products = this.products.filter(product => !product.selected);
+    await this.showAlert('Products were added to the shopping list');
   }
 
   async deleteSelected() {
-    await Promise.all(
-      this.selectedProducts.map(product => {
-        Firestore.instance.removeFromStorage(product);
-      })
-    );
+    await Promise.all(this.selectedProducts.map(product => product.delete()));
     this.products = this.products.filter(product => !product.selected);
+    await this.showAlert('Products were removed from fridge');
   }
 
   get filteredCategoryProducts() {
@@ -133,23 +133,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
 
       return acc;
     }, {});
-  }
-
-  async markAsFinished(product: Product) {
-    await Firestore.instance.removeFromStorage(product);
-    await Firestore.instance.addToShoppingList(product);
-
-    await this.showAlert(`${product.name} was added to the shopping list`);
-  }
-
-  async markAsWasted(product: Product) {
-    await Firestore.instance.removeFromStorage(product);
-    await Firestore.instance.moveToWasted(product);
-    await Firestore.instance.addToShoppingList(product);
-
-    this.productWasWasted = true;
-    await this.showAlert(`${product.name} was wasted`);
-    this.productWasWasted = false;
   }
 
   addNewProduct() {
