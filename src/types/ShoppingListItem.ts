@@ -1,5 +1,5 @@
-import Product from '@/types/Product';
+import { ProductDTO } from '@/types/DTOs';
 
-export default interface ShoppingListItem extends Product {
+export default interface ShoppingListItem extends ProductDTO {
   acquired: boolean;
 }

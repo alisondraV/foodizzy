@@ -42,40 +42,9 @@ import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import router from '@/router';
-import Product from '@/types/Product';
-import Firestore from '@/utils/Firestore';
+import { Product } from '@/types';
+import { ProductDTO } from '@/types/DTOs';
 import { Component, Mixins } from 'vue-property-decorator';
-
-class FooProduct implements Product {
-  public name: string;
-  public category?: string | undefined;
-  public selected: boolean;
-
-  constructor(name: string, category?: string) {
-    this.name = name;
-    this.category = category;
-    this.selected = false;
-  }
-
-  static fromDTO(product: Product) {
-    return new FooProduct(product.name, product.category);
-  }
-
-  async delete() {
-    await Firestore.instance.removeFromStorage(this);
-  }
-
-  async consume() {
-    await Firestore.instance.removeFromStorage(this);
-    await Firestore.instance.addToShoppingList(this);
-  }
-
-  async waste() {
-    await Firestore.instance.removeFromStorage(this);
-    await Firestore.instance.moveToWasted(this);
-    await Firestore.instance.addToShoppingList(this);
-  }
-}
 
 @Component({
   components: {
@@ -86,12 +55,12 @@ class FooProduct implements Product {
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
-  products: FooProduct[] = [];
+  products: Product[] = [];
   searchQuery = '';
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = this.getProductsWithCategory(family.storage).map(FooProduct.fromDTO);
+      this.products = this.getProductsWithCategory(family.storage).map(Product.fromDTO);
     };
   }
 
@@ -139,7 +108,7 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
-  getProductsWithCategory(products: Product[]): Product[] {
+  getProductsWithCategory(products: ProductDTO[]): ProductDTO[] {
     if (!products) {
       return [];
     }

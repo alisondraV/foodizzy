@@ -31,7 +31,7 @@ import router from '@/router';
 import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component, Mixins } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import Product from '@/types/Product';
+import {ProductDTO} from '@/types/DTOs';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -47,7 +47,7 @@ import VInput from '@/components/VInput.vue';
 })
 export default class CustomProduct extends Mixins(AlertMixin) {
   location?: string;
-  product: Product = { name: '' };
+  product: ProductDTO = { name: '' };
 
   mounted() {
     this.location = this.$route.query.location as string;

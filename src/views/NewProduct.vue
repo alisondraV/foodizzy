@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import Product from '@/types/Product';
+import { ProductDTO } from '@/types/DTOs';
 import router from '@/router';
 import VHeader from '@/components/VHeader.vue';
 import SearchInput from '@/components/SearchInput.vue';
@@ -42,7 +42,7 @@ import VButton from '@/components/VButton.vue';
 })
 export default class NewProduct extends Vue {
   location?: string;
-  products: Product[] = [];
+  products: ProductDTO[] = [];
   searchQuery = '';
 
   async mounted() {
@@ -57,7 +57,7 @@ export default class NewProduct extends Vue {
     });
   }
 
-  async removeExistingProduct(product: Product) {
+  async removeExistingProduct(product: ProductDTO) {
     if (this.location === 'storage') {
       await Firestore.instance.removeFromStorage(product);
     } else if (this.location === 'shoppingList') {
@@ -65,7 +65,7 @@ export default class NewProduct extends Vue {
     }
   }
 
-  async addNewProduct(product: Product) {
+  async addNewProduct(product: ProductDTO) {
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(product);
     } else if (this.location === 'shoppingList') {
@@ -79,7 +79,7 @@ export default class NewProduct extends Vue {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
-    type Category = { [category: string]: Product[] };
+    type Category = { [category: string]: ProductDTO[] };
     return reducedProducts.reduce<Category>((acc, product) => {
       const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
