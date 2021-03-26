@@ -13,13 +13,12 @@
         v-model="product.name"
         @input="alertMessage = null"
       />
-      <label>
-        <select v-model="selectedCategory" class="form-select w-full mb-4 text-primary-text">
-          <option v-for="category in categoriesList" :value="category" :key="category">
-            {{ category }}
-          </option>
-        </select>
-      </label>
+      <v-select
+        label="Category"
+        :selection-list="categoriesList"
+        :selected-item="selectedCategory"
+        @change="setSelectedCategory"
+      />
       <v-input
         v-if="customCategory"
         class="mb-10"
@@ -46,13 +45,15 @@ import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
+import VSelect from '@/components/VSelect.vue';
 
 @Component({
   components: {
     VAlert,
     VButton,
+    VHeader,
     VInput,
-    VHeader
+    VSelect
   }
 })
 export default class CustomProduct extends Mixins(AlertMixin) {
@@ -101,6 +102,10 @@ export default class CustomProduct extends Mixins(AlertMixin) {
     const allProducts = await Firestore.instance.getAllProducts();
     const productCategories = allProducts.map(product => product.category ?? 'General');
     this.categoriesList = [...new Set(productCategories)];
+  }
+
+  setSelectedCategory(value) {
+    this.selectedCategory = value;
   }
 
   trimProduct() {
