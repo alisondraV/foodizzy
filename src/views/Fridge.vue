@@ -11,6 +11,7 @@
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
+      <button class="border" @click="wasteSelected">waste</button>
       <ul>
         <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
           <h2 class="text-primary-green mb-1">{{ category }}</h2>
@@ -21,9 +22,10 @@
               v-for="product in filteredCategoryProducts[category]"
               :key="product.name"
             >
-              <img src="@/assets/images/Check.svg" alt="Finished" @click="markAsFinished(product)" />
+              <input type="checkbox" name="selected" v-model="product.selected" />
+              <!-- <img src="@/assets/images/Check.svg" alt="Finished" @click="markAsFinished(product)" /> -->
               <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-              <img src="@/assets/images/Waste.svg" alt="Wasted" @click="markAsWasted(product)" />
+              <!-- <img src="@/assets/images/Waste.svg" alt="Wasted" @click="markAsWasted(product)" /> -->
             </li>
           </ul>
         </li>
@@ -47,6 +49,22 @@ import Product from '@/types/Product';
 import Firestore from '@/utils/Firestore';
 import { Component, Mixins } from 'vue-property-decorator';
 
+class FooProduct implements Product {
+  public name: string;
+  public category?: string | undefined;
+  public selected: boolean;
+
+  constructor(name: string, category?: string) {
+    this.name = name;
+    this.category = category;
+    this.selected = false;
+  }
+
+  static fromDTO(product: Product) {
+    return new FooProduct(product.name, product.category);
+  }
+}
+
 @Component({
   components: {
     NavigationMenu,
@@ -56,16 +74,27 @@ import { Component, Mixins } from 'vue-property-decorator';
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
-  newProductCategory = '';
-  newProductName = '';
-  products: Product[] = [];
+  products: FooProduct[] = [];
   productWasWasted = false;
   searchQuery = '';
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = this.getProductsWithCategory(family.storage);
+      this.products = this.getProductsWithCategory(family.storage).map(FooProduct.fromDTO);
     };
+  }
+
+  get selectedProducts() {
+    return this.products.filter(product => product.selected);
+  }
+
+  async wasteSelected() {
+    await Promise.all(
+      this.selectedProducts.map(product => {
+        this.markAsWasted(product);
+      })
+    );
+    this.products = this.products.filter(product => !product.selected);
   }
 
   get filteredCategoryProducts() {
@@ -95,7 +124,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async markAsWasted(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromStorage(product);
     await Firestore.instance.moveToWasted(product);
     await Firestore.instance.addToShoppingList(product);
