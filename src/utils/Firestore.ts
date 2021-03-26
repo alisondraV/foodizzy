@@ -42,6 +42,10 @@ export default class Firestore {
   }
 
   public async addProductToStorage(product: ProductDTO) {
+    if (product instanceof Product) {
+      product = product.toDTO();
+    }
+
     if (await this.isProductInStorage(product)) return;
     const family = await CurrentFamily.instance.getCurrentFamily();
 
@@ -63,6 +67,9 @@ export default class Firestore {
   }
 
   public async moveToWasted(product: ProductDTO) {
+    if (product instanceof Product) {
+      product = product.toDTO();
+    }
     const seconds = new Date().getTime() / 1000;
     const documents = await this.db
       .collection('wasteBuckets')
@@ -92,6 +99,9 @@ export default class Firestore {
   }
 
   public async addToShoppingList(product: ProductDTO) {
+    if (product instanceof Product) {
+      product = product.toDTO();
+    }
     if (await this.isProductInShoppingList(product)) return;
     const family = await CurrentFamily.instance.getCurrentFamily();
 

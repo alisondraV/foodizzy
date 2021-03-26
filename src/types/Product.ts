@@ -21,6 +21,13 @@ export class Product implements ProductDTO {
     return new Product(product.name, product.category);
   }
 
+  toDTO() {
+    return {
+      name: this.name,
+      category: this.category
+    };
+  }
+
   async delete() {
     await Firestore.instance.removeFromStorage(this);
   }

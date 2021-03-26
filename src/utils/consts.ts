@@ -1,3 +1,4 @@
+import { Product } from '@/types';
 import tailwind from '../../tailwind.config';
 export const colors: string[] = Object.values(tailwind.theme.colors);
 
@@ -65,3 +66,22 @@ export const authErrors = {
 export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
+
+export type fridgeAction = 'delete' | 'waste' | 'consume';
+
+export const fridgeActions: {
+  [actionName in fridgeAction]: { act: (product: Product) => {}; message: string };
+} = {
+  delete: {
+    act: p => p.delete(),
+    message: 'Products were deleted'
+  },
+  waste: {
+    act: p => p.waste(),
+    message: 'Products were wasted'
+  },
+  consume: {
+    act: p => p.consume(),
+    message: 'Products were consumed'
+  }
+};

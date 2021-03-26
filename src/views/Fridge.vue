@@ -6,9 +6,9 @@
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <search-input class="mb-4" v-model="searchQuery" />
-      <button class="border" @click="wasteSelected">waste</button>
-      <button class="border" @click="consumeSelected">consume</button>
-      <button class="border" @click="deleteSelected">delete</button>
+      <button class="border" @click="performActionOnSelected('waste')">waste</button>
+      <button class="border" @click="performActionOnSelected('consume')">consume</button>
+      <button class="border" @click="performActionOnSelected('delete')">delete</button>
       <ul>
         <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
           <h2 class="text-primary-green mb-1">{{ category }}</h2>
@@ -43,6 +43,7 @@ import VHeader from '@/components/VHeader.vue';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import router from '@/router';
 import { Product } from '@/types';
+import { fridgeAction, fridgeActions } from '@/utils/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
@@ -67,22 +68,11 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     return this.products.filter(product => product.selected);
   }
 
-  async wasteSelected() {
-    await Promise.all(this.selectedProducts.map(product => product.waste()));
+  async performActionOnSelected(actionName: fridgeAction) {
+    const { act, message } = fridgeActions[actionName];
+    await Promise.all(this.selectedProducts.map(act));
     this.products = this.products.filter(product => !product.selected);
-    await this.showAlert('Products were wasted');
-  }
-
-  async consumeSelected() {
-    await Promise.all(this.selectedProducts.map(product => product.consume()));
-    this.products = this.products.filter(product => !product.selected);
-    await this.showAlert('Products were added to the shopping list');
-  }
-
-  async deleteSelected() {
-    await Promise.all(this.selectedProducts.map(product => product.delete()));
-    this.products = this.products.filter(product => !product.selected);
-    await this.showAlert('Products were removed from fridge');
+    await this.showAlert(message);
   }
 
   get filteredCategoryProducts() {
