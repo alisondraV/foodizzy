@@ -23,9 +23,8 @@
       />
       <v-input
         v-if="customCategory"
-        class="mb-10"
+        class="mt-3"
         type="text"
-        label="Category"
         placeholder="Enter category"
         v-model="product.category"
         @input="alertMessage = null"
@@ -103,7 +102,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   async getCategoriesList() {
     const allProducts = await Firestore.instance.getAllProducts();
     const productCategories = allProducts.map(product => product.category ?? 'General');
-    this.categoriesList = [...new Set(productCategories)];
+    this.categoriesList = [...new Set(productCategories), 'Add New'];
   }
 
   get isFormInValidState() {
@@ -112,6 +111,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
 
   setSelectedCategory(value) {
     this.selectedCategory = value;
+    this.customCategory = this.selectedCategory === 'Add New';
   }
 
   trimProduct() {
