@@ -1,22 +1,13 @@
 <template>
   <div class="flex justify-between items-center py-3 text-xl left-0">
-    <div v-if="isShoppingListPage()">
+    <div>
       <img
         v-if="product.acquired"
-        src="@/assets/images/Check.svg"
         alt="Acquired"
+        :src="getSource('acquired')"
         @click="$emit('update', product)"
       />
-      <img v-else src="@/assets/images/Empty.svg" alt="Acquired" @click="$emit('update', product)" />
-    </div>
-    <div v-if="isNewProductPage()">
-      <img
-        v-if="product.acquired"
-        src="@/assets/images/Minus.svg"
-        alt="Remove"
-        @click="$emit('update', product)"
-      />
-      <img v-else src="@/assets/images/Plus.svg" alt="Add" @click="$emit('update', product)" />
+      <img v-else alt="NotAcquired" :src="getSource('default')" @click="$emit('update', product)" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
     <img
@@ -29,6 +20,7 @@
 </template>
 
 <script lang="ts">
+import { pages } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ShoppingListItem from '@/types/ShoppingListItem';
 
@@ -41,8 +33,8 @@ export default class ListItem extends Vue {
     return this.currentPage == 'ShoppingList';
   }
 
-  isNewProductPage() {
-    return this.currentPage == 'NewProduct';
+  getSource(state) {
+    return pages[this.currentPage][state];
   }
 }
 </script>
