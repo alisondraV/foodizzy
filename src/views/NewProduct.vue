@@ -1,9 +1,8 @@
 <template>
   <div>
     <v-header heading="Add New Item" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20 mb-20 mx-8">
       <search-input class="mb-4" v-model="searchQuery" />
-      <v-button class="mb-4" label="Add Custom Product" @click="addCustomProduct" />
       <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-green mb-1">{{ category }}</h2>
         <hr class="text-secondary-text mb-2" />
@@ -13,30 +12,35 @@
             current-page="NewProduct"
             :key="product.name"
             :product="product"
-            @add="addNewProduct"
+            @update="toggleProduct"
             @remove="removeExistingProduct"
           />
         </div>
       </div>
     </div>
+    <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
+      <v-button class="mt-3 mr-2 px flex-1" label="Add custom product" @click="addCustomProduct" />
+      <v-button class="mt-3 flex-1" label="Add items to the list" @click="addItemsToTheList" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import router from '@/router';
 import { Component, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import Product from '@/types/Product';
-import router from '@/router';
-import VHeader from '@/components/VHeader.vue';
-import SearchInput from '@/components/SearchInput.vue';
 import ListItem from '@/components/ListItem.vue';
+import Product from '@/types/Product';
+import SearchInput from '@/components/SearchInput.vue';
+import ShoppingListItem from '@/types/ShoppingListItem';
 import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
 
 @Component({
   components: {
-    VButton,
     ListItem,
     SearchInput,
+    VButton,
     VHeader
   }
 })
@@ -46,8 +50,8 @@ export default class NewProduct extends Vue {
   searchQuery = '';
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
     this.location = this.$route.query.location as string;
+    this.products = await this.getProductsWithCategory();
   }
 
   addCustomProduct() {
@@ -57,21 +61,61 @@ export default class NewProduct extends Vue {
     });
   }
 
-  async removeExistingProduct(product: Product) {
-    if (this.location === 'storage') {
-      await Firestore.instance.removeFromStorage(product);
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.removeFromShoppingList(product);
-    }
+  async toggleProduct(productToUpdate: ShoppingListItem) {
+    this.products = this.products.map(product => {
+      return product.name == productToUpdate.name ? { ...product, acquired: !product.acquired } : product;
+    });
   }
 
-  async addNewProduct(product: Product) {
-    if (this.location === 'storage') {
-      await Firestore.instance.addProductToStorage(product);
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.addToShoppingList(product);
+  async removeExistingProduct(shoppingItem: ShoppingListItem) {
+    this.products = this.product.map(product => {
+      return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
+    });
+  }
+
+  async addItemsToTheList() {
+    const acquiredProducts = this.products.filter(p => p.acquired);
+
+    for (const product of acquiredProducts) {
+      if (this.location === 'storage') {
+        await Firestore.instance.addProductToStorage(product);
+      } else if (this.location === 'shoppingList') {
+        await Firestore.instance.addToShoppingList(product);
+      }
     }
+
     router.back();
+  }
+
+  async getProductsWithCategory() {
+    const allProducts = await this.getProductsForLocation();
+
+    return allProducts.map(product => {
+      const productCategory = product.category ?? 'General';
+      return { name: product.name, category: productCategory, acquired: false };
+    });
+  }
+
+  async getProductsForLocation() {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const availableProducts = [];
+
+    for (const product of allProducts) {
+      if (await this.isAvailableForTheCurrentPage(product)) {
+        availableProducts.push(product);
+      }
+    }
+
+    return availableProducts;
+  }
+
+  private async isAvailableForTheCurrentPage(product: Product) {
+    const isInStorage = await Firestore.instance.isProductInStorage(product);
+    const isInShoppingList = await Firestore.instance.isProductInShoppingList(product);
+
+    return (
+      (this.location === 'storage' && !isInStorage) || (this.location === 'shoppingList' && !isInShoppingList)
+    );
   }
 
   get filteredCategoryProducts() {
@@ -90,14 +134,6 @@ export default class NewProduct extends Vue {
 
       return acc;
     }, {});
-  }
-
-  async getProductsWithCategory() {
-    const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
   }
 }
 </script>
