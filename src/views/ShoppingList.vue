@@ -38,9 +38,9 @@ import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import { ListenerMixin, AlertMixin } from '@/mixins';
 import router from '@/router';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import Firestore from '@/utils/Firestore';
 import { Component, Mixins } from 'vue-property-decorator';
+import Product from '@/types/Product';
 
 @Component({
   components: {
@@ -53,7 +53,7 @@ import { Component, Mixins } from 'vue-property-decorator';
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
-  products: ShoppingListItem[] = [];
+  products: Product[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;
 
@@ -72,7 +72,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
       return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
 
-    type Category = { [category: string]: ShoppingListItem[] };
+    type Category = { [category: string]: Product[] };
     return reducedProducts.reduce<Category>((acc, product) => {
       const categoryName = product.category ?? 'General';
       if (!Object.keys(acc).includes(categoryName)) {
@@ -85,12 +85,12 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     }, {});
   }
 
-  async removeFromShoppingList(product: ShoppingListItem) {
+  async removeFromShoppingList(product: Product) {
     this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromShoppingList(product);
   }
 
-  getProductsWithCategory(products: ShoppingListItem[]): ShoppingListItem[] {
+  getProductsWithCategory(products: Product[]): Product[] {
     if (!products) {
       return [];
     }
@@ -105,7 +105,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     });
   }
 
-  async checkShoppingItem(shoppingItem: ShoppingListItem) {
+  async checkShoppingItem(shoppingItem: Product) {
     this.products = this.products.map(product => {
       return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
     });

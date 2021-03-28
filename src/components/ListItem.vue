@@ -22,11 +22,11 @@
 <script lang="ts">
 import { pages } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import ShoppingListItem from '@/types/ShoppingListItem';
+import Product from '@/types/Product';
 
 @Component
 export default class ListItem extends Vue {
-  @Prop() product!: ShoppingListItem;
+  @Prop() product!: Product;
   @Prop() currentPage!: string;
 
   isShoppingListPage() {

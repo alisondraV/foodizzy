@@ -32,7 +32,6 @@ import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import Product from '@/types/Product';
 import SearchInput from '@/components/SearchInput.vue';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 
@@ -61,16 +60,18 @@ export default class NewProduct extends Vue {
     });
   }
 
-  async toggleProduct(productToUpdate: ShoppingListItem) {
+  toggleProduct(productToUpdate: Product) {
     this.products = this.products.map(product => {
       return product.name == productToUpdate.name ? { ...product, acquired: !product.acquired } : product;
     });
   }
 
-  async removeExistingProduct(shoppingItem: ShoppingListItem) {
-    this.products = this.product.map(product => {
-      return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
-    });
+  async removeExistingProduct(product: Product) {
+    if (this.location === 'storage') {
+      await Firestore.instance.removeFromStorage(product);
+    } else if (this.location === 'shoppingList') {
+      await Firestore.instance.removeFromShoppingList(product);
+    }
   }
 
   async addItemsToTheList() {
@@ -96,9 +97,9 @@ export default class NewProduct extends Vue {
     });
   }
 
-  async getProductsForLocation() {
+  async getProductsForLocation(): Promise<Product[]> {
     const allProducts = await Firestore.instance.getAllProducts();
-    const availableProducts = [];
+    const availableProducts: Product[] = [];
 
     for (const product of allProducts) {
       if (await this.isAvailableForTheCurrentPage(product)) {

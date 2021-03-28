@@ -2,7 +2,6 @@ import firebase from 'firebase';
 import 'firebase/functions';
 import { CurrentFamily, Family } from '@/types';
 import Product from '@/types/Product';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
 import { CallableFunctions } from './consts';
 
@@ -105,7 +104,7 @@ export default class Firestore {
       .set(family);
   }
 
-  public async updateShoppingList(products: ShoppingListItem[]) {
+  public async updateShoppingList(products: Product[]) {
     await this.db
       .collection('family')
       .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)
