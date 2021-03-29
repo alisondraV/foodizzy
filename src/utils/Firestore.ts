@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/functions';
-import Family, { CurrentFamily } from '@/types/Family';
+import { CurrentFamily, Family } from '@/types';
 import Product from '@/types/Product';
 import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
@@ -42,6 +42,7 @@ export default class Firestore {
   }
 
   public async addProductToStorage(product: Product) {
+    if (await this.isProductInStorage(product)) return;
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     family.storage.push(product);
@@ -91,6 +92,7 @@ export default class Firestore {
   }
 
   public async addToShoppingList(product: Product) {
+    if (await this.isProductInShoppingList(product)) return;
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     family.shoppingList.push({
@@ -128,5 +130,19 @@ export default class Firestore {
     const familyRef = this.db.collection('family').doc(familyId);
 
     await familyRef.update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
+  }
+
+  public async isProductInStorage(product: Product) {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+
+    const storageProductNames = family.storage.map(p => p.name);
+    return storageProductNames?.includes(product.name);
+  }
+
+  public async isProductInShoppingList(product: Product) {
+    const family = await CurrentFamily.instance.getCurrentFamily();
+
+    const shoppingListProductNames = family.shoppingList.map(p => p.name);
+    return shoppingListProductNames?.includes(product.name);
   }
 }
