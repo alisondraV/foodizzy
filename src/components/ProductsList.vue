@@ -1,10 +1,19 @@
 <template>
   <div>
-    <search-input class="mb-4" v-model="searchQuery" />
+    <search-input class="mb-6" v-model="searchQuery" />
     <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-      <h2 class="text-primary-green mb-1">{{ category }}</h2>
+      <div class="flex mb-1" @click="toggleCategoryVisibility(category)">
+        <img
+          v-if="categoriesVisibility.get(category)"
+          alt="ArrowDown"
+          class="mr-2"
+          src="@/assets/images/ArrowDown.svg"
+        />
+        <img v-else alt="ArrowUp" class="mr-2" src="@/assets/images/ArrowUp.svg" />
+        <h2 class="text-primary-green">{{ category }}</h2>
+      </div>
       <hr class="text-secondary-text mb-2" />
-      <div>
+      <div v-if="!categoriesVisibility.get(category)">
         <list-item
           v-for="product in filteredCategoryProducts[category]"
           :current-page="currentPage"
@@ -30,6 +39,7 @@ import SearchInput from '@/components/SearchInput.vue';
 export default class ProductsList extends Vue {
   @Prop() products!: Product[];
   @Prop() currentPage!: string;
+  categoriesVisibility = new Map();
   searchQuery = '';
 
   get filteredCategoryProducts() {
@@ -41,6 +51,7 @@ export default class ProductsList extends Vue {
     return reducedProducts.reduce<Category>((acc, product) => {
       const categoryName = product.category!;
       if (!Object.keys(acc).includes(categoryName)) {
+        this.updateCategoryVisibilityList(categoryName);
         acc[categoryName] = [];
       }
 
@@ -48,6 +59,17 @@ export default class ProductsList extends Vue {
 
       return acc;
     }, {});
+  }
+
+  toggleCategoryVisibility(categoryToToggle: string) {
+    this.categoriesVisibility.set(categoryToToggle, !this.categoriesVisibility.get(categoryToToggle));
+    this.$forceUpdate();
+  }
+
+  updateCategoryVisibilityList(categoryName: string) {
+    const prevValue = this.categoriesVisibility.get(categoryName);
+    const isCollapsed = prevValue === undefined ? true : prevValue;
+    this.categoriesVisibility.set(categoryName, isCollapsed);
   }
 }
 </script>
