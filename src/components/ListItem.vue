@@ -10,12 +10,7 @@
       <img v-else alt="NotAcquired" :src="getSource('default')" @click="$emit('update', product)" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-    <img
-      v-if="isShoppingListPage()"
-      src="@/assets/images/Close.svg"
-      alt="Wasted"
-      @click="$emit('remove', product)"
-    />
+    <img v-if="showCross" src="@/assets/images/Close.svg" alt="Wasted" @click="$emit('remove', product)" />
   </div>
 </template>
 
@@ -29,11 +24,11 @@ export default class ListItem extends Vue {
   @Prop() product!: Product;
   @Prop() currentPage!: string;
 
-  isShoppingListPage() {
-    return this.currentPage == 'ShoppingList';
+  get showCross(): boolean {
+    return this.currentPage === 'ShoppingList' || this.currentPage === 'Fridge';
   }
 
-  getSource(state) {
+  getSource(state): string {
     return pages[this.currentPage][state];
   }
 }

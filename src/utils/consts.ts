@@ -67,12 +67,16 @@ export enum CallableFunctions {
 }
 
 export const pages = {
-  ShoppingList: {
-    default: require('@/assets/images/Empty.svg'),
-    acquired: require('@/assets/images/Check.svg')
+  Fridge: {
+    default: require('@/assets/images/Check.svg'),
+    acquired: require('@/assets/images/Minus.svg')
   },
   NewProduct: {
     default: require('@/assets/images/Plus.svg'),
     acquired: require('@/assets/images/Minus.svg')
+  },
+  ShoppingList: {
+    default: require('@/assets/images/Empty.svg'),
+    acquired: require('@/assets/images/Check.svg')
   }
 };
