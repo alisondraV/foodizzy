@@ -10,8 +10,8 @@
           :current-page="currentPage"
           :key="product.name"
           :product="product"
-          @update="$emit('update', product)"
           @remove="$emit('remove', product)"
+          @update="$emit('update', product)"
         />
       </div>
     </div>

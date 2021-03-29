@@ -5,25 +5,18 @@
       <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <search-input class="mb-6" v-model="searchQuery" />
-      <v-button class="mb-4" @click="updateFridge" label="Update Fridge" />
-      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-        <h2 class="text-primary-green mb-1">{{ category }}</h2>
-        <hr class="text-secondary-text mb-2" />
-        <div>
-          <list-item
-            v-for="product in filteredCategoryProducts[category]"
-            current-page="ShoppingList"
-            :key="product.name"
-            :product="product"
-            @remove="removeFromShoppingList"
-            @update="checkShoppingItem"
-          />
-        </div>
-      </div>
-      <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
+      <products-list
+        current-page="ShoppingList"
+        :products="products"
+        @remove="removeFromShoppingList"
+        @update="checkShoppingItem"
+      />
+      <div v-if="!productsAreSelected" class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
         <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
+    </div>
+    <div v-if="productsAreSelected" class="h-40 bottom-0 w-full fixed flex justify-end pr-4 pt-2">
+      <v-button label="Update Fridge" @click="updateFridge" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>
@@ -41,9 +34,11 @@ import router from '@/router';
 import Firestore from '@/utils/Firestore';
 import { Component, Mixins } from 'vue-property-decorator';
 import Product from '@/types/Product';
+import ProductsList from '@/components/ProductsList.vue';
 
 @Component({
   components: {
+    ProductsList,
     ListItem,
     NavigationMenu,
     SearchInput,
@@ -120,6 +115,11 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     }
 
     await this.showAlert('Products were added to the fridge');
+  }
+
+  get productsAreSelected(): boolean {
+    const unacquiredProducts = this.products.filter(p => !p.acquired);
+    return this.products.length !== unacquiredProducts.length;
   }
 }
 </script>

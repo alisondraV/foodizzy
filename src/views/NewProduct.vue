@@ -5,12 +5,12 @@
       <products-list
         current-page="NewProduct"
         :products="products"
-        @update="toggleProduct"
         @remove="removeExistingProduct"
+        @update="toggleProduct"
       />
     </div>
     <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
-      <v-button class="mt-3 mr-2 px flex-1" label="Add custom product" @click="addCustomProduct" />
+      <v-button class="mt-3 mr-2 flex-1" label="Add custom product" @click="addCustomProduct" />
       <v-button class="mt-3 flex-1" label="Add items to the list" @click="addItemsToTheList" />
     </div>
   </div>
