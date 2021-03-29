@@ -62,24 +62,6 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     router.safePush({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 
-  get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-    });
-
-    type Category = { [category: string]: Product[] };
-    return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
-      if (!Object.keys(acc).includes(categoryName)) {
-        acc[categoryName] = [];
-      }
-
-      acc[categoryName].push(product);
-
-      return acc;
-    }, {});
-  }
-
   async removeFromShoppingList(product: Product) {
     this.products = this.products.filter(p => p.name != product.name);
     await Firestore.instance.removeFromShoppingList(product);

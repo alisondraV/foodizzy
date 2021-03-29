@@ -80,5 +80,35 @@ export default class NewProduct extends Vue {
 
     router.back();
   }
+  async getProductsWithCategory() {
+    const allProducts = await this.getProductsForLocation();
+
+    return allProducts.map(product => {
+      const productCategory = product.category ?? 'General';
+      return { name: product.name, category: productCategory, acquired: false };
+    });
+  }
+
+  async getProductsForLocation(): Promise<Product[]> {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const availableProducts: Product[] = [];
+
+    for (const product of allProducts) {
+      if (await this.isAvailableForTheCurrentPage(product)) {
+        availableProducts.push(product);
+      }
+    }
+
+    return availableProducts;
+  }
+
+  private async isAvailableForTheCurrentPage(product: Product) {
+    const isInStorage = await Firestore.instance.isProductInStorage(product);
+    const isInShoppingList = await Firestore.instance.isProductInShoppingList(product);
+
+    return (
+      (this.location === 'storage' && !isInStorage) || (this.location === 'shoppingList' && !isInShoppingList)
+    );
+  }
 }
 </script>
