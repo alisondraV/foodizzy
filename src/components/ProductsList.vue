@@ -4,7 +4,7 @@
     <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
       <div class="flex mb-1" @click="toggleCategoryVisibility(category)">
         <img
-          v-if="categoriesVisibility.get(category)"
+          v-if="categoriesVisibility[category]"
           alt="ArrowDown"
           class="mr-2"
           src="@/assets/images/ArrowDown.svg"
@@ -13,7 +13,7 @@
         <h2 class="text-primary-green">{{ category }}</h2>
       </div>
       <hr class="text-secondary-text mb-2" />
-      <div v-if="!categoriesVisibility.get(category)">
+      <div v-if="!categoriesVisibility[category]">
         <list-item
           v-for="product in filteredCategoryProducts[category]"
           :current-page="currentPage"
@@ -39,7 +39,8 @@ import SearchInput from '@/components/SearchInput.vue';
 export default class ProductsList extends Vue {
   @Prop() products!: Product[];
   @Prop() currentPage!: string;
-  categoriesVisibility = new Map();
+  @Prop({ default: true }) allCollapsed?: boolean;
+  categoriesVisibility = {};
   searchQuery = '';
 
   get filteredCategoryProducts() {
@@ -62,14 +63,14 @@ export default class ProductsList extends Vue {
   }
 
   toggleCategoryVisibility(categoryToToggle: string) {
-    this.categoriesVisibility.set(categoryToToggle, !this.categoriesVisibility.get(categoryToToggle));
+    this.categoriesVisibility[categoryToToggle] = !this.categoriesVisibility[categoryToToggle];
     this.$forceUpdate();
   }
 
   updateCategoryVisibilityList(categoryName: string) {
-    const prevValue = this.categoriesVisibility.get(categoryName);
-    const isCollapsed = prevValue === undefined ? true : prevValue;
-    this.categoriesVisibility.set(categoryName, isCollapsed);
+    const prevValue = this.categoriesVisibility[categoryName];
+    const isCollapsed = prevValue === undefined ? this.allCollapsed : prevValue;
+    this.categoriesVisibility[categoryName] = isCollapsed;
   }
 }
 </script>
