@@ -14,8 +14,8 @@
         :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
-      <div v-if="errorMessage" class="-mt-3 ml-1 mb-3 text-dark-peach">{{ errorMessage }}</div>
       <v-select
+        class="mb-4"
         label="Category"
         :selection-list="categoriesList"
         :selected-item="product.category"
@@ -23,12 +23,14 @@
       />
       <v-input
         v-if="customCategory"
-        class="mt-3"
+        class="mb-4"
         type="text"
         placeholder="Enter category"
         v-model="product.category"
+        :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
+      <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
       <v-button label="Add" class="mx-8" @click="addNewProduct" :disabled="validationFailed" />
@@ -61,7 +63,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   categoriesList: string[] = [];
   customCategory = false;
   location?: string;
-  product: Product = { name: '' };
+  product: Product = { name: '', category: '' };
 
   async mounted() {
     this.location = this.$route.query.location as string;
@@ -105,7 +107,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   get isFormInValidState() {
-    return this.isDisplayNameValid(this.product.name);
+    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category);
   }
 
   setSelectedCategory(value) {
