@@ -10,14 +10,20 @@
         :products="products"
         @remove="product => product.removeFromStorage()"
       />
-      <div v-if="!productsAreSelected" class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
-        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
-      </div>
+      <v-fab
+        v-if="!productsAreSelected"
+        class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8 p-4"
+        iconName="AddNew"
+        @click="addNewProduct"
+      />
     </div>
-    <div v-if="productsAreSelected" class="h-40 bottom-0 w-full fixed flex justify-end pr-4 pt-2">
-      <v-button label="Delete" @click="performActionOnSelected('delete')" />
-      <v-button label="Waste" @click="performActionOnSelected('waste')" />
-      <v-button label="Consume" @click="performActionOnSelected('consume')" />
+    <div
+      v-if="productsAreSelected"
+      class="h-full fixed top-0 right-0 flex flex-col justify-end pr-4 pt-2 pb-20"
+    >
+      <v-fab class="w-20 my-2" iconName="Remove" @click="performActionOnSelected('delete')" />
+      <v-fab class="w-20 my-2" iconName="Waste" @click="performActionOnSelected('waste')" />
+      <v-fab class="w-20 my-2" iconName="AddNew" @click="performActionOnSelected('consume')" />
     </div>
     <navigation-menu current-page="Fridge" />
   </div>
@@ -34,7 +40,8 @@ import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
-import { fridgeAction, fridgeActions } from '@/utils/consts';
+import VFab from '@/components/VFab.vue';
+import { FridgeAction, fridgeActions } from '@/utils/consts';
 
 @Component({
   components: {
@@ -43,7 +50,8 @@ import { fridgeAction, fridgeActions } from '@/utils/consts';
     SearchInput,
     VAlert,
     VButton,
-    VHeader
+    VHeader,
+    VFab
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
@@ -63,7 +71,7 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     return this.products.filter(product => product.selected);
   }
 
-  async performActionOnSelected(actionName: fridgeAction) {
+  async performActionOnSelected(actionName: FridgeAction) {
     const { act, message } = fridgeActions[actionName];
     await Promise.all(this.selectedProducts.map(act));
     await this.showAlert(message);

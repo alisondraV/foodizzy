@@ -1,0 +1,20 @@
+<template>
+  <div>
+    <img @click="$emit('click')" :src="iconSource" :alt="iconName" />
+  </div>
+</template>
+
+<script lang="ts">
+import { IconName, Icons } from '@/utils/consts';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class VFAB extends Vue {
+  @Prop() iconName!: IconName;
+  @Prop({ default: false }) disabled?: boolean;
+
+  get iconSource() {
+    return Icons[this.iconName];
+  }
+}
+</script>

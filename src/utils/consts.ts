@@ -67,10 +67,18 @@ export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
 
-export type fridgeAction = 'delete' | 'waste' | 'consume';
+export type IconName = 'AddNew' | 'Remove' | 'Waste';
+
+export const Icons: { [iconName in IconName]: string } = {
+  AddNew: require('@/assets/images/AddNew.svg'),
+  Remove: require('@/assets/images/Remove.svg'),
+  Waste: require('@/assets/images/Waste.svg')
+};
+
+export type FridgeAction = 'delete' | 'waste' | 'consume';
 
 export const fridgeActions: {
-  [actionName in fridgeAction]: { act: (product: Product) => {}; message: string };
+  [actionName in FridgeAction]: { act: (product: Product) => {}; message: string };
 } = {
   delete: {
     act: p => p.removeFromStorage(),
@@ -86,10 +94,10 @@ export const fridgeActions: {
   }
 };
 
-export type shoppingListAction = 'delete' | 'purchase';
+export type ShoppingListAction = 'delete' | 'purchase';
 
 export const shoppingListActions: {
-  [actionName in shoppingListAction]: { act: (product: Product) => {}; message: string };
+  [actionName in ShoppingListAction]: { act: (product: Product) => {}; message: string };
 } = {
   delete: {
     act: p => p.removeFromShoppingList(),
