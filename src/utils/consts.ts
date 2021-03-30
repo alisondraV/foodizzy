@@ -88,8 +88,8 @@ export const fridgeActions: {
 
 export const pages = {
   Fridge: {
-    default: require('@/assets/images/Check.svg'),
-    selected: require('@/assets/images/Minus.svg')
+    default: require('@/assets/images/Empty.svg'),
+    selected: require('@/assets/images/Check.svg')
   },
   NewProduct: {
     default: require('@/assets/images/Plus.svg'),

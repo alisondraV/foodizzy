@@ -1,13 +1,8 @@
 <template>
   <div class="flex justify-between items-center py-3 text-xl left-0">
-    <div>
-      <img
-        v-if="product.selected"
-        alt="Acquired"
-        :src="getSource('selected')"
-        @click="$emit('update', product)"
-      />
-      <img v-else alt="NotAcquired" :src="getSource('default')" @click="$emit('update', product)" />
+    <div @click="toggleProduct">
+      <img v-if="product.selected" alt="Acquired" :src="getSource('selected')" />
+      <img v-else alt="NotAcquired" :src="getSource('default')" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
     <img v-if="showCross" src="@/assets/images/Close.svg" alt="Wasted" @click="$emit('remove', product)" />
@@ -30,6 +25,10 @@ export default class ListItem extends Vue {
 
   getSource(state): string {
     return pages[this.currentPage][state];
+  }
+
+  toggleProduct() {
+    this.product.selected = !this.product.selected;
   }
 }
 </script>

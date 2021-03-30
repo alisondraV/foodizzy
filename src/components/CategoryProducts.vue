@@ -12,7 +12,6 @@
         :key="product.name"
         :product="product"
         @remove="$emit('remove', product)"
-        @update="$emit('update', product)"
       />
     </div>
   </div>

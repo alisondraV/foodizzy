@@ -2,12 +2,7 @@
   <div>
     <v-header heading="Add New Item" />
     <div class="mt-20 mb-20 mx-8">
-      <products-list
-        current-page="NewProduct"
-        :products="products"
-        @remove="removeExistingProduct"
-        @update="toggleProduct"
-      />
+      <products-list current-page="NewProduct" :products="products" @remove="removeExistingProduct" />
     </div>
     <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
       <v-button class="mt-3 mr-2 flex-1" label="Add custom product" @click="addCustomProduct" />
@@ -52,10 +47,6 @@ export default class NewProduct extends Vue {
       path: 'custom-product',
       query: { location: this.location }
     });
-  }
-
-  toggleProduct(productToUpdate: Product) {
-    productToUpdate.selected = !productToUpdate.selected;
   }
 
   async removeExistingProduct(product: Product) {

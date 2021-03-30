@@ -5,12 +5,7 @@
       <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <products-list
-        current-page="ShoppingList"
-        :products="products"
-        @remove="removeFromShoppingList"
-        @update="checkShoppingItem"
-      />
+      <products-list current-page="ShoppingList" :products="products" @remove="removeFromShoppingList" />
       <div v-if="!productsAreSelected" class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
         <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
@@ -77,10 +72,6 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     return products.map(product => {
       return new Product(product.name, product.category);
     });
-  }
-
-  async checkShoppingItem(shoppingItem: Product) {
-    shoppingItem.selected = !shoppingItem.selected;
   }
 
   async updateFridge() {
