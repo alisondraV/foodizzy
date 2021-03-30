@@ -1,54 +1,50 @@
 <template>
   <div>
     <v-header heading="Add New Item" />
-    <div class="mt-24 mb-20 mx-8">
-      <search-input class="mb-4" v-model="searchQuery" />
-      <v-button class="mb-4" label="Add Custom Product" @click="addCustomProduct" />
-      <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-        <h2 class="text-primary-green mb-1">{{ category }}</h2>
-        <hr class="text-secondary-text mb-2" />
-        <div>
-          <list-item
-            v-for="product in filteredCategoryProducts[category]"
-            current-page="NewProduct"
-            :key="product.name"
-            :product="product"
-            @add="addNewProduct"
-            @remove="removeExistingProduct"
-          />
-        </div>
-      </div>
+    <div class="mt-20 mb-20 mx-8">
+      <products-list
+        current-page="NewProduct"
+        :products="products"
+        @remove="removeExistingProduct"
+        @update="toggleProduct"
+      />
+    </div>
+    <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
+      <v-button class="mt-3 mr-2 flex-1" label="Add custom product" @click="addCustomProduct" />
+      <v-button class="mt-3 flex-1" label="Add items to the list" @click="addItemsToTheList" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import router from '@/router';
+import { Component, Provide, Vue } from 'vue-property-decorator';
+import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
+import { Product } from '@/types';
 import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
-import router from '@/router';
-import { Product } from '@/types';
-import { ProductDTO } from '@/types/DTOs';
-import Firestore from '@/utils/Firestore';
-import { Component, Vue } from 'vue-property-decorator';
+import ProductsList from '@/components/ProductsList.vue';
 
 @Component({
   components: {
-    VButton,
+    ProductsList,
     ListItem,
     SearchInput,
+    VButton,
     VHeader
   }
 })
 export default class NewProduct extends Vue {
+  @Provide('currentPage') currentPage = 'NewProduct';
   location?: string;
   products: Product[] = [];
   searchQuery = '';
 
   async mounted() {
-    this.products = await Firestore.instance.getAllProducts();
     this.location = this.$route.query.location as string;
+    this.products = await this.getProductsWithCategory();
   }
 
   addCustomProduct() {
@@ -58,7 +54,11 @@ export default class NewProduct extends Vue {
     });
   }
 
-  async removeExistingProduct(product: ProductDTO) {
+  toggleProduct(productToUpdate: Product) {
+    productToUpdate.selected = !productToUpdate.selected;
+  }
+
+  async removeExistingProduct(product: Product) {
     if (this.location === 'storage') {
       await Firestore.instance.removeFromStorage(product);
     } else if (this.location === 'shoppingList') {
@@ -66,31 +66,47 @@ export default class NewProduct extends Vue {
     }
   }
 
-  async addNewProduct(product: ProductDTO) {
-    if (this.location === 'storage') {
-      await Firestore.instance.addProductToStorage(product);
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.addToShoppingList(product);
+  async addItemsToTheList() {
+    const selectedProducts = this.products.filter(p => p.selected);
+
+    for (const product of selectedProducts) {
+      if (this.location === 'storage') {
+        await Firestore.instance.addProductToStorage(product);
+      } else if (this.location === 'shoppingList') {
+        await Firestore.instance.addToShoppingList(product);
+      }
     }
+
     router.back();
   }
+  async getProductsWithCategory() {
+    const allProducts = await this.getProductsForLocation();
 
-  get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+    return allProducts.map(product => {
+      return new Product(product.name, product.category);
     });
+  }
 
-    type Category = { [category: string]: Product[] };
-    return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category;
-      if (!Object.keys(acc).includes(categoryName)) {
-        acc[categoryName] = [];
+  async getProductsForLocation(): Promise<Product[]> {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const availableProducts: Product[] = [];
+
+    for (const product of allProducts) {
+      if (await this.isAvailableForTheCurrentPage(product)) {
+        availableProducts.push(product);
       }
+    }
 
-      acc[categoryName].push(product);
+    return availableProducts;
+  }
 
-      return acc;
-    }, {});
+  private async isAvailableForTheCurrentPage(product: Product) {
+    const isInStorage = await Firestore.instance.isProductInStorage(product);
+    const isInShoppingList = await Firestore.instance.isProductInShoppingList(product);
+
+    return (
+      (this.location === 'storage' && !isInStorage) || (this.location === 'shoppingList' && !isInShoppingList)
+    );
   }
 }
 </script>

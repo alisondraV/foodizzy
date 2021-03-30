@@ -7,14 +7,18 @@ export class Product implements ProductDTO {
   public static defaultCategory = 'General';
   public selected: boolean;
 
-  constructor(name: string, category?: string) {
+  constructor(name: string, category?: string, selected?: boolean) {
     this.name = name;
     this._category = category;
-    this.selected = false;
+    this.selected = selected ?? false;
   }
 
   get category() {
     return this._category ?? Product.defaultCategory;
+  }
+
+  set category(value) {
+    this._category = value;
   }
 
   static fromDTO(product: ProductDTO) {

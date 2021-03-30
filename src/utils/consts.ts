@@ -85,3 +85,18 @@ export const fridgeActions: {
     message: 'Products were consumed'
   }
 };
+
+export const pages = {
+  Fridge: {
+    default: require('@/assets/images/Check.svg'),
+    selected: require('@/assets/images/Minus.svg')
+  },
+  NewProduct: {
+    default: require('@/assets/images/Plus.svg'),
+    selected: require('@/assets/images/Minus.svg')
+  },
+  ShoppingList: {
+    default: require('@/assets/images/Empty.svg'),
+    selected: require('@/assets/images/Check.svg')
+  }
+};

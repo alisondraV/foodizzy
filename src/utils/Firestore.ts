@@ -2,7 +2,6 @@ import firebase from 'firebase';
 import 'firebase/functions';
 import { CurrentFamily, Family, Product } from '@/types';
 import { ProductDTO } from '@/types/DTOs';
-import ShoppingListItem from '@/types/ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
 import { CallableFunctions } from './consts';
 
@@ -105,17 +104,14 @@ export default class Firestore {
     if (await this.isProductInShoppingList(product)) return;
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.shoppingList.push({
-      ...product,
-      acquired: false
-    });
+    family.shoppingList.push(product);
     await this.db
       .collection('family')
       .doc(family.id)
       .set(family);
   }
 
-  public async updateShoppingList(products: ShoppingListItem[]) {
+  public async updateShoppingList(products: Product[]) {
     await this.db
       .collection('family')
       .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)

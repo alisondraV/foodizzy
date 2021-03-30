@@ -4,7 +4,6 @@ import DocumentReference = firebase.firestore.DocumentReference;
 import Firestore from '@/utils/Firestore';
 import { ProductDTO } from './DTOs';
 import Recipe from '@/types/Recipe';
-import ShoppingListItem from './ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
 
@@ -14,7 +13,7 @@ export interface Family {
   pendingMembers: string[];
   name: string;
   storage: ProductDTO[];
-  shoppingList: ShoppingListItem[];
+  shoppingList: ProductDTO[];
   totalProducts: { [category: string]: number };
 }
 
