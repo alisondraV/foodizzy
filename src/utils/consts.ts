@@ -1,3 +1,4 @@
+import { Product } from '@/types';
 import tailwind from '../../tailwind.config';
 export const colors: string[] = Object.values(tailwind.theme.colors);
 
@@ -66,17 +67,70 @@ export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
 
+export type IconName =
+  | 'AddNew'
+  | 'Remove'
+  | 'RemoveFAB'
+  | 'Waste'
+  | 'WasteFAB'
+  | 'MoveToShoppingList'
+  | 'Purchase';
+
+export const Icons: { [iconName in IconName]: string } = {
+  AddNew: require('@/assets/images/AddNew.svg'),
+  Remove: require('@/assets/images/Remove.svg'),
+  RemoveFAB: require('@/assets/images/RemoveFAB.svg'),
+  Waste: require('@/assets/images/Waste.svg'),
+  WasteFAB: require('@/assets/images/WasteFAB.svg'),
+  MoveToShoppingList: require('@/assets/images/MoveToShoppingList.svg'),
+  Purchase: require('@/assets/images/Purchase.svg')
+};
+
+export type FridgeAction = 'delete' | 'waste' | 'consume';
+
+export const fridgeActions: {
+  [actionName in FridgeAction]: { act: (product: Product) => {}; message: string };
+} = {
+  delete: {
+    act: p => p.removeFromStorage(),
+    message: 'Products were deleted'
+  },
+  waste: {
+    act: p => p.waste(),
+    message: 'Products were wasted'
+  },
+  consume: {
+    act: p => p.consume(),
+    message: 'Products were moved to the shopping list'
+  }
+};
+
+export type ShoppingListAction = 'delete' | 'purchase';
+
+export const shoppingListActions: {
+  [actionName in ShoppingListAction]: { act: (product: Product) => {}; message: string };
+} = {
+  delete: {
+    act: p => p.removeFromShoppingList(),
+    message: 'Products were deleted'
+  },
+  purchase: {
+    act: p => p.purchase(),
+    message: 'Products were moved to the storage'
+  }
+};
+
 export const pages = {
   Fridge: {
-    default: require('@/assets/images/Check.svg'),
-    acquired: require('@/assets/images/Minus.svg')
+    default: require('@/assets/images/Empty.svg'),
+    selected: require('@/assets/images/Check.svg')
   },
   NewProduct: {
     default: require('@/assets/images/Plus.svg'),
-    acquired: require('@/assets/images/Minus.svg')
+    selected: require('@/assets/images/Minus.svg')
   },
   ShoppingList: {
     default: require('@/assets/images/Empty.svg'),
-    acquired: require('@/assets/images/Check.svg')
+    selected: require('@/assets/images/Check.svg')
   }
 };

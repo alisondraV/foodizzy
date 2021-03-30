@@ -2,12 +2,7 @@
   <div>
     <v-header heading="Add New Item" />
     <div class="mt-20 mb-20 mx-8">
-      <products-list
-        current-page="NewProduct"
-        :products="products"
-        @remove="removeExistingProduct"
-        @update="toggleProduct"
-      />
+      <products-list current-page="NewProduct" :products="products" @remove="removeExistingProduct" />
     </div>
     <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
       <v-button class="mt-3 mr-2 flex-1" label="Add custom product" @click="addCustomProduct" />
@@ -21,7 +16,7 @@ import router from '@/router';
 import { Component, Provide, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
-import Product from '@/types/Product';
+import { Product } from '@/types';
 import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -54,12 +49,6 @@ export default class NewProduct extends Vue {
     });
   }
 
-  toggleProduct(productToUpdate: Product) {
-    this.products = this.products.map(product => {
-      return product.name == productToUpdate.name ? { ...product, acquired: !product.acquired } : product;
-    });
-  }
-
   async removeExistingProduct(product: Product) {
     if (this.location === 'storage') {
       await Firestore.instance.removeFromStorage(product);
@@ -69,9 +58,9 @@ export default class NewProduct extends Vue {
   }
 
   async addItemsToTheList() {
-    const acquiredProducts = this.products.filter(p => p.acquired);
+    const selectedProducts = this.products.filter(p => p.selected);
 
-    for (const product of acquiredProducts) {
+    for (const product of selectedProducts) {
       if (this.location === 'storage') {
         await Firestore.instance.addProductToStorage(product);
       } else if (this.location === 'shoppingList') {
@@ -85,8 +74,7 @@ export default class NewProduct extends Vue {
     const allProducts = await this.getProductsForLocation();
 
     return allProducts.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory, acquired: false };
+      return new Product(product.name, product.category);
     });
   }
 
