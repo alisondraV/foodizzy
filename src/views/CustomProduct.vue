@@ -116,7 +116,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
 
   trimProduct() {
     this.product.name = this.product.name.trim();
-    this.product.category = this.selectedCategory.trim();
+    this.product.category = this.product.category ? this.product.category.trim() : this.selectedCategory;
   }
 }
 </script>
