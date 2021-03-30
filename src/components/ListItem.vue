@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center py-3 text-xl left-0">
+  <div class="flex justify-between items-center py-2 text-xl left-0">
     <div @click="toggleProduct">
       <img v-if="product.selected" alt="Selected" :src="getSource('selected')" />
       <img v-else alt="NotSelected" :src="getSource('default')" />
