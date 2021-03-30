@@ -1,63 +1,35 @@
 <template>
   <div class="flex justify-between items-center py-3 text-xl left-0">
-    <div v-if="isShoppingListPage()">
+    <div>
       <img
         v-if="product.acquired"
-        src="@/assets/images/Check.svg"
         alt="Acquired"
+        :src="getSource('acquired')"
         @click="$emit('update', product)"
       />
-      <img v-else src="@/assets/images/Empty.svg" alt="Acquired" @click="$emit('update', product)" />
-    </div>
-    <div v-if="isNewProductPage()">
-      <img v-if="inList" src="@/assets/images/Minus.svg" alt="Remove" @click="$emit('remove', product)" />
-      <img v-else src="@/assets/images/Plus.svg" alt="Add" @click="$emit('add', product)" />
+      <img v-else alt="NotAcquired" :src="getSource('default')" @click="$emit('update', product)" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-    <img
-      v-if="isShoppingListPage()"
-      src="@/assets/images/Close.svg"
-      alt="Wasted"
-      @click="$emit('remove', product)"
-    />
+    <img v-if="showCross" src="@/assets/images/Close.svg" alt="Wasted" @click="$emit('remove', product)" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { CurrentFamily, Family } from '@/types';
-import ShoppingListItem from '@/types/ShoppingListItem';
+import { pages } from '@/utils/consts';
+import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
+import Product from '@/types/Product';
 
 @Component
 export default class ListItem extends Vue {
-  @Prop() product!: ShoppingListItem;
-  @Prop() currentPage!: string;
-  family: Family | null = null;
-  inList = false;
+  @Prop() product!: Product;
+  @Inject('currentPage') currentPage!: string;
 
-  async mounted() {
-    const location = this.$route.query.location as string;
-
-    this.family = await CurrentFamily.instance.getCurrentFamily();
-    this.inList = location === 'storage' ? this.isInStorage() : this.isInShoppingList();
+  get showCross(): boolean {
+    return this.currentPage === 'ShoppingList' || this.currentPage === 'Fridge';
   }
 
-  isShoppingListPage() {
-    return this.currentPage == 'ShoppingList';
-  }
-
-  isNewProductPage() {
-    return this.currentPage == 'NewProduct';
-  }
-
-  isInStorage() {
-    const storageProductNames = this.family!.storage.map(p => p.name);
-    return storageProductNames?.includes(this.product.name);
-  }
-
-  isInShoppingList() {
-    const shoppingListProductNames = this.family!.shoppingList.map(p => p.name);
-    return shoppingListProductNames?.includes(this.product.name);
+  getSource(state): string {
+    return pages[this.currentPage][state];
   }
 }
 </script>

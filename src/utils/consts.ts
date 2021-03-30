@@ -65,3 +65,18 @@ export const authErrors = {
 export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
+
+export const pages = {
+  Fridge: {
+    default: require('@/assets/images/Check.svg'),
+    acquired: require('@/assets/images/Minus.svg')
+  },
+  NewProduct: {
+    default: require('@/assets/images/Plus.svg'),
+    acquired: require('@/assets/images/Minus.svg')
+  },
+  ShoppingList: {
+    default: require('@/assets/images/Empty.svg'),
+    acquired: require('@/assets/images/Check.svg')
+  }
+};

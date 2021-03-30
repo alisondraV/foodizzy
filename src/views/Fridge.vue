@@ -10,24 +10,12 @@
       />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <search-input class="mb-4" v-model="searchQuery" />
-      <ul>
-        <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-          <h2 class="text-primary-green mb-1">{{ category }}</h2>
-          <hr class="text-secondary-text mb-2" />
-          <ul>
-            <li
-              class="flex justify-between py-3 text-xl left-0"
-              v-for="product in filteredCategoryProducts[category]"
-              :key="product.name"
-            >
-              <img src="@/assets/images/Check.svg" alt="Finished" @click="markAsFinished(product)" />
-              <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-              <img src="@/assets/images/Waste.svg" alt="Wasted" @click="markAsWasted(product)" />
-            </li>
-          </ul>
-        </li>
-      </ul>
+      <products-list
+        current-page="Fridge"
+        :products="products"
+        @remove="markAsWasted"
+        @update="markAsFinished"
+      />
       <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
         <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
@@ -37,25 +25,28 @@
 </template>
 
 <script lang="ts">
+import router from '@/router';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import { Component, Mixins, Provide } from 'vue-property-decorator';
+import Firestore from '@/utils/Firestore';
 import NavigationMenu from '@/components/NavigationMenu.vue';
+import Product from '@/types/Product';
+import ProductsList from '@/components/ProductsList.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VHeader from '@/components/VHeader.vue';
-import { AlertMixin, ListenerMixin } from '@/mixins';
-import router from '@/router';
-import Product from '@/types/Product';
-import Firestore from '@/utils/Firestore';
-import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
     NavigationMenu,
+    ProductsList,
     SearchInput,
     VAlert,
     VHeader
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
+  @Provide('currentPage') currentPage = 'Fridge';
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
@@ -66,24 +57,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     this.onFamilyUpdate = family => {
       this.products = this.getProductsWithCategory(family.storage);
     };
-  }
-
-  get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-    });
-
-    type Category = { [category: string]: Product[] };
-    return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
-      if (!Object.keys(acc).includes(categoryName)) {
-        acc[categoryName] = [];
-      }
-
-      acc[categoryName].push(product);
-
-      return acc;
-    }, {});
   }
 
   async markAsFinished(product: Product) {
