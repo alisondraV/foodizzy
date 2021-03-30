@@ -11,24 +11,36 @@
         label="Product Name"
         placeholder="Enter product name"
         v-model="product.name"
+        :error="errorType === 'displayName'"
         @input="alertMessage = null"
+      />
+      <v-select
+        class="mb-4"
+        label="Category"
+        :selection-list="categoriesList"
+        :selected-item="product.category"
+        @change="setSelectedCategory"
       />
       <v-input
-        class="mb-10"
+        v-if="customCategory"
+        class="mb-4"
         type="text"
-        label="Category"
         placeholder="Enter category"
         v-model="product.category"
+        :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
-      <v-button label="Add" @click="addNewProduct" />
+      <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
+    </div>
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button label="Add" class="mx-8" @click="addNewProduct" :disabled="validationFailed" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import router from '@/router';
-import { AlertMixin } from '@/mixins/AlertMixin';
+import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import Product from '@/types/Product';
@@ -36,27 +48,35 @@ import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
+import VSelect from '@/components/VSelect.vue';
 
 @Component({
   components: {
     VAlert,
     VButton,
+    VHeader,
     VInput,
-    VHeader
+    VSelect
   }
 })
-export default class CustomProduct extends Mixins(AlertMixin) {
+export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
+  categoriesList: string[] = [];
+  customCategory = false;
   location?: string;
-  product: Product = { name: '' };
+  product: Product = { name: '', category: '' };
 
-  mounted() {
+  async mounted() {
     this.location = this.$route.query.location as string;
+
+    await this.getCategoriesList();
+    this.product.category = this.categoriesList[0];
   }
 
   async addNewProduct() {
     if (!this.product) {
       return;
     }
+    this.trimProduct();
 
     if (await Firestore.instance.isProductInStorage(this.product)) {
       return await this.showAlert(`${this.product.name} already exists in the storage`);
@@ -69,6 +89,8 @@ export default class CustomProduct extends Mixins(AlertMixin) {
   }
 
   async addProductToStorageOrShoppingList() {
+    this.trimProduct();
+
     if (this.location === 'storage') {
       await Firestore.instance.addProductToStorage(this.product);
       await router.safePush('/fridge');
@@ -76,6 +98,29 @@ export default class CustomProduct extends Mixins(AlertMixin) {
       await Firestore.instance.addToShoppingList(this.product);
       await router.safePush('/shopping-list');
     }
+  }
+
+  async getCategoriesList() {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const productCategories = allProducts.map(product => product.category ?? 'General');
+    this.categoriesList = [...new Set(productCategories), 'Add New'];
+  }
+
+  get isFormInValidState() {
+    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category!);
+  }
+
+  setSelectedCategory(value) {
+    this.product.category = value;
+    if (this.product.category === 'Add New') {
+      this.customCategory = true;
+      this.product.category = '';
+    }
+  }
+
+  trimProduct() {
+    this.product.name = this.product.name.trim();
+    this.product.category = this.product.category!.trim();
   }
 }
 </script>

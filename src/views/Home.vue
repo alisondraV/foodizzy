@@ -8,7 +8,11 @@
       </h2>
       <div class="text-right w-full mb-4 text-primary-text">
         <label>
-          <select v-model="selectedMonthData" @change="getWastedProductsForSelectedMonth">
+          <select
+            class="form-select border-none"
+            v-model="selectedMonthData"
+            @change="getWastedProductsForSelectedMonth"
+          >
             <option v-for="data in monthData" :value="data" :key="`${data.month}-${data.year}`">
               {{ getMonthDataString(data.month, data.year) }}
             </option>
