@@ -86,6 +86,21 @@ export const fridgeActions: {
   }
 };
 
+export type shoppingListAction = 'delete' | 'purchase';
+
+export const shoppingListActions: {
+  [actionName in shoppingListAction]: { act: (product: Product) => {}; message: string };
+} = {
+  delete: {
+    act: p => p.removeFromShoppingList(),
+    message: 'Products were deleted'
+  },
+  purchase: {
+    act: p => p.purchase(),
+    message: 'Products were wasted'
+  }
+};
+
 export const pages = {
   Fridge: {
     default: require('@/assets/images/Empty.svg'),

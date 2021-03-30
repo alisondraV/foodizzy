@@ -66,7 +66,6 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   async performActionOnSelected(actionName: fridgeAction) {
     const { act, message } = fridgeActions[actionName];
     await Promise.all(this.selectedProducts.map(act));
-    this.products = this.products.filter(product => !product.selected);
     await this.showAlert(message);
   }
 

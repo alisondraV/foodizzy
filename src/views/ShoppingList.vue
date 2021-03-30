@@ -15,7 +15,8 @@
       </div>
     </div>
     <div v-if="productsAreSelected" class="h-40 bottom-0 w-full fixed flex justify-end pr-4 pt-2">
-      <v-button label="Update Fridge" @click="updateFridge" />
+      <v-button label="Update Fridge" @click="performActionOnSelected('purchase')" />
+      <v-button label="Delete" @click="performActionOnSelected('delete')" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>
@@ -32,6 +33,7 @@ import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
+import { shoppingListAction, shoppingListActions } from '@/utils/consts';
 
 @Component({
   components: {
@@ -63,6 +65,12 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     await Promise.all(this.selectedProducts.map(product => product.purchase()));
 
     await this.showAlert('Products were added to the fridge');
+  }
+
+  async performActionOnSelected(actionName: shoppingListAction) {
+    const { act, message } = shoppingListActions[actionName];
+    await Promise.all(this.selectedProducts.map(act));
+    await this.showAlert(message);
   }
 
   addNewProduct() {
