@@ -107,7 +107,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   get isFormInValidState() {
-    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category);
+    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category!);
   }
 
   setSelectedCategory(value) {
@@ -120,7 +120,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
 
   trimProduct() {
     this.product.name = this.product.name.trim();
-    this.product.category = this.product.category.trim();
+    this.product.category = this.product.category!.trim();
   }
 }
 </script>
