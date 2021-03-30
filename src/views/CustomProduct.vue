@@ -18,7 +18,7 @@
       <v-select
         label="Category"
         :selection-list="categoriesList"
-        :selected-item="selectedCategory"
+        :selected-item="product.category"
         @change="setSelectedCategory"
       />
       <v-input
@@ -62,13 +62,12 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   customCategory = false;
   location?: string;
   product: Product = { name: '' };
-  selectedCategory = '';
 
   async mounted() {
     this.location = this.$route.query.location as string;
 
     await this.getCategoriesList();
-    this.selectedCategory = this.categoriesList[0];
+    this.product.category = this.categoriesList[0];
   }
 
   async addNewProduct() {
@@ -110,13 +109,16 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   setSelectedCategory(value) {
-    this.selectedCategory = value;
-    this.customCategory = this.selectedCategory === 'Add New';
+    this.product.category = value;
+    if (this.product.category === 'Add New') {
+      this.customCategory = true;
+      this.product.category = '';
+    }
   }
 
   trimProduct() {
     this.product.name = this.product.name.trim();
-    this.product.category = this.product.category ? this.product.category.trim() : this.selectedCategory;
+    this.product.category = this.product.category.trim();
   }
 }
 </script>
