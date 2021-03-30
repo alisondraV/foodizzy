@@ -7,12 +7,7 @@
     </div>
     <hr class="text-secondary-text mb-2" />
     <div v-if="!collapsed">
-      <list-item
-        v-for="product in products"
-        :key="product.name"
-        :product="product"
-        @remove="$emit('remove', product)"
-      />
+      <list-item v-for="product in products" :key="product.name" :product="product" />
     </div>
   </div>
 </template>

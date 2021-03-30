@@ -5,7 +5,6 @@
       <img v-else alt="NotSelected" :src="getSource('default')" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-    <img v-if="showCross" src="@/assets/images/Close.svg" alt="Wasted" @click="$emit('remove', product)" />
   </div>
 </template>
 
@@ -18,10 +17,6 @@ import { Product } from '@/types';
 export default class ListItem extends Vue {
   @Prop() product!: Product;
   @Inject('currentPage') currentPage!: string;
-
-  get showCross(): boolean {
-    return !this.product.selected && (this.currentPage === 'ShoppingList' || this.currentPage === 'Fridge');
-  }
 
   getSource(state): string {
     return pages[this.currentPage][state];

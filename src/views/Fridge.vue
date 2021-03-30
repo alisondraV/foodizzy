@@ -5,11 +5,7 @@
       <v-alert v-if="alertMessage" :isPositive="false" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <products-list
-        current-page="Fridge"
-        :products="products"
-        @remove="product => product.removeFromStorage()"
-      />
+      <products-list current-page="Fridge" :products="products" />
       <v-fab
         v-if="!productsAreSelected"
         class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8 p-4"

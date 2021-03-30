@@ -2,7 +2,7 @@
   <div>
     <search-input class="mb-6" v-model="searchQuery" />
     <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-      <category-products :products="filteredCategoryProducts[category]" @remove="$emit('remove', $event)" />
+      <category-products :products="filteredCategoryProducts[category]" />
     </div>
   </div>
 </template>
