@@ -27,7 +27,7 @@
 <script lang="ts">
 import router from '@/router';
 import { AlertMixin, ListenerMixin } from '@/mixins';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Provide } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import NavigationMenu from '@/components/NavigationMenu.vue';
 import Product from '@/types/Product';
@@ -46,6 +46,7 @@ import VHeader from '@/components/VHeader.vue';
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
+  @Provide('currentPage') currentPage = 'Fridge';
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];

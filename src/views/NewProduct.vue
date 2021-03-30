@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import router from '@/router';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Provide, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import Product from '@/types/Product';
@@ -37,6 +37,7 @@ import ProductsList from '@/components/ProductsList.vue';
   }
 })
 export default class NewProduct extends Vue {
+  @Provide('currentPage') currentPage = 'NewProduct';
   location?: string;
   products: Product[] = [];
   searchQuery = '';

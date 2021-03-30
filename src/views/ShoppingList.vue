@@ -23,24 +23,24 @@
 </template>
 
 <script lang="ts">
+import router from '@/router';
+import { Component, Mixins, Provide } from 'vue-property-decorator';
+import { ListenerMixin, AlertMixin } from '@/mixins';
+import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
+import Product from '@/types/Product';
+import ProductsList from '@/components/ProductsList.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
-import { ListenerMixin, AlertMixin } from '@/mixins';
-import router from '@/router';
-import Firestore from '@/utils/Firestore';
-import { Component, Mixins } from 'vue-property-decorator';
-import Product from '@/types/Product';
-import ProductsList from '@/components/ProductsList.vue';
 
 @Component({
   components: {
-    ProductsList,
     ListItem,
     NavigationMenu,
+    ProductsList,
     SearchInput,
     VAlert,
     VButton,
@@ -48,6 +48,7 @@ import ProductsList from '@/components/ProductsList.vue';
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
+  @Provide('currentPage') currentPage = 'ShoppingList';
   products: Product[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;

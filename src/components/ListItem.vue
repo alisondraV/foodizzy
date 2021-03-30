@@ -16,13 +16,13 @@
 
 <script lang="ts">
 import { pages } from '@/utils/consts';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import Product from '@/types/Product';
 
 @Component
 export default class ListItem extends Vue {
   @Prop() product!: Product;
-  @Prop() currentPage!: string;
+  @Inject('currentPage') currentPage!: string;
 
   get showCross(): boolean {
     return this.currentPage === 'ShoppingList' || this.currentPage === 'Fridge';
