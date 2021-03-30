@@ -7,13 +7,7 @@
     </div>
     <hr class="text-secondary-text mb-2" />
     <div v-if="!collapsed">
-      <list-item
-        v-for="product in products"
-        :key="product.name"
-        :product="product"
-        @remove="$emit('remove', product)"
-        @update="$emit('update', product)"
-      />
+      <list-item v-for="product in products" :key="product.name" :product="product" />
     </div>
   </div>
 </template>
@@ -21,7 +15,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ListItem from '@/components/ListItem.vue';
-import Product from '@/types/Product';
+import { Product } from '@/types';
 import SearchInput from '@/components/SearchInput.vue';
 
 @Component({

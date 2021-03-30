@@ -2,11 +2,7 @@
   <div>
     <search-input class="mb-6" v-model="searchQuery" />
     <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-      <category-products
-        :products="filteredCategoryProducts[category]"
-        @remove="$emit('remove', $event)"
-        @update="$emit('update', $event)"
-      />
+      <category-products :products="filteredCategoryProducts[category]" />
     </div>
   </div>
 </template>
@@ -15,7 +11,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CategoryProducts from '@/components/CategoryProducts.vue';
 import ListItem from '@/components/ListItem.vue';
-import Product from '@/types/Product';
+import { Product } from '@/types';
 import SearchInput from '@/components/SearchInput.vue';
 
 @Component({

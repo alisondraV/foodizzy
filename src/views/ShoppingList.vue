@@ -5,18 +5,20 @@
       <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <products-list
-        current-page="ShoppingList"
-        :products="products"
-        @remove="removeFromShoppingList"
-        @update="checkShoppingItem"
+      <products-list current-page="ShoppingList" :products="products" />
+      <v-fab
+        v-if="!productsAreSelected"
+        class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8 p-4"
+        iconName="AddNew"
+        @click="addNewProduct"
       />
-      <div v-if="!productsAreSelected" class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
-        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
-      </div>
     </div>
-    <div v-if="productsAreSelected" class="h-40 bottom-0 w-full fixed flex justify-end pr-4 pt-2">
-      <v-button label="Update Fridge" @click="updateFridge" />
+    <div
+      v-if="productsAreSelected"
+      class="h-full fixed top-0 right-0 flex flex-col justify-end pr-4 pt-2 pb-20"
+    >
+      <v-fab class="w-20 my-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab class="w-20 my-2" iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>
@@ -26,25 +28,25 @@
 import router from '@/router';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
 import { ListenerMixin, AlertMixin } from '@/mixins';
-import Firestore from '@/utils/Firestore';
-import ListItem from '@/components/ListItem.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
-import Product from '@/types/Product';
+import { Product } from '@/types/Product';
 import ProductsList from '@/components/ProductsList.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
+import VFab from '@/components/VFab.vue';
+import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
 
 @Component({
   components: {
-    ListItem,
     NavigationMenu,
     ProductsList,
     SearchInput,
     VAlert,
     VButton,
-    VHeader
+    VHeader,
+    VFab
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
@@ -55,54 +57,32 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = this.getProductsWithCategory(family.shoppingList);
+      this.products = (family.shoppingList ?? []).map(Product.fromDTO);
     };
+  }
+
+  get selectedProducts() {
+    return this.products.filter(product => product.selected);
+  }
+
+  async updateFridge() {
+    await Promise.all(this.selectedProducts.map(product => product.purchase()));
+
+    await this.showAlert('Products were added to the fridge');
+  }
+
+  async performActionOnSelected(actionName: ShoppingListAction) {
+    const { act, message } = shoppingListActions[actionName];
+    await Promise.all(this.selectedProducts.map(act));
+    await this.showAlert(message);
   }
 
   addNewProduct() {
     router.safePush({ path: 'new-product', query: { location: 'shoppingList' } });
   }
 
-  async removeFromShoppingList(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromShoppingList(product);
-  }
-
-  getProductsWithCategory(products: Product[]): Product[] {
-    if (!products) {
-      return [];
-    }
-
-    return products.map(product => {
-      const productCategory = product.category ?? 'General';
-      return {
-        name: product.name,
-        category: productCategory,
-        acquired: product.acquired
-      };
-    });
-  }
-
-  async checkShoppingItem(shoppingItem: Product) {
-    this.products = this.products.map(product => {
-      return product.name == shoppingItem.name ? { ...product, acquired: !product.acquired } : product;
-    });
-    await Firestore.instance.updateShoppingList(this.products);
-  }
-
-  async updateFridge() {
-    const acquiredProducts = this.products.filter(p => p.acquired);
-    for (const product of acquiredProducts) {
-      await this.removeFromShoppingList(product);
-      await Firestore.instance.addProductToStorage(product);
-    }
-
-    await this.showAlert('Products were added to the fridge');
-  }
-
   get productsAreSelected(): boolean {
-    const unacquiredProducts = this.products.filter(p => !p.acquired);
-    return this.products.length !== unacquiredProducts.length;
+    return !this.products.every(p => !p.selected);
   }
 }
 </script>

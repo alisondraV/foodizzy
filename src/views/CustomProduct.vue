@@ -43,7 +43,7 @@ import router from '@/router';
 import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import Product from '@/types/Product';
+import { Product } from '@/types';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -63,7 +63,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   categoriesList: string[] = [];
   customCategory = false;
   location?: string;
-  product: Product = { name: '', category: '' };
+  product: Product = new Product('', '');
 
   async mounted() {
     this.location = this.$route.query.location as string;

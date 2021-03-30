@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import Authentication from '@/utils/Authentication';
 import DocumentReference = firebase.firestore.DocumentReference;
 import Firestore from '@/utils/Firestore';
-import Product from './Product';
+import { ProductDTO } from './DTOs';
 import Recipe from '@/types/Recipe';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
@@ -12,8 +12,8 @@ export interface Family {
   members: string[];
   pendingMembers: string[];
   name: string;
-  storage: Product[];
-  shoppingList: Product[];
+  storage: ProductDTO[];
+  shoppingList: ProductDTO[];
   totalProducts: { [category: string]: number };
 }
 
