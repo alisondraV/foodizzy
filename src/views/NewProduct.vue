@@ -4,8 +4,8 @@
     <div class="mt-20 mb-20 mx-8">
       <products-list :location="location" :products="products" @remove="removeExistingProduct" />
     </div>
-    <div class="bg-background h-24 w-full bottom-0 fixed px-8">
-      <v-button class="mt-3" label="Add Items To The List" @click="addItemsToTheList" />
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button class="mx-8 mt-3" label="Add Items To The List" @click="addItemsToTheList" />
     </div>
   </div>
 </template>

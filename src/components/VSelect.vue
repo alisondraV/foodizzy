@@ -3,7 +3,7 @@
     <label class="flex flex-col">
       <span class="text-secondary-text text-left mb-1 text-sm">{{ label }}</span>
       <select
-        class="form-select w-full"
+        class="form-select w-full border border-secondary-text focus:border-primary-green"
         :value="currentSelection"
         @input="$emit('change', $event.target.value)"
       >
