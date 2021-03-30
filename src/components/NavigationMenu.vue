@@ -4,6 +4,13 @@
     style="box-shadow: #F0F0F0 0 -10px 20px"
   >
     <img
+      src="@/assets/images/Home.svg"
+      alt="Home"
+      @click="goToTheHomePage"
+      class="mb-6 p-3"
+      :style="isCurrentPageStyle('Home')"
+    />
+    <img
       src="@/assets/images/Fridge.svg"
       alt="Fridge"
       @click="goToTheFridgePage"
@@ -16,13 +23,6 @@
       @click="goToTheShoppingList"
       class="mb-6 p-3"
       :style="isCurrentPageStyle('ShoppingList')"
-    />
-    <img
-      src="@/assets/images/Home.svg"
-      alt="Home"
-      @click="goToTheHomePage"
-      class="mb-6 p-3"
-      :style="isCurrentPageStyle('Home')"
     />
     <img
       src="@/assets/images/Recipes.svg"
