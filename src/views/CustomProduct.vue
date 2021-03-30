@@ -49,7 +49,6 @@ import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import VInput from '@/components/VInput.vue';
 import VSelect from '@/components/VSelect.vue';
-import { ProductDTO } from '@/types/DTOs';
 
 @Component({
   components: {

@@ -5,10 +5,19 @@
       <v-alert v-if="alertMessage" :isPositive="false" :label="alertMessage" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <products-list current-page="Fridge" :products="products" @remove="() => {}" @update="() => {}" />
-      <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
+      <products-list
+        current-page="Fridge"
+        :products="products"
+        @remove="product => product.removeFromStorage()"
+      />
+      <div v-if="!productsAreSelected" class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
         <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
       </div>
+    </div>
+    <div v-if="productsAreSelected" class="h-40 bottom-0 w-full fixed flex justify-end pr-4 pt-2">
+      <v-button label="Delete" @click="performActionOnSelected('delete')" />
+      <v-button label="Waste" @click="performActionOnSelected('waste')" />
+      <v-button label="Consume" @click="performActionOnSelected('consume')" />
     </div>
     <navigation-menu current-page="Fridge" />
   </div>
@@ -23,6 +32,7 @@ import { Product } from '@/types';
 import ProductsList from '@/components/ProductsList.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import { fridgeAction, fridgeActions } from '@/utils/consts';
 
@@ -32,6 +42,7 @@ import { fridgeAction, fridgeActions } from '@/utils/consts';
     ProductsList,
     SearchInput,
     VAlert,
+    VButton,
     VHeader
   }
 })
@@ -59,25 +70,12 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     await this.showAlert(message);
   }
 
-  get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-    });
-
-    type Category = { [category: string]: Product[] };
-    return reducedProducts.reduce<Category>((acc, product) => {
-      if (!Object.keys(acc).includes(product.category)) {
-        acc[product.category] = [];
-      }
-
-      acc[product.category].push(product);
-
-      return acc;
-    }, {});
-  }
-
   addNewProduct() {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
+  }
+
+  get productsAreSelected(): boolean {
+    return !this.products.every(p => !p.selected);
   }
 }
 </script>

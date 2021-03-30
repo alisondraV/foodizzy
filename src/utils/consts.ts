@@ -73,7 +73,7 @@ export const fridgeActions: {
   [actionName in fridgeAction]: { act: (product: Product) => {}; message: string };
 } = {
   delete: {
-    act: p => p.delete(),
+    act: p => p.removeFromStorage(),
     message: 'Products were deleted'
   },
   waste: {
