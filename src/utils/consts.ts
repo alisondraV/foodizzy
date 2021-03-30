@@ -67,12 +67,23 @@ export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
 
-export type IconName = 'AddNew' | 'Remove' | 'Waste';
+export type IconName =
+  | 'AddNew'
+  | 'Remove'
+  | 'RemoveFAB'
+  | 'Waste'
+  | 'WasteFAB'
+  | 'MoveToShoppingList'
+  | 'Purchase';
 
 export const Icons: { [iconName in IconName]: string } = {
   AddNew: require('@/assets/images/AddNew.svg'),
   Remove: require('@/assets/images/Remove.svg'),
-  Waste: require('@/assets/images/Waste.svg')
+  RemoveFAB: require('@/assets/images/RemoveFAB.svg'),
+  Waste: require('@/assets/images/Waste.svg'),
+  WasteFAB: require('@/assets/images/WasteFAB.svg'),
+  MoveToShoppingList: require('@/assets/images/MoveToShoppingList.svg'),
+  Purchase: require('@/assets/images/Purchase.svg')
 };
 
 export type FridgeAction = 'delete' | 'waste' | 'consume';

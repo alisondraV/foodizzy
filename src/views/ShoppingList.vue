@@ -21,8 +21,8 @@
       v-if="productsAreSelected"
       class="h-full fixed top-0 right-0 flex flex-col justify-end pr-4 pt-2 pb-20"
     >
-      <v-fab class="w-20 my-2" iconName="Waste" @click="performActionOnSelected('purchase')" />
-      <v-fab class="w-20 my-2" iconName="Remove" @click="performActionOnSelected('delete')" />
+      <v-fab class="w-20 my-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab class="w-20 my-2" iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>

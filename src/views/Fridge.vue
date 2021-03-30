@@ -21,9 +21,9 @@
       v-if="productsAreSelected"
       class="h-full fixed top-0 right-0 flex flex-col justify-end pr-4 pt-2 pb-20"
     >
-      <v-fab class="w-20 my-2" iconName="Remove" @click="performActionOnSelected('delete')" />
-      <v-fab class="w-20 my-2" iconName="Waste" @click="performActionOnSelected('waste')" />
-      <v-fab class="w-20 my-2" iconName="AddNew" @click="performActionOnSelected('consume')" />
+      <v-fab class="w-20 my-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab class="w-20 my-2" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
+      <v-fab class="w-20 my-2" iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
     </div>
     <navigation-menu current-page="Fridge" />
   </div>
