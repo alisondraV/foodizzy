@@ -101,7 +101,7 @@ export const fridgeActions: {
   },
   consume: {
     act: p => p.consume(),
-    message: 'Products were consumed'
+    message: 'Products were moved to the shopping list'
   }
 };
 
@@ -116,7 +116,7 @@ export const shoppingListActions: {
   },
   purchase: {
     act: p => p.purchase(),
-    message: 'Products were wasted'
+    message: 'Products were moved to the storage'
   }
 };
 

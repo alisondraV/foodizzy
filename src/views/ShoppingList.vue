@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header heading="Shopping List" />
+    <v-header heading="Shopping List" :isPositive="false" />
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" />
     </div>

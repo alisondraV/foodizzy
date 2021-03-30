@@ -9,9 +9,8 @@ import { IconName, Icons } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class VFAB extends Vue {
+export default class VFab extends Vue {
   @Prop() iconName!: IconName;
-  @Prop({ default: false }) disabled?: boolean;
 
   get iconSource() {
     return Icons[this.iconName];
