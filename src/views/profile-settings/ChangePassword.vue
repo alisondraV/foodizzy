@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Change Password" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div v-if="!user">Loading...</div>
@@ -54,14 +54,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import Authentication from '@/utils/Authentication';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
 import VHeader from '@/components/VHeader.vue';
 import firebase from 'firebase';
-import { ValidationMixin } from '@/mixins';
+import { AlertMixin, ValidationMixin } from '@/mixins';
 
 @Component({
   components: {
@@ -71,11 +71,10 @@ import { ValidationMixin } from '@/mixins';
     VHeader
   }
 })
-export default class SignIn extends ValidationMixin {
+export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
   alertMessage = '';
   newPassword = '';
   currentPassword = '';
-  isPositive = false;
   user: firebase.User | null = null;
 
   async mounted() {
@@ -97,21 +96,18 @@ export default class SignIn extends ValidationMixin {
 
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
-      this.isPositive = false;
-      this.alertMessage = 'Please provide both your current password and the new one';
+      this.showAlert('Please provide both your current password and the new one', 'danger');
       return;
     }
 
     try {
       await Authentication.instance.changePassword(this.user!.email!, this.currentPassword, this.newPassword);
 
-      this.isPositive = true;
       this.currentPassword = '';
       this.newPassword = '';
-      this.alertMessage = 'Password has been successfully updated';
+      this.showAlert('Password has been successfully updated', 'success');
     } catch (e) {
-      this.isPositive = false;
-      this.alertMessage = "We couldn't update your password";
+      this.showAlert("We couldn't update your password", 'danger');
     }
   }
 }

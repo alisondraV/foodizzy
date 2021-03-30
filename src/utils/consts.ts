@@ -86,37 +86,70 @@ export const Icons: { [iconName in IconName]: string } = {
   Purchase: require('@/assets/images/Purchase.svg')
 };
 
+export type Color = 'light-peach' | 'light-green' | 'light-yellow';
+export type AlertStatus = 'danger' | 'success' | 'info';
+export const alertColor: { [status in AlertStatus]: Color } = {
+  danger: 'light-peach',
+  success: 'light-green',
+  info: 'light-yellow'
+};
+
 export type FridgeAction = 'delete' | 'waste' | 'consume';
 
+export type Alert = {
+  message: string;
+  status: AlertStatus;
+};
+
+export type Action = {
+  act: (product: Product) => Promise<void> | void;
+  alert: Alert;
+};
+
 export const fridgeActions: {
-  [actionName in FridgeAction]: { act: (product: Product) => {}; message: string };
+  [actionName in FridgeAction]: Action;
 } = {
   delete: {
     act: p => p.removeFromStorage(),
-    message: 'Products were deleted'
+    alert: {
+      message: 'Products were deleted',
+      status: 'danger'
+    }
   },
   waste: {
     act: p => p.waste(),
-    message: 'Products were wasted'
+    alert: {
+      message: 'Products were wasted',
+      status: 'danger'
+    }
   },
   consume: {
     act: p => p.consume(),
-    message: 'Products were moved to the shopping list'
+    alert: {
+      message: 'Products were moved to the shopping list',
+      status: 'info'
+    }
   }
 };
 
 export type ShoppingListAction = 'delete' | 'purchase';
 
 export const shoppingListActions: {
-  [actionName in ShoppingListAction]: { act: (product: Product) => {}; message: string };
+  [actionName in ShoppingListAction]: Action;
 } = {
   delete: {
     act: p => p.removeFromShoppingList(),
-    message: 'Products were deleted'
+    alert: {
+      message: 'Products were deleted',
+      status: 'danger'
+    }
   },
   purchase: {
     act: p => p.purchase(),
-    message: 'Products were moved to the storage'
+    alert: {
+      message: 'Products were moved to the storage',
+      status: 'info'
+    }
   }
 };
 
