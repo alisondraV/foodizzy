@@ -13,7 +13,7 @@
     </div>
     <div class="mb-8">
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="email"
         label="Email Address"
         placeholder="Enter your email"
@@ -21,7 +21,7 @@
         :error="errorType === 'email'"
       />
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="name"
         label="Name"
         placeholder="Enter your name"
@@ -29,7 +29,7 @@
         :error="errorType === 'displayName'"
       />
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="password"
         label="Password"
         placeholder="Enter your password"

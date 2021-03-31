@@ -79,11 +79,7 @@ async function updateTotalProducts(
 ) {
   let addedProduct: any = null;
   newFamily.storage.forEach((newProduct: any) => {
-    if (
-      !oldFamily.storage.find(
-          (oldProduct: any) => newProduct.name === oldProduct.name
-      )
-    ) {
+    if (!oldFamily.storage.find((oldProduct: any) => newProduct.name === oldProduct.name)) {
       addedProduct = newProduct;
     }
   });
@@ -96,10 +92,7 @@ async function updateTotalProducts(
   const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
   const updatedFamilyStats = change.after.ref.collection('statistics');
 
-  const thisMonthStatsDoc = await getThisMonthStats(
-      updatedFamilyStats,
-      newFamily
-  );
+  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats, newFamily);
   const thisMonthData = thisMonthStatsDoc.data() ?? {};
 
   if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
@@ -123,33 +116,15 @@ async function getThisMonthStats(
 
   let thisMonthStatsDocRef;
   if (thisMonthStatsCollection.docs.length === 0) {
-    const totalProducts = await getTotalProductsFromStorage(family);
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      totalProducts,
+      totalProducts: {},
     });
   } else {
     thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
   }
   return await thisMonthStatsDocRef.get();
-}
-
-async function getTotalProductsFromStorage(family: any) {
-  const familyDocRef = await db
-      .collection('family')
-      .doc(family.id)
-      .get();
-  const storage = await familyDocRef.data()?.storage;
-
-  return storage.reduce((currentStatistics: any, product: any) => {
-    const category = (product.category ?? 'general').toLowerCase();
-    if (!Object.keys(currentStatistics).includes(category)) {
-      currentStatistics[category] = 0;
-    }
-    currentStatistics[category]++;
-    return currentStatistics;
-  }, {});
 }
 
 async function sendWelcomeEmails(
