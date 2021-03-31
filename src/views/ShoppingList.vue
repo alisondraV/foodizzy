@@ -70,7 +70,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
 
   async performActionOnSelected(actionName: ShoppingListAction) {
     const { act, alert } = shoppingListActions[actionName];
-    await Promise.all(this.selectedProducts.map(act));
+    await act(this.selectedProducts);
     await this.showAlert(alert.message, alert.status);
   }
 

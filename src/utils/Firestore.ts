@@ -65,26 +65,18 @@ export default class Firestore {
       .set(family);
   }
 
-  public async moveToWasted(product: ProductDTO) {
-    if (product instanceof Product) {
-      product = product.toDTO();
-    }
-    const seconds = new Date().getTime() / 1000;
-    const documents = await this.db
-      .collection('wasteBuckets')
-      .where('familyId', '==', (await CurrentFamily.instance.getCurrentFamily())!.id)
-      .get();
-    const wastedProduct: WastedProduct = {
-      ...product,
-      dateWasted: new firebase.firestore.Timestamp(seconds, 0)
-    };
-    const bucket = documents.docs[0];
-    const updatedWastedList = [...bucket.data().wasted, wastedProduct];
+  public async moveToWasted(products: ProductDTO[]) {
+    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
 
-    await this.db
-      .collection('wasteBuckets')
-      .doc(bucket.id)
-      .update('wasted', updatedWastedList);
+    const wastedProducts: WastedProduct[] = products.map(product => ({
+      ...product,
+      dateWasted: firebase.firestore.Timestamp.now()
+    }));
+    const bucket = await CurrentFamily.instance.getWasteBucket();
+    const updatedWastedList = [...bucket.data().wasted, ...wastedProducts];
+
+    console.log('new waste list', updatedWastedList);
+    await bucket.ref.update('wasted', updatedWastedList);
   }
 
   public async removeFromShoppingList(product: ProductDTO) {

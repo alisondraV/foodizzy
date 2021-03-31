@@ -102,7 +102,7 @@ export type Alert = {
 };
 
 export type Action = {
-  act: (product: Product) => Promise<void> | void;
+  act: (products: Product[]) => Promise<void> | void;
   alert: Alert;
 };
 
@@ -110,21 +110,21 @@ export const fridgeActions: {
   [actionName in FridgeAction]: Action;
 } = {
   delete: {
-    act: p => p.removeFromStorage(),
+    act: p => p[0].removeFromStorage(),
     alert: {
       message: 'Products were deleted',
       status: 'danger'
     }
   },
   waste: {
-    act: p => p.waste(),
+    act: products => Product.wasteAll(products),
     alert: {
       message: 'Products were wasted',
       status: 'danger'
     }
   },
   consume: {
-    act: p => p.consume(),
+    act: p => p[0].consume(),
     alert: {
       message: 'Products were moved to the shopping list',
       status: 'info'
@@ -138,14 +138,14 @@ export const shoppingListActions: {
   [actionName in ShoppingListAction]: Action;
 } = {
   delete: {
-    act: p => p.removeFromShoppingList(),
+    act: p => p[0].removeFromShoppingList(),
     alert: {
       message: 'Products were deleted',
       status: 'danger'
     }
   },
   purchase: {
-    act: p => p.purchase(),
+    act: p => p[0].purchase(),
     alert: {
       message: 'Products were moved to the storage',
       status: 'info'

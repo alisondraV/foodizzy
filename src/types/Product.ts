@@ -50,8 +50,9 @@ export class Product implements ProductDTO {
     await Firestore.instance.addToShoppingList(this);
   }
 
-  async waste() {
-    await Firestore.instance.removeFromStorage(this);
-    await Firestore.instance.moveToWasted(this);
+  static async wasteAll(products: Product[]) {
+    // await Firestore.instance.removeFromStorage(this);
+
+    await Firestore.instance.moveToWasted(products);
   }
 }
