@@ -9,11 +9,11 @@
     </div>
     <v-fab
       v-if="!productsAreSelected"
-      class="fixed bottom-0 w-full flex justify-center mb-24"
+      class="fixed bottom-0 right-0 mb-24 mr-5"
       iconName="AddNew"
       @click="addNewProduct"
     />
-    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-3">
+    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-5">
       <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
       <v-fab class="mb-2" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
       <v-fab iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
