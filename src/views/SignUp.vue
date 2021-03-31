@@ -13,21 +13,21 @@
     </div>
     <div class="mb-8">
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="email"
         label="Type in your email"
         v-model="email"
         :error="errorType === 'email'"
       />
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="name"
         label="Type in your name"
         v-model="name"
         :error="errorType === 'displayName'"
       />
       <v-input
-        class="mb-6"
+        class="mb-4"
         type="password"
         label="Type in your password"
         v-model="password"
