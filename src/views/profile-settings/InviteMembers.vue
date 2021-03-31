@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Invite Family Members" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <div class="flex flex-row justify-between mb-4">
@@ -58,19 +58,16 @@ import router from '@/router';
 })
 export default class InviteMembers extends AlertMixin {
   currentEmail = '';
-  isPositive = false;
   memberEmails: string[] = [];
 
   async inviteMembers() {
     try {
       await CurrentFamily.instance.inviteMembers(this.memberEmails);
       this.memberEmails = [];
-      this.isPositive = true;
-      await this.showAlert('Invites have been sent');
+      await this.showAlert('Invites have been sent', 'success');
       router.safePush('/family');
     } catch (e) {
-      this.isPositive = false;
-      await this.showAlert("Couldn't send the invites");
+      await this.showAlert("Couldn't send the invites", 'danger');
     }
   }
 

@@ -1,11 +1,16 @@
+import { AlertStatus } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export class AlertMixin extends Vue {
   alertMessage = '';
   prevTimeout: number | undefined;
+  alertStatus: AlertStatus = 'info';
 
-  showAlert(message: string) {
+  showAlert(message: string, alertStatus: AlertStatus = 'info') {
+    this.alertStatus = alertStatus;
+    console.log(alertStatus);
+
     if (this.prevTimeout) {
       clearTimeout(this.prevTimeout);
     }

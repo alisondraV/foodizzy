@@ -2,7 +2,7 @@
   <div>
     <v-header heading="What's in your fridge?" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="false" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
       <products-list current-page="Fridge" :products="products" />
@@ -68,9 +68,9 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async performActionOnSelected(actionName: FridgeAction) {
-    const { act, message } = fridgeActions[actionName];
+    const { act, alert } = fridgeActions[actionName];
     await Promise.all(this.selectedProducts.map(act));
-    await this.showAlert(message);
+    await this.showAlert(alert.message, alert.status);
   }
 
   addNewProduct() {
