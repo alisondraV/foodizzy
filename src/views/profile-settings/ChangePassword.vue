@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div v-if="!user">Loading...</div>
       <div v-else class="w-full flex flex-col items-center text-center">
         <v-input

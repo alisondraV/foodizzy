@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :is-positive="false" :label="alertMessage" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <v-select
         class="mb-4"
         label="Category"

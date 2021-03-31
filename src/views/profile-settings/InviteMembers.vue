@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div class="flex flex-row justify-between mb-4">
         <v-input
           class="w-4/5"

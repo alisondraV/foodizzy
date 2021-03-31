@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
     </div>
-    <div class="mx-8 text-primary-text" :class="alertMessage ? '' : 'mt-24'">
+    <div class="mx-8 text-primary-text" :class="alertMessage ? '' : 'mt-20'">
       <div v-if="!user">Loading...</div>
       <div v-else-if="!family" class="flex">
         <h2>You don’t have a family yet</h2>
