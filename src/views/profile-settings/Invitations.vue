@@ -81,7 +81,7 @@ export default class AppMain extends AlertMixin {
       await this.getInvitations();
       await this.showAlert('The invitation has been declined');
     } catch (e) {
-      await this.showAlert("Couldn't decline the invitation", 'success');
+      await this.showAlert("Couldn't decline the invitation", 'danger');
     }
   }
 }
