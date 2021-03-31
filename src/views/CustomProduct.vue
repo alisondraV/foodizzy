@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :is-positive="false" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <v-select
@@ -79,10 +79,10 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
     this.trimProduct();
 
     if (await Firestore.instance.isProductInStorage(this.product)) {
-      return await this.showAlert(`${this.product.name} already exists in the storage`);
+      return await this.showAlert(`${this.product.name} already exists in the storage`, 'danger');
     }
     if (await Firestore.instance.isProductInShoppingList(this.product)) {
-      return await this.showAlert(`${this.product.name} already exists in the shopping list`);
+      return await this.showAlert(`${this.product.name} already exists in the shopping list`, 'danger');
     }
 
     await this.addProductToStorageOrShoppingList();

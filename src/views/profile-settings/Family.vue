@@ -2,7 +2,7 @@
   <div>
     <v-header heading="My Family" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mx-8 text-primary-text" :class="alertMessage ? '' : 'mt-20'">
       <div v-if="!user">Loading...</div>
@@ -99,7 +99,6 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   family: Family | null = null;
   familyMembers: firebase.User[] = [];
   newFamilyName = '';
-  isPositive = false;
   pendingMembers: string[] = [];
   user: firebase.User | null = null;
 
@@ -132,21 +131,19 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
 
   async handleResendInvite(invitation: string) {
     try {
-      this.isPositive = true;
       await CurrentFamily.instance.inviteMembers([invitation]);
-      await this.showAlert('The invitation has been resent');
+      await this.showAlert('The invitation has been resent', 'success');
     } catch (e) {
-      await this.showAlert("Couldn't resend the invitation");
+      await this.showAlert("Couldn't resend the invitation", 'danger');
     }
   }
 
   async handleCancelInvitation(invitation: string) {
     try {
       await CurrentFamily.instance.cancelInvitation(invitation);
-      this.isPositive = false;
       await this.showAlert('The invitation has been canceled');
     } catch (e) {
-      await this.showAlert("Couldn't cancel the invitation");
+      await this.showAlert("Couldn't cancel the invitation", 'danger');
     }
   }
 
@@ -157,12 +154,10 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   async updateFamilyName() {
     try {
       await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
-      this.isPositive = true;
       this.newFamilyName = '';
-      await this.showAlert('Your family name has been updated');
+      await this.showAlert('Your family name has been updated', 'success');
     } catch (e) {
-      this.isPositive = false;
-      await this.showAlert("Couldn't update the family name");
+      await this.showAlert("Couldn't update the family name", 'danger');
     }
   }
 

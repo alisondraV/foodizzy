@@ -2,13 +2,13 @@
   <div>
     <v-header heading="My Invitations" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :isPositive="isPositive" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div v-if="!user">
         <a href="/sign-in?redirect=invitations" class="underline">Log in</a> to accept your invite.
       </div>
-      <div v-else-if="invitations.length === 0" class="text-dark-peach -mt-2">
+      <div v-else-if="invitations.length === 0" class="text-dark-peach">
         No pending invitations.
       </div>
       <div v-else>
@@ -47,7 +47,6 @@ import Firestore from '@/utils/Firestore';
   components: { VAlert, VHeader, VButton }
 })
 export default class AppMain extends AlertMixin {
-  isPositive = false;
   invitations: Family[] = [];
   user: firebase.User | null = null;
 
@@ -68,10 +67,9 @@ export default class AppMain extends AlertMixin {
     try {
       await CurrentFamily.instance.switchTo(familyId, this.user.email);
       await this.getInvitations();
-      this.isPositive = true;
-      await this.showAlert("You've accepted the invitation");
+      await this.showAlert("You've accepted the invitation", 'success');
     } catch (e) {
-      await this.showAlert("Couldn't accept the invitation");
+      await this.showAlert("Couldn't accept the invitation", 'danger');
     }
   }
 
@@ -81,10 +79,9 @@ export default class AppMain extends AlertMixin {
     try {
       await Firestore.instance.declineInvitation(familyId, this.user.email);
       await this.getInvitations();
-      this.isPositive = false;
       await this.showAlert('The invitation has been declined');
     } catch (e) {
-      await this.showAlert("Couldn't decline the invitation");
+      await this.showAlert("Couldn't decline the invitation", 'danger');
     }
   }
 }

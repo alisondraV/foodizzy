@@ -32,7 +32,7 @@ import ProductsList from '@/components/ProductsList.vue';
 })
 export default class NewProduct extends Vue {
   @Provide('currentPage') currentPage = 'NewProduct';
-  location?: string;
+  location?: string = '';
   products: Product[] = [];
   searchQuery = '';
 

@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Shopping List" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <products-list current-page="ShoppingList" :products="products" />
@@ -69,9 +69,9 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async performActionOnSelected(actionName: ShoppingListAction) {
-    const { act, message } = shoppingListActions[actionName];
+    const { act, alert } = shoppingListActions[actionName];
     await Promise.all(this.selectedProducts.map(act));
-    await this.showAlert(message);
+    await this.showAlert(alert.message, alert.status);
   }
 
   addNewProduct() {

@@ -11,7 +11,7 @@
     </div>
     <div class="mb-8">
       <v-input
-        class="mb-6"
+        class="mb-3"
         type="email"
         label="Email Address"
         placeholder="Enter your email"
@@ -19,7 +19,7 @@
         v-model="email"
       />
       <v-input
-        class="mb-6"
+        class="mb-3"
         type="password"
         label="Password"
         placeholder="Enter your password"
@@ -32,11 +32,11 @@
       </div>
     </div>
     <div class="mb-8">
-      <v-button class="mb-6" label="Sign In" @click="signIn" />
+      <v-button class="mb-4" label="Sign In" @click="signIn" />
       <div class="flex items-center text-secondary-text">
-        <hr class="w-1/2 border-gray mb-6" />
-        <span class="w-1/5 text-center mb-6">OR</span>
-        <hr class="w-1/2 border-gray mb-6" />
+        <hr class="w-1/2 border-gray mb-4" />
+        <span class="w-1/5 text-center mb-4">OR</span>
+        <hr class="w-1/2 border-gray mb-4" />
       </div>
       <button
         @click="signInThroughGoogle"
