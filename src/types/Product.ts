@@ -32,27 +32,26 @@ export class Product implements ProductDTO {
     };
   }
 
-  async removeFromShoppingList() {
-    await Firestore.instance.removeFromShoppingList(this);
+  static async removeAllFromShoppingList(products: Product[]) {
+    await Firestore.instance.removeFromShoppingList(products);
   }
 
-  async removeFromStorage() {
-    await Firestore.instance.removeFromStorage(this);
+  static async removeAllFromStorage(products: Product[]) {
+    await Firestore.instance.removeFromStorage(products);
   }
 
-  async purchase() {
-    await this.removeFromShoppingList();
-    await Firestore.instance.addProductToStorage(this);
+  static async purchaseAll(products: Product[]) {
+    await this.removeAllFromShoppingList(products);
+    await Firestore.instance.addToStorage(products);
   }
 
-  async consume() {
-    await this.removeFromStorage();
-    await Firestore.instance.addToShoppingList(this);
+  static async consumeAll(products: Product[]) {
+    await this.removeAllFromStorage(products);
+    await Firestore.instance.addToShoppingList(products);
   }
 
   static async wasteAll(products: Product[]) {
-    // await Firestore.instance.removeFromStorage(this);
-
+    await Firestore.instance.removeFromStorage(products);
     await Firestore.instance.moveToWasted(products);
   }
 }

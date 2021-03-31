@@ -57,7 +57,7 @@ export default class Fridge extends Vue {
 
   async addProductsToStorage() {
     for (const product of this.productsToAdd) {
-      await Firestore.instance.addProductToStorage(product);
+      await Firestore.instance.addToStorage([product]);
     }
     this.goToTheNextPage();
   }

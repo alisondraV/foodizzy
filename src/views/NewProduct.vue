@@ -43,9 +43,9 @@ export default class NewProduct extends Vue {
 
   async removeExistingProduct(product: Product) {
     if (this.location === 'storage') {
-      await Firestore.instance.removeFromStorage(product);
+      await Firestore.instance.removeFromStorage([product]);
     } else if (this.location === 'shoppingList') {
-      await Firestore.instance.removeFromShoppingList(product);
+      await Firestore.instance.removeFromShoppingList([product]);
     }
   }
 
@@ -54,9 +54,9 @@ export default class NewProduct extends Vue {
 
     for (const product of selectedProducts) {
       if (this.location === 'storage') {
-        await Firestore.instance.addProductToStorage(product);
+        await Firestore.instance.addToStorage([product]);
       } else if (this.location === 'shoppingList') {
-        await Firestore.instance.addToShoppingList(product);
+        await Firestore.instance.addToShoppingList([product]);
       }
     }
 

@@ -63,8 +63,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async updateFridge() {
-    await Promise.all(this.selectedProducts.map(product => product.purchase()));
-
+    await Product.purchaseAll(this.selectedProducts);
     await this.showAlert('Products were added to the fridge');
   }
 
