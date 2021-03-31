@@ -70,8 +70,10 @@ export default class Authentication {
         .collection('family')
         .doc((await CurrentFamily.instance.getCurrentFamily()).id);
 
-      await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
-      await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+      if (prevUser.email !== email) {
+        await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+        await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
+      }
     }
 
     await firebase.auth().currentUser!.updateProfile({ displayName: name });

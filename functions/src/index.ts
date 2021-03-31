@@ -92,7 +92,7 @@ async function updateTotalProducts(
   const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
   const updatedFamilyStats = change.after.ref.collection('statistics');
 
-  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats, newFamily);
+  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
   const thisMonthData = thisMonthStatsDoc.data() ?? {};
 
   if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
@@ -105,10 +105,7 @@ async function updateTotalProducts(
       .update('totalProducts', thisMonthData.totalProducts);
 }
 
-async function getThisMonthStats(
-    statsCollection: FirebaseFirestore.CollectionReference,
-    family: any
-) {
+async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference) {
   const thisMonthStatsCollection = await statsCollection
       .where('month', '==', new Date().getMonth())
       .where('year', '==', new Date().getFullYear())
@@ -160,9 +157,7 @@ async function sendWelcomeEmails(
   );
 }
 
-async function checkForFamilyRemoval(
-    newDoc: FirebaseFirestore.QueryDocumentSnapshot
-) {
+async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
   const newFamily = newDoc.data();
   if (newFamily.members?.length === 0) {
     const statisticsRefs = await newDoc.ref.collection('statistics').get();

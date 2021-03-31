@@ -8,7 +8,7 @@
       <div v-if="!user">
         <a href="/sign-in?redirect=invitations" class="underline">Log in</a> to accept your invite.
       </div>
-      <div v-else-if="invitations.length === 0" class="text-dark-peach -mt-2">
+      <div v-else-if="invitations.length === 0" class="text-dark-peach">
         No pending invitations.
       </div>
       <div v-else>
