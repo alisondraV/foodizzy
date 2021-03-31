@@ -51,7 +51,7 @@ export class Product implements ProductDTO {
   }
 
   async waste() {
-    await this.consume();
+    await Firestore.instance.removeFromStorage(this);
     await Firestore.instance.moveToWasted(this);
   }
 }
