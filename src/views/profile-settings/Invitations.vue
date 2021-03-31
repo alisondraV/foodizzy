@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div v-if="!user">
         <a href="/sign-in?redirect=invitations" class="underline">Log in</a> to accept your invite.
       </div>

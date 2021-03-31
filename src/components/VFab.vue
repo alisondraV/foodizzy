@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-2">
     <img @click="$emit('click')" :src="iconSource" :alt="iconName" />
   </div>
 </template>

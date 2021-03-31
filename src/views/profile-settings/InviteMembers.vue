@@ -4,7 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div class="flex flex-row justify-between mb-4">
         <v-input
           class="w-4/5"
@@ -13,7 +13,7 @@
           placeholder="Enter member’s email"
           v-model="currentEmail"
         />
-        <img src="@/assets/images/Plus.svg" alt="Add" class="mt-6" @click="addEmail" />
+        <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
       </div>
       <ul>
         <li

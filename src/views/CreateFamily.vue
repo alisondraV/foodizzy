@@ -24,7 +24,7 @@
             placeholder="Enter member's email"
             v-model="currentEmail"
           />
-          <img src="@/assets/images/Plus.svg" alt="Add" class="mt-6" @click="addEmail" />
+          <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
         </div>
         <ul>
           <li

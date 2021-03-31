@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="Recipes" />
-    <div class="mt-24 mb-20 mx-8">
+    <div class="mt-20 mb-20 mx-8">
       <div v-if="recipes.length !== 0">
         <figure class="m-10 rounded" v-for="recipe in recipes" :key="recipe.name">
           <recipe-component :recipe="recipe" />

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="Quit My Family" />
-    <div class="mb-20 mx-8 mt-24">
+    <div class="mb-20 mx-8 mt-20">
       <div v-if="!family">Loading...</div>
       <div v-else class="w-full">
         <div class="text-primary-text mb-3">Enter the family name to quit.</div>

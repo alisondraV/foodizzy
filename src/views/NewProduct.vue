@@ -2,11 +2,10 @@
   <div>
     <v-header heading="Add New Item" />
     <div class="mt-20 mb-20 mx-8">
-      <products-list current-page="NewProduct" :products="products" @remove="removeExistingProduct" />
+      <products-list :location="location" :products="products" @remove="removeExistingProduct" />
     </div>
-    <div class="bg-background h-20 w-full bottom-0 fixed flex px-8 text-sm">
-      <v-button class="mt-3 mr-2 flex-1" label="Add custom product" @click="addCustomProduct" />
-      <v-button class="mt-3 flex-1" label="Add items to the list" @click="addItemsToTheList" />
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button class="mx-8 mt-3" label="Add Items To The List" @click="addItemsToTheList" />
     </div>
   </div>
 </template>
@@ -14,9 +13,9 @@
 <script lang="ts">
 import router from '@/router';
 import { Component, Provide, Vue } from 'vue-property-decorator';
+import { Product } from '@/types';
 import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
-import { Product } from '@/types';
 import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -24,8 +23,8 @@ import ProductsList from '@/components/ProductsList.vue';
 
 @Component({
   components: {
-    ProductsList,
     ListItem,
+    ProductsList,
     SearchInput,
     VButton,
     VHeader
@@ -33,20 +32,13 @@ import ProductsList from '@/components/ProductsList.vue';
 })
 export default class NewProduct extends Vue {
   @Provide('currentPage') currentPage = 'NewProduct';
-  location?: string;
+  location?: string = '';
   products: Product[] = [];
   searchQuery = '';
 
   async mounted() {
     this.location = this.$route.query.location as string;
     this.products = await this.getProductsWithCategory();
-  }
-
-  addCustomProduct() {
-    router.safePush({
-      path: 'custom-product',
-      query: { location: this.location }
-    });
   }
 
   async removeExistingProduct(product: Product) {

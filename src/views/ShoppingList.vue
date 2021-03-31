@@ -4,21 +4,18 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <products-list current-page="ShoppingList" :products="products" />
-      <v-fab
-        v-if="!productsAreSelected"
-        class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8 p-4"
-        iconName="AddNew"
-        @click="addNewProduct"
-      />
     </div>
-    <div
-      v-if="productsAreSelected"
-      class="h-full fixed top-0 right-0 flex flex-col justify-end pr-4 pt-2 pb-20"
-    >
-      <v-fab class="w-20 my-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
-      <v-fab class="w-20 my-2" iconName="Purchase" @click="performActionOnSelected('purchase')" />
+    <v-fab
+      v-if="!productsAreSelected"
+      class="fixed bottom-0 w-full flex justify-center mb-24"
+      iconName="AddNew"
+      @click="addNewProduct"
+    />
+    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-3">
+      <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>

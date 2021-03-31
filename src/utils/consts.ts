@@ -159,7 +159,7 @@ export const pages = {
     selected: require('@/assets/images/Check.svg')
   },
   NewProduct: {
-    default: require('@/assets/images/Plus.svg'),
+    default: require('@/assets/images/PlusIcon.svg'),
     selected: require('@/assets/images/Minus.svg')
   },
   ShoppingList: {

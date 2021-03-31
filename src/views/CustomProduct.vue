@@ -4,16 +4,7 @@
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <v-input
-        class="mb-4"
-        type="text"
-        label="Product Name"
-        placeholder="Enter product name"
-        v-model="product.name"
-        :error="errorType === 'displayName'"
-        @input="alertMessage = null"
-      />
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <v-select
         class="mb-4"
         label="Category"
@@ -23,17 +14,26 @@
       />
       <v-input
         v-if="customCategory"
+        class="mb-8"
+        type="text"
+        placeholder="Pick Category Name"
+        v-model="product.category"
+        :error="errorType === 'displayName'"
+        @input="alertMessage = null"
+      />
+      <v-input
         class="mb-4"
         type="text"
-        placeholder="Enter category"
-        v-model="product.category"
+        label="Item Name"
+        placeholder="Enter Item Name"
+        v-model="product.name"
         :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
       <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button label="Add" class="mx-8" @click="addNewProduct" :disabled="validationFailed" />
+      <v-button label="Add Item" class="mx-8 mt-3" @click="addNewProduct" :disabled="validationFailed" />
     </div>
   </div>
 </template>
@@ -115,6 +115,8 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
     if (this.product.category === 'Add New') {
       this.customCategory = true;
       this.product.category = '';
+    } else {
+      this.customCategory = false;
     }
   }
 
