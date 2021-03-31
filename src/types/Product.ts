@@ -42,12 +42,12 @@ export class Product implements ProductDTO {
 
   static async purchaseAll(products: Product[]) {
     await this.removeAllFromShoppingList(products);
-    await Firestore.instance.addToStorage(products);
+    await Firestore.instance.addToList(products, 'storage');
   }
 
   static async consumeAll(products: Product[]) {
     await this.removeAllFromStorage(products);
-    await Firestore.instance.addToShoppingList(products);
+    await Firestore.instance.addToList(products, 'shoppingList');
   }
 
   static async wasteAll(products: Product[]) {

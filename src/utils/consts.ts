@@ -94,6 +94,8 @@ export const alertColor: { [status in AlertStatus]: Color } = {
   info: 'light-yellow'
 };
 
+export type ListName = 'storage' | 'shoppingList';
+
 export type FridgeAction = 'delete' | 'waste' | 'consume';
 
 export type Alert = {

@@ -3,7 +3,7 @@ import 'firebase/functions';
 import { CurrentFamily, Family, Product } from '@/types';
 import { ProductDTO } from '@/types/DTOs';
 import WastedProduct from '@/types/WastedProduct';
-import { CallableFunctions } from './consts';
+import { CallableFunctions, ListName } from './consts';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -40,15 +40,15 @@ export default class Firestore {
     return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
   }
 
-  public async addToStorage(products: ProductDTO[]) {
-    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
-
-    const productInStorage = await Promise.all(products.map(p => this.isProductInStorage(p)));
-    products = products.filter((p, i) => !productInStorage[i]);
-
+  public async addToList(products: ProductDTO[], listName: ListName) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.storage.push(...products);
+    const targetList: ProductDTO[] = family[listName];
+
+    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
+    products = products.filter(candidate => !targetList.find(p => p.name == candidate.name));
+
+    family[listName].push(...products);
 
     await this.db
       .collection('family')
@@ -87,21 +87,6 @@ export default class Firestore {
     family.shoppingList = family.shoppingList.filter(candidate =>
       products.every(deleted => deleted.name !== candidate.name)
     );
-
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
-  }
-
-  public async addToShoppingList(products: ProductDTO[]) {
-    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
-    const productInShoppingList = await Promise.all(products.map(p => this.isProductInStorage(p)));
-    products = products.filter((p, i) => !productInShoppingList[i]);
-
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    family.shoppingList.push(...products);
 
     await this.db
       .collection('family')

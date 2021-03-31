@@ -92,10 +92,10 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
     this.trimProduct();
 
     if (this.location === 'storage') {
-      await Firestore.instance.addToStorage([this.product]);
+      await Firestore.instance.addToList([this.product], 'storage');
       await router.safePush('/fridge');
     } else if (this.location === 'shoppingList') {
-      await Firestore.instance.addToShoppingList([this.product]);
+      await Firestore.instance.addToList([this.product], 'shoppingList');
       await router.safePush('/shopping-list');
     }
   }
