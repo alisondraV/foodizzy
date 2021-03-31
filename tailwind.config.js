@@ -2,6 +2,17 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    customForms: theme => ({
+      default: {
+        select: {
+          borderRadius: theme('borderRadius.md'),
+          borderColor: theme('borderColor.secondary-text'),
+          icon:
+            '<svg width="18" height="11" viewBox="0 0 18 11" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M16 2L9 9L2 2" stroke="#01877E" stroke-width="1.5" stroke-linecap="square"/></svg>'
+        }
+      }
+    }),
     colors: {
       'primary-green': '#01877E',
       'primary-peach': '#FFB0A9',
@@ -27,5 +38,5 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: []
+  plugins: [require('@tailwindcss/custom-forms')]
 };

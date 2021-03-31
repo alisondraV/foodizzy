@@ -1,3 +1,4 @@
+import { Product } from '@/types';
 import tailwind from '../../tailwind.config';
 export const colors: string[] = Object.values(tailwind.theme.colors);
 
@@ -65,3 +66,104 @@ export const authErrors = {
 export enum CallableFunctions {
   GetUsersByEmail = 'getUsersByEmail'
 }
+
+export type IconName =
+  | 'AddNew'
+  | 'Remove'
+  | 'RemoveFAB'
+  | 'Waste'
+  | 'WasteFAB'
+  | 'MoveToShoppingList'
+  | 'Purchase';
+
+export const Icons: { [iconName in IconName]: string } = {
+  AddNew: require('@/assets/images/AddNew.svg'),
+  Remove: require('@/assets/images/Remove.svg'),
+  RemoveFAB: require('@/assets/images/RemoveFAB.svg'),
+  Waste: require('@/assets/images/Waste.svg'),
+  WasteFAB: require('@/assets/images/WasteFAB.svg'),
+  MoveToShoppingList: require('@/assets/images/MoveToShoppingList.svg'),
+  Purchase: require('@/assets/images/Purchase.svg')
+};
+
+export type Color = 'light-peach' | 'light-green' | 'light-yellow';
+export type AlertStatus = 'danger' | 'success' | 'info';
+export const alertColor: { [status in AlertStatus]: Color } = {
+  danger: 'light-peach',
+  success: 'light-green',
+  info: 'light-yellow'
+};
+
+export type FridgeAction = 'delete' | 'waste' | 'consume';
+
+export type Alert = {
+  message: string;
+  status: AlertStatus;
+};
+
+export type Action = {
+  act: (product: Product) => Promise<void> | void;
+  alert: Alert;
+};
+
+export const fridgeActions: {
+  [actionName in FridgeAction]: Action;
+} = {
+  delete: {
+    act: p => p.removeFromStorage(),
+    alert: {
+      message: 'Products were deleted',
+      status: 'danger'
+    }
+  },
+  waste: {
+    act: p => p.waste(),
+    alert: {
+      message: 'Products were wasted',
+      status: 'danger'
+    }
+  },
+  consume: {
+    act: p => p.consume(),
+    alert: {
+      message: 'Products were moved to the shopping list',
+      status: 'info'
+    }
+  }
+};
+
+export type ShoppingListAction = 'delete' | 'purchase';
+
+export const shoppingListActions: {
+  [actionName in ShoppingListAction]: Action;
+} = {
+  delete: {
+    act: p => p.removeFromShoppingList(),
+    alert: {
+      message: 'Products were deleted',
+      status: 'danger'
+    }
+  },
+  purchase: {
+    act: p => p.purchase(),
+    alert: {
+      message: 'Products were moved to the storage',
+      status: 'info'
+    }
+  }
+};
+
+export const pages = {
+  Fridge: {
+    default: require('@/assets/images/Empty.svg'),
+    selected: require('@/assets/images/Check.svg')
+  },
+  NewProduct: {
+    default: require('@/assets/images/PlusIcon.svg'),
+    selected: require('@/assets/images/Minus.svg')
+  },
+  ShoppingList: {
+    default: require('@/assets/images/Empty.svg'),
+    selected: require('@/assets/images/Check.svg')
+  }
+};

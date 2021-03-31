@@ -2,122 +2,80 @@
   <div>
     <v-header heading="What's in your fridge?" />
     <div class="mt-20">
-      <v-alert
-        v-if="alertMessage"
-        :isPositive="!productWasWasted"
-        :label="alertMessage"
-        :wasted="productWasWasted"
-      />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
-      <search-input class="mb-4" v-model="searchQuery" />
-      <ul>
-        <li class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
-          <h2 class="text-primary-green mb-1">{{ category }}</h2>
-          <hr class="text-secondary-text mb-2" />
-          <ul>
-            <li
-              class="flex justify-between py-3 text-xl left-0"
-              v-for="product in filteredCategoryProducts[category]"
-              :key="product.name"
-            >
-              <img src="@/assets/images/Check.svg" alt="Finished" @click="markAsFinished(product)" />
-              <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
-              <img src="@/assets/images/Waste.svg" alt="Wasted" @click="markAsWasted(product)" />
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <div class="fixed bottom-0 w-full flex justify-center mb-20 -mx-8">
-        <img @click="addNewProduct" src="@/assets/images/AddNew.svg" alt="Add" class="p-4" />
-      </div>
+    <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
+      <products-list current-page="Fridge" :products="products" />
+    </div>
+    <v-fab
+      v-if="!productsAreSelected"
+      class="fixed bottom-0 w-full flex justify-center mb-24"
+      iconName="AddNew"
+      @click="addNewProduct"
+    />
+    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-3">
+      <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab class="mb-2" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
+      <v-fab iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
     </div>
     <navigation-menu current-page="Fridge" />
   </div>
 </template>
 
 <script lang="ts">
+import router from '@/router';
+import { AlertMixin, ListenerMixin } from '@/mixins';
+import { Component, Mixins, Provide } from 'vue-property-decorator';
 import NavigationMenu from '@/components/NavigationMenu.vue';
+import { Product } from '@/types';
+import ProductsList from '@/components/ProductsList.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
-import { AlertMixin, ListenerMixin } from '@/mixins';
-import router from '@/router';
-import Product from '@/types/Product';
-import Firestore from '@/utils/Firestore';
-import { Component, Mixins } from 'vue-property-decorator';
+import VFab from '@/components/VFab.vue';
+import { FridgeAction, fridgeActions } from '@/utils/consts';
 
 @Component({
   components: {
     NavigationMenu,
+    ProductsList,
     SearchInput,
     VAlert,
-    VHeader
+    VButton,
+    VHeader,
+    VFab
   }
 })
 export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
+  @Provide('currentPage') currentPage = 'Fridge';
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
-  productWasWasted = false;
   searchQuery = '';
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = this.getProductsWithCategory(family.storage);
+      this.products = (family.storage ?? []).map(Product.fromDTO);
     };
   }
 
-  get filteredCategoryProducts() {
-    const reducedProducts = this.products.filter(product => {
-      return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-    });
-
-    type Category = { [category: string]: Product[] };
-    return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
-      if (!Object.keys(acc).includes(categoryName)) {
-        acc[categoryName] = [];
-      }
-
-      acc[categoryName].push(product);
-
-      return acc;
-    }, {});
+  get selectedProducts() {
+    return this.products.filter(product => product.selected);
   }
 
-  async markAsFinished(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromStorage(product);
-    await Firestore.instance.addToShoppingList(product);
-
-    await this.showAlert(`${product.name} was added to the shopping list`);
-  }
-
-  async markAsWasted(product: Product) {
-    this.products = this.products.filter(p => p.name != product.name);
-    await Firestore.instance.removeFromStorage(product);
-    await Firestore.instance.moveToWasted(product);
-    await Firestore.instance.addToShoppingList(product);
-
-    this.productWasWasted = true;
-    await this.showAlert(`${product.name} was wasted`);
-    this.productWasWasted = false;
+  async performActionOnSelected(actionName: FridgeAction) {
+    const { act, alert } = fridgeActions[actionName];
+    await Promise.all(this.selectedProducts.map(act));
+    await this.showAlert(alert.message, alert.status);
   }
 
   addNewProduct() {
     router.safePush({ path: '/new-product', query: { location: 'storage' } });
   }
 
-  getProductsWithCategory(products: Product[]): Product[] {
-    if (!products) {
-      return [];
-    }
-
-    return products.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
+  get productsAreSelected(): boolean {
+    return !this.products.every(p => !p.selected);
   }
 }
 </script>

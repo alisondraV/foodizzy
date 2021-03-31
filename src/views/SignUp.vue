@@ -11,29 +11,32 @@
       </div>
       <img src="@/assets/images/LogoMain.svg" alt="Logo" />
     </div>
-    <div class="mb-8">
+    <div class="mb-4">
       <v-input
-        class="mb-6"
+        class="mb-3"
         type="email"
-        label="Type in your email"
+        label="Email Address"
+        placeholder="Enter your email"
         v-model="email"
         :error="errorType === 'email'"
       />
       <v-input
-        class="mb-6"
+        class="mb-3"
         type="name"
-        label="Type in your name"
+        label="Name"
+        placeholder="Enter your name"
         v-model="name"
         :error="errorType === 'displayName'"
       />
       <v-input
-        class="mb-6"
+        class="mb-3"
         type="password"
-        label="Type in your password"
+        label="Password"
+        placeholder="Enter your password"
         v-model="password"
         :error="errorType === 'password'"
       />
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 ml-1">
         <div :class="passwordValidation.hasLowerCase ? 'text-primary-green' : 'text-dark-peach'">
           1 lowercase
         </div>
@@ -51,13 +54,13 @@
         </div>
       </div>
     </div>
-    <div class="text-dark-peach">{{ errorMessage }}</div>
+    <div class="text-dark-peach mb-2 ml-1">{{ errorMessage }}</div>
     <div class="mb-8">
-      <v-button class="mb-6" label="Sign Up" :disabled="validationFailed" @click="signUp" />
+      <v-button class="mb-4" label="Sign Up" :disabled="validationFailed" @click="signUp" />
       <div class="flex items-center text-secondary-text">
-        <hr class="w-1/2 border-gray mb-6" />
-        <span class="w-1/5 text-center mb-6">OR</span>
-        <hr class="w-1/2 border-gray mb-6" />
+        <hr class="w-1/2 border-gray mb-4" />
+        <span class="w-1/5 text-center mb-4">OR</span>
+        <hr class="w-1/2 border-gray mb-4" />
       </div>
       <button
         @click="signUpThroughGoogle"

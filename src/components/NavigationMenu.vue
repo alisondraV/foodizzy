@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-background flex justify-between h-20 px-5 w-full bottom-0 fixed">
+  <div
+    class="bg-background flex justify-between h-20 px-5 w-full bottom-0 fixed"
+    style="box-shadow: #F0F0F0 0 -10px 20px"
+  >
     <img
       src="@/assets/images/Home.svg"
       alt="Home"
