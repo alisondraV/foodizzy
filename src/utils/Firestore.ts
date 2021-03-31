@@ -3,7 +3,7 @@ import 'firebase/functions';
 import { CurrentFamily, Family, Product } from '@/types';
 import { ProductDTO } from '@/types/DTOs';
 import WastedProduct from '@/types/WastedProduct';
-import { CallableFunctions } from './consts';
+import { CallableFunctions, ListName } from './consts';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -40,71 +40,54 @@ export default class Firestore {
     return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
   }
 
-  public async addProductToStorage(product: ProductDTO) {
-    if (product instanceof Product) {
-      product = product.toDTO();
-    }
-
-    if (await this.isProductInStorage(product)) return;
+  public async addToList(products: ProductDTO[], listName: ListName) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.storage.push(product);
+    const targetList: ProductDTO[] = family[listName];
+
+    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
+    products = products.filter(candidate => !targetList.find(p => p.name == candidate.name));
+
+    family[listName].push(...products);
+
     await this.db
       .collection('family')
       .doc(family.id)
       .set(family);
   }
 
-  public async removeFromStorage(product: ProductDTO) {
+  public async removeFromStorage(products: ProductDTO[]) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.storage = family.storage.filter(candidate => candidate.name != product.name);
+    family.storage = family.storage.filter(candidate =>
+      products.every(deleted => deleted.name !== candidate.name)
+    );
     await this.db
       .collection('family')
       .doc(family.id)
       .set(family);
   }
 
-  public async moveToWasted(product: ProductDTO) {
-    if (product instanceof Product) {
-      product = product.toDTO();
-    }
-    const seconds = new Date().getTime() / 1000;
-    const documents = await this.db
-      .collection('wasteBuckets')
-      .where('familyId', '==', (await CurrentFamily.instance.getCurrentFamily())!.id)
-      .get();
-    const wastedProduct: WastedProduct = {
+  public async moveToWasted(products: ProductDTO[]) {
+    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
+
+    const wastedProducts: WastedProduct[] = products.map(product => ({
       ...product,
-      dateWasted: new firebase.firestore.Timestamp(seconds, 0)
-    };
-    const bucket = documents.docs[0];
-    const updatedWastedList = [...bucket.data().wasted, wastedProduct];
+      dateWasted: firebase.firestore.Timestamp.now()
+    }));
+    const bucket = await CurrentFamily.instance.getWasteBucket();
+    const updatedWastedList = [...bucket.data().wasted, ...wastedProducts];
 
-    await this.db
-      .collection('wasteBuckets')
-      .doc(bucket.id)
-      .update('wasted', updatedWastedList);
+    await bucket.ref.update('wasted', updatedWastedList);
   }
 
-  public async removeFromShoppingList(product: ProductDTO) {
+  public async removeFromShoppingList(products: ProductDTO[]) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.shoppingList = family.shoppingList.filter(candidate => candidate.name != product.name);
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
-  }
+    family.shoppingList = family.shoppingList.filter(candidate =>
+      products.every(deleted => deleted.name !== candidate.name)
+    );
 
-  public async addToShoppingList(product: ProductDTO) {
-    if (product instanceof Product) {
-      product = product.toDTO();
-    }
-    if (await this.isProductInShoppingList(product)) return;
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    family.shoppingList.push(product);
     await this.db
       .collection('family')
       .doc(family.id)
@@ -142,6 +125,7 @@ export default class Firestore {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     const storageProductNames = family.storage.map(p => p.name);
+
     return storageProductNames?.includes(product.name);
   }
 

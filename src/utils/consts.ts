@@ -94,6 +94,8 @@ export const alertColor: { [status in AlertStatus]: Color } = {
   info: 'light-yellow'
 };
 
+export type ListName = 'storage' | 'shoppingList';
+
 export type FridgeAction = 'delete' | 'waste' | 'consume';
 
 export type Alert = {
@@ -102,7 +104,7 @@ export type Alert = {
 };
 
 export type Action = {
-  act: (product: Product) => Promise<void> | void;
+  act: (products: Product[]) => Promise<void> | void;
   alert: Alert;
 };
 
@@ -110,21 +112,21 @@ export const fridgeActions: {
   [actionName in FridgeAction]: Action;
 } = {
   delete: {
-    act: p => p.removeFromStorage(),
+    act: products => Product.removeAllFromStorage(products),
     alert: {
       message: 'Products were deleted',
       status: 'danger'
     }
   },
   waste: {
-    act: p => p.waste(),
+    act: products => Product.wasteAll(products),
     alert: {
       message: 'Products were wasted',
       status: 'danger'
     }
   },
   consume: {
-    act: p => p.consume(),
+    act: products => Product.consumeAll(products),
     alert: {
       message: 'Products were moved to the shopping list',
       status: 'info'
@@ -138,14 +140,14 @@ export const shoppingListActions: {
   [actionName in ShoppingListAction]: Action;
 } = {
   delete: {
-    act: p => p.removeFromShoppingList(),
+    act: products => Product.removeAllFromShoppingList(products),
     alert: {
       message: 'Products were deleted',
       status: 'danger'
     }
   },
   purchase: {
-    act: p => p.purchase(),
+    act: products => Product.purchaseAll(products),
     alert: {
       message: 'Products were moved to the storage',
       status: 'info'

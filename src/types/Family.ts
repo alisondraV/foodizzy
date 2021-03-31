@@ -113,7 +113,7 @@ export class CurrentFamily {
     return thisMonthStatsCollection.docs[0].data().totalProducts;
   }
 
-  public async getWastedProducts() {
+  public async getWasteBucket() {
     const family = await this.getCurrentFamily();
 
     const documents = await Firestore.instance.db
@@ -124,7 +124,12 @@ export class CurrentFamily {
       throw new NotFoundError(`WasteBucket for family: ${family?.id}`);
     }
 
-    return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
+    return documents.docs[0];
+  }
+
+  public async getWastedProducts() {
+    const wasteBucket = await this.getWasteBucket();
+    return wasteBucket.data().wasted ?? ([] as WastedProduct[]);
   }
 
   public async quit() {
