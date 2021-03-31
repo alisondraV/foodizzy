@@ -116,32 +116,15 @@ async function getThisMonthStats(
 
   let thisMonthStatsDocRef;
   if (thisMonthStatsCollection.docs.length === 0) {
-    const totalProducts = await getTotalProductsFromStorage(family);
     thisMonthStatsDocRef = await statsCollection.add({
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      totalProducts,
+      totalProducts: {},
     });
   } else {
     thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
   }
   return await thisMonthStatsDocRef.get();
-}
-
-async function getTotalProductsFromStorage(family: any) {
-  const familyDocRef = await db
-      .collection('family')
-      .doc(family.id)
-      .get();
-  const storage = await familyDocRef.data()?.storage;
-
-  return storage.reduce((currentStatistics: any, product: any) => {
-    const category = (product.category ?? 'general').toLowerCase();
-    if (!Object.keys(currentStatistics).includes(category)) {
-      currentStatistics[category] = 0;
-    }
-    return currentStatistics;
-  }, {});
 }
 
 async function sendWelcomeEmails(
