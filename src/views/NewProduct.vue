@@ -20,6 +20,7 @@ import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import ProductsList from '@/components/ProductsList.vue';
+import { ListName } from '@/utils/consts';
 
 @Component({
   components: {
@@ -44,11 +45,7 @@ export default class NewProduct extends Vue {
   async addItemsToTheList() {
     const selectedProducts = this.products.filter(p => p.selected);
 
-    if (this.location === 'storage') {
-      await Firestore.instance.addToList(selectedProducts, 'storage');
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.addToList(selectedProducts, 'shoppingList');
-    }
+    await Firestore.instance.addToList(selectedProducts, this.location as ListName);
 
     router.back();
   }
