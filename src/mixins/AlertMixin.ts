@@ -9,7 +9,6 @@ export class AlertMixin extends Vue {
 
   showAlert(message: string, alertStatus: AlertStatus = 'info') {
     this.alertStatus = alertStatus;
-    console.log(alertStatus);
 
     if (this.prevTimeout) {
       clearTimeout(this.prevTimeout);
