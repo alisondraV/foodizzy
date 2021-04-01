@@ -9,11 +9,11 @@
     </div>
     <v-fab
       v-if="!productsAreSelected"
-      class="fixed bottom-0 w-full flex justify-center mb-24"
+      class="fixed bottom-0 right-0 mb-24 mr-5"
       iconName="AddNew"
       @click="addNewProduct"
     />
-    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-3">
+    <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-5">
       <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
       <v-fab iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
@@ -63,14 +63,13 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async updateFridge() {
-    await Promise.all(this.selectedProducts.map(product => product.purchase()));
-
+    await Product.purchaseAll(this.selectedProducts);
     await this.showAlert('Products were added to the fridge');
   }
 
   async performActionOnSelected(actionName: ShoppingListAction) {
     const { act, alert } = shoppingListActions[actionName];
-    await Promise.all(this.selectedProducts.map(act));
+    await act(this.selectedProducts);
     await this.showAlert(alert.message, alert.status);
   }
 

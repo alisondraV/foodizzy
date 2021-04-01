@@ -2,7 +2,7 @@
   <div>
     <v-header heading="Add New Item" />
     <div class="mt-20 mb-20 mx-8">
-      <products-list :location="location" :products="products" @remove="removeExistingProduct" />
+      <products-list :location="location" :products="products" />
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
       <v-button class="mx-8 mt-3" label="Add Items To The List" @click="addItemsToTheList" />
@@ -20,6 +20,7 @@ import SearchInput from '@/components/SearchInput.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
 import ProductsList from '@/components/ProductsList.vue';
+import { ListName } from '@/utils/consts';
 
 @Component({
   components: {
@@ -41,24 +42,10 @@ export default class NewProduct extends Vue {
     this.products = await this.getProductsWithCategory();
   }
 
-  async removeExistingProduct(product: Product) {
-    if (this.location === 'storage') {
-      await Firestore.instance.removeFromStorage(product);
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.removeFromShoppingList(product);
-    }
-  }
-
   async addItemsToTheList() {
     const selectedProducts = this.products.filter(p => p.selected);
 
-    for (const product of selectedProducts) {
-      if (this.location === 'storage') {
-        await Firestore.instance.addProductToStorage(product);
-      } else if (this.location === 'shoppingList') {
-        await Firestore.instance.addToShoppingList(product);
-      }
-    }
+    await Firestore.instance.addToList(selectedProducts, this.location as ListName);
 
     router.back();
   }
