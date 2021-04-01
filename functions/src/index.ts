@@ -77,28 +77,30 @@ async function updateTotalProducts(
     oldFamily: FirebaseFirestore.DocumentData,
     change: functions.Change<functions.firestore.QueryDocumentSnapshot>
 ) {
-  let addedProduct: any = null;
-  newFamily.storage.forEach((newProduct: any) => {
-    if (!oldFamily.storage.find((oldProduct: any) => newProduct.name === oldProduct.name)) {
-      addedProduct = newProduct;
-    }
+  let addedProducts: any[] = newFamily.storage.filter((newProduct: any) => {
+    return !oldFamily.storage.find((oldProduct: any) => newProduct.name === oldProduct.name);
   });
-  console.log('A new product added: ', addedProduct);
-
-  if (addedProduct == null) {
+  
+  if (addedProducts.length === 0) {
     throw new Error('The storages were the same');
   }
 
-  const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
+  console.log('New products were added: ', addedProducts);
+  
   const updatedFamilyStats = change.after.ref.collection('statistics');
 
   const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats);
   const thisMonthData = thisMonthStatsDoc.data() ?? {};
 
-  if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
-    thisMonthData.totalProducts[categoryName] = 0;
+  for (const addedProduct of addedProducts) {
+    const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
+  
+    if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
+      thisMonthData.totalProducts[categoryName] = 0;
+    }
+
+    thisMonthData.totalProducts[categoryName]++;
   }
-  thisMonthData.totalProducts[categoryName]++;
 
   return await updatedFamilyStats
       .doc(thisMonthStatsDoc.id)
