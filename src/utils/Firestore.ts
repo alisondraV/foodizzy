@@ -35,6 +35,12 @@ export default class Firestore {
     return response.data;
   }
 
+  public async getModel() {
+    const getModel = this.functions.httpsCallable('getModel');
+    const response = await getModel();
+    return response.data;
+  }
+
   public async getAllProducts(): Promise<Product[]> {
     const querySnap = await this.db.collection('allProducts').get();
     return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));

@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import sendEmail from './sendEmail';
 import axios from 'axios';
 import {db, auth} from './admin';
+import * as tf from '@tensorflow/tfjs'
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -71,6 +72,10 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
       data.emails.map((email: string) => auth.getUserByEmail(email))
   );
 });
+
+export const getModel = functions.https.onCall((data, context) => {
+  return tf.loadGraphModel('https://tfhub.dev/google/aiy/vision/classifier/food_V1/1');
+})
 
 async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,

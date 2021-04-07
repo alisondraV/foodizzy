@@ -26,6 +26,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import * as tf from '@tensorflow/tfjs';
+import Firestore from '@/utils/Firestore';
 
 @Component
 export default class SearchInput extends Vue {
@@ -36,8 +38,15 @@ export default class SearchInput extends Vue {
     return this.focused;
   }
 
-  scanItem(item) {
-    console.log(item);
+  async scanItem(files) {
+    // console.log(files);
+
+    // const model = await tf.loadGraphModel('../../food-model/model.json');
+    const model = await Firestore.instance.getModel();
+    const image = new Image();
+    image.src = URL.createObjectURL(files[0]);
+    const input = tf.browser.fromPixels(image);
+    console.log(model.predict(input));
   }
 }
 </script>
