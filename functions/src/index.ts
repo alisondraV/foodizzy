@@ -75,14 +75,6 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
 
 const labels = require('../model/assets/labels.json');
 
-export const getModel = functions.https.onCall(async (data, context) => {
-  return tf.loadGraphModel('https://tfhub.dev/google/bit/m-r50x1/1');
-//   const modelFolder = path.join(__dirname, '/food-model');
-//   console.log(await tf.node.getMetaGraphsFromSavedModel(modelFolder))
-  
-//   return tf.node.loadSavedModel(modelFolder, [], 'image_classifier')
-})
-
 export const predict = functions.https.onCall(async (data, context) => {
   const uint8array = new Uint8Array(Object.values(data.array));
 

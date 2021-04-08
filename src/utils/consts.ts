@@ -64,7 +64,8 @@ export const authErrors = {
 };
 
 export enum CallableFunctions {
-  GetUsersByEmail = 'getUsersByEmail'
+  GetUsersByEmail = 'getUsersByEmail',
+  PredictImage = 'predict'
 }
 
 export type IconName =

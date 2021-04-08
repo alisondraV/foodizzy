@@ -25,9 +25,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import { CurrentFamily } from '@/types';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class SearchInput extends Vue {
