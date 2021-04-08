@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-header heading="" />
-    <div class="mt-20 mb-20 mx-8 flex flex-col">
-      <h1 class="text-3xl mb-2 font-extrabold text-primary-text">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold text-primary-text">
+    <div class="mt-20 mb-20 mx-8 flex flex-col text-primary-text">
+      <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
+      <h2 class="mb-4 font-extrabold">
         Track your food waste here
       </h2>
-      <div class="text-right w-full mb-4 text-primary-text">
+      <div class="text-right w-full mb-4">
         <label>
           <select
             class="form-select border-none"
@@ -24,7 +24,7 @@
       </p>
       <div v-else>
         <div v-if="totalProducts === 0">
-          <p class="text-secondary-text text-center mb-6">
+          <p class="text-secondary-text text-center text-sm mb-6">
             We don't have enough data to display, go fill your fridge!
           </p>
         </div>
@@ -40,7 +40,7 @@
             >
             </DonutChart>
           </div>
-          <p class="text-secondary-text text-center mb-6">
+          <p class="text-secondary-text text-center text-sm mb-6">
             {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted in
             {{ month }}
           </p>
@@ -49,20 +49,11 @@
             :key="category"
             class="flex mb-6 items-center w-full"
           >
-            <div class="h-30 w-40 flex items-center">
-              <DonutChart
-                :data="[
-                  statistics[category.toLowerCase()],
-                  totalProductsForMonth[category.toLowerCase()] - statistics[category.toLowerCase()]
-                ]"
-                :labels="['wasted', 'eaten']"
-                :colors="[categoryColors[category.toLowerCase()], defaultColor]"
-                :centerNumber="getWastePercentage(category)"
-                :canvasId="category.toLowerCase()"
-              >
-              </DonutChart>
-            </div>
-            <p class="text-primary-text">of all {{ category }} was wasted</p>
+            <progress-bar
+              :category="category"
+              :color="categoryColors[category.toLowerCase()]"
+              :percentage="getWastePercentage(category)"
+            />
           </div>
         </div>
       </div>
@@ -72,21 +63,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import Authentication from '@/utils/Authentication';
-import WastedProduct from '@/types/WastedProduct';
-import VHeader from '@/components/VHeader.vue';
 import firebase from 'firebase';
-import DonutChart from '@/components/DonutChart.vue';
 import { colors, monthList } from '@/utils/consts';
+import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
+import Authentication from '@/utils/Authentication';
+import DonutChart from '@/components/DonutChart.vue';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import ProgressBar from '@/components/ProgressBar.vue';
+import VHeader from '@/components/VHeader.vue';
+import WastedProduct from '@/types/WastedProduct';
 
 @Component({
   components: {
-    VHeader,
+    DonutChart,
     NavigationMenu,
-    DonutChart
+    ProgressBar,
+    VHeader
   }
 })
 export default class Home extends Vue {
