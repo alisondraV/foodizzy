@@ -127,49 +127,49 @@ const router: ExtendedRouter = new VueRouter({
   routes
 });
 
-// router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
-//   try {
-//     const user = await Authentication.instance.getCurrentUser();
-//     const userLoggedIn = user != null;
-//     let userHasFamily = false;
-//     if (userLoggedIn) {
-//       userHasFamily = await CurrentFamily.instance.existsFor(user!);
-//     }
-//     const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations'];
-//     const authWithoutFamilyRoutes = [
-//       'SignIn',
-//       'SignUp',
-//       'Family',
-//       'Invitations',
-//       'UserProfile',
-//       'CreateFamily',
-//       'ChangePassword',
-//       'PersonalInformation',
-//       'OnboardingTrackWaste',
-//       'OnboardingMakeLists',
-//       'OnboardingInviteMembers'
-//     ];
-//     const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
+router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
+  try {
+    const user = await Authentication.instance.getCurrentUser();
+    const userLoggedIn = user != null;
+    let userHasFamily = false;
+    if (userLoggedIn) {
+      userHasFamily = await CurrentFamily.instance.existsFor(user!);
+    }
+    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations'];
+    const authWithoutFamilyRoutes = [
+      'SignIn',
+      'SignUp',
+      'Family',
+      'Invitations',
+      'UserProfile',
+      'CreateFamily',
+      'ChangePassword',
+      'PersonalInformation',
+      'OnboardingTrackWaste',
+      'OnboardingMakeLists',
+      'OnboardingInviteMembers'
+    ];
+    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
 
-//     const destinationIsOneOf = routes => routes.some(routeName => to.name === routeName);
+    const destinationIsOneOf = routes => routes.some(routeName => to.name === routeName);
 
-//     if (!userLoggedIn) {
-//       if (!destinationIsOneOf(anonymousRoutes)) {
-//         next('/sign-in');
-//       }
-//     } else if (!userHasFamily) {
-//       if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
-//         next('/profile');
-//       }
-//     } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
-//       next('/');
-//     }
-//     next();
-//   } catch (e) {
-//     console.error(e.message);
-//     next('sign-in');
-//   }
-// });
+    if (!userLoggedIn) {
+      if (!destinationIsOneOf(anonymousRoutes)) {
+        next('/sign-in');
+      }
+    } else if (!userHasFamily) {
+      if (!destinationIsOneOf(authWithoutFamilyRoutes)) {
+        next('/profile');
+      }
+    } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
+      next('/');
+    }
+    next();
+  } catch (e) {
+    console.error(e.message);
+    next('sign-in');
+  }
+});
 
 function handleError(error) {
   if (isNavigationFailure(error, NavigationFailureType.redirected)) {

@@ -41,6 +41,17 @@ export default class Firestore {
     return response.data;
   }
 
+  public async predict(file: File) {
+    const predict = this.functions.httpsCallable('predict');
+    console.log({ file });
+
+    const buf = await file.arrayBuffer();
+    const uint8array = new Uint8Array(buf);
+
+    const response = await predict({ array: uint8array });
+    return response.data;
+  }
+
   public async getAllProducts(): Promise<Product[]> {
     const querySnap = await this.db.collection('allProducts').get();
     return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));

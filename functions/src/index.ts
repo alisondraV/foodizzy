@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import sendEmail from './sendEmail';
 import axios from 'axios';
 import {db, auth} from './admin';
-import * as tf from '@tensorflow/tfjs'
+import * as tf from '@tensorflow/tfjs-node'
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -73,8 +73,52 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
   );
 });
 
-export const getModel = functions.https.onCall((data, context) => {
-  return tf.loadGraphModel('https://tfhub.dev/google/aiy/vision/classifier/food_V1/1');
+const labels = require('../model/assets/labels.json');
+
+export const getModel = functions.https.onCall(async (data, context) => {
+  return tf.loadGraphModel('https://tfhub.dev/google/bit/m-r50x1/1');
+//   const modelFolder = path.join(__dirname, '/food-model');
+//   console.log(await tf.node.getMetaGraphsFromSavedModel(modelFolder))
+  
+//   return tf.node.loadSavedModel(modelFolder, [], 'image_classifier')
+})
+
+export const predict = functions.https.onCall(async (data, context) => {
+  const uint8array = new Uint8Array(Object.values(data.array));
+
+  // Decode the image into a tensor.
+  const imageTensor = await tf.node.decodeImage(uint8array);
+  const input = imageTensor.expandDims(0);
+
+  // Feed the image tensor into the model for inference.
+  const startTime = tf.util.now();
+  const objectDetectionModel: any = await tf.node.loadSavedModel(
+    './model', ['serve'], 'serving_default');
+  let outputTensor = objectDetectionModel.predict({'x': input});
+
+  // Parse the model output to get meaningful result(get detection class and
+  // object location).
+  const scores = await outputTensor['detection_scores'].arraySync();
+  const boxes = await outputTensor['detection_boxes'].arraySync();
+  const names = await outputTensor['detection_classes'].arraySync();
+  const endTime = tf.util.now();
+  outputTensor['detection_scores'].dispose();
+  outputTensor['detection_boxes'].dispose();
+  outputTensor['detection_classes'].dispose();
+  outputTensor['num_detections'].dispose();
+  const detectedBoxes = [];
+  const detectedNames = [];
+  for (let i = 0; i < scores[0].length; i++) {
+    if (scores[0][i] > 0.3) {
+      detectedBoxes.push(boxes[0][i]);
+      detectedNames.push(labels[names[0][i]]);
+    }
+  }
+  return {
+    // boxes: detectedBoxes,
+    names: detectedNames,
+    inferenceTime: endTime - startTime
+  }
 })
 
 async function updateTotalProducts(
