@@ -35,26 +35,12 @@
               :data="chart"
               :labels="chartLabels"
               :colors="[defaultColor, ...Object.values(categoryColors)]"
-              :centerNumber="getWastePercentage()"
+              :centerNumber="wastePercentage / 100"
               canvasId="main"
             >
             </DonutChart>
           </div>
-          <p class="text-secondary-text text-center text-sm mb-6">
-            {{ (getWastePercentage() * 100).toFixed() }}% of all food was wasted in
-            {{ month }}
-          </p>
-          <div
-            v-for="category in Object.keys(statistics)"
-            :key="category"
-            class="flex mb-6 items-center w-full"
-          >
-            <progress-bar
-              :category="category"
-              :color="categoryColors[category.toLowerCase()]"
-              :percentage="getWastePercentage(category)"
-            />
-          </div>
+          <progress-bar :label="label" :percentage="wastePercentage" />
         </div>
       </div>
     </div>
@@ -157,6 +143,10 @@ export default class Home extends Vue {
     return monthList[this.selectedMonthData.month];
   }
 
+  get label() {
+    return `${this.wastePercentage}% of all food was wasted in ${this.month}`;
+  }
+
   get statistics() {
     type Category = { [category: string]: number };
     let categoryCount = 0;
@@ -191,12 +181,8 @@ export default class Home extends Vue {
     return ['Eaten', ...Object.keys(this.statistics)];
   }
 
-  getWastePercentage(category?: string) {
-    if (category) {
-      category = category.toLowerCase();
-      return this.statistics[category] / this.totalProductsForMonth[category];
-    }
-    return this.totalWaste / this.totalProducts;
+  get wastePercentage() {
+    return ((this.totalWaste / this.totalProducts) * 100).toFixed();
   }
 }
 </script>
