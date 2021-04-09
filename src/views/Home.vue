@@ -34,8 +34,7 @@
               class="mb-6"
               :data="chart"
               :labels="chartLabels"
-              :colors="[defaultColor, ...Object.values(categoryColors)]"
-              :centerNumber="wastePercentage / 100"
+              :colors="[...Object.values(categoryColors)]"
               canvasId="main"
             >
             </DonutChart>
@@ -49,7 +48,6 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase';
 import { colors, monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
@@ -69,13 +67,12 @@ import WastedProduct from '@/types/WastedProduct';
   }
 })
 export default class Home extends Vue {
-  loading = true;
   monthData: { month: number; year: number }[] = [];
-  user: firebase.User | null = null;
   wastedProducts: WastedProduct[] = [];
   categoryColors: { [category: string]: string } = {};
   totalProductsForMonth: { [category: string]: number } = {};
-
+  firstName = '';
+  loading = true;
   selectedMonthData = {
     month: new Date().getMonth(),
     year: new Date().getFullYear()
@@ -174,11 +171,11 @@ export default class Home extends Vue {
   }
 
   get chartData() {
-    return [[this.totalProducts - this.totalWaste, ...Object.values(this.statistics)]];
+    return [[...Object.values(this.statistics)]];
   }
 
   get chartLabels() {
-    return ['Eaten', ...Object.keys(this.statistics)];
+    return [...Object.keys(this.statistics)];
   }
 
   get wastePercentage() {
