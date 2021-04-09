@@ -77,16 +77,9 @@ export default class Home extends Vue {
     month: new Date().getMonth(),
     year: new Date().getFullYear()
   };
-  firstName = '';
-  defaultColor = '#E7E7E7';
 
   async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-
-    if (this.user!.displayName) {
-      this.firstName =
-        this.user!.displayName.substr(0, this.user!.displayName?.indexOf(' ')) || this.user!.displayName;
-    }
+    this.firstName = await Authentication.instance.getFirstName();
     await this.getWastedProductsForSelectedMonth();
     await this.getMonthData();
     this.loading = false;

@@ -32,6 +32,11 @@ export default class Authentication {
     });
   }
 
+  public async getFirstName(user?: firebase.User): Promise<string> {
+    const name = (user ? user: await this.getCurrentUser())?.displayName ?? '';
+    return name.substr(0, name?.indexOf(' ')) || name;
+  }
+
   public signIn(email: string, password: string) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
