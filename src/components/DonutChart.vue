@@ -53,7 +53,6 @@ export default class DoughnutChart extends Vue {
   }
 
   createChart(chartData: object) {
-    console.log(chartData);
     const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement;
     const options = {
       type: 'CentralDoughnut',
