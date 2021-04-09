@@ -35,9 +35,9 @@ export default class Firestore {
     return response.data;
   }
 
-  public async predict(file: File) {
-    const predict = this.functions.httpsCallable(CallableFunctions.PredictImage);
+  public async predict(file: Blob) {
     console.log({ file });
+    const predict = this.functions.httpsCallable(CallableFunctions.PredictImage);
 
     const buf = await file.arrayBuffer();
     const uint8array = new Uint8Array(buf);

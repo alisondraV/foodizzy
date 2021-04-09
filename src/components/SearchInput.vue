@@ -21,6 +21,7 @@
         @change="e => scanItem(e.target.files)"
       />
     </div>
+    Prediction: {{ pred }}
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class SearchInput extends Vue {
   @Prop() value!: null;
   focused = false;
+  pred = '';
 
   get isFocused() {
     return this.focused;
@@ -39,7 +41,11 @@ export default class SearchInput extends Vue {
 
   async scanItem(files) {
     try {
-      const prediction = await Firestore.instance.predict(files[0]);
+      const file = files[0];
+      const compressedImage = await this.compress(file, 0.05);
+      const prediction = await Firestore.instance.predict(compressedImage);
+      this.pred = prediction.names[0];
+
       await Firestore.instance.addToList(
         [
           {
@@ -51,6 +57,27 @@ export default class SearchInput extends Vue {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  compress(file: File, compression: number): Promise<Blob> {
+    const canvas = document.createElement('canvas');
+    const reader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+      reader.onload = event => {
+        const img = new Image();
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+
+          ctx?.drawImage(img, 0, 0, img.width, img.height);
+          canvas.toBlob(blob => (blob ? resolve(blob) : reject()), file.type, compression);
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
   }
 }
 </script>
