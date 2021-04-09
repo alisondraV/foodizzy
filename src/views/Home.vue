@@ -29,8 +29,10 @@
           </p>
         </div>
         <div v-else>
+          <!--for reactivity-->
           <div v-for="chart in chartData" :key="chart[0]">
             <DonutChart
+              v-if="chart.length !== 0"
               class="mb-6"
               :data="chart"
               :labels="chartLabels"

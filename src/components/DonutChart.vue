@@ -11,16 +11,8 @@ export default class DoughnutChart extends Vue {
   @Prop({ default: [] }) readonly labels!: Array<string>;
   @Prop({ default: [] }) readonly colors!: Array<string>;
   @Prop({ default: [] }) readonly data!: Array<number>;
-  @Prop({
-    default: () => {
-      return Chart.defaults.doughnut;
-    }
-  })
-  @Prop()
-  canvasId!: string;
+  @Prop() canvasId!: string;
   readonly options: object | undefined;
-  defaultColor = '#E7E7E7';
-  defaultLabel = 'All Food';
 
   mounted() {
     Chart.defaults.CentralDoughnut = Chart.helpers.clone(Chart.defaults.doughnut);
@@ -52,15 +44,16 @@ export default class DoughnutChart extends Vue {
     this.createChart({
       datasets: [
         {
-          data: this.data ?? [1],
-          backgroundColor: this.colors ?? this.defaultColor
+          data: this.data,
+          backgroundColor: this.colors
         }
       ],
-      labels: this.labels ?? this.defaultLabel
+      labels: this.labels
     });
   }
 
   createChart(chartData: object) {
+    console.log(chartData);
     const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement;
     const options = {
       type: 'CentralDoughnut',
