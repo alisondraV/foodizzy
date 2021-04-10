@@ -13,7 +13,7 @@
       />
     </div>
     <div>
-      <img class="absolute ml-3 py-1 w-6 mt-1" src="@/assets/images/Plus.svg" alt="NewProduct" />
+      <img class="absolute ml-3 py-1 w-6 mt-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
       <input
         class="opacity-0 ml-3 mt-1 w-6"
         type="file"
@@ -27,6 +27,7 @@
 <script lang="ts">
 import Firestore from '@/utils/Firestore';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import ML from '@/utils/ML';
 
 @Component
 export default class SearchInput extends Vue {
@@ -40,10 +41,10 @@ export default class SearchInput extends Vue {
   async scanItem(files: File[]): Promise<void> {
     try {
       const file = files[0];
-      const image = await this.toImage(file);
+      const image = await ML.toImage(file);
 
-      const predictionTensor = await Firestore.instance.predict(image);
-      const topPredictions = await Firestore.instance.getTopKClasses(predictionTensor, 3);
+      const predictionTensor = await ML.predict(image);
+      const topPredictions = await ML.getTopKResults(predictionTensor, 3);
       console.log(topPredictions);
 
       await Firestore.instance.addToList(
@@ -57,24 +58,6 @@ export default class SearchInput extends Vue {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  toImage(file: File): Promise<HTMLImageElement> {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onload = event => {
-        const img = new Image();
-
-        img.onload = () => {
-          img.width = img.height = 224;
-          resolve(img);
-        };
-
-        img.src = event.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    });
   }
 }
 </script>
