@@ -26,7 +26,6 @@
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.5.0",
-    "jbinary": "^2.1.3",
     "postcss": "^7",
     "register-service-worker": "^1.7.1",
     "seedrandom": "^3.0.5",
