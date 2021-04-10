@@ -31,15 +31,14 @@
         <div v-else>
           <!--for reactivity-->
           <div v-for="chart in chartData" :key="chart[0]">
-            <DonutChart
+            <custom-chart
               v-if="chart.length !== 0"
               class="mb-6"
               :data="chart"
               :labels="chartLabels"
               :colors="[...Object.values(categoryColors)]"
               canvasId="main"
-            >
-            </DonutChart>
+            />
           </div>
           <progress-bar :label="label" :percentage="wastePercentage" />
         </div>
@@ -54,7 +53,7 @@ import { colors, monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
 import Authentication from '@/utils/Authentication';
-import DonutChart from '@/components/DonutChart.vue';
+import CustomChart from '@/components/CustomChart.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -62,7 +61,7 @@ import WastedProduct from '@/types/WastedProduct';
 
 @Component({
   components: {
-    DonutChart,
+    CustomChart,
     NavigationMenu,
     ProgressBar,
     VHeader
