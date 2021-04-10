@@ -4,6 +4,11 @@ import { CurrentFamily, Family, Product } from '@/types';
 import { ProductDTO } from '@/types/DTOs';
 import WastedProduct from '@/types/WastedProduct';
 import { CallableFunctions, ListName } from './consts';
+import * as tf from '@tensorflow/tfjs';
+
+import { Tensor } from '@tensorflow/tfjs';
+import { Rank } from '@tensorflow/tfjs';
+import labels from '@/assets/object_detection_labels.json';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -35,15 +40,48 @@ export default class Firestore {
     return response.data;
   }
 
-  public async predict(file: Blob) {
+  async getTopKClasses(logits, topK) {
+    const { values, indices } = tf.topk(logits, topK, true);
+    const valuesArr = await values.data();
+    const indicesArr = await indices.data();
+    console.log(`indicesArr ${indicesArr}`);
+    const topClassesAndProbs: { className: string; probability: number }[] = [];
+    for (let i = 0; i < topK; i++) {
+      topClassesAndProbs.push({
+        className: labels[indicesArr[i]],
+        probability: valuesArr[i]
+      });
+    }
+    return topClassesAndProbs;
+  }
+
+  public async predict(file: HTMLImageElement) {
     console.log({ file });
-    const predict = this.functions.httpsCallable(CallableFunctions.PredictImage);
 
-    const buf = await file.arrayBuffer();
-    const uint8array = new Uint8Array(buf);
+    // Decode the image into a tensor.
+    console.log('Creating image tensor...');
+    const img = await tf.browser.fromPixelsAsync(file);
 
-    const response = await predict({ array: uint8array });
-    return response.data;
+    const normalized = img.div(tf.scalar(256.0));
+    const batched = normalized.reshape([1, 224, 224, 3]);
+
+    console.log('Loading model...');
+    const objectDetectionModel = await tf.loadGraphModel(
+      'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v2_130_224/classification/2/default/1',
+      { fromTFHub: true }
+    );
+
+    console.log('Performing prediction...');
+    const output = objectDetectionModel.predict(batched) as Tensor<Rank>;
+
+    // // Parse the model output to get meaningful result(get detection class and
+    // // object location).
+    if (output.shape[output.shape.length - 1] === 1001) {
+      // Remove the very first logit (background noise).
+      return output.slice([0, 1], [-1, 1000]);
+    } else if (output.shape[output.shape.length - 1] === 1000) {
+      return output;
+    }
   }
 
   public async getAllProducts(): Promise<Product[]> {

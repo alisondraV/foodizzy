@@ -2,8 +2,6 @@ import * as functions from 'firebase-functions';
 import sendEmail from './sendEmail';
 import axios from 'axios';
 import { db, auth } from './admin';
-import * as tf from '@tensorflow/tfjs-node';
-import { TFSavedModel } from '@tensorflow/tfjs-node/dist/saved_model';
 
 export const onFamilyUpdate = functions.firestore
   .document('/family/{familyId}')
@@ -64,53 +62,6 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
     return [];
   }
   return Promise.all(data.emails.map((email: string) => auth.getUserByEmail(email)));
-});
-
-const labels = require('../model/assets/labels.json');
-
-export const predict = functions.https.onCall(async (data, context) => {
-  const uint8array = new Uint8Array(Object.values(data.array));
-
-  // Decode the image into a tensor.
-  console.log('Creating image tensor...');
-  const imageTensor = tf.node.decodeImage(uint8array);
-  const input = imageTensor.expandDims(0);
-
-  // Feed the image tensor into the model for inference.
-  console.log('Performing prediction...');
-  const startTime = tf.util.now();
-  const objectDetectionModel: TFSavedModel = await tf.node.loadSavedModel(
-    './model',
-    ['serve'],
-    'serving_default'
-  );
-  let outputTensor = objectDetectionModel.predict({ x: input });
-
-  // Parse the model output to get meaningful result(get detection class and
-  // object location).
-  const scores = await outputTensor['detection_scores'].arraySync();
-  const boxes = await outputTensor['detection_boxes'].arraySync();
-  const names = await outputTensor['detection_classes'].arraySync();
-  const endTime = tf.util.now();
-  outputTensor['detection_scores'].dispose();
-  outputTensor['detection_boxes'].dispose();
-  outputTensor['detection_classes'].dispose();
-  outputTensor['num_detections'].dispose();
-  const detectedBoxes = [];
-  const detectedNames = [];
-  for (let i = 0; i < scores[0].length; i++) {
-    if (scores[0][i] > 0.3) {
-      detectedBoxes.push(boxes[0][i]);
-      detectedNames.push(labels[names[0][i]]);
-    }
-  }
-  console.log('Detected Objects:', detectedNames);
-  
-  return {
-    // boxes: detectedBoxes,
-    names: detectedNames,
-    inferenceTime: endTime - startTime
-  };
 });
 
 async function updateTotalProducts(

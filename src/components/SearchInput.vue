@@ -21,7 +21,6 @@
         @change="e => scanItem(e.target.files)"
       />
     </div>
-    Prediction: {{ pred }}
   </div>
 </template>
 
@@ -33,23 +32,24 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class SearchInput extends Vue {
   @Prop() value!: null;
   focused = false;
-  pred = '';
 
   get isFocused() {
     return this.focused;
   }
 
-  async scanItem(files) {
+  async scanItem(files: File[]): Promise<void> {
     try {
       const file = files[0];
-      const compressedImage = await this.compress(file, 0.05);
-      const prediction = await Firestore.instance.predict(compressedImage);
-      this.pred = prediction.names[0];
+      const image = await this.toImage(file);
+
+      const predictionTensor = await Firestore.instance.predict(image);
+      const topPredictions = await Firestore.instance.getTopKClasses(predictionTensor, 3);
+      console.log(topPredictions);
 
       await Firestore.instance.addToList(
         [
           {
-            name: prediction.names[0]
+            name: topPredictions[0].className
           }
         ],
         'storage'
@@ -59,21 +59,18 @@ export default class SearchInput extends Vue {
     }
   }
 
-  compress(file: File, compression: number): Promise<Blob> {
-    const canvas = document.createElement('canvas');
+  toImage(file: File): Promise<HTMLImageElement> {
     const reader = new FileReader();
 
     return new Promise((resolve, reject) => {
       reader.onload = event => {
         const img = new Image();
-        img.onload = () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
 
-          ctx?.drawImage(img, 0, 0, img.width, img.height);
-          canvas.toBlob(blob => (blob ? resolve(blob) : reject()), file.type, compression);
+        img.onload = () => {
+          img.width = img.height = 224;
+          resolve(img);
         };
+
         img.src = event.target?.result as string;
       };
       reader.readAsDataURL(file);
