@@ -12,7 +12,7 @@
         placeholder="What are you looking for?"
       />
     </div>
-    <div>
+    <div v-if="currentPage == 'Fridge'">
       <img class="absolute ml-3 py-1 w-6 mt-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
       <input
         class="opacity-0 ml-3 mt-1 w-6"
@@ -26,12 +26,13 @@
 
 <script lang="ts">
 import Firestore from '@/utils/Firestore';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import ML from '@/utils/ML';
 
 @Component
 export default class SearchInput extends Vue {
   @Prop() value!: null;
+  @Inject('currentPage') currentPage!: string;
   focused = false;
 
   get isFocused() {
