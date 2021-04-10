@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     // "target": "esnext", // TODO: <-- this causes TS to fail
     "noImplicitReturns": true,
     "noUnusedLocals": true,
