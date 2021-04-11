@@ -30,7 +30,7 @@
         </div>
         <div v-else>
           <!--for reactivity-->
-          <div v-for="chart in chartData" :key="chart">
+          <div v-for="chart in chartData" :key="chart.length">
             <custom-chart
               v-if="chart.length !== 0"
               class="mb-6"
@@ -80,7 +80,6 @@ export default class Home extends Vue {
   totalProductsForMonth: { [category: string]: number } = {};
   firstName = '';
   loading = true;
-  categoryCount = 0;
   selectedMonthData = {
     month: new Date().getMonth(),
     year: new Date().getFullYear()
@@ -126,8 +125,6 @@ export default class Home extends Vue {
   }
 
   async getWastedProductsForSelectedMonth() {
-    this.categoryCount = 0;
-
     await this.getTotalProductsForMonth();
     const allWastedProducts = await CurrentFamily.instance.getWastedProducts();
 
@@ -149,13 +146,14 @@ export default class Home extends Vue {
 
   get statistics() {
     type Category = { [category: string]: number };
+    let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
       const categoryName = (product.category ?? 'General').toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
-        this.categoryColors[categoryName] = colors[this.categoryCount];
-        this.categoryCount++;
+        this.categoryColors[categoryName] = colors[categoryCount];
+        categoryCount++;
       }
 
       acc[categoryName]++;
