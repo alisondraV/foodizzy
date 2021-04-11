@@ -40,7 +40,13 @@
               canvasId="main"
             />
           </div>
-          <progress-bar :label="label" :percentage="wastePercentage" />
+          <ul class="mb-6">
+            <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
+              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${categoryColors[category]}`" />
+              <p>{{ getWastePercentage(category) }}% of all food waste was {{ category }}</p>
+            </li>
+          </ul>
+          <progress-bar :label="label" :percentage="getWastePercentage()" />
         </div>
       </div>
     </div>
@@ -138,7 +144,7 @@ export default class Home extends Vue {
   }
 
   get label() {
-    return `${this.wastePercentage}% of all food was wasted in ${this.month}`;
+    return `${this.getWastePercentage()}% of all food was eaten in ${this.month}`;
   }
 
   get statistics() {
@@ -174,8 +180,12 @@ export default class Home extends Vue {
     return [...Object.keys(this.statistics)];
   }
 
-  get wastePercentage() {
-    return ((this.totalWaste / this.totalProducts) * 100).toFixed();
+  getWastePercentage(category?: string) {
+    if (category) {
+      category = category.toLowerCase();
+      return ((this.statistics[category] / this.wastedProducts.length) * 100).toFixed();
+    }
+    return ((1 - this.totalWaste / this.totalProducts) * 100).toFixed();
   }
 }
 </script>
