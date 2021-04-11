@@ -20,6 +20,7 @@
     "@tensorflow/tfjs-node": "^3.3.0",
     "@types/chart.js": "^2.9.29",
     "@types/jbinary": "^0.0.30",
+    "@types/node": "^14.14.37",
     "autoprefixer": "^9",
     "aws-sdk": "^2.884.0",
     "chart.js": "^2.9.4",

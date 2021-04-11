@@ -30,7 +30,7 @@
         </div>
         <div v-else>
           <!--for reactivity-->
-          <div v-for="chart in chartData" :key="chart[0]">
+          <div v-for="chart in chartData" :key="chart.length">
             <custom-chart
               v-if="chart.length !== 0"
               class="mb-6"
@@ -40,7 +40,13 @@
               canvasId="main"
             />
           </div>
-          <progress-bar :label="label" :percentage="wastePercentage" />
+          <ul class="mb-6">
+            <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
+              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${categoryColors[category]}`" />
+              <p>{{ getWastePercentage(category) }}% of all food waste was {{ category }}</p>
+            </li>
+          </ul>
+          <progress-bar :label="label" :percentage="getWastePercentage()" />
         </div>
       </div>
     </div>
@@ -74,7 +80,6 @@ export default class Home extends Vue {
   totalProductsForMonth: { [category: string]: number } = {};
   firstName = '';
   loading = true;
-  categoryCount = 0;
   selectedMonthData = {
     month: new Date().getMonth(),
     year: new Date().getFullYear()
@@ -120,8 +125,6 @@ export default class Home extends Vue {
   }
 
   async getWastedProductsForSelectedMonth() {
-    this.categoryCount = 0;
-
     await this.getTotalProductsForMonth();
     const allWastedProducts = await CurrentFamily.instance.getWastedProducts();
 
@@ -138,18 +141,19 @@ export default class Home extends Vue {
   }
 
   get label() {
-    return `${this.wastePercentage}% of all food was wasted in ${this.month}`;
+    return `${this.getWastePercentage()}% of all food was eaten in ${this.month}`;
   }
 
   get statistics() {
     type Category = { [category: string]: number };
+    let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
       const categoryName = (product.category ?? 'General').toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
-        this.categoryColors[categoryName] = colors[this.categoryCount];
-        this.categoryCount++;
+        this.categoryColors[categoryName] = colors[categoryCount];
+        categoryCount++;
       }
 
       acc[categoryName]++;
@@ -174,8 +178,12 @@ export default class Home extends Vue {
     return [...Object.keys(this.statistics)];
   }
 
-  get wastePercentage() {
-    return ((this.totalWaste / this.totalProducts) * 100).toFixed();
+  getWastePercentage(category?: string) {
+    if (category) {
+      category = category.toLowerCase();
+      return ((this.statistics[category] / this.wastedProducts.length) * 100).toFixed();
+    }
+    return ((1 - this.totalWaste / this.totalProducts) * 100).toFixed();
   }
 }
 </script>

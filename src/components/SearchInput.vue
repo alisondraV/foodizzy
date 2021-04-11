@@ -13,9 +13,9 @@
       />
     </div>
     <div v-if="currentPage === 'Fridge'">
-      <img class="absolute ml-2 py-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
+      <img class="absolute ml-1 xs:ml-2 py-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
       <input
-        class="opacity-0 ml-2 mt-1 w-10"
+        class="opacity-0 ml-1 xs:ml-2 mt-1 w-6 xs:w-10"
         type="file"
         accept="image/x-png,image/jpeg,image/gif"
         @change="e => scanItem(e.target.files)"
