@@ -72,8 +72,8 @@ export default class PersonalInformation extends ValidationMixin {
     this.user = await Authentication.instance.getCurrentUser();
   }
 
-  async saveChanges() {
-    await Authentication.instance
+  saveChanges() {
+    Authentication.instance
       .updateCurrentUser(this.user!, this.newName!, this.newEmail!)
       .then(() => {
         this.flipEditMode();
