@@ -32,6 +32,9 @@ module.exports = {
       fontSize: {
         header: '1.4rem',
         'header-onboarding': '1.75rem'
+      },
+      spacing: {
+        progress: '0.16rem'
       }
     }
   },

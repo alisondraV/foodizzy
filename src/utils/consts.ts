@@ -64,7 +64,8 @@ export const authErrors = {
 };
 
 export enum CallableFunctions {
-  GetUsersByEmail = 'getUsersByEmail'
+  GetUsersByEmail = 'getUsersByEmail',
+  PredictImage = 'predict'
 }
 
 export type IconName =
@@ -74,7 +75,8 @@ export type IconName =
   | 'Waste'
   | 'WasteFAB'
   | 'MoveToShoppingList'
-  | 'Purchase';
+  | 'Purchase'
+  | 'TakePhoto';
 
 export const Icons: { [iconName in IconName]: string } = {
   AddNew: require('@/assets/images/AddNew.svg'),
@@ -83,7 +85,8 @@ export const Icons: { [iconName in IconName]: string } = {
   Waste: require('@/assets/images/Waste.svg'),
   WasteFAB: require('@/assets/images/WasteFAB.svg'),
   MoveToShoppingList: require('@/assets/images/MoveToShoppingList.svg'),
-  Purchase: require('@/assets/images/Purchase.svg')
+  Purchase: require('@/assets/images/Purchase.svg'),
+  TakePhoto: require('@/assets/images/TakePhoto.svg')
 };
 
 export type Color = 'light-peach' | 'light-green' | 'light-yellow';
