@@ -31,7 +31,11 @@ module.exports = {
     extend: {
       fontSize: {
         header: '1.4rem',
+        'small-header': '1.2rem',
         'header-onboarding': '1.75rem'
+      },
+      screens: {
+        xs: '375px'
       },
       spacing: {
         progress: '0.16rem'
