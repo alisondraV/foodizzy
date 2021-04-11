@@ -13,3 +13,5 @@ node_modules/
 
 # Firebase Functions
 .runtimeconfig.json
+
+lib/
