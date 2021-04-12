@@ -87,9 +87,19 @@ async function updateTotalProducts(
     return await createThisMonthStats(updatedFamilyStats, newFamily);
   }
 
+  const thisMonthStatsTotalProducts = thisMonthStatsDoc.data().totalProducts;
+  const newTotalProducts = thisMonthStatsTotalProducts;
+
+  Object.entries(getTotalProducts(addedProducts)).forEach(([category, quantity]) => {
+    if (!Object.keys(newTotalProducts).includes(category)) {
+      newTotalProducts[category] = 0;  
+    }
+    newTotalProducts[category] += parseInt(quantity as string);
+  })
+
   return await updatedFamilyStats
     .doc(thisMonthStatsDoc.id)
-    .update('totalProducts', getTotalProducts(newFamily.storage));  
+    .update('totalProducts', newTotalProducts);  
 }
 
 async function findThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>) {
