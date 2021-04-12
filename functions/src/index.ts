@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
-import sendEmail from './sendEmail';
-import axios from 'axios';
 import { auth, db } from './admin';
+import axios from 'axios';
+import sendEmail from './sendEmail';
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -98,7 +98,9 @@ async function updateTotalProducts(
       .update('totalProducts', newTotalProducts);
 }
 
-async function findThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>) {
+async function findThisMonthStats(
+    statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
+) {
   const candidates = await statsCollection
       .where('month', '==', new Date().getMonth())
       .where('year', '==', new Date().getFullYear())
@@ -122,7 +124,10 @@ function getTotalProducts(products: any[]) {
   }, {});
 }
 
-async function createThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>, family: any) {
+async function createThisMonthStats(
+    statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>,
+    family: any
+) {
   const totalProducts = await getTotalProductsFromStorage(family);
   const thisMonthStatsDocRef = await statsCollection.add({
     month: new Date().getMonth(),
