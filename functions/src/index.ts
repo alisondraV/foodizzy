@@ -81,41 +81,49 @@ async function updateTotalProducts(
 
   const updatedFamilyStats = change.after.ref.collection('statistics');
 
-  const thisMonthStatsDoc = await getThisMonthStats(updatedFamilyStats, newFamily);
-  const thisMonthData = thisMonthStatsDoc.data() ?? {};
+  const thisMonthStatsDoc = await findThisMonthStats(updatedFamilyStats);
 
-  for (const addedProduct of addedProducts) {
-    const categoryName = addedProduct!.category.toLowerCase() ?? 'general';
-
-    if (!Object.keys(thisMonthData.totalProducts).includes(categoryName)) {
-      thisMonthData.totalProducts[categoryName] = 0;
-    }
-
-    thisMonthData.totalProducts[categoryName]++;
+  if (!thisMonthStatsDoc) {
+    return await createThisMonthStats(updatedFamilyStats, newFamily);
   }
 
   return await updatedFamilyStats
     .doc(thisMonthStatsDoc.id)
-    .update('totalProducts', thisMonthData.totalProducts);
+    .update('totalProducts', getTotalProducts(newFamily.storage));  
 }
 
-async function getThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference, family: any) {
-  const thisMonthStatsCollection = await statsCollection
-    .where('month', '==', new Date().getMonth())
-    .where('year', '==', new Date().getFullYear())
-    .get();
+async function findThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>) {
+  const candidates = await statsCollection
+  .where('month', '==', new Date().getMonth())
+  .where('year', '==', new Date().getFullYear())
+  .get();
 
-  let thisMonthStatsDocRef;
-  if (thisMonthStatsCollection.docs.length === 0) {
-    const totalProducts = await getTotalProductsFromStorage(family);
-    thisMonthStatsDocRef = await statsCollection.add({
-      month: new Date().getMonth(),
-      year: new Date().getFullYear(),
-      totalProducts
-    });
-  } else {
-    thisMonthStatsDocRef = thisMonthStatsCollection.docs[0].ref;
+  if (candidates.docs.length === 0) {
+    return null;
   }
+
+  return candidates.docs[0];
+}
+
+function getTotalProducts(products: any[]) {
+  return products.reduce((totalProducts: any, product: any) => {
+    const category = (product.category ?? 'general').toLowerCase();
+    if (!Object.keys(totalProducts).includes(category)) {
+      totalProducts[category] = 0;
+    }
+    totalProducts[category]++;
+    return totalProducts;
+  }, {});
+}
+
+async function createThisMonthStats(statsCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>, family: any) {
+  const totalProducts = await getTotalProductsFromStorage(family);
+  const thisMonthStatsDocRef = await statsCollection.add({
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    totalProducts
+  });
+  
   return await thisMonthStatsDocRef.get();
 }
 
@@ -129,14 +137,7 @@ async function getTotalProductsFromStorage(family: any) {
   console.log({storage});
   
 
-  return storage.reduce((currentStatistics: any, product: any) => {
-    const category = (product.category ?? 'general').toLowerCase();
-    if (!Object.keys(currentStatistics).includes(category)) {
-      currentStatistics[category] = 0;
-    }
-    currentStatistics[category]++;
-    return currentStatistics;
-  }, {});
+  return getTotalProducts(storage);
 }
 
 async function sendWelcomeEmails(
