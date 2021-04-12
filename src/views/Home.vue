@@ -141,7 +141,7 @@ export default class Home extends Vue {
   }
 
   get label() {
-    return `${this.getWastePercentage()}% of all food was eaten in ${this.month}`;
+    return `${this.getWastePercentage()}% of all food was not wasted in ${this.month}`;
   }
 
   get statistics() {
