@@ -1,16 +1,22 @@
 <template>
-  <div
-    class="w-full bg-light-peach text-primary-text text-lg font-bold h-14 p-3 pl-6"
-  >
+  <div class="flex w-full text-primary-text text-lg font-bold h-14 p-3 pl-6" :class="`bg-${color}`">
     {{ label }}
+    <img class="ml-3" v-if="wasted" src="@/assets/images/SadFace.svg" alt="Wasted" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { alertColor, AlertStatus } from '@/utils/consts';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class VInput extends Vue {
+export default class VAlert extends Vue {
   @Prop() label!: string;
+  @Prop() status!: AlertStatus;
+  @Prop({ default: false }) wasted?: boolean;
+
+  get color() {
+    return alertColor[this.status];
+  }
 }
 </script>

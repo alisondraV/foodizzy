@@ -1,9 +1,10 @@
-import Vue from "vue";
-import App from "./App.vue";
-import "./registerServiceWorker";
-import router from "./router";
-import firebase from "firebase";
-import "./assets/tailwind.css";
+import Vue from 'vue';
+import App from './App.vue';
+import './registerServiceWorker';
+import router from './router';
+import firebase from 'firebase';
+import './assets/tailwind.css';
+import { AuthorizationError, NotFoundError } from './utils/errors';
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
@@ -18,7 +19,15 @@ firebase.initializeApp(firebaseConfig);
 
 Vue.config.productionTip = false;
 
+Vue.config.errorHandler = error => {
+  if (error instanceof AuthorizationError || error instanceof NotFoundError) {
+    console.warn(`${error.name}: ${error.message}\n${error.stack}`);
+  } else {
+    console.error(error);
+  }
+};
+
 new Vue({
   router,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

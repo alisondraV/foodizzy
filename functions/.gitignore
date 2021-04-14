@@ -10,3 +10,8 @@ typings/
 
 # Node.js dependency directory
 node_modules/
+
+# Firebase Functions
+.runtimeconfig.json
+
+lib/

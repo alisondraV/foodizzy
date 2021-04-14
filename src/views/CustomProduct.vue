@@ -2,84 +2,127 @@
   <div>
     <v-header heading="Add Custom Item" />
     <div class="mt-20">
-      <v-alert v-if="alertMessage" :label="alertMessage" />
+      <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
-    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-24'">
+    <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
+      <v-select
+        class="mb-4"
+        label="Category"
+        :selection-list="categoriesList"
+        :selected-item="product.category"
+        @change="setSelectedCategory"
+      />
+      <v-input
+        v-if="customCategory"
+        class="mb-8"
+        type="text"
+        placeholder="Pick Category Name"
+        v-model="product.category"
+        :error="errorType === 'displayName'"
+        @input="alertMessage = null"
+      />
       <v-input
         class="mb-4"
         type="text"
-        label="Product Name"
+        label="Item Name"
+        placeholder="Enter Item Name"
         v-model="product.name"
+        :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
-      <v-input
-        class="mb-10"
-        type="text"
-        label="Category"
-        v-model="product.category"
-        @input="alertMessage = null"
-      />
-      <v-button label="Add" @click="resolveNewProduct" />
+      <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
+    </div>
+    <div class="bg-background h-24 w-full bottom-0 fixed">
+      <v-button label="Add Item" class="mx-8 mt-3" @click="addNewProduct" :disabled="validationFailed" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Firestore from "@/utils/Firestore";
-import Product from "@/types/Product";
-import VHeader from "@/components/VHeader.vue";
-import VInput from "@/components/VInput.vue";
-import VButton from "@/components/VButton.vue";
-import VAlert from "@/components/VAlert.vue";
-import { CurrentFamily } from "@/types";
+import router from '@/router';
+import { AlertMixin, ValidationMixin } from '@/mixins';
+import { Component, Mixins } from 'vue-property-decorator';
+import Firestore from '@/utils/Firestore';
+import { Product } from '@/types';
+import VAlert from '@/components/VAlert.vue';
+import VButton from '@/components/VButton.vue';
+import VHeader from '@/components/VHeader.vue';
+import VInput from '@/components/VInput.vue';
+import VSelect from '@/components/VSelect.vue';
 
 @Component({
   components: {
     VAlert,
     VButton,
+    VHeader,
     VInput,
-    VHeader
+    VSelect
   }
 })
-export default class CustomProduct extends Vue {
-  alertMessage: string | null = null;
+export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
+  categoriesList: string[] = [];
+  customCategory = false;
   location?: string;
-  product: Product = { name: "" };
+  product: Product = new Product('', '');
 
-  mounted() {
+  async mounted() {
     this.location = this.$route.query.location as string;
+
+    await this.getCategoriesList();
+    this.product.category = this.categoriesList[0];
   }
 
-  async resolveNewProduct() {
+  async addNewProduct() {
     if (!this.product) {
       return;
     }
+    this.trimProduct();
 
-    if (this.isInStorageOrShoppingList()) {
-      this.alertMessage = `${this.product.name} already exists in the ${this.location}`;
-      return;
+    if (await Firestore.instance.isProductInStorage(this.product)) {
+      return await this.showAlert(`${this.product.name} already exists in the storage`, 'danger');
+    }
+    if (await Firestore.instance.isProductInShoppingList(this.product)) {
+      return await this.showAlert(`${this.product.name} already exists in the shopping list`, 'danger');
     }
 
-    if (this.location === "storage") {
-      await Firestore.instance.addProductToStorage(this.product);
-    } else if (this.location === "shoppingList") {
-      await Firestore.instance.addToShoppingList(this.product);
-    }
-    this.alertMessage = `${this.product.name} was added to the ${this.location}`;
-    this.product = { name: "" };
+    await this.addProductToStorageOrShoppingList();
   }
 
-  async isInStorageOrShoppingList() {
-    // TODO: move to Firestore?
-    const family = await CurrentFamily.instance.getCurrentFamily();
+  async addProductToStorageOrShoppingList() {
+    this.trimProduct();
 
-    const storageProductNames = family.storage.map(p => p.name);
-    const shoppingListProductNames = family.shoppingList.map(p => p.name);
-    return (
-      storageProductNames?.includes(this.product.name) ||
-      shoppingListProductNames?.includes(this.product.name)
-    );
+    if (this.location === 'storage') {
+      await Firestore.instance.addToList([this.product], 'storage');
+      await router.safePush('/fridge');
+    } else if (this.location === 'shoppingList') {
+      await Firestore.instance.addToList([this.product], 'shoppingList');
+      await router.safePush('/shopping-list');
+    }
+  }
+
+  async getCategoriesList() {
+    const allProducts = await Firestore.instance.getAllProducts();
+    const productCategories = allProducts.map(product => product.category ?? 'General');
+    this.categoriesList = [...new Set(productCategories), 'Add New'];
+  }
+
+  get isFormInValidState() {
+    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category!);
+  }
+
+  setSelectedCategory(value) {
+    this.product.category = value;
+    if (this.product.category === 'Add New') {
+      this.customCategory = true;
+      this.product.category = '';
+    } else {
+      this.customCategory = false;
+    }
+  }
+
+  trimProduct() {
+    this.product.name = this.product.name.trim();
+    this.product.category = this.product.category!.trim();
   }
 }
 </script>
