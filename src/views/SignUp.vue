@@ -22,7 +22,7 @@
       />
       <v-input
         class="mb-3"
-        type="name"
+        type="text"
         label="Name"
         placeholder="Enter your name"
         v-model="name"
@@ -39,12 +39,6 @@
       <div class="grid grid-cols-2 ml-1">
         <div :class="passwordValidation.hasLowerCase ? 'text-primary-green' : 'text-dark-peach'">
           1 lowercase
-        </div>
-        <div :class="passwordValidation.hasUpperCase ? 'text-primary-green' : 'text-dark-peach'">
-          1 uppercase
-        </div>
-        <div :class="passwordValidation.hasSpecial ? 'text-primary-green' : 'text-dark-peach'">
-          1 special
         </div>
         <div :class="passwordValidation.hasNumber ? 'text-primary-green' : 'text-dark-peach'">
           1 number
