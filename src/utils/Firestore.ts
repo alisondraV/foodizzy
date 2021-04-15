@@ -26,10 +26,6 @@ export default class Firestore {
 
       this.db.useEmulator('localhost', 8888);
       this.functions.useEmulator('localhost', 5001);
-
-      this.db.settings({
-        experimentalForceLongPolling: true
-      });
     }
   }
 
