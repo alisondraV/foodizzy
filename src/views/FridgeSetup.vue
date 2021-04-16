@@ -9,6 +9,7 @@
         <div class="flex flex-wrap justify-between -mx-2">
           <div
             class="rounded py-2 px-3 mx-2 my-1"
+            data-cy="product"
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
