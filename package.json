@@ -11,7 +11,10 @@
     "emulate": "firebase emulators:start --import ./emulator_data",
     "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data",
     "emulators:export-data": "firebase emulators:export ./emulator_data",
-    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp"
+    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp",
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:emulate": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.auth.port)\" FIREBASE_DATABASE_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.database.port)\" FIRESTORE_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.firestore.port)\" npm test:open"
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
@@ -25,6 +28,7 @@
     "aws-sdk": "^2.884.0",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
+    "cypress-firebase": "^1.8.0",
     "dotenv": "^8.2.0",
     "firebase": "8.3.0",
     "firebase-admin": "^9.5.0",
@@ -48,6 +52,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "cross-env": "^7.0.3",
     "cypress": "^7.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-cypress": "^2.11.2",
