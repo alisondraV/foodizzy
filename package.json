@@ -11,7 +11,9 @@
     "emulate": "firebase emulators:start --import ./emulator_data",
     "emulate-export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data",
     "emulators:export-data": "firebase emulators:export ./emulator_data",
-    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp"
+    "emulators-sync:allProducts": "tsc src/utils/EmulatorSync.ts --outDir ./temp --esModuleInterop --resolveJsonModule && node temp/EmulatorSync.js && rm -rf temp",
+    "test": "npx cypress run --headless",
+    "test:open": "npx cypress open"
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
