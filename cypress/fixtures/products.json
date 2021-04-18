@@ -1,0 +1,20 @@
+{
+  "products": [
+    {
+      "name": "Apple",
+      "category": "Fruits"
+    },
+    {
+      "name": "Beef",
+      "category": "Meat"
+    },
+    {
+      "name": "Broccoli",
+      "category": "Vegetables"
+    },
+    {
+      "name": "Carrot",
+      "category": "Vegetables"
+    }
+  ]
+}

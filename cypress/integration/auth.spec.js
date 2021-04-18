@@ -1,7 +1,9 @@
 import user from '../fixtures/user.json';
+import productsData from '../fixtures/products.json';
 
 describe('Authentication', () => {
-  const productsToAdd = ['Apple', 'Beef', 'Broccoli', 'Carrot'];
+  const products = productsData.products;
+
   it('test', () => {
     cy.visit('localhost:8080/fridge-setup');
   });
@@ -24,9 +26,9 @@ describe('Authentication', () => {
     cy.get('[data-cy=create]').click();
     cy.url().should('include', '/fridge-setup');
 
-    productsToAdd.forEach(product =>
+    products.forEach(product =>
       cy
-        .contains(product)
+        .contains(product.name)
         .first()
         .click({ force: true })
     );
