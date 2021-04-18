@@ -1,10 +1,6 @@
 import user from '../fixtures/user.json';
 
 describe('Authentication', () => {
-  it.only('test', () => {
-    cy.callFirestore('add', 'test_hello_world', { some: 'value' });
-  });
-
   it('signs the user up', () => {
     cy.visit('localhost:8080/sign-up');
 
