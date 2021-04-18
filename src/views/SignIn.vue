@@ -12,19 +12,21 @@
     <div class="mb-8">
       <v-input
         class="mb-3"
+        data-cy="email"
         type="email"
         label="Email Address"
         placeholder="Enter your email"
-        :error="errorType === 'email'"
         v-model="email"
+        :error="errorType === 'email'"
       />
       <v-input
         class="mb-3"
+        data-cy="password"
         type="password"
         label="Password"
         placeholder="Enter your password"
-        :error="errorType === 'password'"
         v-model="password"
+        :error="errorType === 'password'"
       />
       <div class="text-dark-peach">{{ errorMessage }}</div>
       <div class="cursor-pointer underline text-right text-sm text-secondary-text" @click="resetPassword">
@@ -32,7 +34,7 @@
       </div>
     </div>
     <div class="mb-8">
-      <v-button class="mb-4" label="Sign In" @click="signIn" />
+      <v-button class="mb-4" data-cy="sign-in" label="Sign In" @click="signIn" />
       <div class="flex items-center text-secondary-text">
         <hr class="w-1/2 border-gray mb-4" />
         <span class="w-1/5 text-center mb-4">OR</span>

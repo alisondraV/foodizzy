@@ -22,7 +22,7 @@
       </div>
     </div>
     <div v-if="listIsNotEmpty" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" />
+      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" data-cy="add-products" />
     </div>
   </div>
 </template>
