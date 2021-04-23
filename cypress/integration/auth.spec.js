@@ -1,8 +1,18 @@
 import user from '../fixtures/user.json';
 import productsData from '../fixtures/products.json';
+import firebase from 'firebase';
 
 describe('Authentication', () => {
   const products = productsData.products;
+
+  beforeEach(() => {
+    cy.request(
+      'DELETE',
+      'http://localhost:8888/emulator/v1/projects/foodizzy-app/databases/(default)/documents'
+    );
+
+    cy.request('DELETE', 'http://localhost:9099/emulator/v1/projects/foodizzy-app/accounts');
+  });
 
   it('test', () => {
     cy.visit('localhost:8080/fridge-setup');
