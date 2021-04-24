@@ -24,3 +24,14 @@ firebase.firestore().settings({
 firebase.auth().useEmulator(`http://${authEmulatorHost}/`);
 
 attachCustomCommands({ Cypress, cy, firebase });
+
+Cypress.Commands.add('clearFirestore', () => {
+  cy.request(
+    'DELETE',
+    'http://localhost:8888/emulator/v1/projects/foodizzy-app/databases/(default)/documents'
+  );
+});
+
+Cypress.Commands.add('clearFirebaseUsers', () => {
+  cy.request('DELETE', 'http://localhost:9099/emulator/v1/projects/foodizzy-app/accounts');
+});

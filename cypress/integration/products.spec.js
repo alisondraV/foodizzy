@@ -5,12 +5,8 @@ describe('Products', () => {
   const products = productsData.products;
 
   beforeEach(() => {
-    cy.request(
-      'DELETE',
-      'http://localhost:8888/emulator/v1/projects/foodizzy-app/databases/(default)/documents'
-    );
-
-    cy.request('DELETE', 'http://localhost:9099/emulator/v1/projects/foodizzy-app/accounts');
+    cy.clearFirestore();
+    cy.clearFirebaseUsers();
 
     products.forEach(product => {
       cy.callFirestore('set', `allProducts/${product.name}`, product);
