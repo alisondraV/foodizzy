@@ -41,7 +41,7 @@
 
           <hr class="w-full border-secondary-text mb-5" />
 
-          <li class="flex" @click="logOut">
+          <li class="flex" data-cy="log-out" @click="logOut">
             <img src="@/assets/images/LogOut.svg" alt="Log Out" />
             <span class="flex-1 text-left ml-4">Log Out</span>
             <img src="@/assets/images/ArrowRight.svg" alt="Go" />
