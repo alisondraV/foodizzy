@@ -10,6 +10,7 @@
     <v-fab
       v-if="!productsAreSelected"
       class="fixed bottom-0 right-0 mb-24 mr-5"
+      data-cy="add-product"
       iconName="AddNew"
       @click="addNewProduct"
     />
