@@ -8,8 +8,6 @@ const firebaseConfig = {
   projectId: 'foodizzy-app'
 };
 
-console.log(firebaseConfig);
-
 firebase.initializeApp(firebaseConfig);
 
 const firestoreEmulatorHost = Cypress.env('FIRESTORE_EMULATOR_HOST');

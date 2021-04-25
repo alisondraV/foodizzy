@@ -82,7 +82,7 @@ export default class Firestore {
       ...product,
       dateWasted: firebase.firestore.Timestamp.now()
     }));
-    const bucket = await CurrentFamily.instance.getWasteBucket();
+    const bucket = await CurrentFamily.instance.getOrCreateWasteBucket();
     const updatedWastedList = [...bucket.data().wasted, ...wastedProducts];
 
     await bucket.ref.update('wasted', updatedWastedList);

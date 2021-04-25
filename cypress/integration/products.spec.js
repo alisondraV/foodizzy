@@ -29,10 +29,14 @@ describe('product CRUD', () => {
     });
 
     cy.callFirestore('set', 'family/MyFamily', {
+      id: 'MyFamily',
       members: [user.email],
       pendingMembers: [],
-      storage: products,
+      storage: [],
       shoppingList: []
+    });
+    cy.callFirestore('update', 'family/MyFamily', {
+      storage: products
     });
 
     cy.visit('localhost:8080/sign-in');
@@ -48,6 +52,7 @@ describe('product CRUD', () => {
     cy.get('[data-cy=consume]').click();
     // wait for product to be added to the shopping list
     cy.wait(1000);
+    cy.contains(products[0].category).should('not.exist');
 
     cy.visit('localhost:8080/shopping-list');
     cy.contains(products[0].category)
@@ -56,7 +61,7 @@ describe('product CRUD', () => {
     cy.contains(products[0].name).should('exist');
   });
 
-  it.only('can delete product from storage', () => {
+  it('can delete product from storage', () => {
     visitFridgeAndSelectAProduct(1);
 
     cy.get('[data-cy=remove]').click();
@@ -64,7 +69,20 @@ describe('product CRUD', () => {
     cy.wait(1000);
 
     cy.contains(products[1].category).should('not.exist');
+    cy.contains(products[1].name).should('not.exist');
   });
 
-  it.skip('can waste product from storage', () => {});
+  it('can waste product from storage', () => {
+    visitFridgeAndSelectAProduct(2);
+
+    cy.get('[data-cy=waste]').click();
+    // wait for product to be added to the shopping list
+    cy.wait(1000);
+
+    cy.contains(products[2].category).should('exist');
+    cy.contains(products[2].name).should('not.exist');
+
+    cy.visit('localhost:8080');
+    cy.contains('75%').should('exist');
+  });
 });
