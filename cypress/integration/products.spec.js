@@ -1,7 +1,7 @@
 import productsData from '../fixtures/products.json';
 import user from '../fixtures/user.json';
 
-describe('Products', () => {
+describe('product CRUD', () => {
   const products = productsData.products;
 
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe('Products', () => {
     cy.get('[data-cy=sign-in]').click();
   });
 
-  it.only('products can be consumed and moved to the shopping list', () => {
+  it('can consume product from storage', () => {
     cy.visit('localhost:8080/fridge');
 
     cy.contains(products[0].category)
@@ -52,4 +52,8 @@ describe('Products', () => {
       .click();
     cy.contains(products[0].name);
   });
+
+  it.skip('can delete product from storage', () => {});
+
+  it.skip('can waste product from storage', () => {});
 });
