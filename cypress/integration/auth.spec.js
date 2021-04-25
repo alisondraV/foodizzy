@@ -49,7 +49,6 @@ describe('Authentication', () => {
 
   it('sets up the fridge', () => {
     signUp();
-
     setUpFamily();
 
     cy.url().should('equal', 'http://localhost:8080/');
@@ -57,7 +56,6 @@ describe('Authentication', () => {
 
   it('signs the user in', () => {
     signUp();
-
     setUpFamily();
 
     cy.get('[data-cy=profile-button]').click();

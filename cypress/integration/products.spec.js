@@ -4,7 +4,18 @@ import user from '../fixtures/user.json';
 describe('product CRUD', () => {
   const products = productsData.products;
 
-  beforeEach(() => {
+  function visitFridgeAndSelectAProduct(index) {
+    cy.visit('localhost:8080/fridge');
+
+    cy.contains(products[index].category)
+      .first()
+      .click();
+    cy.contains(products[index].name)
+      .first()
+      .click();
+  }
+
+  before(() => {
     cy.clearFirestore();
     cy.clearFirebaseUsers();
 
@@ -32,28 +43,28 @@ describe('product CRUD', () => {
   });
 
   it('can consume product from storage', () => {
-    cy.visit('localhost:8080/fridge');
+    visitFridgeAndSelectAProduct(0);
 
-    cy.contains(products[0].category)
-      .first()
-      .click();
-    cy.contains(products[0].name)
-      .first()
-      .click();
     cy.get('[data-cy=consume]').click();
-
     // wait for product to be added to the shopping list
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
 
     cy.visit('localhost:8080/shopping-list');
     cy.contains(products[0].category)
       .first()
       .click();
-    cy.contains(products[0].name);
+    cy.contains(products[0].name).should('exist');
   });
 
-  it.skip('can delete product from storage', () => {});
+  it.only('can delete product from storage', () => {
+    visitFridgeAndSelectAProduct(1);
+
+    cy.get('[data-cy=remove]').click();
+    // wait for product to be added to the shopping list
+    cy.wait(1000);
+
+    cy.contains(products[1].category).should('not.exist');
+  });
 
   it.skip('can waste product from storage', () => {});
 });

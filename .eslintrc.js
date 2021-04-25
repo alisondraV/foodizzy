@@ -19,7 +19,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true }],
-    '@typescript-eslint/no-non-null-assertion': 'off'
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    'cypress/no-unnecessary-waiting': 'off'
   },
   plugins: ['cypress']
 };
