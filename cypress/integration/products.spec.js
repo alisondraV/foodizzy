@@ -4,15 +4,26 @@ import user from '../fixtures/user.json';
 describe('product CRUD', () => {
   const products = productsData.products;
 
+  function selectProduct(product) {
+    cy.contains(product.category)
+      .first()
+      .click();
+    cy.contains(product.name)
+      .first()
+      .click();
+  }
+
   function visitFridgeAndSelectAProduct(index) {
     cy.visit('localhost:8080/fridge');
 
-    cy.contains(products[index].category)
+    selectProduct(products[index]);
+  }
+
+  function assertProductExistsInList(product) {
+    cy.contains(product.category)
       .first()
       .click();
-    cy.contains(products[index].name)
-      .first()
-      .click();
+    cy.contains(product.name).should('exist');
   }
 
   before(() => {
@@ -56,10 +67,7 @@ describe('product CRUD', () => {
       cy.contains(products[0].category).should('not.exist');
 
       cy.visit('localhost:8080/shopping-list');
-      cy.contains(products[0].category)
-        .first()
-        .click();
-      cy.contains(products[0].name).should('exist');
+      assertProductExistsInList(products[0]);
     });
 
     it('can delete product from storage', () => {
@@ -89,36 +97,35 @@ describe('product CRUD', () => {
   });
 
   describe('adding new products', () => {
+    const newProduct = {
+      name: 'foo product',
+      category: 'bar'
+    };
+
+    before(() => {
+      cy.callFirestore('set', `allProducts/${newProduct.name}`, newProduct);
+    });
+
     it('can add existing products to storage', () => {
-      const testProduct = {
-        name: 'foo product',
-        category: 'bar'
-      };
-
-      cy.callFirestore('set', `allProducts/${testProduct.name}`, testProduct);
-
       cy.visit('localhost:8080/fridge');
       cy.get('[data-cy=add-product]').click();
 
       // wait to transfer to the add-new-product page
       cy.wait(1000);
 
-      cy.contains(testProduct.category)
-        .first()
-        .click();
-      cy.contains(testProduct.name)
-        .first()
-        .click();
+      selectProduct(newProduct);
 
       cy.get('[data-cy=confirm-add-product]').click();
 
-      cy.contains(testProduct.category).should('exist');
-      cy.contains(testProduct.name).should('exist');
+      // wait to transfer to the storage page
+      cy.wait(1000);
+
+      assertProductExistsInList(newProduct);
     });
 
     it('can add custom products to storage', () => {
       const testProduct = {
-        name: 'foo',
+        name: 'custom product 1',
         category: 'bar'
       };
 
@@ -135,43 +142,34 @@ describe('product CRUD', () => {
       cy.get('[data-cy=custom-product-name]').type(testProduct.name);
       cy.get('[data-cy=confirm-add-custom-product]').click();
 
-      cy.contains(testProduct.category).should('exist');
-      cy.contains(testProduct.name).should('exist');
+      // wait for the storage to load
+      cy.wait(1000);
+
+      assertProductExistsInList(testProduct);
     });
 
     it('can add existing products to shopping list', () => {
-      const testProduct = {
-        name: 'foo product',
-        category: 'bar'
-      };
-
-      cy.callFirestore('set', `allProducts/${testProduct.name}`, testProduct);
-
       cy.visit('localhost:8080/shopping-list');
       cy.get('[data-cy=add-product]').click();
 
       // wait to transfer to the add-new-product page
       cy.wait(1000);
 
-      cy.contains(testProduct.category)
-        .first()
-        .click();
-      cy.contains(testProduct.name)
-        .first()
-        .click();
+      selectProduct(newProduct);
 
       cy.get('[data-cy=confirm-add-product]').click();
 
-      cy.contains(testProduct.category).should('exist');
-      cy.contains(testProduct.name).should('exist');
+      // wait to transfer to the shopping-list page
+      cy.wait(1000);
+
+      assertProductExistsInList(newProduct);
     });
 
     it('can add custom products to shopping list', () => {
       const testProduct = {
-        name: 'foo',
+        name: 'custom product 2',
         category: 'bar'
       };
-
       cy.visit('localhost:8080/shopping-list');
 
       cy.get('[data-cy=add-product]').click();
@@ -185,8 +183,10 @@ describe('product CRUD', () => {
       cy.get('[data-cy=custom-product-name]').type(testProduct.name);
       cy.get('[data-cy=confirm-add-custom-product]').click();
 
-      cy.contains(testProduct.category).should('exist');
-      cy.contains(testProduct.name).should('exist');
+      // wait for the shopping list to load
+      cy.wait(1000);
+
+      assertProductExistsInList(testProduct);
     });
   });
 });
