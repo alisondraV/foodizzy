@@ -2,6 +2,9 @@ import * as functions from 'firebase-functions';
 import { auth, db } from './admin';
 import axios from 'axios';
 import sendEmail from './sendEmail';
+import express from 'express';
+
+const app = express();
 
 export const onFamilyUpdate = functions.firestore
     .document('/family/{familyId}')
@@ -63,6 +66,17 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
   }
   return Promise.all(data.emails.map((email: string) => auth.getUserByEmail(email)));
 });
+
+app.get('/api/allProducts', async (req, resp) => {
+  const allProductsSnap = await db.collection('allProducts').get();
+  const allProducts = allProductsSnap.docs.map(doc => doc.data());
+  resp.set('Cache-Control', 'public, max-age-10, s-maxage-20');
+
+  resp.send(allProducts);
+})
+
+export const getAllProducts = functions.https.onRequest(app);
+
 
 async function updateTotalProducts(
     newFamily: FirebaseFirestore.DocumentData,
