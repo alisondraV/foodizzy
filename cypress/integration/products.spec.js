@@ -129,7 +129,7 @@ describe('product CRUD', () => {
     });
   });
 
-  describe.skip('adding new products', () => {
+  describe('adding new products', () => {
     const newProduct = {
       name: 'foo product',
       category: 'bar'
@@ -139,87 +139,49 @@ describe('product CRUD', () => {
       cy.callFirestore('set', `allProducts/${newProduct.name}`, newProduct);
     });
 
-    it('can add existing products to storage', () => {
-      cy.visit('localhost:8080/fridge');
-      cy.get('[data-cy=add-product]').click();
+    ['fridge', 'shopping-list'].forEach(location => {
+      it(`can add existing products to ${location}`, () => {
+        cy.visit(`localhost:8080/${location}`);
+        cy.get('[data-cy=add-product]').click();
 
-      // wait to transfer to the add-new-product page
-      cy.wait(1000);
+        // wait to transfer to the add-new-product page
+        cy.wait(1000);
 
-      selectProduct(newProduct);
+        selectProduct(newProduct);
 
-      cy.get('[data-cy=confirm-add-product]').click();
+        cy.get('[data-cy=confirm-add-product]').click();
 
-      // wait to transfer to the storage page
-      cy.wait(1000);
+        cy.visit(`localhost:8080/${location}`);
+        // wait for the page to load
+        cy.wait(1000);
 
-      assertProductExistsInList(newProduct);
-    });
+        assertProductExistsInList(newProduct);
+      });
 
-    it('can add custom products to storage', () => {
-      const testProduct = {
-        name: 'custom product 1',
-        category: 'bar'
-      };
+      it(`can add custom products to ${location}`, () => {
+        const testProduct = {
+          name: `custom product in ${location}`,
+          category: 'Custom'
+        };
 
-      cy.visit('localhost:8080/fridge');
+        cy.visit(`localhost:8080/${location}`);
+        cy.get('[data-cy=add-product]').click();
 
-      cy.get('[data-cy=add-product]').click();
+        cy.get('[data-cy=add-custom-product]').click();
+        cy.get('[data-cy=custom-product-category-dropdown]')
+          .find('select')
+          .select('Add New');
 
-      cy.get('[data-cy=add-custom-product]').click();
+        cy.get('[data-cy=custom-product-category]').type(testProduct.category);
+        cy.get('[data-cy=custom-product-name]').type(testProduct.name);
+        cy.get('[data-cy=confirm-add-custom-product]').click();
 
-      cy.get('[data-cy=custom-product-category-dropdown]')
-        .find('select')
-        .select('Add New');
-      cy.get('[data-cy=custom-product-category]').type(testProduct.category);
-      cy.get('[data-cy=custom-product-name]').type(testProduct.name);
-      cy.get('[data-cy=confirm-add-custom-product]').click();
+        cy.visit(`localhost:8080/${location}`);
+        // wait for the page to load
+        cy.wait(1000);
 
-      // wait for the storage to load
-      cy.wait(1000);
-
-      assertProductExistsInList(testProduct);
-    });
-
-    it('can add existing products to shopping list', () => {
-      cy.visit('localhost:8080/shopping-list');
-      cy.get('[data-cy=add-product]').click();
-
-      // wait to transfer to the add-new-product page
-      cy.wait(1000);
-
-      selectProduct(newProduct);
-
-      cy.get('[data-cy=confirm-add-product]').click();
-
-      // wait to transfer to the shopping-list page
-      cy.wait(1000);
-
-      assertProductExistsInList(newProduct);
-    });
-
-    it('can add custom products to shopping list', () => {
-      const testProduct = {
-        name: 'custom product 2',
-        category: 'bar'
-      };
-      cy.visit('localhost:8080/shopping-list');
-
-      cy.get('[data-cy=add-product]').click();
-
-      cy.get('[data-cy=add-custom-product]').click();
-
-      cy.get('[data-cy=custom-product-category-dropdown]')
-        .find('select')
-        .select('Add New');
-      cy.get('[data-cy=custom-product-category]').type(testProduct.category);
-      cy.get('[data-cy=custom-product-name]').type(testProduct.name);
-      cy.get('[data-cy=confirm-add-custom-product]').click();
-
-      // wait for the shopping list to load
-      cy.wait(1000);
-
-      assertProductExistsInList(testProduct);
+        assertProductExistsInList(testProduct);
+      });
     });
   });
 });
