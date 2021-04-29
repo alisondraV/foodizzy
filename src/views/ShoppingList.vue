@@ -15,8 +15,8 @@
       @click="addNewProduct"
     />
     <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-5">
-      <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
-      <v-fab iconName="Purchase" @click="performActionOnSelected('purchase')" />
+      <v-fab class="mb-2" data-cy="delete" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab data-cy="purchase" iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
     <navigation-menu current-page="ShoppingList" />
   </div>
