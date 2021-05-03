@@ -10,3 +10,9 @@ jobs:
         run: npm i && npm run lint:no-fix
       - name: Build
         run: npm run build
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v1
+        with:
+          start: npm run emulate, npm run serve-dev
+          command: npm run test
+          wait-on: 'http://localhost:8080'
