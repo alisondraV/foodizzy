@@ -6,17 +6,17 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Install dependencies and lint
-        run: npm i && npm run lint:no-fix
-      - name: Build
-        run: npm run build
+      # - name: Install dependencies and lint
+      #   run: npm i && npm run lint:no-fix
+      # - name: Build
+      #   run: npm run build
+      - name: Run server
+        run: npm run serve-dev
       - name: Run E2E tests
         uses: cypress-io/github-action@v1
         with:
           command: npm run test
-          start: |
-            npm run serve-dev &
-            npm run emulate &
+          start: npm run emulate &
           wait-on: 'http://localhost:8080'
         env: 
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
