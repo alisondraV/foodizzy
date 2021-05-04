@@ -140,6 +140,11 @@ describe('product CRUD', () => {
     });
 
     ['fridge', 'shopping-list'].forEach(location => {
+      const testProduct = {
+        name: `custom product in ${location}`,
+        category: 'Custom'
+      };
+
       it(`can add existing products to ${location}`, () => {
         cy.visit(`localhost:8080/${location}`);
         cy.get('[data-cy=add-product]').click();
@@ -151,7 +156,6 @@ describe('product CRUD', () => {
 
         cy.get('[data-cy=confirm-add-product]').click();
 
-        cy.visit(`localhost:8080/${location}`);
         // wait for the page to load
         cy.wait(1000);
 
@@ -159,11 +163,6 @@ describe('product CRUD', () => {
       });
 
       it(`can add custom products to ${location}`, () => {
-        const testProduct = {
-          name: `custom product in ${location}`,
-          category: 'Custom'
-        };
-
         cy.visit(`localhost:8080/${location}`);
         cy.get('[data-cy=add-product]').click();
 
@@ -176,11 +175,21 @@ describe('product CRUD', () => {
         cy.get('[data-cy=custom-product-name]').type(testProduct.name);
         cy.get('[data-cy=confirm-add-custom-product]').click();
 
-        cy.visit(`localhost:8080/${location}`);
         // wait for the page to load
         cy.wait(1000);
+        cy.url().should('include', `/${location}`);
 
         assertProductExistsInList(testProduct);
+      });
+
+      it('can not add custom products which already exist in the list', () => {
+        cy.visit(`localhost:8080/${location}`);
+        cy.get('[data-cy=add-product]').click();
+        cy.get('[data-cy=add-custom-product]').click();
+
+        cy.get('[data-cy=custom-product-name]').type(testProduct.name);
+        cy.get('[data-cy=confirm-add-custom-product]').click();
+        cy.url().should('include', '/custom-product');
       });
     });
   });
