@@ -11,7 +11,9 @@ jobs:
       - name: Build
         run: npm run build
       - name: E2E setup
-        run: npm run emulate & npm run serve-dev
+        run: |
+          npm run emulate & 
+          npm run serve-dev &
       - name: Run E2E tests
         uses: cypress-io/github-action@v1
         with:
