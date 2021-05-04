@@ -10,14 +10,13 @@ jobs:
         run: npm i && npm run lint:no-fix
       - name: Build
         run: npm run build
-      - name: E2E setup
-        run: |
-          npm run emulate & 
-          npm run serve-dev &
+      - name: Run emulators
+        run: npm run emulate &
       - name: Run E2E tests
         uses: cypress-io/github-action@v1
         with:
           command: npm run test
+          start: npm run serve-dev
           wait-on: 'http://localhost:8080'
         env: 
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
