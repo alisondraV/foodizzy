@@ -20,12 +20,19 @@
         <div class="flex flex-row justify-between mb-4">
           <v-input
             class="w-5/6"
+            data-cy="member-email"
             type="email"
             label="Email Address"
             placeholder="Enter member's email"
             v-model="currentEmail"
           />
-          <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
+          <img
+            alt="Add"
+            class="mt-6"
+            data-cy="add-member"
+            src="@/assets/images/PlusIcon.svg"
+            @click="addEmail"
+          />
         </div>
         <ul>
           <li

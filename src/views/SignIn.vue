@@ -43,6 +43,7 @@
       <button
         @click="signInThroughGoogle"
         class="text-black rounded-md h-12 w-full"
+        data-cy="google-sign-in"
         style="box-shadow: #DFDFDF 1px 2px 12px"
       >
         Continue with Google
@@ -113,7 +114,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
       await CurrentFamily.instance.getCurrentFamily();
       await this.finishSignIn();
     } catch (err) {
-      await this.finishSignIn('create-family');
+      await this.finishSignIn('onboarding-track-waste');
     }
   }
 

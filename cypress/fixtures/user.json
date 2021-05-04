@@ -2,5 +2,6 @@
   "name": "Panda",
   "email": "panda@test.com",
   "password": "pandathebest111",
-  "familyName": "PandasFam"
+  "familyName": "PandasFam",
+  "newFamilyMembers": ["newUser@test.com"]
 }
