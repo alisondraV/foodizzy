@@ -16,9 +16,7 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           command: npm test
-          start: |
-            npm run emulate
-            npm run serve-dev
+          start: npm start
           wait-on: 'http://localhost:8080'
         env: 
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
