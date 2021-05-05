@@ -6,19 +6,32 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      # - name: Install dependencies and lint
-      #   run: npm i && npm run lint:no-fix
+      - name: Install dependencies
+        run: npm i
+      # - name: Lint
+      #   run: npm run lint:no-fix
       # - name: Build
       #   run: npm run build
-      - name: Run server
+      - name: Run server & emulators
         run: |
-          npm i 
+          npm run emulate &
           npm run serve-dev &
+      - name: Check the server is running
+        uses: smurfpandey/wait-for-it@master
+        with:
+          host: http://localhost
+          port: 8080
+          timeout: 60
+      - name: Check the emulators are running
+        uses: smurfpandey/wait-for-it@master
+        with:
+          host: http://localhost
+          port: 4000
+          timeout: 60
       - name: Run E2E tests
         uses: cypress-io/github-action@v1
         with:
           command: npm test
-          start: npm run emulate &
           wait-on: 'http://localhost:8080'
         env: 
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
