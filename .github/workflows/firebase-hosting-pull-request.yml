@@ -17,8 +17,8 @@ jobs:
         with:
           command: npm test
           start: |
-            npm run emulate &
-            npm run serve-dev &
+            npm run emulate
+            npm run serve-dev
           wait-on: 'http://localhost:8080'
         env: 
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
