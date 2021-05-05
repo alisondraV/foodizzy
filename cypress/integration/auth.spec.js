@@ -44,28 +44,6 @@ describe('Authentication', () => {
     });
   });
 
-  it.skip('shows onboarding when user signs up with Google from SignIn page', () => {
-    cy.visit('localhost:8080/sign-in');
-    cy.get('[data-cy=google-sign-in]').click();
-
-    // cy.window().then(win => {
-    //   console.log(win.window.location);
-    //   win
-    //     .contains('Add new account')
-    //     .first()
-    //     .click();
-    // cy.contains('Auto-generate user information')
-    //   .first()
-    //   .click();
-    // cy.contains('Sign in with')
-    //   .first()
-    //   .click();
-    // });
-
-    cy.wait(5000);
-    cy.url().should('include', '/onboarding-track-waste');
-  });
-
   it('signs the user up => sets up the family => logs out => signs in with the existing user', () => {
     signUp();
     cy.url().should('include', '/onboarding-track-waste');
