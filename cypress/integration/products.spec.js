@@ -1,5 +1,4 @@
-import productsData from '../fixtures/products.json';
-import user from '../fixtures/user.json';
+import { productsData } from '../fixtures';
 
 describe('product CRUD', () => {
   const products = productsData.products;
@@ -40,27 +39,9 @@ describe('product CRUD', () => {
       cy.callFirestore('set', `allProducts/${product.name}`, product);
     });
 
-    cy.request('POST', 'http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=foo', {
-      email: user.email,
-      password: user.password
-    });
-
-    cy.callFirestore('set', 'family/MyFamily', {
-      id: 'MyFamily',
-      members: [user.email],
-      pendingMembers: [],
-      storage: [],
-      shoppingList: []
-    });
-    cy.callFirestore('update', 'family/MyFamily', {
-      storage: products
-    });
-
-    cy.visit('localhost:8080/sign-in');
-
-    cy.get('[data-cy=email]').type(user.email);
-    cy.get('[data-cy=password]').type(user.password);
-    cy.get('[data-cy=sign-in]').click();
+    cy.createUser();
+    cy.setUpFamily();
+    cy.signIn();
   });
 
   describe('moving products around', () => {
