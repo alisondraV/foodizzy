@@ -5,5 +5,6 @@ const admin = require('firebase-admin');
 const cypressFirebasePlugin = require('cypress-firebase').plugin;
 
 module.exports = (on, config) => {
+  require('cypress-log-to-output').install(on);
   return cypressFirebasePlugin(on, config, admin);
 };
