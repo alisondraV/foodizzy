@@ -37,7 +37,8 @@ Cypress.Commands.add('clearFirebaseUsers', () => {
 Cypress.Commands.add('createUser', (email = user.email, password = user.password, name = user.name) => {
   cy.request('POST', 'http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=foo', {
     email,
-    password
+    password,
+    displayName: name
   });
 });
 
