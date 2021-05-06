@@ -47,6 +47,7 @@ Cypress.Commands.add('setUpFamily', () => {
 
   cy.callFirestore('set', 'family/MyFamily', {
     id: 'MyFamily',
+    name: 'MyFamily',
     members: [user.email],
     pendingMembers: [],
     storage: [],
