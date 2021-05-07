@@ -5,10 +5,10 @@ describe('Profile Management', () => {
     name: 'UpdatedPanda',
     email: 'updatedpanda@test.com',
     password: 'pandathebest222',
-    familyName: 'BigPandasFam'
+    familyName: 'PandasBigFamily'
   };
 
-  before(() => {
+  beforeEach(() => {
     cy.clearFirestore();
     cy.clearFirebaseUsers();
     cy.createUser();
@@ -19,10 +19,6 @@ describe('Profile Management', () => {
 
   it('finds userName', () => {
     cy.contains(user.name);
-  });
-
-  beforeEach(() => {
-    cy.visit('localhost:8080/profile');
   });
 
   it('can update the name and email of the user', () => {
@@ -51,7 +47,29 @@ describe('Profile Management', () => {
 
     cy.visit('localhost:8080/profile');
     cy.get('[data-cy=log-out]').click();
+
+    cy.wait(500); // wait for the page to load
     cy.signIn(user.email, updatedUser.password);
     cy.url().should('equal', 'http://localhost:8080/');
+  });
+
+  it('can update the family name, tweak pending members and display family members', () => {
+    cy.get('[data-cy=family]').click();
+    cy.get('[data-cy=edit]').click();
+
+    cy.contains(user.name);
+    cy.contains(user.newFamilyMembers[0]);
+    cy.get('[data-cy=cancel-invite]').click();
+    cy.contains('No pending invitations');
+
+    cy.get('[type="text"]').clear();
+    cy.get('[data-cy=new-name]').type(updatedUser.familyName);
+    cy.get('[data-cy=save]').click();
+    cy.wait(500); // wait for information to go through
+
+    cy.visit('localhost:8080/profile');
+    cy.get('[data-cy=family]').click();
+    cy.contains(updatedUser.familyName);
+    cy.contains(user.familyName).should('not.exist');
   });
 });
