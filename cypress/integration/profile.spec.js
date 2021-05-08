@@ -21,7 +21,7 @@ describe('Profile Management', () => {
     cy.contains(user.name);
   });
 
-  it.only('can update the name and email of the user', () => {
+  it('can update the name and email of the user', () => {
     cy.get('[data-cy=personal-info]').click();
     cy.get('[data-cy=toggleState]').click();
 
@@ -42,12 +42,11 @@ describe('Profile Management', () => {
     cy.get('[data-cy=current-password]').type(user.password);
     cy.get('[data-cy=new-password]').type(updatedUser.password);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
+    cy.get('[data-cy=close]').click();
 
-    cy.visit('localhost:8080/profile');
     cy.get('[data-cy=log-out]').click();
 
-    cy.wait(500); // wait for the page to load
+    cy.visit('localhost:8080/sign-in'); // wait for the page to load
     cy.signIn(user.email, updatedUser.password);
     cy.url().should('equal', 'http://localhost:8080/');
   });
