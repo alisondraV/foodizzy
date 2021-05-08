@@ -63,9 +63,8 @@ describe('Profile Management', () => {
     cy.get('[type="text"]').clear();
     cy.get('[data-cy=new-name]').type(updatedUser.familyName);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
+    cy.get('[data-cy=close]').click();
 
-    cy.visit('localhost:8080/profile');
     cy.get('[data-cy=family]').click();
     cy.contains(updatedUser.familyName);
     cy.contains(user.familyName).should('not.exist');
