@@ -18,6 +18,7 @@
       src="@/assets/images/Close.svg"
       alt="Close"
       @click="goBack"
+      data-cy="close"
       class="cursor-pointer p-4"
       width="55px"
     />

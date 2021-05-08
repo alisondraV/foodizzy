@@ -21,7 +21,7 @@ describe('Profile Management', () => {
     cy.contains(user.name);
   });
 
-  it('can update the name and email of the user', () => {
+  it.only('can update the name and email of the user', () => {
     cy.get('[data-cy=personal-info]').click();
     cy.get('[data-cy=toggleState]').click();
 
@@ -29,12 +29,11 @@ describe('Profile Management', () => {
     cy.get('[data-cy=name]').type(updatedUser.name);
     cy.get('[data-cy=email]').type(updatedUser.email);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
 
-    cy.visit('localhost:8080/profile');
-    cy.contains(updatedUser.name);
-    cy.get('[data-cy=personal-info]').click();
     cy.contains(updatedUser.email);
+    cy.get('[data-cy=close]').click();
+
+    cy.contains(updatedUser.name);
   });
 
   it('can update password', () => {
