@@ -12,14 +12,8 @@ describe('product CRUD', () => {
       .click();
   }
 
-  function visitFridgeAndSelectAProduct(index) {
-    cy.visit('localhost:8080/fridge');
-
-    selectProduct(products[index]);
-  }
-
-  function visitShoppingListAndSelectAProduct(index) {
-    cy.visit('localhost:8080/shopping-list');
+  function visitPageAndSelectAProduct({ page, index }) {
+    cy.visit(`localhost:8080/${page}`);
 
     selectProduct(products[index]);
   }
@@ -47,7 +41,7 @@ describe('product CRUD', () => {
   describe('moving products around', () => {
     describe('storage', () => {
       it('can move product from storage to shopping list', () => {
-        visitFridgeAndSelectAProduct(0);
+        visitPageAndSelectAProduct({ page: 'fridge', index: 0 });
         selectProduct(products[3]);
 
         cy.get('[data-cy=consume]').click();
@@ -56,11 +50,13 @@ describe('product CRUD', () => {
         cy.contains(products[0].category).should('not.exist');
 
         cy.visit('localhost:8080/shopping-list');
+        // wait for products load
+        cy.wait(1000);
         assertProductExistsInList(products[0]);
       });
 
       it('can delete product from storage', () => {
-        visitFridgeAndSelectAProduct(1);
+        visitPageAndSelectAProduct({ page: 'fridge', index: 1 });
 
         cy.get('[data-cy=remove]').click();
         // wait for product to be added to the shopping list
@@ -71,7 +67,7 @@ describe('product CRUD', () => {
       });
 
       it('can waste product from storage', () => {
-        visitFridgeAndSelectAProduct(2);
+        visitPageAndSelectAProduct({ page: 'fridge', index: 2 });
 
         cy.get('[data-cy=waste]').click();
         // wait for product to be added to the shopping list
@@ -80,13 +76,16 @@ describe('product CRUD', () => {
         cy.contains(products[2].category).should('not.exist');
 
         cy.visit('localhost:8080');
+        // wait the statistics to load
+        cy.wait(1000);
+
         cy.contains('75%').should('exist');
       });
     });
 
     describe('shopping list', () => {
       it('can delete product from shopping list', () => {
-        visitShoppingListAndSelectAProduct(0);
+        visitPageAndSelectAProduct({ page: 'shopping-list', index: 0 });
         cy.get('[data-cy=delete]').click();
         // wait for product to be added to the shopping list
         cy.wait(1000);
@@ -96,7 +95,7 @@ describe('product CRUD', () => {
       });
 
       it('can move product from shopping list to storage', () => {
-        visitShoppingListAndSelectAProduct(3);
+        visitPageAndSelectAProduct({ page: 'shopping-list', index: 3 });
         cy.get('[data-cy=purchase]').click();
         // wait for product to be added to the shopping list
         cy.wait(1000);
@@ -105,6 +104,8 @@ describe('product CRUD', () => {
         cy.contains(products[3].name).should('not.exist');
 
         cy.visit('localhost:8080/fridge');
+        // wait for products load
+        cy.wait(1000);
         assertProductExistsInList(products[3]);
       });
     });
