@@ -57,6 +57,8 @@ describe('Profile Management', () => {
     cy.get('[data-cy=family]').click();
     cy.get('[data-cy=edit]').click();
 
+    // wait for the page to load
+    cy.wait(1000);
     cy.contains(user.name);
     cy.contains(user.newFamilyMembers[0]);
     cy.get('[data-cy=cancel-invite]').click();

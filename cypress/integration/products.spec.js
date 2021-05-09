@@ -77,7 +77,7 @@ describe('product CRUD', () => {
 
         cy.visit('localhost:8080');
         // wait the statistics to load
-        cy.wait(1000);
+        cy.wait(2000);
 
         cy.contains('75%').should('exist');
       });
