@@ -15,6 +15,8 @@ describe('Profile Management', () => {
     cy.setUpFamily();
     cy.signIn();
     cy.visit('localhost:8080/profile');
+    // wait for family data to load
+    cy.wait(1000);
   });
 
   it('finds userName', () => {
@@ -51,7 +53,7 @@ describe('Profile Management', () => {
     cy.url().should('equal', 'http://localhost:8080/');
   });
 
-  it('can update the family name, tweak pending members and display family members', () => {
+  it.only('can update the family name, tweak pending members and display family members', () => {
     cy.get('[data-cy=family]').click();
     cy.get('[data-cy=edit]').click();
 
