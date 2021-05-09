@@ -14,6 +14,8 @@ describe('Profile Management', () => {
     cy.createUser();
     cy.setUpFamily();
     cy.signIn();
+    // wait for successful sign in
+    cy.wait(500);
     cy.visit('localhost:8080/profile');
     // wait for family data to load
     cy.wait(1000);
