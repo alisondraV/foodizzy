@@ -14,6 +14,8 @@ describe('product CRUD', () => {
 
   function visitPageAndSelectAProduct({ page, index }) {
     cy.visit(`localhost:8080/${page}`);
+    // wait for the page to load
+    cy.wait(1000);
 
     selectProduct(products[index]);
   }
@@ -60,7 +62,7 @@ describe('product CRUD', () => {
 
         cy.get('[data-cy=remove]').click();
         // wait for product to be added to the shopping list
-        cy.wait(1000);
+        cy.wait(2000);
 
         cy.contains(products[1].category).should('not.exist');
         cy.contains(products[1].name).should('not.exist');

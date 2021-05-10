@@ -60,7 +60,7 @@ describe('Profile Management', () => {
     cy.get('[data-cy=edit]').click();
 
     // wait for the page to load
-    cy.wait(1000);
+    cy.wait(2000);
     cy.contains(user.name);
     cy.contains(user.newFamilyMembers[0]);
     cy.get('[data-cy=cancel-invite]').click();
