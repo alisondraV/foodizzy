@@ -55,12 +55,12 @@ describe('Profile Management', () => {
     cy.url().should('equal', 'http://localhost:8080/');
   });
 
-  it.only('can update the family name, tweak pending members and display family members', () => {
+  it('can update the family name, tweak pending members and display family members', () => {
     cy.get('[data-cy=family]').click();
     cy.get('[data-cy=edit]').click();
 
     // wait for the page to load
-    cy.wait(2000);
+    cy.wait(5000);
     cy.contains(user.name);
     cy.contains(user.newFamilyMembers[0]);
     cy.get('[data-cy=cancel-invite]').click();
