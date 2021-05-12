@@ -10,13 +10,14 @@
     <v-fab
       v-if="!productsAreSelected"
       class="fixed bottom-0 right-0 mb-24 mr-5"
+      data-cy="add-product"
       iconName="AddNew"
       @click="addNewProduct"
     />
     <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-5">
-      <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
-      <v-fab class="mb-2" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
-      <v-fab iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
+      <v-fab class="mb-2" data-cy="remove" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab class="mb-2" data-cy="waste" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
+      <v-fab data-cy="consume" iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
     </div>
     <navigation-menu current-page="Fridge" />
   </div>

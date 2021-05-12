@@ -5,7 +5,12 @@
       <products-list :location="location" :products="products" />
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Add Items To The List" @click="addItemsToTheList" />
+      <v-button
+        class="mx-8 mt-3"
+        data-cy="confirm-add-product"
+        label="Add Items To The List"
+        @click="addItemsToTheList"
+      />
     </div>
   </div>
 </template>

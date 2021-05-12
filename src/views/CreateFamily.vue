@@ -7,6 +7,7 @@
       <div class="mb-8 flex-start">
         <v-input
           class="mb-2"
+          data-cy="name"
           type="text"
           label="Family Name"
           placeholder="Enter your family name"
@@ -19,12 +20,19 @@
         <div class="flex flex-row justify-between mb-4">
           <v-input
             class="w-5/6"
+            data-cy="member-email"
             type="email"
             label="Email Address"
             placeholder="Enter member's email"
             v-model="currentEmail"
           />
-          <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
+          <img
+            alt="Add"
+            class="mt-6"
+            data-cy="add-member"
+            src="@/assets/images/PlusIcon.svg"
+            @click="addEmail"
+          />
         </div>
         <ul>
           <li
@@ -44,7 +52,13 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Create Family" :disabled="validationFailed" @click="createFamily" />
+      <v-button
+        class="mx-8 mt-3"
+        data-cy="create"
+        label="Create Family"
+        :disabled="validationFailed"
+        @click="createFamily"
+      />
     </div>
   </div>
 </template>

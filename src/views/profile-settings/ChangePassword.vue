@@ -9,17 +9,19 @@
       <div v-else class="w-full flex flex-col items-center text-center">
         <v-input
           class="mb-6 w-full"
-          type="password"
+          data-cy="current-password"
           label="Current Password"
           placeholder="Enter your current password"
+          type="password"
           v-model="currentPassword"
           @focus="clearTheMessage"
         />
         <v-input
           class="mb-6 w-full"
-          type="password"
+          data-cy="new-password"
           label="New Password"
           placeholder="Enter your new password"
+          type="password"
           v-model="newPassword"
           @focus="clearTheMessage"
         />
@@ -43,6 +45,7 @@
         <div class="bg-background h-24 w-full bottom-0 fixed">
           <v-button
             class="mx-8 mt-3"
+            data-cy="save"
             label="Change Password"
             @click="changePassword"
             :disabled="validationFailed"
