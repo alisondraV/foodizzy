@@ -36,7 +36,7 @@ import SearchInput from '@/components/SearchInput.vue';
 import SkipHeader from '@/components/SkipHeader.vue';
 import VButton from '@/components/VButton.vue';
 import router from '@/router';
-import { Product } from '@/types';
+import { CurrentFamily, Product } from '@/types';
 
 @Component({
   components: {
@@ -53,7 +53,7 @@ export default class Fridge extends Vue {
   searchQuery = '';
 
   async mounted() {
-    this.products = await Firestore.instance.getAllProducts();
+    this.products = await CurrentFamily.instance.getAllProducts();
   }
 
   async addProductsToStorage() {

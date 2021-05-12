@@ -18,7 +18,7 @@
 <script lang="ts">
 import router from '@/router';
 import { Component, Provide, Vue } from 'vue-property-decorator';
-import { Product } from '@/types';
+import { CurrentFamily, Product } from '@/types';
 import Firestore from '@/utils/Firestore';
 import ListItem from '@/components/ListItem.vue';
 import SearchInput from '@/components/SearchInput.vue';
@@ -63,7 +63,7 @@ export default class NewProduct extends Vue {
   }
 
   async getProductsForLocation(): Promise<Product[]> {
-    const allProducts = await Firestore.instance.getAllProducts();
+    const allProducts = await CurrentFamily.instance.getAllProducts();
     const availableProducts: Product[] = [];
 
     for (const product of allProducts) {

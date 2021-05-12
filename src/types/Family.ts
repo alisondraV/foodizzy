@@ -6,6 +6,7 @@ import { ProductDTO } from './DTOs';
 import Recipe from '@/types/Recipe';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
+import { Product } from '.';
 
 export interface Family {
   id?: string;
@@ -86,6 +87,32 @@ export class CurrentFamily {
     });
 
     return monthData;
+  }
+
+  async _getCustomProductsCollection() {
+    const family = await this.getCurrentFamily();
+    return Firestore.instance.db.collection(`family/${family.id}/customProducts`);
+  }
+
+  public async getAllProducts(): Promise<Product[]> {
+    // TODO: cache this query
+    const genericProductsQuerySnap = await Firestore.instance.db.collection('allProducts').get();
+    // TODO: cache this query
+    const customProductsCollection = await this._getCustomProductsCollection();
+    const customProductsQuerySnap = await customProductsCollection.get();
+
+    console.log(genericProductsQuerySnap.docs, customProductsQuerySnap.docs);
+
+    const allProductsDocs = [...genericProductsQuerySnap.docs, ...customProductsQuerySnap.docs];
+    const allProducts = allProductsDocs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
+
+    return allProducts;
+  }
+
+  public async saveCustomProduct(product: Product) {
+    const dto = product.toDTO();
+    const customProductsCollection = await this._getCustomProductsCollection();
+    customProductsCollection.add(dto);
   }
 
   public async getRecipes(): Promise<Recipe[]> {
