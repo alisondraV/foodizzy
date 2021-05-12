@@ -23,7 +23,7 @@
         </div>
         <div class="flex justify-between mb-4">
           <p class="text-primary-text">Personal Information</p>
-          <p class="text-dark-peach underline" @click="flipEditMode">
+          <p class="text-dark-peach underline" data-cy="toggleState" @click="flipEditMode">
             {{ editMode ? 'Cancel' : 'Edit' }}
           </p>
         </div>
@@ -33,19 +33,31 @@
         <div class="mb-3">
           <p class="text-sm">Full Name</p>
           <p v-if="!editMode">{{ user.displayName }}</p>
-          <v-input v-else v-model="newName" class="w-full" :error="errorType === 'displayName'" />
+          <v-input
+            v-else
+            v-model="newName"
+            class="w-full"
+            data-cy="name"
+            :error="errorType === 'displayName'"
+          />
         </div>
         <div>
           <p class="text-sm">Email</p>
           <p v-if="!editMode">{{ user.email }}</p>
-          <v-input v-else v-model="newEmail" class="mb-3 w-full" :error="errorType === 'email'" />
+          <v-input
+            v-else
+            v-model="newEmail"
+            class="mb-3 w-full"
+            data-cy="email"
+            :error="errorType === 'email'"
+          />
         </div>
         <div v-if="editMode" class="text-dark-peach">{{ errorMessage }}</div>
       </div>
     </div>
 
     <div v-if="editMode" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8" label="Save" @click="saveChanges" :disabled="validationFailed" />
+      <v-button class="mx-8" label="Save" @click="saveChanges" data-cy="save" :disabled="validationFailed" />
     </div>
   </div>
 </template>

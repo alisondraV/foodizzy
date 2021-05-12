@@ -9,6 +9,7 @@
         <div class="flex flex-wrap justify-between -mx-2">
           <div
             class="rounded py-2 px-3 mx-2 my-1"
+            data-cy="product"
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
@@ -22,7 +23,7 @@
       </div>
     </div>
     <div v-if="listIsNotEmpty" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" />
+      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" data-cy="add-products" />
     </div>
   </div>
 </template>

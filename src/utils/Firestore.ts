@@ -26,6 +26,13 @@ export default class Firestore {
 
       this.db.useEmulator('localhost', 8888);
       this.functions.useEmulator('localhost', 5001);
+
+      // eslint-disable-next-line max-len
+      // this is needed for Firestore to work with Cypress (https://github.com/cypress-io/cypress/issues/6350#issuecomment-821916119)
+      this.db.settings({
+        experimentalForceLongPolling: true,
+        merge: true
+      });
     }
   }
 
@@ -75,7 +82,7 @@ export default class Firestore {
       ...product,
       dateWasted: firebase.firestore.Timestamp.now()
     }));
-    const bucket = await CurrentFamily.instance.getWasteBucket();
+    const bucket = await CurrentFamily.instance.getOrCreateWasteBucket();
     const updatedWastedList = [...bucket.data().wasted, ...wastedProducts];
 
     await bucket.ref.update('wasted', updatedWastedList);

@@ -14,6 +14,7 @@
     <div class="mb-4">
       <v-input
         class="mb-3"
+        data-cy="email"
         type="email"
         label="Email Address"
         placeholder="Enter your email"
@@ -22,7 +23,8 @@
       />
       <v-input
         class="mb-3"
-        type="name"
+        data-cy="name"
+        type="text"
         label="Name"
         placeholder="Enter your name"
         v-model="name"
@@ -30,6 +32,7 @@
       />
       <v-input
         class="mb-3"
+        data-cy="password"
         type="password"
         label="Password"
         placeholder="Enter your password"
@@ -39,12 +42,6 @@
       <div class="grid grid-cols-2 ml-1">
         <div :class="passwordValidation.hasLowerCase ? 'text-primary-green' : 'text-dark-peach'">
           1 lowercase
-        </div>
-        <div :class="passwordValidation.hasUpperCase ? 'text-primary-green' : 'text-dark-peach'">
-          1 uppercase
-        </div>
-        <div :class="passwordValidation.hasSpecial ? 'text-primary-green' : 'text-dark-peach'">
-          1 special
         </div>
         <div :class="passwordValidation.hasNumber ? 'text-primary-green' : 'text-dark-peach'">
           1 number
@@ -56,7 +53,7 @@
     </div>
     <div class="text-dark-peach mb-2 ml-1">{{ errorMessage }}</div>
     <div class="mb-8">
-      <v-button class="mb-4" label="Sign Up" :disabled="validationFailed" @click="signUp" />
+      <v-button class="mb-4" data-cy="sign-up" label="Sign Up" :disabled="validationFailed" @click="signUp" />
       <div class="flex items-center text-secondary-text">
         <hr class="w-1/2 border-gray mb-4" />
         <span class="w-1/5 text-center mb-4">OR</span>

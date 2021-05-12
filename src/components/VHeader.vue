@@ -7,6 +7,7 @@
     </span>
     <img
       v-if="showProfile()"
+      data-cy="profile-button"
       src="@/assets/images/Profile.svg"
       alt="Profile"
       @click="goToTheProfilePage"
@@ -17,6 +18,7 @@
       src="@/assets/images/Close.svg"
       alt="Close"
       @click="goBack"
+      data-cy="close"
       class="cursor-pointer p-4"
       width="55px"
     />

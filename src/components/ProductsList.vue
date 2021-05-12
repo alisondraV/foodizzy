@@ -2,7 +2,11 @@
   <div>
     <search-input class="mb-6" v-model="searchQuery" />
     <div v-if="currentPage === 'NewProduct'" class="mb-6">
-      <div class="flex mb-2 text-primary-green font-bold" @click="addCustomProduct">
+      <div
+        class="flex mb-2 text-primary-green font-bold"
+        data-cy="add-custom-product"
+        @click="addCustomProduct"
+      >
         <img alt="AddCustom" class="mr-2" src="@/assets/images/Plus.svg" />
         <span>Add Custom Product</span>
       </div>

@@ -19,9 +19,7 @@ export const monthList = [
 
 export const passwordValidationPatterns = {
   hasNumber: /\d/,
-  hasUpperCase: /[A-Z]/,
   hasLowerCase: /[a-z]/,
-  hasSpecial: /[!"#$%&'()*+,-.<=>?@~^]/,
   isLong: /^.{8,}$/
 };
 

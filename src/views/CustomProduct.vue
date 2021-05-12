@@ -7,6 +7,7 @@
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <v-select
         class="mb-4"
+        data-cy="custom-product-category-dropdown"
         label="Category"
         :selection-list="categoriesList"
         :selected-item="product.category"
@@ -15,6 +16,7 @@
       <v-input
         v-if="customCategory"
         class="mb-8"
+        data-cy="custom-product-category"
         type="text"
         placeholder="Pick Category Name"
         v-model="product.category"
@@ -23,6 +25,7 @@
       />
       <v-input
         class="mb-4"
+        data-cy="custom-product-name"
         type="text"
         label="Item Name"
         placeholder="Enter Item Name"
@@ -33,7 +36,13 @@
       <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button label="Add Item" class="mx-8 mt-3" @click="addNewProduct" :disabled="validationFailed" />
+      <v-button
+        label="Add Item"
+        class="mx-8 mt-3"
+        data-cy="confirm-add-custom-product"
+        @click="addNewProduct"
+        :disabled="validationFailed"
+      />
     </div>
   </div>
 </template>

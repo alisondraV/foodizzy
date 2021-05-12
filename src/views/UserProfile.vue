@@ -15,12 +15,12 @@
           {{ user.displayName }}
         </p>
         <ul class="w-full text-primary-text ">
-          <li class="flex justify-between mb-4" @click="viewPersonalInfo">
+          <li class="flex justify-between mb-4" data-cy="personal-info" @click="viewPersonalInfo">
             <img src="@/assets/images/ProfileGreen.svg" alt="Information" />
             <span class="flex-1 text-left ml-4">Personal information</span>
             <img src="@/assets/images/ArrowRight.svg" alt="Go" />
           </li>
-          <li class="flex justify-between mb-5" @click="changePassword">
+          <li class="flex justify-between mb-5" data-cy="password" @click="changePassword">
             <img src="@/assets/images/Password.svg" alt="Password" />
             <span class="flex-1 text-left ml-4">Change Password</span>
             <img src="@/assets/images/ArrowRight.svg" alt="Go" />
@@ -28,7 +28,7 @@
 
           <hr class="w-full border-secondary-text mb-5" />
 
-          <li class="flex justify-between mb-5" @click="viewFamily">
+          <li class="flex justify-between mb-5" data-cy="family" @click="viewFamily">
             <img src="@/assets/images/Family.svg" alt="Family" />
             <span class="flex-1 text-left ml-4">My Family</span>
             <img src="@/assets/images/ArrowRight.svg" alt="Go" />
@@ -41,7 +41,7 @@
 
           <hr class="w-full border-secondary-text mb-5" />
 
-          <li class="flex" @click="logOut">
+          <li class="flex" data-cy="log-out" @click="logOut">
             <img src="@/assets/images/LogOut.svg" alt="Log Out" />
             <span class="flex-1 text-left ml-4">Log Out</span>
             <img src="@/assets/images/ArrowRight.svg" alt="Go" />
