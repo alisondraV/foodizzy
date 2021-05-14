@@ -96,15 +96,22 @@ export class CurrentFamily {
 
   public async getAllProducts(): Promise<Product[]> {
     // TODO: cache this query
-    const genericProductsQuerySnap = await Firestore.instance.db.collection('allProducts').get();
+    // const genericProductsQuerySnap = await Firestore.instance.db.collection('allProducts').get();
+    const domain = (process.env.NODE_ENV === 'development') 
+      ? 'http://localhost:5001/foodizzy-app/us-central1' 
+      : 'https://us-central1-foodizzy-app.cloudfunctions.net'
+    const data = await fetch(`${domain}/getAllProducts/api/allProducts`);
+    // const data = await fetch(`${window.origin}/api/allProducts`);
+    const genericProducts = await data.json();
     // TODO: cache this query
     const customProductsCollection = await this._getCustomProductsCollection();
     const customProductsQuerySnap = await customProductsCollection.get();
 
-    console.log(genericProductsQuerySnap.docs, customProductsQuerySnap.docs);
-
-    const allProductsDocs = [...genericProductsQuerySnap.docs, ...customProductsQuerySnap.docs];
-    const allProducts = allProductsDocs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
+    const customProducts = customProductsQuerySnap.docs.map(doc => doc.data());
+    
+    const allDocs = [...genericProducts, ...customProducts];
+    const allProducts = allDocs.map(doc => Product.fromDTO(doc as ProductDTO));
+    console.log(allProducts);
 
     return allProducts;
   }

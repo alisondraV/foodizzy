@@ -1,8 +1,8 @@
+import express from 'express';
 import * as functions from 'firebase-functions';
 import { auth, db } from './admin';
-import axios from 'axios';
-import sendEmail from './sendEmail';
-import express from 'express';
+import { sendWelcomeEmails } from './sendEmail';
+import cors from 'cors';
 
 const app = express();
 
@@ -67,10 +67,13 @@ export const getUsersByEmail = functions.https.onCall((data, context) => {
   return Promise.all(data.emails.map((email: string) => auth.getUserByEmail(email)));
 });
 
+app.use(cors())
+
 app.get('/api/allProducts', async (req, resp) => {
   const allProductsSnap = await db.collection('allProducts').get();
-  const allProducts = allProductsSnap.docs.map(doc => doc.data());
-  resp.set('Cache-Control', 'public, max-age-10, s-maxage-20');
+  const allProducts = allProductsSnap.docs.map(doc => doc.data()); 
+  
+  resp.set('Cache-Control', 'public, max-age=20');
 
   resp.send(allProducts);
 })
@@ -161,39 +164,6 @@ async function getTotalProductsFromStorage(family: any) {
   console.log({storage});
 
   return getTotalProducts(storage);
-}
-
-async function sendWelcomeEmails(
-    newFamily: FirebaseFirestore.DocumentData,
-    oldFamily?: FirebaseFirestore.DocumentData
-) {
-  const oldMembers = oldFamily?.pendingMembers ?? [];
-  const newMembers = newFamily?.pendingMembers ?? [];
-  const newEmails = newMembers.filter((email: any) => {
-    return !oldMembers.find((oldEmail: any) => oldEmail === email);
-  });
-
-  console.log('New Members: ', newEmails);
-
-  const htmlURL =
-    'https://firebasestorage.googleapis.com/v0/b/foodizzy-app.appspot.com/o/Foodizzy.html?alt=media&token=53d69dc9-3b9a-42fc-a6d8-9a89efdcc26b';
-  const response = await axios.get(htmlURL);
-  let emailTemplate = response.data;
-
-  emailTemplate = emailTemplate.replace('{PERSON}', 'Somebody');
-  emailTemplate = emailTemplate.replace('{FAMILY NAME}', `"${newFamily.name}"`);
-
-  return Promise.all(
-      newEmails.map((email: string) => {
-        return sendEmail({
-          to: [email],
-          message: {
-            subject: 'Welcome to Foodizzy!',
-            html: emailTemplate,
-          },
-        });
-      })
-  );
 }
 
 async function checkForFamilyRemoval(newDoc: FirebaseFirestore.QueryDocumentSnapshot) {
