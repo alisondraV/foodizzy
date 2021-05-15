@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="" />
-    <div class="mt-20 mb-20 mx-8 flex flex-col text-primary-text">
+    <div class="mt-20 mb-24 mx-8 flex flex-col text-primary-text">
       <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
       <h2 class="mb-4 font-extrabold">
         Track your food waste here
@@ -31,19 +31,21 @@
         <div v-else>
           <!--for reactivity-->
           <div v-for="chart in chartData" :key="chart.length">
+            <h2 class="mb-4 font-extrabold text-center">
+              Waste statistics
+            </h2>
             <custom-chart
               v-if="chart.length !== 0"
               class="mb-6"
               :data="chart"
               :labels="chartLabels"
-              :colors="[...Object.values(categoryColors)]"
               canvasId="main"
             />
           </div>
           <ul class="mb-6">
             <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
-              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${categoryColors[category]}`" />
-              <p>{{ getWastePercentage(category) }}% of all food waste was {{ category }}</p>
+              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
+              <p class="text-sm">{{ getWastePercentage(category) }}% of all food waste were {{ category }}</p>
             </li>
           </ul>
           <progress-bar :label="label" :percentage="getWastePercentage()" />
@@ -55,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { colors, monthList } from '@/utils/consts';
+import { monthList, statisticsColors } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
 import Authentication from '@/utils/Authentication';
@@ -76,7 +78,6 @@ import WastedProduct from '@/types/WastedProduct';
 export default class Home extends Vue {
   monthData: { month: number; year: number }[] = [];
   wastedProducts: WastedProduct[] = [];
-  categoryColors: { [category: string]: string } = {};
   totalProductsForMonth: { [category: string]: number } = {};
   firstName = '';
   loading = true;
@@ -120,6 +121,10 @@ export default class Home extends Vue {
     );
   }
 
+  getCategoryColor(category: string) {
+    return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];
+  }
+
   getMonthDataString(month: number, year: number) {
     return `${monthList[month]} ${year}`;
   }
@@ -146,16 +151,12 @@ export default class Home extends Vue {
 
   get statistics() {
     type Category = { [category: string]: number };
-    let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
       const categoryName = (product.category ?? 'General').toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
-        this.categoryColors[categoryName] = colors[categoryCount];
-        categoryCount++;
       }
-
       acc[categoryName]++;
 
       return acc;
