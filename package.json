@@ -27,6 +27,7 @@
     "@types/node": "^14.14.37",
     "autoprefixer": "^9",
     "aws-sdk": "^2.884.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",

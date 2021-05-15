@@ -42,11 +42,6 @@ export default class Firestore {
     return response.data;
   }
 
-  public async getAllProducts(): Promise<Product[]> {
-    const querySnap = await this.db.collection('allProducts').get();
-    return querySnap.docs.map(doc => Product.fromDTO(doc.data() as ProductDTO));
-  }
-
   public async addToList(products: ProductDTO[], listName: ListName) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 

@@ -52,7 +52,7 @@ import router from '@/router';
 import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import { Product } from '@/types';
+import { CurrentFamily, Product } from '@/types';
 import VAlert from '@/components/VAlert.vue';
 import VButton from '@/components/VButton.vue';
 import VHeader from '@/components/VHeader.vue';
@@ -100,6 +100,8 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   async addProductToStorageOrShoppingList() {
     this.trimProduct();
 
+    await CurrentFamily.instance.saveCustomProduct(this.product);
+
     if (this.location === 'storage') {
       await Firestore.instance.addToList([this.product], 'storage');
       await router.safePush('/fridge');
@@ -110,7 +112,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   async getCategoriesList() {
-    const allProducts = await Firestore.instance.getAllProducts();
+    const allProducts = await CurrentFamily.instance.getAllProducts();
     const productCategories = allProducts.map(product => product.category ?? 'General');
     this.categoriesList = [...new Set(productCategories), 'Add New'];
   }

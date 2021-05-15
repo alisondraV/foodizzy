@@ -6,6 +6,8 @@ import { ProductDTO } from './DTOs';
 import Recipe from '@/types/Recipe';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
+import { Product } from '.';
+import API from '@/utils/API';
 
 export interface Family {
   id?: string;
@@ -86,6 +88,17 @@ export class CurrentFamily {
     });
 
     return monthData;
+  }
+
+  public async getAllProducts() {
+    const family = await this.getCurrentFamily();
+    return API.instance.getAllProducts(family.id);
+  }
+
+  public async saveCustomProduct(product: Product) {
+    const family = await this.getCurrentFamily();
+    const dto = product.toDTO();
+    Firestore.instance.db.collection(`family/${family.id}/customProducts`).add(dto);
   }
 
   public async getRecipes(): Promise<Recipe[]> {
