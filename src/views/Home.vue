@@ -29,25 +29,35 @@
           </p>
         </div>
         <div v-else>
+          <div v-if="chartData[0].length !== 0">
+            <!--for reactivity-->
+            <div v-for="chart in chartData" :key="chart.keys()">
+              <h2 class="mb-4 font-extrabold text-center">
+                Waste statistics
+              </h2>
+              <custom-chart class="mb-6" :data="chart" :labels="chartLabels" canvasId="waste" />
+            </div>
+            <ul class="mb-6">
+              <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
+                <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
+                <p class="text-sm">
+                  {{ getWastePercentage(category) }}% of all food waste were {{ category }}
+                </p>
+              </li>
+            </ul>
+          </div>
           <!--for reactivity-->
-          <div v-for="chart in chartData" :key="chart.length">
+          <div v-for="chart in chartData" :key="chart.keys()">
             <h2 class="mb-4 font-extrabold text-center">
-              Waste statistics
+              General statistics
             </h2>
             <custom-chart
-              v-if="chart.length !== 0"
               class="mb-6"
-              :data="chart"
-              :labels="chartLabels"
-              canvasId="main"
+              :data="[...Object.values(totalProductsForMonth)]"
+              :labels="[...Object.keys(totalProductsForMonth)]"
+              canvasId="general"
             />
           </div>
-          <ul class="mb-6">
-            <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
-              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
-              <p class="text-sm">{{ getWastePercentage(category) }}% of all food waste were {{ category }}</p>
-            </li>
-          </ul>
           <progress-bar :label="label" :percentage="getWastePercentage()" />
         </div>
       </div>
