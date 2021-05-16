@@ -29,36 +29,20 @@
           </p>
         </div>
         <div v-else>
-          <div v-if="chartData[0].length !== 0">
-            <!--for reactivity-->
-            <div v-for="chart in chartData" :key="chart.keys()">
-              <h2 class="mb-4 font-extrabold text-center">
-                Waste statistics
-              </h2>
-              <custom-chart class="mb-6" :data="chart" :labels="chartLabels" canvasId="waste" />
-            </div>
-            <ul class="mb-6">
-              <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
-                <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
-                <p class="text-sm">
-                  {{ getWastePercentage(category) }}% of all food waste were {{ category }}
-                </p>
-              </li>
-            </ul>
-          </div>
-          <!--for reactivity-->
-          <div v-for="chart in chartData" :key="chart.keys()">
-            <h2 class="mb-4 font-extrabold text-center">
-              General statistics
-            </h2>
-            <custom-chart
-              class="mb-6"
-              :data="[...Object.values(totalProductsForMonth)]"
-              :labels="[...Object.keys(totalProductsForMonth)]"
-              canvasId="general"
+          <div v-if="Object.keys(statistics).length !== 0 && !loading">
+            <statistics-display
+              statistics-name="Waste Statistics"
+              :products="wastedProducts.length"
+              :statistics="statistics"
+              :is-for-wasted="true"
             />
           </div>
-          <progress-bar :label="label" :percentage="getWastePercentage()" />
+          <statistics-display
+            statistics-name="General Statistics"
+            :products="totalProducts"
+            :statistics="totalProductsForMonth"
+          />
+          <progress-bar :label="progressBarLabel" :percentage="getWastePercentage()" />
         </div>
       </div>
     </div>
@@ -67,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { monthList, statisticsColors } from '@/utils/consts';
+import { monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types';
 import Authentication from '@/utils/Authentication';
@@ -76,9 +60,11 @@ import NavigationMenu from '@/components/NavigationMenu.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import VHeader from '@/components/VHeader.vue';
 import WastedProduct from '@/types/WastedProduct';
+import StatisticsDisplay from '@/components/StatisticsDisplay.vue';
 
 @Component({
   components: {
+    StatisticsDisplay,
     CustomChart,
     NavigationMenu,
     ProgressBar,
@@ -131,10 +117,6 @@ export default class Home extends Vue {
     );
   }
 
-  getCategoryColor(category: string) {
-    return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];
-  }
-
   getMonthDataString(month: number, year: number) {
     return `${monthList[month]} ${year}`;
   }
@@ -155,7 +137,7 @@ export default class Home extends Vue {
     return monthList[this.selectedMonthData.month];
   }
 
-  get label() {
+  get progressBarLabel() {
     return `${this.getWastePercentage()}% of all food was not wasted in ${this.month}`;
   }
 
@@ -177,24 +159,9 @@ export default class Home extends Vue {
     return Object.values(this.totalProductsForMonth).reduce((acc, e) => e + acc, 0);
   }
 
-  get totalWaste() {
-    return Object.values(this.statistics).reduce((acc, e) => e + acc, 0);
-  }
-
-  get chartData() {
-    return [[...Object.values(this.statistics)]];
-  }
-
-  get chartLabels() {
-    return [...Object.keys(this.statistics)];
-  }
-
-  getWastePercentage(category?: string) {
-    if (category) {
-      category = category.toLowerCase();
-      return ((this.statistics[category] / this.wastedProducts.length) * 100).toFixed();
-    }
-    return ((1 - this.totalWaste / this.totalProducts) * 100).toFixed();
+  getWastePercentage() {
+    const totalWaste = Object.values(this.statistics).reduce((acc, e) => e + acc, 0);
+    return ((1 - totalWaste / this.totalProducts) * 100).toFixed();
   }
 }
 </script>
