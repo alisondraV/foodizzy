@@ -29,6 +29,12 @@
           </p>
         </div>
         <div v-else>
+          <statistics-display
+            statistics-name="General Statistics"
+            :products="totalProducts"
+            :statistics="totalProductsForMonth"
+          />
+          <progress-bar class="mb-8" :label="progressBarLabel" :percentage="getWastePercentage()" />
           <div v-if="Object.keys(statistics).length !== 0 && !loading">
             <statistics-display
               statistics-name="Waste Statistics"
@@ -37,12 +43,6 @@
               :is-for-wasted="true"
             />
           </div>
-          <statistics-display
-            statistics-name="General Statistics"
-            :products="totalProducts"
-            :statistics="totalProductsForMonth"
-          />
-          <progress-bar :label="progressBarLabel" :percentage="getWastePercentage()" />
         </div>
       </div>
     </div>
