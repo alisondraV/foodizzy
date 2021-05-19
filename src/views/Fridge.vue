@@ -27,7 +27,7 @@
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
 import { FridgeAction, fridgeActions } from '@/utils/consts';
-import { NavigationMenu, ProductsList, SearchInput, VAlert, VButton, VFab, VHeader } from '@/components';
+import { NavigationMenu, ProductsList, VAlert, VButton, VFab, VHeader } from '@/components';
 import { Product } from '@/types';
 import router from '@/router';
 
@@ -35,7 +35,6 @@ import router from '@/router';
   components: {
     NavigationMenu,
     ProductsList,
-    SearchInput,
     VAlert,
     VButton,
     VHeader,

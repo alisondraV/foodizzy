@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ListItem, SearchInput } from '@/components';
+import ListItem from '@/components/ListItem.vue';
 import { Product } from '@/types';
 
 @Component({
-  components: { SearchInput, ListItem }
+  components: { ListItem }
 })
 export default class CategoryProducts extends Vue {
   @Prop() products!: Product[];
