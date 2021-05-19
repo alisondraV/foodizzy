@@ -1,9 +1,7 @@
-import firebase from 'firebase';
 import 'firebase/functions';
-import { CurrentFamily, Family, Product } from '@/types';
-import { ProductDTO } from '@/types/DTOs';
-import WastedProduct from '@/types/WastedProduct';
 import { CallableFunctions, ListName } from './consts';
+import { CurrentFamily, Family, Product, ProductDTO, WastedProduct } from '@/types';
+import firebase from 'firebase';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;

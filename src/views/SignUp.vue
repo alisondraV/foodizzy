@@ -75,13 +75,12 @@
 </template>
 
 <script lang="ts">
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
+import Authentication from '@/utils/Authentication';
+import { CurrentFamily } from '@/types';
 import { ValidationMixin } from '@/mixins';
 import router from '@/router';
-import { CurrentFamily } from '@/types';
-import Authentication from '@/utils/Authentication';
-import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {

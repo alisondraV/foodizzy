@@ -17,11 +17,9 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Vue } from 'vue-property-decorator';
-import SkipHeader from '@/components/SkipHeader.vue';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import { SkipHeader, VButton, VInput } from '@/components';
+import router from '@/router';
 
 @Component({
   components: {

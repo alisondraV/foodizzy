@@ -57,21 +57,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import Authentication from '@/utils/Authentication';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
-import VHeader from '@/components/VHeader.vue';
-import firebase from 'firebase';
 import { AlertMixin, ValidationMixin } from '@/mixins';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { VAlert, VButton, VHeader, VInput } from '@/components';
+import Authentication from '@/utils/Authentication';
+import firebase from 'firebase';
 
 @Component({
   components: {
     VAlert,
     VButton,
-    VInput,
-    VHeader
+    VHeader,
+    VInput
   }
 })
 export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {

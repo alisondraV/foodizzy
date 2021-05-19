@@ -39,21 +39,18 @@
 </template>
 
 <script lang="ts">
+import { VAlert, VButton, VHeader, VInput } from '@/components';
 import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types/Family';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
-import VHeader from '@/components/VHeader.vue';
 import router from '@/router';
 
 @Component({
   components: {
     VAlert,
     VButton,
-    VInput,
-    VHeader
+    VHeader,
+    VInput
   }
 })
 export default class InviteMembers extends AlertMixin {

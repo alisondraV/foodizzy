@@ -63,16 +63,14 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase';
-import { Component } from 'vue-property-decorator';
+import { VButton, VHeader, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
-import VHeader from '@/components/VHeader.vue';
+import { Component } from 'vue-property-decorator';
 import { ValidationMixin } from '@/mixins';
+import firebase from 'firebase';
 
 @Component({
-  components: { VButton, VInput, VHeader }
+  components: { VButton, VHeader, VInput }
 })
 export default class PersonalInformation extends ValidationMixin {
   editMode = false;

@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import Firestore from '@/utils/Firestore';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
+import Firestore from '@/utils/Firestore';
 import ML from '@/utils/ML';
 
 @Component

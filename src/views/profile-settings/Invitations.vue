@@ -32,16 +32,14 @@
 </template>
 
 <script lang="ts">
-import { AlertMixin } from '@/mixins/AlertMixin';
+import { CurrentFamily, Family } from '@/types';
+import { VAlert, VButton, VHeader } from '@/components';
+import { AlertMixin } from '@/mixins';
+import Authentication from '@/utils/Authentication';
 import { AuthorizationError } from '@/utils/errors';
 import { Component } from 'vue-property-decorator';
-import firebase from 'firebase';
-import Authentication from '@/utils/Authentication';
-import VAlert from '@/components/VAlert.vue';
-import VHeader from '@/components/VHeader.vue';
-import VButton from '@/components/VButton.vue';
-import { CurrentFamily, Family } from '@/types';
 import Firestore from '@/utils/Firestore';
+import firebase from 'firebase';
 
 @Component({
   components: { VAlert, VHeader, VButton }

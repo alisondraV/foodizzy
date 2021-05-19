@@ -91,20 +91,17 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase';
-import router from '@/router';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
-import Authentication from '@/utils/Authentication';
 import { CurrentFamily, Family } from '@/types';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VInput from '@/components/VInput.vue';
+import { VAlert, VButton, VHeader, VInput } from '@/components';
+import Authentication from '@/utils/Authentication';
 import Firestore from '@/utils/Firestore';
+import firebase from 'firebase';
+import router from '@/router';
 
 @Component({
-  components: { VAlert, VHeader, VButton, VInput }
+  components: { VAlert, VButton, VHeader, VInput }
 })
 export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   inEditingState = false;

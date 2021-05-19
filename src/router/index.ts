@@ -1,9 +1,9 @@
-import { CurrentFamily } from '@/types';
-import Authentication from '@/utils/Authentication';
-import Vue from 'vue';
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from 'vue-router';
-const { isNavigationFailure, NavigationFailureType } = VueRouter;
+import Authentication from '@/utils/Authentication';
+import { CurrentFamily } from '@/types';
+import Vue from 'vue';
 
+const { isNavigationFailure, NavigationFailureType } = VueRouter;
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [

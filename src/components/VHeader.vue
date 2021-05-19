@@ -27,8 +27,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import router from '../router';
 import { CurrentFamily, Family } from '@/types';
+import router from '../router';
 
 @Component
 export default class VHeader extends Vue {

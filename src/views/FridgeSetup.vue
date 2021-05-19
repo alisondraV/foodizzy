@@ -30,13 +30,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { CurrentFamily, Product, ProductDTO } from '@/types';
+import { SearchInput, SkipHeader, VButton } from '@/components';
 import Firestore from '@/utils/Firestore';
-import { ProductDTO } from '@/types/DTOs';
-import SearchInput from '@/components/SearchInput.vue';
-import SkipHeader from '@/components/SkipHeader.vue';
-import VButton from '@/components/VButton.vue';
 import router from '@/router';
-import { CurrentFamily, Product } from '@/types';
 
 @Component({
   components: {

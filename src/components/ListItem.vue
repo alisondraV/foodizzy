@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { pages } from '@/utils/consts';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import { Product } from '@/types';
+import { pages } from '@/utils/consts';
 
 @Component
 export default class ListItem extends Vue {

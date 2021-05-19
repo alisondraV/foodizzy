@@ -1,5 +1,5 @@
-import { AlertStatus } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
+import { AlertStatus } from '@/utils/consts';
 
 @Component
 export class AlertMixin extends Vue {

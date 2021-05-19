@@ -58,12 +58,11 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
-import router from '@/router';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
 import { CurrentFamily } from '@/types';
 import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 
 @Component({
   components: {

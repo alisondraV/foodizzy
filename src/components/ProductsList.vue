@@ -19,15 +19,13 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
+import { CategoryProducts, ListItem, SearchInput } from '@/components';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import { Product } from '@/types';
-import CategoryProducts from '@/components/CategoryProducts.vue';
-import ListItem from '@/components/ListItem.vue';
-import SearchInput from '@/components/SearchInput.vue';
+import router from '@/router';
 
 @Component({
-  components: { CategoryProducts, SearchInput, ListItem }
+  components: { CategoryProducts, ListItem, SearchInput }
 })
 export default class ProductsList extends Vue {
   @Prop() location!: string;

@@ -55,15 +55,11 @@
 </template>
 
 <script lang="ts">
-import { colors, monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
+import { CurrentFamily, WastedProduct } from '@/types';
+import { CustomChart, NavigationMenu, ProgressBar, VHeader } from '@/components';
+import { colors, monthList } from '@/utils/consts';
 import Authentication from '@/utils/Authentication';
-import CustomChart from '@/components/CustomChart.vue';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import ProgressBar from '@/components/ProgressBar.vue';
-import VHeader from '@/components/VHeader.vue';
-import WastedProduct from '@/types/WastedProduct';
 
 @Component({
   components: {

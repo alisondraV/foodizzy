@@ -64,12 +64,11 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import { CurrentFamily } from '@/types';
 import { ValidationMixin } from '@/mixins';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import router from '@/router';
 
 @Component({
   components: {

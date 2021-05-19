@@ -14,9 +14,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import ListItem from '@/components/ListItem.vue';
+import { ListItem, SearchInput } from '@/components';
 import { Product } from '@/types';
-import SearchInput from '@/components/SearchInput.vue';
 
 @Component({
   components: { SearchInput, ListItem }

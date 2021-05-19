@@ -23,18 +23,12 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
+import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
-import { ListenerMixin, AlertMixin } from '@/mixins';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import { Product } from '@/types/Product';
-import ProductsList from '@/components/ProductsList.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VFab from '@/components/VFab.vue';
+import { NavigationMenu, ProductsList, SearchInput, VAlert, VButton, VFab, VHeader } from '@/components';
 import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
+import { Product } from '@/types';
+import router from '@/router';
 
 @Component({
   components: {

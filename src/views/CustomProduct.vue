@@ -48,16 +48,12 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
-import Firestore from '@/utils/Firestore';
 import { CurrentFamily, Product } from '@/types';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VInput from '@/components/VInput.vue';
-import VSelect from '@/components/VSelect.vue';
+import { VAlert, VButton, VHeader, VInput, VSelect } from '@/components';
+import Firestore from '@/utils/Firestore';
+import router from '@/router';
 
 @Component({
   components: {

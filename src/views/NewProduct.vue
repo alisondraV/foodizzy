@@ -16,16 +16,12 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Provide, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
+import { ListItem, ProductsList, SearchInput, VButton, VHeader } from '@/components';
 import Firestore from '@/utils/Firestore';
-import ListItem from '@/components/ListItem.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import ProductsList from '@/components/ProductsList.vue';
 import { ListName } from '@/utils/consts';
+import router from '@/router';
 
 @Component({
   components: {

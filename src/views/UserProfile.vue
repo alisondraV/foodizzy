@@ -53,13 +53,12 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase';
-import router from '@/router';
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
+import { VButton, VHeader } from '@/components';
 import Authentication from '@/utils/Authentication';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
+import firebase from 'firebase';
+import router from '@/router';
 
 @Component({
   components: { VButton, VHeader }

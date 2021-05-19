@@ -1,6 +1,6 @@
-import ValidationError from '@/types/ValidationError';
-import { authErrors, emailPattern, ErrorCode, passwordValidationPatterns } from '@/utils/consts';
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { ErrorCode, authErrors, emailPattern, passwordValidationPatterns } from '@/utils/consts';
+import { ValidationError } from '@/types';
 
 @Component
 export class ValidationMixin extends Vue {

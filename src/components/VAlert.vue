@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { alertColor, AlertStatus } from '@/utils/consts';
+import { AlertStatus, alertColor } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
