@@ -49,7 +49,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = (family.shoppingList ?? []).map(Product.fromDTO);
+      this.products = (family.shoppingList ?? []).map(p => new Product(p.name, p.category));
     };
   }
 

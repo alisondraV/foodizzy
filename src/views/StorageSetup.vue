@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { CurrentFamily, Product, ProductDTO } from '@/types';
+import { CurrentFamily, Product } from '@/types';
 import { SearchInput, SkipHeader, VButton } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
@@ -45,7 +45,7 @@ import router from '@/router';
 export default class StorageSetup extends Vue {
   categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
-  productsToAdd: ProductDTO[] = [];
+  productsToAdd: Product[] = [];
   colors = ['#B6DDDA', '#FFE6A3'];
   searchQuery = '';
 
@@ -58,14 +58,14 @@ export default class StorageSetup extends Vue {
     this.goToTheNextPage();
   }
 
-  updateProductList(product: ProductDTO) {
+  updateProductList(product: Product) {
     if (this.isInProductsList(product)) {
       return (this.productsToAdd = this.productsToAdd.filter(prevProduct => prevProduct != product));
     }
     this.productsToAdd.push(product);
   }
 
-  isInProductsList(product: ProductDTO) {
+  isInProductsList(product: Product) {
     return this.productsToAdd.includes(product);
   }
 

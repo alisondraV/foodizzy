@@ -1,7 +1,7 @@
-import { Family } from '@/types';
-import firebase from 'firebase';
 import Converter from './Converter';
+import { Family } from '@/types';
 import { ProductConverter } from './ProductConverter';
+import firebase from 'firebase';
 
 export class FamilyConverter implements Converter<Family> {
   fromFirestore(

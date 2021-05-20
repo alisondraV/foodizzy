@@ -28,6 +28,7 @@
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
 import ML from '@/utils/ML';
+import { Product } from '@/types';
 
 @Component
 export default class SearchInput extends Vue {
@@ -48,14 +49,7 @@ export default class SearchInput extends Vue {
       const topPredictions = await ML.getTopKResults(predictionTensor, 3);
       console.log(topPredictions);
 
-      await Firestore.instance.addToList(
-        [
-          {
-            name: topPredictions[0].className
-          }
-        ],
-        'storage'
-      );
+      await Firestore.instance.addToList([new Product(topPredictions[0].className)], 'storage');
     } catch (e) {
       console.error(e);
     }

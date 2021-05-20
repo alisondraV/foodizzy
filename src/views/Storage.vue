@@ -42,7 +42,7 @@ import router from '@/router';
   }
 })
 export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'Storage.vue';
+  @Provide('currentPage') currentPage = 'Storage';
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
@@ -50,7 +50,7 @@ export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = (family.storage ?? []).map(Product.fromDTO);
+      this.products = (family.storage ?? []).map(p => new Product(p.name, p.category));
     };
   }
 

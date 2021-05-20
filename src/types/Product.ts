@@ -1,7 +1,5 @@
 import Firestore from '@/utils/Firestore';
-import { ProductDTO } from './DTOs';
-
-export class Product implements ProductDTO {
+export class Product {
   public name: string;
   private _category?: string | undefined;
   public static defaultCategory = 'General';
@@ -21,23 +19,12 @@ export class Product implements ProductDTO {
     this._category = value;
   }
 
-  static fromDTO(product: ProductDTO) {
-    return new Product(product.name, product.category);
-  }
-
-  toDTO() {
-    return {
-      name: this.name,
-      category: this.category
-    };
-  }
-
   static async removeAllFromShoppingList(products: Product[]) {
-    await Firestore.instance.removeFromShoppingList(products);
+    await Firestore.instance.removeFromList(products, 'shoppingList');
   }
 
   static async removeAllFromStorage(products: Product[]) {
-    await Firestore.instance.removeFromStorage(products);
+    await Firestore.instance.removeFromList(products, 'storage');
   }
 
   static async purchaseAll(products: Product[]) {
@@ -51,7 +38,7 @@ export class Product implements ProductDTO {
   }
 
   static async wasteAll(products: Product[]) {
-    await Firestore.instance.removeFromStorage(products);
+    await Firestore.instance.removeFromList(products, 'storage');
     await Firestore.instance.moveToWasted(products);
   }
 }

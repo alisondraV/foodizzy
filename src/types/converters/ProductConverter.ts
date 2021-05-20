@@ -7,7 +7,10 @@ export class ProductConverter implements Converter<Product> {
     snapshot: firebase.firestore.QueryDocumentSnapshot,
     options: firebase.firestore.SnapshotOptions
   ): Product {
-    const data = snapshot.data();
+    return this.fromData(snapshot.data);
+  }
+
+  fromData(data: firebase.firestore.DocumentData) {
     return new Product(data.name, data.category);
   }
 
