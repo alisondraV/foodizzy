@@ -1,28 +1,31 @@
 <template>
   <div>
-    <label class="flex flex-col relative text-secondary-text">
+    <label class="flex flex-col text-secondary-text">
+      <span class="text-left mb-1 text-sm">{{ label }}</span>
       <input
-        class="focus:outline-none border border-secondary-text
-                rounded-md text-primary-text h-10 p-4"
-        :value="value"
-        @focus="focused = true"
-        @blur="focused = false"
+        class="focus:outline-none rounded-md text-primary-text h-10 p-4 placeholder-secondary-text
+                border border-secondary-text focus:border-primary-green"
+        :class="error ? 'border-2 border-dark-peach' : 'border border-secondary-text'"
         @input="$emit('input', $event.target.value)"
+        @focus="$emit('focus')"
+        :placeholder="placeholder"
         :type="type"
-        :placeholder="label"
+        :value="value"
       />
     </label>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class VInput extends Vue {
-  @Prop() value!: null;
   @Prop() label!: string;
-  @Prop({ default: "text" }) type?: string;
+  @Prop() placeholder!: string;
+  @Prop() value!: null;
+  @Prop({ default: 'text' }) type?: string;
+  @Prop({ default: false }) error?: boolean;
   focused = false;
 
   get isFocused() {

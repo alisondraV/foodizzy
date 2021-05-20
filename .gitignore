@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/temp
 
 .env
 
@@ -19,6 +20,10 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-#firebase
+# Firebase
 *.log
 src/utils/data.json
+
+# Cypress
+cypress/videos
+cypress/screenshots

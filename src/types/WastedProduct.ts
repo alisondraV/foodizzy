@@ -1,7 +1,7 @@
-import Product from "./Product";
-import firebase from "firebase";
+import { ProductDTO } from './DTOs';
+import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 
-export default interface WastedProduct extends Product {
+export interface WastedProduct extends ProductDTO {
   dateWasted: Timestamp;
 }
