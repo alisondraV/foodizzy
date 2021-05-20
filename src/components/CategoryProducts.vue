@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="flex mb-1" @click="toggleCategoryVisibility">
-      <img v-if="collapsed" alt="ArrowDown" class="mr-2" src="@/assets/images/ArrowDown.svg" />
-      <img v-else alt="ArrowUp" class="mr-2" src="@/assets/images/ArrowUp.svg" />
+      <img
+        alt="Arrow"
+        class="mr-2"
+        :class="collapsed ? '' : 'transform rotate-180'"
+        src="@/assets/images/Arrow.svg"
+      />
       <h2 class="text-primary-green">{{ category }}</h2>
     </div>
     <hr class="text-secondary-text mb-2" />

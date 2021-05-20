@@ -48,7 +48,7 @@
               v-else
               alt="Profile Image"
               class="mb-4 rounded-full"
-              src="@/assets/images/DefaultMember.svg"
+              src="@/assets/images/DefaultProfile.svg"
               width="45px"
             />
             <div>
@@ -58,7 +58,8 @@
           <img
             alt="Add New"
             class="-mt-6 mb-4 rounded-full mx-4"
-            src="@/assets/images/AddNewMember.svg"
+            width="45px"
+            src="@/assets/images/AddNew.svg"
             @click="addNewMembers"
           />
         </div>

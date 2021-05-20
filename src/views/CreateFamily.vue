@@ -44,7 +44,7 @@
             <img
               alt="remove"
               class="w-4 h-4 text-primary-text"
-              src="@/assets/images/Remove.svg"
+              src="@/assets/images/Cross.svg"
               @click="removeEmail(email)"
             />
           </li>

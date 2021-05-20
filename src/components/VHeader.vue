@@ -15,7 +15,8 @@
     />
     <img
       v-if="showClose()"
-      src="@/assets/images/Close.svg"
+      src="@/assets/images/Cross.svg"
+      style="filter: invert(67%) sepia(12%) saturate(1440%) hue-rotate(316deg) brightness(92%) contrast(83%)"
       alt="Close"
       @click="goBack"
       data-cy="close"

@@ -9,7 +9,7 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" />
+      <img src="@/assets/images/Leaves.svg" alt="Logo" />
     </div>
     <div class="mb-4">
       <v-input

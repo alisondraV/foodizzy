@@ -23,7 +23,7 @@
                   bg-light-yellow py-2 px-4 rounded text-sm mb-2"
         >
           <p>{{ email }}</p>
-          <img src="@/assets/images/Remove.svg" alt="remove" @click="removeEmail(email)" class="w-4 h-4" />
+          <img src="@/assets/images/Cross.svg" alt="remove" @click="removeEmail(email)" class="w-4 h-4" />
         </li>
       </ul>
     </div>

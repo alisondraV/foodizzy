@@ -78,12 +78,12 @@ export type IconName =
 
 export const Icons: { [iconName in IconName]: string } = {
   AddNew: require('@/assets/images/AddNew.svg'),
-  Remove: require('@/assets/images/Remove.svg'),
+  Remove: require('@/assets/images/Cross.svg'),
   RemoveFAB: require('@/assets/images/RemoveFAB.svg'),
   Waste: require('@/assets/images/Waste.svg'),
   WasteFAB: require('@/assets/images/WasteFAB.svg'),
-  MoveToShoppingList: require('@/assets/images/MoveToShoppingList.svg'),
-  Purchase: require('@/assets/images/Purchase.svg'),
+  MoveToShoppingList: require('@/assets/images/MoveToShoppingListFAB.svg'),
+  Purchase: require('@/assets/images/PurchaseFAB.svg'),
   TakePhoto: require('@/assets/images/TakePhoto.svg')
 };
 

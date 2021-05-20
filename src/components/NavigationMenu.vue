@@ -4,14 +4,14 @@
     style="box-shadow: #F0F0F0 0 -10px 20px"
   >
     <img
-      src="@/assets/images/Home.svg"
+      src="@/assets/images/Statistics.svg"
       alt="Home"
       @click="goToTheHomePage"
       class="mb-6 p-3"
       :style="isCurrentPageStyle('Home')"
     />
     <img
-      src="@/assets/images/Fridge.svg"
+      src="@/assets/images/Storage.svg"
       alt="Fridge"
       @click="goToTheFridgePage"
       class="mb-6 p-3"
@@ -44,7 +44,7 @@ export default class NavigationMenu extends Vue {
 
   isCurrentPageStyle(page: string) {
     return page == this.currentPage
-      ? 'filter: invert(31%) sepia(38%) saturate(6483%) ' + 'hue-rotate(160deg) brightness(91%) contrast(99%)'
+      ? 'filter: invert(31%) sepia(38%) saturate(6483%) hue-rotate(160deg) brightness(91%) contrast(99%)'
       : '';
   }
   goToTheHomePage() {
