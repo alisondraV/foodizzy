@@ -6,14 +6,15 @@ import Firestore from '@/utils/Firestore';
 import firebase from 'firebase';
 
 import DocumentReference = firebase.firestore.DocumentReference;
+import { FamilyConverter } from './converters';
 
 export interface Family {
   id?: string;
   members: string[];
   pendingMembers: string[];
   name: string;
-  storage: ProductDTO[];
-  shoppingList: ProductDTO[];
+  storage: Product[];
+  shoppingList: Product[];
   totalProducts: { [category: string]: number };
 }
 
@@ -43,6 +44,14 @@ export class CurrentFamily {
       familyId: newFamilyRef.id,
       wasted: []
     });
+  }
+
+  public async update(newFamily: Family) {
+    await Firestore.instance.db
+      .collection('family')
+      .doc(newFamily.id)
+      .withConverter(new FamilyConverter())
+      .set(newFamily);
   }
 
   public async existsFor(user: firebase.User): Promise<boolean> {

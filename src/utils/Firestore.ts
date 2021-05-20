@@ -2,6 +2,7 @@ import 'firebase/functions';
 import { CallableFunctions, ListName } from './consts';
 import { CurrentFamily, Family, Product, ProductDTO, WastedProduct } from '@/types';
 import firebase from 'firebase';
+import { FamilyConverter } from '@/types/converters';
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -40,12 +41,11 @@ export default class Firestore {
     return response.data;
   }
 
-  public async addToList(products: ProductDTO[], listName: ListName) {
+  public async addToList(products: Product[], listName: ListName) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     const targetList: ProductDTO[] = family[listName];
 
-    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
     products = products.filter(candidate => !targetList.find(p => p.name == candidate.name));
 
     family[listName].push(...products);
@@ -53,10 +53,11 @@ export default class Firestore {
     await this.db
       .collection('family')
       .doc(family.id)
+      .withConverter(new FamilyConverter())
       .set(family);
   }
 
-  public async removeFromStorage(products: ProductDTO[]) {
+  public async removeFromStorage(products: Product[]) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     family.storage = family.storage.filter(candidate =>
@@ -65,6 +66,7 @@ export default class Firestore {
     await this.db
       .collection('family')
       .doc(family.id)
+      .withConverter(new FamilyConverter())
       .set(family);
   }
 
@@ -81,17 +83,17 @@ export default class Firestore {
     await bucket.ref.update('wasted', updatedWastedList);
   }
 
-  public async removeFromShoppingList(products: ProductDTO[]) {
+  public async removeFromShoppingList(products: Product[]) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
-    family.shoppingList = family.shoppingList.filter(candidate =>
+    const shoppingList = family.shoppingList.filter(candidate =>
       products.every(deleted => deleted.name !== candidate.name)
     );
 
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
+    CurrentFamily.instance.update({
+      ...family,
+      shoppingList
+    });
   }
 
   public async updateShoppingList(products: Product[]) {
