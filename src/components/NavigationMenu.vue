@@ -12,10 +12,10 @@
     />
     <img
       src="@/assets/images/Storage.svg"
-      alt="Fridge"
-      @click="goToTheFridgePage"
+      alt="Storage"
+      @click="goToTheStoragePage"
       class="mb-6 p-3"
-      :style="isCurrentPageStyle('Fridge')"
+      :style="isCurrentPageStyle('Storage')"
     />
     <img
       src="@/assets/images/ShoppingList.svg"
@@ -50,8 +50,8 @@ export default class NavigationMenu extends Vue {
   goToTheHomePage() {
     router.safePush('/');
   }
-  goToTheFridgePage() {
-    router.safePush('/fridge');
+  goToTheStoragePage() {
+    router.safePush('/storage');
   }
   goToTheShoppingList() {
     router.safePush('/shopping-list');

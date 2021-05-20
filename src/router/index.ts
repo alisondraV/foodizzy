@@ -18,9 +18,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/SignUp.vue')
   },
   {
-    path: '/fridge-setup',
-    name: 'FridgeSetup',
-    component: () => import('../views/FridgeSetup.vue')
+    path: '/storage-setup',
+    name: 'StorageSetup',
+    component: () => import('../views/StorageSetup.vue')
   },
   {
     path: '/create-family',
@@ -33,9 +33,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/Home.vue')
   },
   {
-    path: '/fridge',
-    name: 'Fridge',
-    component: () => import('../views/Fridge.vue')
+    path: '/storage',
+    name: 'Storage',
+    component: () => import('../views/Storage.vue')
   },
   {
     path: '/shopping-list',

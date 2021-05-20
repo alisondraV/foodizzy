@@ -97,7 +97,7 @@ export const alertColor: { [status in AlertStatus]: Color } = {
 
 export type ListName = 'storage' | 'shoppingList';
 
-export type FridgeAction = 'delete' | 'waste' | 'consume';
+export type StorageAction = 'delete' | 'waste' | 'consume';
 
 export type Alert = {
   message: string;
@@ -109,8 +109,8 @@ export type Action = {
   alert: Alert;
 };
 
-export const fridgeActions: {
-  [actionName in FridgeAction]: Action;
+export const storageActions: {
+  [actionName in StorageAction]: Action;
 } = {
   delete: {
     act: products => Product.removeAllFromStorage(products),
@@ -157,7 +157,7 @@ export const shoppingListActions: {
 };
 
 export const pages = {
-  Fridge: {
+  Storage: {
     default: require('@/assets/images/Empty.svg'),
     selected: require('@/assets/images/Check.svg')
   },

@@ -2,7 +2,7 @@
   <div>
     <skip-header @click="goToTheNextPage" />
     <div class="mt-20 mb-24 mx-8">
-      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">What is in your fridge?</h1>
+      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">What is in your storage?</h1>
       <search-input class="mb-4" v-model="searchQuery" />
       <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
@@ -42,7 +42,7 @@ import router from '@/router';
     SkipHeader
   }
 })
-export default class Fridge extends Vue {
+export default class StorageSetup extends Vue {
   categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
   productsToAdd: ProductDTO[] = [];

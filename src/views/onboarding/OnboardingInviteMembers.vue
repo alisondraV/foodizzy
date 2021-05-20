@@ -7,7 +7,7 @@
         Invite Family Members
       </h1>
       <p class="mb-10">
-        Create family, invite your loved ones, track your food in the fridge together and share the shopping
+        Create family, invite your loved ones, track your food in the storage together and share the shopping
         list.
       </p>
       <v-button class="w-full mb-16" label="Next" @click="goToTheCreateFamily" />

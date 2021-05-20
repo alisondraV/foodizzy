@@ -25,7 +25,7 @@
       <div v-else>
         <div v-if="totalProducts === 0">
           <p class="text-secondary-text text-center text-sm mb-6">
-            We don't have enough data to display, go fill your fridge!
+            We don't have enough data to display, go fill your storage!
           </p>
         </div>
         <div v-else>

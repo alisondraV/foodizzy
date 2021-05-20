@@ -57,11 +57,6 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
     return this.products.filter(product => product.selected);
   }
 
-  async updateFridge() {
-    await Product.purchaseAll(this.selectedProducts);
-    await this.showAlert('Products were added to the fridge');
-  }
-
   async performActionOnSelected(actionName: ShoppingListAction) {
     const { act, alert } = shoppingListActions[actionName];
     await act(this.selectedProducts);

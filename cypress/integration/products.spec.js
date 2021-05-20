@@ -43,7 +43,7 @@ describe('product CRUD', () => {
   describe('moving products around', () => {
     describe('storage', () => {
       it('can move product from storage to shopping list', () => {
-        visitPageAndSelectAProduct({ page: 'fridge', index: 0 });
+        visitPageAndSelectAProduct({ page: 'storage', index: 0 });
         selectProduct(products[3]);
 
         cy.get('[data-cy=consume]').click();
@@ -58,7 +58,7 @@ describe('product CRUD', () => {
       });
 
       it('can delete product from storage', () => {
-        visitPageAndSelectAProduct({ page: 'fridge', index: 1 });
+        visitPageAndSelectAProduct({ page: 'storage', index: 1 });
 
         cy.get('[data-cy=remove]').click();
         // wait for product to be added to the shopping list
@@ -69,7 +69,7 @@ describe('product CRUD', () => {
       });
 
       it('can waste product from storage', () => {
-        visitPageAndSelectAProduct({ page: 'fridge', index: 2 });
+        visitPageAndSelectAProduct({ page: 'storage', index: 2 });
 
         cy.get('[data-cy=waste]').click();
         // wait for product to be added to the shopping list
@@ -105,7 +105,7 @@ describe('product CRUD', () => {
         cy.contains(products[3].category).should('not.exist');
         cy.contains(products[3].name).should('not.exist');
 
-        cy.visit('localhost:8080/fridge');
+        cy.visit('localhost:8080/storage');
         // wait for products load
         cy.wait(1000);
         assertProductExistsInList(products[3]);
@@ -123,7 +123,7 @@ describe('product CRUD', () => {
       cy.callFirestore('set', `allProducts/${newProduct.name}`, newProduct);
     });
 
-    ['fridge', 'shopping-list'].forEach(location => {
+    ['storage', 'shopping-list'].forEach(location => {
       const testProduct = {
         name: `custom product in ${location}`,
         category: 'Custom'

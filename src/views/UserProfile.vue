@@ -63,7 +63,7 @@ import router from '@/router';
 @Component({
   components: { VButton, VHeader }
 })
-export default class AppMain extends Vue {
+export default class UserProfile extends Vue {
   family: Family | null = null;
   user: firebase.User | null = null;
 

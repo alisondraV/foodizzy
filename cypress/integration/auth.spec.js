@@ -1,5 +1,5 @@
-import user from '../fixtures/user.json';
 import productsData from '../fixtures/products.json';
+import user from '../fixtures/user.json';
 
 describe('Authentication', () => {
   const products = productsData.products;
@@ -24,7 +24,7 @@ describe('Authentication', () => {
     cy.get('[data-cy=add-member]').click();
     cy.get('[data-cy=create]').click();
 
-    cy.url().should('include', '/fridge-setup');
+    cy.url().should('include', '/storage-setup');
 
     products.forEach(product =>
       cy
