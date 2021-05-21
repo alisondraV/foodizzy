@@ -2,19 +2,20 @@ import firebase from 'firebase';
 import Authentication from '@/utils/Authentication';
 import DocumentReference = firebase.firestore.DocumentReference;
 import Firestore from '@/utils/Firestore';
-import Product from './Product';
+import { ProductDTO } from './DTOs';
 import Recipe from '@/types/Recipe';
-import ShoppingListItem from './ShoppingListItem';
 import WastedProduct from '@/types/WastedProduct';
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
+import { Product } from '.';
+import API from '@/utils/API';
 
-export default interface Family {
+export interface Family {
   id?: string;
   members: string[];
   pendingMembers: string[];
   name: string;
-  storage: Product[];
-  shoppingList: ShoppingListItem[];
+  storage: ProductDTO[];
+  shoppingList: ProductDTO[];
   totalProducts: { [category: string]: number };
 }
 
@@ -54,8 +55,8 @@ export class CurrentFamily {
     return familiesSnap.docs.length > 0;
   }
 
-  public async getCurrentFamily() {
-    if (this.family) {
+  public async getCurrentFamily(fresh = false) {
+    if (this.family && !fresh) {
       return this.family;
     }
 
@@ -89,6 +90,17 @@ export class CurrentFamily {
     return monthData;
   }
 
+  public async getAllProducts() {
+    const family = await this.getCurrentFamily();
+    return API.instance.getAllProducts(family.id);
+  }
+
+  public async saveCustomProduct(product: Product) {
+    const family = await this.getCurrentFamily();
+    const dto = product.toDTO();
+    Firestore.instance.db.collection(`family/${family.id}/customProducts`).add(dto);
+  }
+
   public async getRecipes(): Promise<Recipe[]> {
     const family = await this.getCurrentFamily();
 
@@ -114,7 +126,7 @@ export class CurrentFamily {
     return thisMonthStatsCollection.docs[0].data().totalProducts;
   }
 
-  public async getWastedProducts() {
+  public async getOrCreateWasteBucket(): Promise<firebase.firestore.DocumentData> {
     const family = await this.getCurrentFamily();
 
     const documents = await Firestore.instance.db
@@ -122,10 +134,19 @@ export class CurrentFamily {
       .where('familyId', '==', family?.id)
       .get();
     if (documents.docs.length === 0) {
-      throw new NotFoundError(`WasteBucket for family: ${family?.id}`);
+      const wasteBucketRef = await Firestore.instance.db.collection('wasteBuckets').add({
+        familyId: family.id,
+        wasted: []
+      });
+      return wasteBucketRef.get();
     }
 
-    return documents.docs[0].data().wasted ?? ([] as WastedProduct[]);
+    return documents.docs[0];
+  }
+
+  public async getWastedProducts() {
+    const wasteBucket = await this.getOrCreateWasteBucket();
+    return wasteBucket.data().wasted ?? ([] as WastedProduct[]);
   }
 
   public async quit() {
@@ -148,7 +169,7 @@ export class CurrentFamily {
   ) {
     this.family = null;
     this.family = await this.getCurrentFamily();
-    Firestore.instance.db.doc(`family/${this.family.id}`).onSnapshot({ next: callback });
+    return Firestore.instance.db.doc(`family/${this.family.id}`).onSnapshot({ next: callback });
   }
 
   public async switchTo(newFamilyId: string, userEmail: string): Promise<void> {

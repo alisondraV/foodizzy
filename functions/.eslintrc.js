@@ -24,8 +24,10 @@ module.exports = {
     'import',
   ],
   rules: {
-    'max-len': ['warn', {'code': 100, 'tabWidth': 4}],
+    'max-len': ['warn', {'code': 110, 'tabWidth': 4}],
     'quotes': ['warn', 'single'],
     'require-jsdoc': 'off',
+    'object-curly-spacing': 'off',
+    'sort-imports': 'warn',
   },
 };

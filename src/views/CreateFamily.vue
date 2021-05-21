@@ -1,19 +1,38 @@
 <template>
   <div>
-    <skip-header @click="goToTheNextPage" />
-    <div class="mt-20 mb-20 mx-8 flex flex-col h-screen">
+    <div class="mt-8 mb-20 mx-8 flex flex-col h-screen">
       <p class="text-2xl font-bold text-primary-text mb-6">
         Create Your Family
       </p>
       <div class="mb-8 flex-start">
-        <v-input class="mb-6" type="text" label="Family Name" v-model="familyName" />
-        <div class="text-dark-peach">{{ errorMessage }}</div>
+        <v-input
+          class="mb-2"
+          data-cy="name"
+          type="text"
+          label="Family Name"
+          placeholder="Enter your family name"
+          v-model="familyName"
+        />
+        <div class="text-dark-peach mb-6">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
         <div class="flex flex-row justify-between mb-4">
-          <v-input class="w-5/6" type="email" label="Email Address" v-model="currentEmail" />
-          <img src="@/assets/images/Plus.svg" alt="Add" @click="addEmail" />
+          <v-input
+            class="w-5/6"
+            data-cy="member-email"
+            type="email"
+            label="Email Address"
+            placeholder="Enter member's email"
+            v-model="currentEmail"
+          />
+          <img
+            alt="Add"
+            class="mt-6"
+            data-cy="add-member"
+            src="@/assets/images/PlusIcon.svg"
+            @click="addEmail"
+          />
         </div>
         <ul>
           <li
@@ -33,25 +52,29 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Create Family" :disabled="validationFailed" @click="createFamily" />
+      <v-button
+        class="mx-8 mt-3"
+        data-cy="create"
+        label="Create Family"
+        :disabled="validationFailed"
+        @click="createFamily"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import SkipHeader from '@/components/SkipHeader.vue';
+import router from '@/router';
+import { Component, Mixins } from 'vue-property-decorator';
+import { CurrentFamily } from '@/types';
+import { ValidationMixin } from '@/mixins';
 import VButton from '@/components/VButton.vue';
 import VInput from '@/components/VInput.vue';
-import { ValidationMixin } from '@/mixins';
-import router from '@/router';
-import { CurrentFamily } from '@/types';
-import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
-    SkipHeader,
-    VInput,
-    VButton
+    VButton,
+    VInput
   }
 })
 export default class CreateFamily extends Mixins(ValidationMixin) {

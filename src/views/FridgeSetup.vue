@@ -2,15 +2,14 @@
   <div>
     <skip-header @click="goToTheNextPage" />
     <div class="mt-20 mb-24 mx-8">
-      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">
-        What is in your fridge?
-      </h1>
+      <h1 class="mb-4 w-4/5 text-header font-extrabold text-primary-text">What is in your fridge?</h1>
       <search-input class="mb-4" v-model="searchQuery" />
       <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
         <div class="flex flex-wrap justify-between -mx-2">
           <div
             class="rounded py-2 px-3 mx-2 my-1"
+            data-cy="product"
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
@@ -24,7 +23,7 @@
       </div>
     </div>
     <div v-if="listIsNotEmpty" class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" />
+      <v-button class="mx-8 mt-3" label="Done" @click="addProductsToStorage" data-cy="add-products" />
     </div>
   </div>
 </template>
@@ -32,11 +31,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
-import Product from '@/types/Product';
+import { ProductDTO } from '@/types/DTOs';
 import SearchInput from '@/components/SearchInput.vue';
 import SkipHeader from '@/components/SkipHeader.vue';
 import VButton from '@/components/VButton.vue';
 import router from '@/router';
+import { CurrentFamily, Product } from '@/types';
 
 @Component({
   components: {
@@ -48,37 +48,27 @@ import router from '@/router';
 export default class Fridge extends Vue {
   categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
-  productsToAdd: Product[] = [];
+  productsToAdd: ProductDTO[] = [];
   colors = ['#B6DDDA', '#FFE6A3'];
   searchQuery = '';
 
   async mounted() {
-    this.products = await this.getProductsWithCategory();
+    this.products = await CurrentFamily.instance.getAllProducts();
   }
 
   async addProductsToStorage() {
-    for (const product of this.productsToAdd) {
-      await Firestore.instance.addProductToStorage(product);
-    }
+    await Firestore.instance.addToList(this.productsToAdd, 'storage');
     this.goToTheNextPage();
   }
 
-  async getProductsWithCategory() {
-    const allProducts = await Firestore.instance.getAllProducts();
-    return allProducts.map(product => {
-      const productCategory = product.category ?? 'General';
-      return { name: product.name, category: productCategory };
-    });
-  }
-
-  updateProductList(product: Product) {
+  updateProductList(product: ProductDTO) {
     if (this.isInProductsList(product)) {
       return (this.productsToAdd = this.productsToAdd.filter(prevProduct => prevProduct != product));
     }
     this.productsToAdd.push(product);
   }
 
-  isInProductsList(product: Product) {
+  isInProductsList(product: ProductDTO) {
     return this.productsToAdd.includes(product);
   }
 
@@ -98,7 +88,7 @@ export default class Fridge extends Vue {
     type Category = { [category: string]: Product[] };
     let categoryCount = 0;
     return reducedProducts.reduce<Category>((acc, product) => {
-      const categoryName = product.category ?? 'General';
+      const categoryName = product.category;
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = [];
 

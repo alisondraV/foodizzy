@@ -15,6 +15,7 @@
     "baseUrl": ".",
     "noImplicitAny": false,
     "types": [
+      "node",
       "webpack-env"
     ],
     "paths": {

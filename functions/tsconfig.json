@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    // "target": "esnext", // TODO: <-- this causes TS to fail
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "esModuleInterop": true
   },
   "compileOnSave": true,

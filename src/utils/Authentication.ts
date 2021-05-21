@@ -32,6 +32,12 @@ export default class Authentication {
     });
   }
 
+  public async getFirstName(user?: firebase.User): Promise<string> {
+    const neededUser = user ?? (await this.getCurrentUser());
+    const name = neededUser?.displayName ?? '';
+    return name.substr(0, name?.indexOf(' ')) || name;
+  }
+
   public signIn(email: string, password: string) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
@@ -70,8 +76,10 @@ export default class Authentication {
         .collection('family')
         .doc((await CurrentFamily.instance.getCurrentFamily()).id);
 
-      await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
-      await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+      if (prevUser.email !== email) {
+        await familyRef.update('members', firebase.firestore.FieldValue.arrayUnion(email));
+        await familyRef.update('members', firebase.firestore.FieldValue.arrayRemove(prevUser.email));
+      }
     }
 
     await firebase.auth().currentUser!.updateProfile({ displayName: name });

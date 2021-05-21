@@ -1,6 +1,6 @@
 <template>
   <div class="m-8">
-    <div class="mb-4 flex">
+    <div class="mb-8 flex">
       <div>
         <p class="text-2xl font-extrabold text-primary-text mb-3">
           Create Account!
@@ -9,39 +9,39 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
+      <img src="@/assets/images/LogoMain.svg" alt="Logo" />
     </div>
-    <div class="mb-8">
+    <div class="mb-4">
       <v-input
-        class="mb-6"
+        class="mb-3"
+        data-cy="email"
         type="email"
-        label="Type in your email"
+        label="Email Address"
+        placeholder="Enter your email"
         v-model="email"
         :error="errorType === 'email'"
       />
       <v-input
-        class="mb-6"
-        type="name"
-        label="Type in your name"
+        class="mb-3"
+        data-cy="name"
+        type="text"
+        label="Name"
+        placeholder="Enter your name"
         v-model="name"
         :error="errorType === 'displayName'"
       />
       <v-input
-        class="mb-6"
+        class="mb-3"
+        data-cy="password"
         type="password"
-        label="Type in your password"
+        label="Password"
+        placeholder="Enter your password"
         v-model="password"
         :error="errorType === 'password'"
       />
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 ml-1">
         <div :class="passwordValidation.hasLowerCase ? 'text-primary-green' : 'text-dark-peach'">
           1 lowercase
-        </div>
-        <div :class="passwordValidation.hasUpperCase ? 'text-primary-green' : 'text-dark-peach'">
-          1 uppercase
-        </div>
-        <div :class="passwordValidation.hasSpecial ? 'text-primary-green' : 'text-dark-peach'">
-          1 special
         </div>
         <div :class="passwordValidation.hasNumber ? 'text-primary-green' : 'text-dark-peach'">
           1 number
@@ -51,18 +51,18 @@
         </div>
       </div>
     </div>
-    <div class="text-dark-peach">{{ errorMessage }}</div>
+    <div class="text-dark-peach mb-2 ml-1">{{ errorMessage }}</div>
     <div class="mb-8">
-      <v-button class="mb-6" label="Sign Up" :disabled="validationFailed" @click="signUp" />
+      <v-button class="mb-4" data-cy="sign-up" label="Sign Up" :disabled="validationFailed" @click="signUp" />
       <div class="flex items-center text-secondary-text">
-        <hr class="w-1/2 border-gray mb-6" />
-        <span class="w-1/5 text-center mb-6">OR</span>
-        <hr class="w-1/2 border-gray mb-6" />
+        <hr class="w-1/2 border-gray mb-4" />
+        <span class="w-1/5 text-center mb-4">OR</span>
+        <hr class="w-1/2 border-gray mb-4" />
       </div>
       <button
         @click="signUpThroughGoogle"
-        class="text-black rounded-md h-12 w-full"
-        style="box-shadow: gray 1px 1px 10px"
+        class="text-black rounded-lg h-12 w-full"
+        style="box-shadow: #DFDFDF 1px 2px 12px"
       >
         Sign Up with Google
       </button>
@@ -130,15 +130,10 @@ export default class SignUp extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignUp();
-    } catch (err) {
-      await this.finishSignUp('create-family');
+    } catch (e) {
+      console.log('Could not get family: ', e.message);
     }
-  }
-
-  async finishSignUp(targetRoute = '') {
-    const route = '/' + (this.redirect ?? targetRoute);
-    await router.safeReplace(route);
+    await router.safePush('/onboarding-track-waste');
   }
 }
 </script>
