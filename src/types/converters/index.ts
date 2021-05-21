@@ -1,3 +1,3 @@
-export { ProductConverter } from './ProductConverter';
-export { WastedProductConverter } from './WastedProductConverter';
-export { FamilyConverter } from './FamilyConverter';
+export { productConverter } from './ProductConverter';
+export { wastedProductConverter } from './WastedProductConverter';
+export { familyConverter } from './FamilyConverter';

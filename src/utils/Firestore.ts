@@ -1,7 +1,7 @@
 import 'firebase/functions';
 import { CallableFunctions, ListName } from './consts';
 import { CurrentFamily, Family, Product, WastedProduct } from '@/types';
-import { FamilyConverter, ProductConverter, WastedProductConverter } from '@/types/converters';
+import { productConverter, wastedProductConverter } from '@/types/converters';
 import firebase from 'firebase';
 
 import FieldValue = firebase.firestore.FieldValue;
@@ -48,7 +48,7 @@ export default class Firestore {
 
     await currentFamilyDoc.update(
       listName,
-      FieldValue.arrayUnion(...products.map(p => new ProductConverter().toFirestore(p)))
+      FieldValue.arrayUnion(...products.map(productConverter.toFirestore))
     );
   }
 
@@ -57,7 +57,7 @@ export default class Firestore {
 
     await currentFamilyDoc.update(
       listName,
-      FieldValue.arrayRemove(...products.map(p => new ProductConverter().toFirestore(p)))
+      FieldValue.arrayRemove(...products.map(productConverter.toFirestore))
     );
   }
 
@@ -69,17 +69,13 @@ export default class Firestore {
 
     await bucket.ref.update(
       'wasted',
-      FieldValue.arrayUnion(...wastedProducts.map(wp => new WastedProductConverter().toFirestore(wp)))
+      FieldValue.arrayUnion(...wastedProducts.map(wastedProductConverter.toFirestore))
     );
   }
 
   public async updateShoppingList(products: Product[]) {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .withConverter(new FamilyConverter())
-      .update('shoppingList', products);
+    const currentFamilyDoc = await CurrentFamily.instance.currentFamilyDoc();
+    await currentFamilyDoc.update('shoppingList', products);
   }
 
   public async getAllRecipes() {
@@ -88,13 +84,11 @@ export default class Firestore {
   }
 
   public async getInvitations(userEmail: string): Promise<Family[]> {
-    const familyQuerySnap = await this.db
-      .collection('family')
-      .withConverter(new FamilyConverter())
+    const familyQuerySnap = await CurrentFamily.instance.familyCollection
       .where('pendingMembers', 'array-contains', userEmail)
       .get();
 
-    return familyQuerySnap.docs.map(snap => snap.data());
+    return familyQuerySnap.docs.map(snap => snap.data() as Family);
   }
 
   public async declineInvitation(familyId: string, userEmail: string) {

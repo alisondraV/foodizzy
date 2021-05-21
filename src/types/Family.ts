@@ -1,6 +1,6 @@
 import { AuthorizationError, NotFoundError } from '@/utils/errors';
-import { FamilyConverter, ProductConverter } from './converters';
 import { Product, Recipe, WastedProduct } from '@/types';
+import { familyConverter, productConverter } from './converters';
 import API from '@/utils/API';
 import Authentication from '@/utils/Authentication';
 import Firestore from '@/utils/Firestore';
@@ -33,7 +33,7 @@ export class CurrentFamily {
   }
 
   public get familyCollection(): CollectionReference {
-    return Firestore.instance.db.collection('family').withConverter(new FamilyConverter());
+    return Firestore.instance.db.collection('family').withConverter(familyConverter);
   }
 
   public familyDoc(familyId: string): DocumentReference {
@@ -122,7 +122,7 @@ export class CurrentFamily {
     const currentFamilyDoc = await this.currentFamilyDoc();
     currentFamilyDoc
       .collection('customProducts')
-      .withConverter(new ProductConverter())
+      .withConverter(productConverter)
       .add(product);
   }
 

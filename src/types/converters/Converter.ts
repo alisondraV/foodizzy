@@ -6,5 +6,7 @@ export default interface Converter<T> {
     options: firebase.firestore.SnapshotOptions
   ): T;
 
+  fromData?(data: firebase.firestore.DocumentData);
+
   toFirestore(object: T);
 }
