@@ -49,6 +49,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
+      // TODO: figure out why we need this copy
       this.products = (family.shoppingList ?? []).map(p => new Product(p.name, p.category));
     };
   }

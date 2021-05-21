@@ -50,6 +50,7 @@ export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
+      // TODO: figure out why we need this copy
       this.products = (family.storage ?? []).map(p => new Product(p.name, p.category));
     };
   }
