@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Provide, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
 import { SearchInput, SkipHeader, VButton } from '@/components';
 import Firestore from '@/utils/Firestore';
@@ -43,6 +43,7 @@ import router from '@/router';
   }
 })
 export default class StorageSetup extends Vue {
+  @Provide('currentPage') currentPage = 'storageSetup';
   categoryColors: { [category: string]: string } = {};
   products: Product[] = [];
   productsToAdd: Product[] = [];

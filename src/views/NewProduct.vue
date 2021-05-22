@@ -33,7 +33,7 @@ import router from '@/router';
   }
 })
 export default class NewProduct extends Vue {
-  @Provide('currentPage') currentPage = 'NewProduct';
+  @Provide('currentPage') currentPage = 'newProduct';
   location?: string = '';
   products: Product[] = [];
   searchQuery = '';

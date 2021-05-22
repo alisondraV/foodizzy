@@ -157,15 +157,15 @@ export const shoppingListActions: {
 };
 
 export const pages = {
-  Storage: {
+  storage: {
     default: require('@/assets/images/Empty.svg'),
     selected: require('@/assets/images/Check.svg')
   },
-  NewProduct: {
+  newProduct: {
     default: require('@/assets/images/PlusIcon.svg'),
     selected: require('@/assets/images/Minus.svg')
   },
-  ShoppingList: {
+  shoppingList: {
     default: require('@/assets/images/Empty.svg'),
     selected: require('@/assets/images/Check.svg')
   }

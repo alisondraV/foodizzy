@@ -42,7 +42,7 @@ import router from '@/router';
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'ShoppingList';
+  @Provide('currentPage') currentPage = 'shoppingList';
   products: Product[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;

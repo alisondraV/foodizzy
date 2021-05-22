@@ -1,7 +1,7 @@
 <template>
   <div>
     <search-input class="mb-6" v-model="searchQuery" />
-    <div v-if="currentPage === 'NewProduct'" class="mb-6">
+    <div v-if="currentPage === 'newProduct'" class="mb-6">
       <div
         class="flex mb-2 text-primary-green font-bold"
         data-cy="add-custom-product"

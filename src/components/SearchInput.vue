@@ -12,7 +12,7 @@
         placeholder="What are you looking for?"
       />
     </div>
-    <div v-if="currentPage === 'Storage.vue'">
+    <div v-if="currentPage === 'storage'">
       <img class="absolute ml-1 xs:ml-2 py-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
       <input
         class="opacity-0 ml-1 xs:ml-2 mt-1 w-6 xs:w-10"

@@ -26,8 +26,8 @@
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
+import { ListName, StorageAction, storageActions } from '@/utils/consts';
 import { NavigationMenu, ProductsList, VAlert, VButton, VFab, VHeader } from '@/components';
-import { StorageAction, storageActions } from '@/utils/consts';
 import { Product } from '@/types';
 import router from '@/router';
 
@@ -42,7 +42,7 @@ import router from '@/router';
   }
 })
 export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'Storage';
+  @Provide('currentPage') currentPage: ListName = 'storage';
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
