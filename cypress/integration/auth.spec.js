@@ -46,7 +46,7 @@ describe('Authentication', () => {
 
   it('signs the user up => sets up the family => logs out => signs in with the existing user', () => {
     signUp();
-    cy.url().should('include', '/onboarding-track-waste');
+    cy.url().should('include', '/onboarding/track-waste');
 
     setUpFamily();
     cy.url().should('equal', 'http://localhost:8080/');
