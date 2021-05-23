@@ -34,7 +34,7 @@ export default class OnboardingMakeLists extends Vue {
   }
 
   goToTheNextOnboarding() {
-    router.safePush!('/onboarding-invite-members');
+    router.safePush!('/onboarding/invite-members');
   }
 }
 </script>

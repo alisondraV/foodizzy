@@ -34,7 +34,7 @@ export default class OnboardingTrackWaste extends Vue {
   }
 
   goToTheNextOnboarding() {
-    router.safePush!('/onboarding-make-lists');
+    router.safePush!('/onboarding/make-lists');
   }
 }
 </script>

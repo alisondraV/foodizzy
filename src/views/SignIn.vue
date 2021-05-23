@@ -62,7 +62,7 @@ import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
 import { ValidationMixin } from '@/mixins';
-import router from '@/router';
+import router, { PathName } from '@/router';
 
 @Component({
   components: {
@@ -79,11 +79,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   goToSignUpPage() {
-    let route = '/sign-up';
-    if (this.redirect) {
-      route += '?redirect=' + this.redirect;
-    }
-    router.safeReplace(route);
+    this.finishSignIn('/sign-up');
   }
 
   async resetPassword() {
@@ -111,15 +107,22 @@ export default class SignIn extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn();
+      await this.finishSignIn('/');
     } catch (err) {
-      await this.finishSignIn('onboarding-track-waste');
+      await this.finishSignIn('/onboarding/track-waste');
     }
   }
 
-  async finishSignIn(targetRoute = '') {
-    const route = '/' + (this.redirect ?? targetRoute);
-    await router.safeReplace(route);
+  async finishSignIn(targetRoute: PathName) {
+    if (!this.redirect) {
+      return router.safeReplace!(targetRoute);
+    }
+    return router.safeReplace!({
+      path: targetRoute,
+      query: {
+        redirect: this.redirect
+      }
+    });
   }
 }
 </script>

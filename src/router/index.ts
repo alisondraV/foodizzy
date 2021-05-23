@@ -6,7 +6,7 @@ import Vue from 'vue';
 const { isNavigationFailure, NavigationFailureType } = VueRouter;
 Vue.use(VueRouter);
 
-type PathName =
+export type PathName =
   | '/sign-in'
   | '/sign-up'
   | '/storage-setup'
@@ -24,9 +24,9 @@ type PathName =
   | '/recipes'
   | '/new-product'
   | '/custom-product'
-  | '/onboarding-track-waste'
-  | '/onboarding-make-lists'
-  | '/onboarding-invite-members';
+  | '/onboarding/track-waste'
+  | '/onboarding/make-lists'
+  | '/onboarding/invite-members';
 
 const routes: Array<RouteConfig> = [
   {
@@ -68,28 +68,26 @@ const routes: Array<RouteConfig> = [
     path: '/profile',
     name: 'UserProfile',
     component: () => import('../views/UserProfile.vue'),
-    children: [
-      {
-        path: '/family',
-        name: 'Family',
-        component: () => import('../views/profile-settings/Family.vue')
-      },
-      {
-        path: '/invitations',
-        name: 'Invitations',
-        component: () => import('../views/profile-settings/Invitations.vue')
-      },
-      {
-        path: '/personal-info',
-        name: 'PersonalInformation',
-        component: () => import('../views/profile-settings/PersonalInformation.vue')
-      },
-      {
-        path: '/change-password',
-        name: 'ChangePassword',
-        component: () => import('../views/profile-settings/ChangePassword.vue')
-      }
-    ]
+  },
+  {
+    path: '/profile/family',
+    name: 'Family',
+    component: () => import('../views/profile-settings/Family.vue')
+  },
+  {
+    path: '/profile/invitations',
+    name: 'Invitations',
+    component: () => import('../views/profile-settings/Invitations.vue')
+  },
+  {
+    path: '/profile/personal-info',
+    name: 'PersonalInformation',
+    component: () => import('../views/profile-settings/PersonalInformation.vue')
+  },
+  {
+    path: '/profile/change-password',
+    name: 'ChangePassword',
+    component: () => import('../views/profile-settings/ChangePassword.vue')
   },
   {
     path: '/invite-members',
@@ -124,17 +122,17 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/404.vue')
   },
   {
-    path: '/onboarding-track-waste',
+    path: '/onboarding/track-waste',
     name: 'OnboardingTrackWaste',
     component: () => import('../views/onboarding/OnboardingTrackWaste.vue')
   },
   {
-    path: '/onboarding-make-lists',
+    path: '/onboarding/make-lists',
     name: 'OnboardingMakeLists',
     component: () => import('../views/onboarding/OnboardingMakeLists.vue')
   },
   {
-    path: '/onboarding-invite-members',
+    path: '/onboarding/invite-members',
     name: 'OnboardingInviteMembers',
     component: () => import('../views/onboarding/OnboardingInviteMembers.vue')
   }

@@ -62,7 +62,7 @@ export default class InviteMembers extends AlertMixin {
       await CurrentFamily.instance.inviteMembers(this.memberEmails);
       this.memberEmails = [];
       await this.showAlert('Invites have been sent', 'success');
-      router.safePush!('/family');
+      router.safePush!('/profile/family');
     } catch (e) {
       await this.showAlert("Couldn't send the invites", 'danger');
     }

@@ -98,11 +98,15 @@ export default class SignUp extends Mixins(ValidationMixin) {
   }
 
   goToSignInPage() {
-    let route = '/sign-in';
-    if (this.redirect) {
-      route += '?redirect=' + this.redirect;
+    if (!this.redirect) {
+      return router.safeReplace!('/sign-in');
     }
-    router.safeReplace!(route);
+    return router.safeReplace!({
+      path: '/sign-in',
+      query: {
+        redirect: this.redirect
+      }
+    });
   }
 
   get isFormInValidState() {
@@ -132,7 +136,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     } catch (e) {
       console.log('Could not get family: ', e.message);
     }
-    await router.safePush!('/onboarding-track-waste');
+    await router.safePush!('/onboarding/track-waste');
   }
 }
 </script>
