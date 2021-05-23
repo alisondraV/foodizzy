@@ -18,7 +18,7 @@
       <v-fab class="mb-2" data-cy="delete" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
       <v-fab data-cy="purchase" iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
-    <navigation-menu current-page="ShoppingList" />
+    <navigation-menu />
   </div>
 </template>
 

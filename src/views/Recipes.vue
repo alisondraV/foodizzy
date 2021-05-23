@@ -17,7 +17,7 @@
         </p>
       </div>
     </div>
-    <navigation-menu current-page="Recipes" />
+    <navigation-menu />
   </div>
 </template>
 

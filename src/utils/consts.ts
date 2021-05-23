@@ -60,7 +60,11 @@ export type IconName =
   | 'WasteFAB'
   | 'MoveToShoppingList'
   | 'Purchase'
-  | 'TakePhoto';
+  | 'TakePhoto'
+  | 'Statistics'
+  | 'Storage'
+  | 'Recipes'
+  | 'ShoppingList';
 
 export const Icons: { [iconName in IconName]: string } = {
   AddNew: require('@/assets/images/AddNew.svg'),
@@ -70,7 +74,11 @@ export const Icons: { [iconName in IconName]: string } = {
   WasteFAB: require('@/assets/images/WasteFAB.svg'),
   MoveToShoppingList: require('@/assets/images/MoveToShoppingListFAB.svg'),
   Purchase: require('@/assets/images/PurchaseFAB.svg'),
-  TakePhoto: require('@/assets/images/TakePhoto.svg')
+  TakePhoto: require('@/assets/images/TakePhoto.svg'),
+  Statistics: require('@/assets/images/Statistics.svg'),
+  Storage: require('@/assets/images/Storage.svg'),
+  ShoppingList: require('@/assets/images/ShoppingList.svg'),
+  Recipes: require('@/assets/images/Recipes.svg')
 };
 
 export type Color = 'light-peach' | 'light-green' | 'light-yellow';

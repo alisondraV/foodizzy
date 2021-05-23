@@ -19,7 +19,7 @@
       <v-fab class="mb-2" data-cy="waste" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
       <v-fab data-cy="consume" iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
     </div>
-    <navigation-menu current-page="Storage" />
+    <navigation-menu />
   </div>
 </template>
 

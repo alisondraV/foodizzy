@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <navigation-menu current-page="Home" />
+    <navigation-menu />
   </div>
 </template>
 
