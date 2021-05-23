@@ -109,7 +109,7 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
 
   async getCategoriesList() {
     const allProducts = await CurrentFamily.instance.getAllProducts();
-    const productCategories = allProducts.map(product => product.category ?? 'General');
+    const productCategories = allProducts.map(product => product.category);
     this.categoriesList = [...new Set(productCategories), 'Add New'];
   }
 

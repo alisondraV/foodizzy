@@ -142,7 +142,7 @@ export default class Home extends Vue {
     let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
-      const categoryName = (product.category ?? 'General').toLowerCase();
+      const categoryName = product.category.toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
         this.categoryColors[categoryName] = colors[categoryCount];
