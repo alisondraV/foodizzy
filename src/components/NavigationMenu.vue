@@ -4,7 +4,7 @@
     style="box-shadow: #f0f0f0 0 -10px 20px"
   >
     <img
-      v-for="navigationOption in navigationOptions"
+      v-for="navigationOption in navOptions"
       :key="navigationOption.pathName"
       :src="navigationOption.icon"
       :alt="navigationOption.pathName"
@@ -17,29 +17,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Icons } from '@/utils/consts';
+import { navigationOptions } from '@/utils/consts';
 import router from '../router';
 
 @Component
 export default class NavigationMenu extends Vue {
-  navigationOptions = [
-    {
-      pathName: '/',
-      icon: Icons.Statistics
-    },
-    {
-      pathName: '/storage',
-      icon: Icons.Storage
-    },
-    {
-      pathName: '/shopping-list',
-      icon: Icons.ShoppingList
-    },
-    {
-      pathName: '/recipes',
-      icon: Icons.Recipes
-    }
-  ];
+  navOptions = navigationOptions;
 
   isCurrentPageStyle(page: string) {
     return page == window.location.pathname

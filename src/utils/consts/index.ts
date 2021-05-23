@@ -1,5 +1,8 @@
+export { navigationOptions } from './navigationOptions';
+export { IconName, Icons } from './icons';
+
 import { Product } from '@/types';
-import tailwind from '../../tailwind.config';
+import tailwind from '../../../tailwind.config';
 export const colors: string[] = Object.values(tailwind.theme.colors);
 
 export const monthList = [
@@ -50,35 +53,6 @@ export const authErrors = {
   'auth/user-not-found': {
     message: 'We could not find a user that corresponds to this email. Try signing up.'
   }
-};
-
-export type IconName =
-  | 'AddNew'
-  | 'Remove'
-  | 'RemoveFAB'
-  | 'Waste'
-  | 'WasteFAB'
-  | 'MoveToShoppingList'
-  | 'Purchase'
-  | 'TakePhoto'
-  | 'Statistics'
-  | 'Storage'
-  | 'Recipes'
-  | 'ShoppingList';
-
-export const Icons: { [iconName in IconName]: string } = {
-  AddNew: require('@/assets/images/AddNew.svg'),
-  Remove: require('@/assets/images/Cross.svg'),
-  RemoveFAB: require('@/assets/images/RemoveFAB.svg'),
-  Waste: require('@/assets/images/Waste.svg'),
-  WasteFAB: require('@/assets/images/WasteFAB.svg'),
-  MoveToShoppingList: require('@/assets/images/MoveToShoppingListFAB.svg'),
-  Purchase: require('@/assets/images/PurchaseFAB.svg'),
-  TakePhoto: require('@/assets/images/TakePhoto.svg'),
-  Statistics: require('@/assets/images/Statistics.svg'),
-  Storage: require('@/assets/images/Storage.svg'),
-  ShoppingList: require('@/assets/images/ShoppingList.svg'),
-  Recipes: require('@/assets/images/Recipes.svg')
 };
 
 export type Color = 'light-peach' | 'light-green' | 'light-yellow';
