@@ -1,5 +1,6 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { ErrorCode, authErrors, emailPattern, passwordValidationPatterns } from '@/utils/consts';
+import { authErrors, emailPattern, passwordValidationPatterns } from '@/utils/consts';
+import { ErrorCode } from '@/utils/enums';
 import { ValidationError } from '@/types';
 
 @Component

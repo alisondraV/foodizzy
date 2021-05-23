@@ -26,15 +26,6 @@ export const passwordValidationPatterns = {
 // eslint-disable-next-line max-len
 export const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export enum ErrorCode {
-  InvalidEmail = 'auth/invalid-email',
-  InvalidPassword = 'auth/invalid-password',
-  WrongPassword = 'auth/wrong-password',
-  WeakPassword = 'auth/weak-password',
-  InvalidDisplayName = 'auth/invalid-display-name',
-  UserNotFound = 'auth/user-not-found'
-}
-
 export const authErrors = {
   'auth/invalid-email': {
     type: 'email',
@@ -60,11 +51,6 @@ export const authErrors = {
     message: 'We could not find a user that corresponds to this email. Try signing up.'
   }
 };
-
-export enum CallableFunctions {
-  GetUsersByEmail = 'getUsersByEmail',
-  PredictImage = 'predict'
-}
 
 export type IconName =
   | 'AddNew'
