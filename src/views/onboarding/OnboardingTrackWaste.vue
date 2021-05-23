@@ -30,11 +30,11 @@ import router from '@/router';
 })
 export default class OnboardingTrackWaste extends Vue {
   goToTheCreateFamily() {
-    router.safePush('/create-family');
+    router.safePush!('/create-family');
   }
 
   goToTheNextOnboarding() {
-    router.safePush('/onboarding-make-lists');
+    router.safePush!('/onboarding-make-lists');
   }
 }
 </script>

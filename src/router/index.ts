@@ -1,10 +1,32 @@
-import VueRouter, { NavigationGuardNext, Route, RouteConfig } from 'vue-router';
+import VueRouter, { NavigationGuardNext, RawLocation, Route, RouteConfig, Location } from 'vue-router';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
 import Vue from 'vue';
 
 const { isNavigationFailure, NavigationFailureType } = VueRouter;
 Vue.use(VueRouter);
+
+type PathName =
+  | '/sign-in'
+  | '/sign-up'
+  | '/storage-setup'
+  | '/create-family'
+  | '/'
+  | '/storage'
+  | '/shopping-list'
+  | '/profile'
+  | '/profile/family'
+  | '/profile/invitations'
+  | '/profile/personal-info'
+  | '/profile/change-password'
+  | '/invite-members'
+  | '/quit-family'
+  | '/recipes'
+  | '/new-product'
+  | '/custom-product'
+  | '/onboarding-track-waste'
+  | '/onboarding-make-lists'
+  | '/onboarding-invite-members';
 
 const routes: Array<RouteConfig> = [
   {
@@ -45,27 +67,29 @@ const routes: Array<RouteConfig> = [
   {
     path: '/profile',
     name: 'UserProfile',
-    component: () => import('../views/UserProfile.vue')
-  },
-  {
-    path: '/family',
-    name: 'Family',
-    component: () => import('../views/profile-settings/Family.vue')
-  },
-  {
-    path: '/invitations',
-    name: 'Invitations',
-    component: () => import('../views/profile-settings/Invitations.vue')
-  },
-  {
-    path: '/personal-info',
-    name: 'PersonalInformation',
-    component: () => import('../views/profile-settings/PersonalInformation.vue')
-  },
-  {
-    path: '/change-password',
-    name: 'ChangePassword',
-    component: () => import('../views/profile-settings/ChangePassword.vue')
+    component: () => import('../views/UserProfile.vue'),
+    children: [
+      {
+        path: '/family',
+        name: 'Family',
+        component: () => import('../views/profile-settings/Family.vue')
+      },
+      {
+        path: '/invitations',
+        name: 'Invitations',
+        component: () => import('../views/profile-settings/Invitations.vue')
+      },
+      {
+        path: '/personal-info',
+        name: 'PersonalInformation',
+        component: () => import('../views/profile-settings/PersonalInformation.vue')
+      },
+      {
+        path: '/change-password',
+        name: 'ChangePassword',
+        component: () => import('../views/profile-settings/ChangePassword.vue')
+      }
+    ]
   },
   {
     path: '/invite-members',
@@ -117,8 +141,8 @@ const routes: Array<RouteConfig> = [
 ];
 
 type ExtendedRouter = VueRouter & {
-  safePush?;
-  safeReplace?;
+  safePush?(location: Location | PathName): Promise<void | Route>;
+  safeReplace?(location: Location | PathName): Promise<void | Route>;
 };
 
 const router: ExtendedRouter = new VueRouter({
@@ -179,12 +203,12 @@ function handleError(error) {
   }
 }
 
-router.safePush = async params => {
-  return router.push(params).catch(handleError);
+router.safePush = async (location: Location | PathName) => {
+  return router.push(location).catch(handleError);
 };
 
-router.safeReplace = async params => {
-  return router.replace(params).catch(handleError);
+router.safeReplace = async (location: Location | PathName) => {
+  return router.replace(location).catch(handleError);
 };
 
 export default router;

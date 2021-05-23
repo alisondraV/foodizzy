@@ -73,24 +73,24 @@ export default class UserProfile extends Vue {
   }
 
   async changePassword() {
-    await router.push('/change-password');
+    await router.safePush!('/profile/change-password');
   }
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.safePush('/sign-in');
+    await router.safePush!('/sign-in');
   }
 
   async viewFamily() {
-    await router.push('/family');
+    await router.safePush!('/profile/family');
   }
 
   async viewInvitations() {
-    await router.push('/invitations');
+    await router.safePush!('/profile/invitations');
   }
 
   async viewPersonalInfo() {
-    await router.push('/personal-info');
+    await router.safePush!('/profile/personal-info');
   }
 }
 </script>

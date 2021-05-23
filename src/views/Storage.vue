@@ -66,7 +66,7 @@ export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   addNewProduct() {
-    router.safePush({ path: '/new-product', query: { location: 'storage' } });
+    router.safePush!({ path: '/new-product', query: { location: 'storage' } });
   }
 
   get productsAreSelected(): boolean {

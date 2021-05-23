@@ -102,7 +102,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     if (this.redirect) {
       route += '?redirect=' + this.redirect;
     }
-    router.safeReplace(route);
+    router.safeReplace!(route);
   }
 
   get isFormInValidState() {
@@ -132,7 +132,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     } catch (e) {
       console.log('Could not get family: ', e.message);
     }
-    await router.safePush('/onboarding-track-waste');
+    await router.safePush!('/onboarding-track-waste');
   }
 }
 </script>

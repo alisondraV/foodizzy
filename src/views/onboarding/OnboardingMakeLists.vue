@@ -30,11 +30,11 @@ import router from '@/router';
 })
 export default class OnboardingMakeLists extends Vue {
   goToTheCreateFamily() {
-    router.safePush('/create-family');
+    router.safePush!('/create-family');
   }
 
   goToTheNextOnboarding() {
-    router.safePush('/onboarding-invite-members');
+    router.safePush!('/onboarding-invite-members');
   }
 }
 </script>

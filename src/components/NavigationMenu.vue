@@ -31,7 +31,7 @@ export default class NavigationMenu extends Vue {
   }
 
   goToPage(pathName) {
-    router.safePush(pathName);
+    router.safePush!(pathName);
   }
 }
 </script>

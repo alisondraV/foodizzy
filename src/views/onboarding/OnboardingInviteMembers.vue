@@ -30,7 +30,7 @@ import router from '@/router';
 })
 export default class OnboardingFamilyMembers extends Vue {
   goToTheCreateFamily() {
-    router.safePush('/create-family');
+    router.safePush!('/create-family');
   }
 }
 </script>

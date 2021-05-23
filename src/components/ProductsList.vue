@@ -35,7 +35,7 @@ export default class ProductsList extends Vue {
   searchQuery = '';
 
   addCustomProduct() {
-    router.safePush({
+    router.safePush!({
       path: 'custom-product',
       query: { location: this.location }
     });

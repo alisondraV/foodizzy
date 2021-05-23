@@ -104,7 +104,7 @@ export default class StorageSetup extends Vue {
   }
 
   goToTheNextPage() {
-    router.safePush('/');
+    router.safePush!('/');
   }
 }
 </script>
