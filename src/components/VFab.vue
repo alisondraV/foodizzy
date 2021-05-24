@@ -6,7 +6,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { IconName, Icons } from '@/utils/consts';
+import { IconName } from '@/utils/enums';
+import { Icons } from '@/utils/consts';
 
 @Component
 export default class VFab extends Vue {

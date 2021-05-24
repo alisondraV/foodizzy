@@ -1,6 +1,6 @@
+import { AlertStatus, ShoppingListAction, StorageAction } from '@/utils/enums';
 import { Alert } from './alert';
 import { Product } from '@/types';
-import { AlertStatus, ShoppingListAction, StorageAction } from '@/utils/enums';
 
 export type Action = {
   act: (products: Product[]) => Promise<void> | void;

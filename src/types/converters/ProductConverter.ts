@@ -1,5 +1,5 @@
 import Converter from './Converter';
-import { Product } from '../Product';
+import { Product } from '@/types';
 import firebase from 'firebase';
 
 export const productConverter: Converter<Product> = {
@@ -18,4 +18,4 @@ export const productConverter: Converter<Product> = {
       category: product.category
     };
   }
-}
+};

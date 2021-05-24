@@ -1,4 +1,4 @@
-import VueRouter, { NavigationGuardNext, Route, RouteConfig, Location } from 'vue-router';
+import VueRouter, { Location, NavigationGuardNext, Route, RouteConfig } from 'vue-router';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
 import { PathName } from '@/utils/enums';
@@ -46,7 +46,7 @@ const routes: Array<RouteConfig> = [
   {
     path: PathName.UserProfile,
     name: 'UserProfile',
-    component: () => import('../views/UserProfile.vue'),
+    component: () => import('../views/UserProfile.vue')
   },
   {
     path: PathName.Family,

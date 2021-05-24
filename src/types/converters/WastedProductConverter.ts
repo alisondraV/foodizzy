@@ -19,4 +19,4 @@ export const wastedProductConverter: Converter<WastedProduct> = {
       dateWasted: wastedProduct.dateWasted
     };
   }
-}
+};

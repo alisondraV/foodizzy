@@ -1,4 +1,4 @@
 export enum ListName {
-    Storage = 'storage',
-    ShoppingList = 'shoppingList'
+  Storage = 'storage',
+  ShoppingList = 'shoppingList'
 }

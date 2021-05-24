@@ -1,4 +1,4 @@
 export enum ShoppingListAction {
-    Delete = 'delete',
-    Purchase = 'purchase'
+  Delete = 'delete',
+  Purchase = 'purchase'
 }

@@ -1,5 +1,5 @@
 export enum StorageAction {
-    Delete = 'delete',
-    Waste = 'waste',
-    Consume = 'consume'
+  Delete = 'delete',
+  Waste = 'waste',
+  Consume = 'consume'
 }

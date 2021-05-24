@@ -18,4 +18,4 @@ export const familyConverter: Converter<Family> = {
       shoppingList: family.shoppingList.map(productConverter.toFirestore)
     };
   }
-}
+};

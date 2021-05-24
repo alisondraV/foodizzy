@@ -1,16 +1,4 @@
-export type IconName =
-  | 'AddNew'
-  | 'Remove'
-  | 'RemoveFAB'
-  | 'Waste'
-  | 'WasteFAB'
-  | 'MoveToShoppingList'
-  | 'Purchase'
-  | 'TakePhoto'
-  | 'Statistics'
-  | 'Storage'
-  | 'Recipes'
-  | 'ShoppingList';
+import { IconName } from '@/utils/enums';
 
 export const Icons: { [iconName in IconName]: string } = {
   AddNew: require('@/assets/images/AddNew.svg'),
