@@ -60,6 +60,7 @@
 import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { VAlert, VButton, VHeader, VInput } from '@/components';
+import { AlertStatus } from '@/utils/enums';
 import Authentication from '@/utils/Authentication';
 import firebase from 'firebase';
 
@@ -96,7 +97,7 @@ export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
 
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
-      this.showAlert('Please provide both your current password and the new one', 'danger');
+      await this.showAlert('Please provide both your current password and the new one', AlertStatus.Danger);
       return;
     }
 
@@ -105,9 +106,9 @@ export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
 
       this.currentPassword = '';
       this.newPassword = '';
-      this.showAlert('Password has been successfully updated', 'success');
+      await this.showAlert('Password has been successfully updated', AlertStatus.Success);
     } catch (e) {
-      this.showAlert("We couldn't update your password", 'danger');
+      await this.showAlert("We couldn't update your password", AlertStatus.Danger);
     }
   }
 }

@@ -1,4 +1,3 @@
-
 export const authErrors = {
   'auth/invalid-email': {
     type: 'email',

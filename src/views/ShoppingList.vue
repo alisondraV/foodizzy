@@ -25,11 +25,11 @@
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
-import { ListName, PathName } from '@/utils/enums';
+import { ListName, PathName, ShoppingListAction } from '@/utils/enums';
 import { NavigationMenu, ProductsList, SearchInput, VAlert, VButton, VFab, VHeader } from '@/components';
-import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
 import { Product } from '@/types';
 import router from '@/router';
+import { shoppingListActions } from '@/utils/consts';
 
 @Component({
   components: {

@@ -49,9 +49,9 @@
 
 <script lang="ts">
 import { AlertMixin, ValidationMixin } from '@/mixins';
+import { AlertStatus, ListName, PathName } from '@/utils/enums';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
-import { ListName, PathName } from '@/utils/enums';
 import { VAlert, VButton, VHeader, VInput, VSelect } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
@@ -85,10 +85,13 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
     this.trimProduct();
 
     if (await Firestore.instance.isProductInStorage(this.product)) {
-      return await this.showAlert(`${this.product.name} already exists in the storage`, 'danger');
+      return await this.showAlert(`${this.product.name} already exists in the storage`, AlertStatus.Danger);
     }
     if (await Firestore.instance.isProductInShoppingList(this.product)) {
-      return await this.showAlert(`${this.product.name} already exists in the shopping list`, 'danger');
+      return await this.showAlert(
+        `${this.product.name} already exists in the shopping list`,
+        AlertStatus.Danger
+      );
     }
 
     await this.addProductToStorageOrShoppingList();

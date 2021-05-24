@@ -96,6 +96,7 @@ import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
 import { VAlert, VButton, VHeader, VInput } from '@/components';
+import { AlertStatus } from '@/utils/enums';
 import Authentication from '@/utils/Authentication';
 import Firestore from '@/utils/Firestore';
 import firebase from 'firebase';
@@ -146,9 +147,9 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   async handleResendInvite(invitation: string) {
     try {
       await CurrentFamily.instance.inviteMembers([invitation]);
-      await this.showAlert('The invitation has been resent', 'success');
+      await this.showAlert('The invitation has been resent', AlertStatus.Success);
     } catch (e) {
-      await this.showAlert("Couldn't resend the invitation", 'danger');
+      await this.showAlert("Couldn't resend the invitation", AlertStatus.Danger);
     }
   }
 
@@ -157,7 +158,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
       await CurrentFamily.instance.cancelInvitation(invitation);
       await this.showAlert('The invitation has been canceled');
     } catch (e) {
-      await this.showAlert("Couldn't cancel the invitation", 'danger');
+      await this.showAlert("Couldn't cancel the invitation", AlertStatus.Danger);
     }
   }
 
@@ -170,9 +171,9 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
       await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
       this.family = await CurrentFamily.instance.getCurrentFamily(true);
       this.inEditingState = false;
-      await this.showAlert('Your family name has been updated', 'success');
+      await this.showAlert('Your family name has been updated', AlertStatus.Success);
     } catch (e) {
-      await this.showAlert("Couldn't update the family name", 'danger');
+      await this.showAlert("Couldn't update the family name", AlertStatus.Danger);
     }
   }
 
