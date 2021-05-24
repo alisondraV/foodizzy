@@ -26,8 +26,9 @@
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
-import { ListName, StorageAction, storageActions } from '@/utils/consts';
+import { ListName, PathName } from '@/utils/enums';
 import { NavigationMenu, ProductsList, VAlert, VButton, VFab, VHeader } from '@/components';
+import { StorageAction, storageActions } from '@/utils/consts';
 import { Product } from '@/types';
 import router from '@/router';
 
@@ -42,7 +43,7 @@ import router from '@/router';
   }
 })
 export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage: ListName = 'storage';
+  @Provide('currentPage') currentPage = ListName.Storage;
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
@@ -66,7 +67,7 @@ export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   addNewProduct() {
-    router.safePush!({ path: '/new-product', query: { location: 'storage' } });
+    router.safePush!({ path: PathName.NewProduct, query: { location: ListName.Storage } });
   }
 
   get productsAreSelected(): boolean {

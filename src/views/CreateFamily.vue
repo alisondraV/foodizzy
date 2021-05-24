@@ -67,6 +67,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { VButton, VInput } from '@/components';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
 import router from '@/router';
 
@@ -99,7 +100,7 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   goToTheNextPage() {
-    router.safePush!('/storage-setup');
+    router.safePush!(PathName.StorageSetup);
   }
 
   removeEmail(email: string) {

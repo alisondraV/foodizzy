@@ -25,6 +25,7 @@
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
+import { ListName, PathName } from '@/utils/enums';
 import { NavigationMenu, ProductsList, SearchInput, VAlert, VButton, VFab, VHeader } from '@/components';
 import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
 import { Product } from '@/types';
@@ -42,7 +43,7 @@ import router from '@/router';
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'shoppingList';
+  @Provide('currentPage') currentPage = ListName.ShoppingList;
   products: Product[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;
@@ -65,7 +66,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   addNewProduct() {
-    router.safePush!({ path: 'new-product', query: { location: 'shoppingList' } });
+    router.safePush!({ path: PathName.NewProduct, query: { location: ListName.ShoppingList } });
   }
 
   get productsAreSelected(): boolean {

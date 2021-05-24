@@ -1,4 +1,6 @@
 import Firestore from '@/utils/Firestore';
+import { ListName } from '@/utils/enums';
+
 export class Product {
   public name: string;
   private _category?: string | undefined;
@@ -20,25 +22,25 @@ export class Product {
   }
 
   static async removeAllFromShoppingList(products: Product[]) {
-    await Firestore.instance.removeFromList(products, 'shoppingList');
+    await Firestore.instance.removeFromList(products, ListName.ShoppingList);
   }
 
   static async removeAllFromStorage(products: Product[]) {
-    await Firestore.instance.removeFromList(products, 'storage');
+    await Firestore.instance.removeFromList(products, ListName.Storage);
   }
 
   static async purchaseAll(products: Product[]) {
     await this.removeAllFromShoppingList(products);
-    await Firestore.instance.addToList(products, 'storage');
+    await Firestore.instance.addToList(products, ListName.Storage);
   }
 
   static async consumeAll(products: Product[]) {
     await this.removeAllFromStorage(products);
-    await Firestore.instance.addToList(products, 'shoppingList');
+    await Firestore.instance.addToList(products, ListName.ShoppingList);
   }
 
   static async wasteAll(products: Product[]) {
-    await Firestore.instance.removeFromList(products, 'storage');
+    await Firestore.instance.removeFromList(products, ListName.Storage);
     await Firestore.instance.moveToWasted(products);
   }
 }

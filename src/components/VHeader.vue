@@ -29,6 +29,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
+import { PathName } from '@/utils/enums';
 import router from '../router';
 
 @Component
@@ -65,7 +66,7 @@ export default class VHeader extends Vue {
   }
 
   goToTheProfilePage() {
-    router.safePush!('/profile');
+    router.safePush!(PathName.UserProfile);
   }
 }
 </script>

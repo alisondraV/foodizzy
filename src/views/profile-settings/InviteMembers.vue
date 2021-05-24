@@ -43,6 +43,7 @@ import { VAlert, VButton, VHeader, VInput } from '@/components';
 import { AlertMixin } from '@/mixins/AlertMixin';
 import { Component } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types/Family';
+import { PathName } from '@/utils/enums';
 import router from '@/router';
 
 @Component({
@@ -62,7 +63,7 @@ export default class InviteMembers extends AlertMixin {
       await CurrentFamily.instance.inviteMembers(this.memberEmails);
       this.memberEmails = [];
       await this.showAlert('Invites have been sent', 'success');
-      router.safePush!('/profile/family');
+      await router.safePush!(PathName.Family);
     } catch (e) {
       await this.showAlert("Couldn't send the invites", 'danger');
     }

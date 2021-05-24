@@ -27,6 +27,7 @@
 <script lang="ts">
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import Firestore from '@/utils/Firestore';
+import { ListName } from '@/utils/enums';
 import ML from '@/utils/ML';
 import { Product } from '@/types';
 
@@ -49,7 +50,7 @@ export default class SearchInput extends Vue {
       const topPredictions = await ML.getTopKResults(predictionTensor, 3);
       console.log(topPredictions);
 
-      await Firestore.instance.addToList([new Product(topPredictions[0].className)], 'storage');
+      await Firestore.instance.addToList([new Product(topPredictions[0].className)], ListName.Storage);
     } catch (e) {
       console.error(e);
     }

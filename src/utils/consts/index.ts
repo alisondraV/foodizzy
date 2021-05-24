@@ -7,4 +7,3 @@ export { authErrors } from './authErrors';
 export { Color, colors } from './colors';
 export { monthList } from './monthList';
 export { pages } from './pages';
-export { ListName } from './ListName';

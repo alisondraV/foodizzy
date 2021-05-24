@@ -61,8 +61,9 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
-import router, { PathName } from '@/router';
+import router from '@/router';
 
 @Component({
   components: {
@@ -79,7 +80,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   goToSignUpPage() {
-    this.finishSignIn('/sign-up');
+    this.finishSignIn(PathName.SignUp);
   }
 
   async resetPassword() {
@@ -107,9 +108,9 @@ export default class SignIn extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn('/');
+      await this.finishSignIn(PathName.Home);
     } catch (err) {
-      await this.finishSignIn('/onboarding/track-waste');
+      await this.finishSignIn(PathName.OnboardingTrackWaste);
     }
   }
 

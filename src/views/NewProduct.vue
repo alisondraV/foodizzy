@@ -20,7 +20,7 @@ import { Component, Provide, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
 import { ListItem, ProductsList, SearchInput, VButton, VHeader } from '@/components';
 import Firestore from '@/utils/Firestore';
-import { ListName } from '@/utils/consts';
+import { ListName } from '@/utils/enums';
 import router from '@/router';
 
 @Component({
@@ -76,7 +76,8 @@ export default class NewProduct extends Vue {
     const isInShoppingList = await Firestore.instance.isProductInShoppingList(product);
 
     return (
-      (this.location === 'storage' && !isInStorage) || (this.location === 'shoppingList' && !isInShoppingList)
+      (this.location === ListName.Storage && !isInStorage) ||
+      (this.location === ListName.ShoppingList && !isInShoppingList)
     );
   }
 }

@@ -51,6 +51,7 @@
 import { AlertMixin, ValidationMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
+import { ListName, PathName } from '@/utils/enums';
 import { VAlert, VButton, VHeader, VInput, VSelect } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
@@ -98,12 +99,12 @@ export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
 
     await CurrentFamily.instance.saveCustomProduct(this.product);
 
-    if (this.location === 'storage') {
-      await Firestore.instance.addToList([this.product], 'storage');
-      await router.safePush!('/storage');
-    } else if (this.location === 'shoppingList') {
-      await Firestore.instance.addToList([this.product], 'shoppingList');
-      await router.safePush!('/shopping-list');
+    if (this.location === ListName.Storage) {
+      await Firestore.instance.addToList([this.product], ListName.Storage);
+      await router.safePush!(PathName.Storage);
+    } else if (this.location === ListName.ShoppingList) {
+      await Firestore.instance.addToList([this.product], ListName.ShoppingList);
+      await router.safePush!(PathName.ShoppingList);
     }
   }
 

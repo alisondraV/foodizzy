@@ -79,6 +79,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
 import router from '@/router';
 
@@ -99,10 +100,10 @@ export default class SignUp extends Mixins(ValidationMixin) {
 
   goToSignInPage() {
     if (!this.redirect) {
-      return router.safeReplace!('/sign-in');
+      return router.safeReplace!(PathName.SignIn);
     }
     return router.safeReplace!({
-      path: '/sign-in',
+      path: PathName.SignIn,
       query: {
         redirect: this.redirect
       }
@@ -136,7 +137,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     } catch (e) {
       console.log('Could not get family: ', e.message);
     }
-    await router.safePush!('/onboarding/track-waste');
+    await router.safePush!(PathName.OnboardingTrackWaste);
   }
 }
 </script>

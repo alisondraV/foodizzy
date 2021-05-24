@@ -19,6 +19,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { SkipHeader, VButton, VInput } from '@/components';
+import { PathName } from '@/utils/enums';
 import router from '@/router';
 
 @Component({
@@ -30,7 +31,7 @@ import router from '@/router';
 })
 export default class OnboardingFamilyMembers extends Vue {
   goToTheCreateFamily() {
-    router.safePush!('/create-family');
+    router.safePush!(PathName.CreateFamily);
   }
 }
 </script>

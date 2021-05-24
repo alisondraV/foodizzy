@@ -57,6 +57,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
 import { VButton, VHeader } from '@/components';
 import Authentication from '@/utils/Authentication';
+import { PathName } from '@/utils/enums';
 import firebase from 'firebase';
 import router from '@/router';
 
@@ -73,24 +74,24 @@ export default class UserProfile extends Vue {
   }
 
   async changePassword() {
-    await router.safePush!('/profile/change-password');
+    await router.safePush!(PathName.ChangePassword);
   }
 
   async logOut() {
     await Authentication.instance.signOut();
-    await router.safePush!('/sign-in');
+    await router.safePush!(PathName.SignIn);
   }
 
   async viewFamily() {
-    await router.safePush!('/profile/family');
+    await router.safePush!(PathName.Family);
   }
 
   async viewInvitations() {
-    await router.safePush!('/profile/invitations');
+    await router.safePush!(PathName.Invitations);
   }
 
   async viewPersonalInfo() {
-    await router.safePush!('/profile/personal-info');
+    await router.safePush!(PathName.PersonalInformation);
   }
 }
 </script>

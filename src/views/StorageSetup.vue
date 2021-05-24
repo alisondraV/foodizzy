@@ -31,6 +31,7 @@
 <script lang="ts">
 import { Component, Provide, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
+import { ListName, PathName } from '@/utils/enums';
 import { SearchInput, SkipHeader, VButton } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
@@ -55,7 +56,7 @@ export default class StorageSetup extends Vue {
   }
 
   async addProductsToStorage() {
-    await Firestore.instance.addToList(this.productsToAdd, 'storage');
+    await Firestore.instance.addToList(this.productsToAdd, ListName.Storage);
     this.goToTheNextPage();
   }
 
@@ -104,7 +105,7 @@ export default class StorageSetup extends Vue {
   }
 
   goToTheNextPage() {
-    router.safePush!('/');
+    router.safePush!(PathName.Home);
   }
 }
 </script>

@@ -1,8 +1,7 @@
 import 'firebase/functions';
 import { CurrentFamily, Family, Product, WastedProduct } from '@/types';
 import { productConverter, wastedProductConverter } from '@/types/converters';
-import { CallableFunctions } from './enums';
-import { ListName } from './consts';
+import { CallableFunctions, ListName } from './enums';
 import firebase from 'firebase';
 
 import FieldValue = firebase.firestore.FieldValue;
