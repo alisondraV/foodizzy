@@ -23,13 +23,27 @@ import SearchInput from '@/components/SearchInput.vue';
 })
 export default class CategoryProducts extends Vue {
   @Prop() products!: Product[];
-  @Prop({ default: true }) isCollapsedByDefault?: boolean;
 
-  collapsed = this.isCollapsedByDefault;
+  private collapsed = true;
   category = this.products[0].category;
+
+  get localStorageKey() {
+    return `${window.location.pathname}/${this.category}`;
+  }
+
+  mounted() {
+    if (localStorage.getItem(this.localStorageKey)) {
+      this.collapsed = false;
+    }
+  }
 
   toggleCategoryVisibility() {
     this.collapsed = !this.collapsed;
+    if (this.collapsed) {
+      localStorage.removeItem(this.localStorageKey);
+    } else {
+      localStorage.setItem(this.localStorageKey, '1');
+    }
   }
 }
 </script>
