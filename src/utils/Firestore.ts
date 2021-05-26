@@ -73,11 +73,6 @@ export default class Firestore {
     );
   }
 
-  public async updateShoppingList(products: Product[]) {
-    const currentFamilyDoc = await CurrentFamily.instance.currentFamilyDoc();
-    await currentFamilyDoc.update('shoppingList', products);
-  }
-
   public async getAllRecipes() {
     const documents = await this.db.collection('recipes').get();
     return documents.docs.map<string>(qds => qds.data().name);
