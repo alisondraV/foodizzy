@@ -18,8 +18,8 @@ export async function sendEmail(options: MailOptions): Promise<any> {
 }
 
 export async function sendWelcomeEmails(
-  newFamily: FirebaseFirestore.DocumentData,
-  oldFamily?: FirebaseFirestore.DocumentData
+    newFamily: FirebaseFirestore.DocumentData,
+    oldFamily?: FirebaseFirestore.DocumentData
 ) {
   const oldMembers = oldFamily?.pendingMembers ?? [];
   const newMembers = newFamily?.pendingMembers ?? [];
@@ -38,14 +38,14 @@ export async function sendWelcomeEmails(
   emailTemplate = emailTemplate.replace('{FAMILY NAME}', `"${newFamily.name}"`);
 
   return Promise.all(
-    newEmails.map((email: string) => {
-      return sendEmail({
-        to: [email],
-        message: {
-          subject: 'Welcome to Foodizzy!',
-          html: emailTemplate
-        }
-      });
-    })
+      newEmails.map((email: string) => {
+        return sendEmail({
+          to: [email],
+          message: {
+            subject: 'Welcome to Foodizzy!',
+            html: emailTemplate,
+          },
+        });
+      })
   );
 }
