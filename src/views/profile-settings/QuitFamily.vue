@@ -27,16 +27,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
-import VHeader from '@/components/VHeader.vue';
+import { VButton, VHeader, VInput } from '@/components';
 import router from '@/router';
 
 @Component({
   components: {
     VButton,
-    VInput,
-    VHeader
+    VHeader,
+    VInput
   }
 })
 export default class QuitFamily extends Vue {

@@ -1,7 +1,7 @@
 import { Product } from '@/types';
-import { ProductDTO } from '@/types/DTOs';
 import axios from 'axios';
 import firebase from 'firebase';
+import { productConverter } from '@/types/converters';
 
 const httpClient = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -32,7 +32,7 @@ export default class API {
   public async getAllProducts(familyId?: string): Promise<Product[]> {
     const response = await httpClient.get('/allProducts', { params: { familyId } });
     const allDocs = response.data;
-    const allProducts = allDocs.map(doc => Product.fromDTO(doc as ProductDTO));
+    const allProducts = allDocs.map(productConverter.fromData);
 
     return allProducts;
   }

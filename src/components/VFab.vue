@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts">
-import { IconName, Icons } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { IconName } from '@/utils/enums';
+import { Icons } from '@/utils/consts';
 
 @Component
 export default class VFab extends Vue {

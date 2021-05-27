@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 
-import { Tensor, Rank } from '@tensorflow/tfjs';
+import { Rank, Tensor } from '@tensorflow/tfjs';
 import labels from '@/assets/object_detection_labels.json';
 
 const MODEL_URL =

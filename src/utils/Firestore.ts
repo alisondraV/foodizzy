@@ -1,9 +1,10 @@
-import firebase from 'firebase';
 import 'firebase/functions';
-import { CurrentFamily, Family, Product } from '@/types';
-import { ProductDTO } from '@/types/DTOs';
-import WastedProduct from '@/types/WastedProduct';
-import { CallableFunctions, ListName } from './consts';
+import { CallableFunctions, ListName } from './enums';
+import { CurrentFamily, Family, Product, WastedProduct } from '@/types';
+import { productConverter, wastedProductConverter } from '@/types/converters';
+import firebase from 'firebase';
+
+import FieldValue = firebase.firestore.FieldValue;
 
 export default class Firestore {
   public db!: firebase.firestore.Firestore;
@@ -42,65 +43,34 @@ export default class Firestore {
     return response.data;
   }
 
-  public async addToList(products: ProductDTO[], listName: ListName) {
-    const family = await CurrentFamily.instance.getCurrentFamily();
+  public async addToList(products: Product[], listName: ListName) {
+    const currentFamilyDoc = await CurrentFamily.instance.currentFamilyDoc();
 
-    const targetList: ProductDTO[] = family[listName];
-
-    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
-    products = products.filter(candidate => !targetList.find(p => p.name == candidate.name));
-
-    family[listName].push(...products);
-
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
-  }
-
-  public async removeFromStorage(products: ProductDTO[]) {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    family.storage = family.storage.filter(candidate =>
-      products.every(deleted => deleted.name !== candidate.name)
+    await currentFamilyDoc.update(
+      listName,
+      FieldValue.arrayUnion(...products.map(productConverter.toFirestore))
     );
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
   }
 
-  public async moveToWasted(products: ProductDTO[]) {
-    products = products.map(p => (p instanceof Product ? p.toDTO() : p));
+  public async removeFromList(products: Product[], listName: ListName) {
+    const currentFamilyDoc = await CurrentFamily.instance.currentFamilyDoc();
 
-    const wastedProducts: WastedProduct[] = products.map(product => ({
-      ...product,
-      dateWasted: firebase.firestore.Timestamp.now()
-    }));
+    await currentFamilyDoc.update(
+      listName,
+      FieldValue.arrayRemove(...products.map(productConverter.toFirestore))
+    );
+  }
+
+  public async moveToWasted(products: Product[]) {
+    const wastedProducts: WastedProduct[] = products.map(
+      product => new WastedProduct(product.name, firebase.firestore.Timestamp.now(), product.category)
+    );
     const bucket = await CurrentFamily.instance.getOrCreateWasteBucket();
-    const updatedWastedList = [...bucket.data().wasted, ...wastedProducts];
 
-    await bucket.ref.update('wasted', updatedWastedList);
-  }
-
-  public async removeFromShoppingList(products: ProductDTO[]) {
-    const family = await CurrentFamily.instance.getCurrentFamily();
-
-    family.shoppingList = family.shoppingList.filter(candidate =>
-      products.every(deleted => deleted.name !== candidate.name)
+    await bucket.ref.update(
+      'wasted',
+      FieldValue.arrayUnion(...wastedProducts.map(wastedProductConverter.toFirestore))
     );
-
-    await this.db
-      .collection('family')
-      .doc(family.id)
-      .set(family);
-  }
-
-  public async updateShoppingList(products: Product[]) {
-    await this.db
-      .collection('family')
-      .doc((await CurrentFamily.instance.getCurrentFamily())!?.id)
-      .update('shoppingList', products);
   }
 
   public async getAllRecipes() {
@@ -109,8 +79,7 @@ export default class Firestore {
   }
 
   public async getInvitations(userEmail: string): Promise<Family[]> {
-    const familyQuerySnap = await this.db
-      .collection('family')
+    const familyQuerySnap = await CurrentFamily.instance.familyCollection
       .where('pendingMembers', 'array-contains', userEmail)
       .get();
 
@@ -123,7 +92,7 @@ export default class Firestore {
     await familyRef.update('pendingMembers', firebase.firestore.FieldValue.arrayRemove(userEmail));
   }
 
-  public async isProductInStorage(product: ProductDTO) {
+  public async isProductInStorage(product: Product) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     const storageProductNames = family.storage.map(p => p.name);
@@ -131,7 +100,7 @@ export default class Firestore {
     return storageProductNames?.includes(product.name);
   }
 
-  public async isProductInShoppingList(product: ProductDTO) {
+  public async isProductInShoppingList(product: Product) {
     const family = await CurrentFamily.instance.getCurrentFamily();
 
     const shoppingListProductNames = family.shoppingList.map(p => p.name);

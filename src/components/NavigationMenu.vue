@@ -1,63 +1,37 @@
 <template>
   <div
     class="bg-background flex justify-between h-20 px-5 w-full bottom-0 fixed"
-    style="box-shadow: #F0F0F0 0 -10px 20px"
+    style="box-shadow: #f0f0f0 0 -10px 20px"
   >
     <img
-      src="@/assets/images/Home.svg"
-      alt="Home"
-      @click="goToTheHomePage"
+      v-for="navigationOption in navOptions"
+      :key="navigationOption.pathName"
+      :src="navigationOption.icon"
+      :alt="navigationOption.pathName"
+      @click="goToPage(navigationOption.pathName)"
       class="mb-6 p-3"
-      :style="isCurrentPageStyle('Home')"
-    />
-    <img
-      src="@/assets/images/Fridge.svg"
-      alt="Fridge"
-      @click="goToTheFridgePage"
-      class="mb-6 p-3"
-      :style="isCurrentPageStyle('Fridge')"
-    />
-    <img
-      src="@/assets/images/ShoppingList.svg"
-      alt="ShoppingList"
-      @click="goToTheShoppingList"
-      class="mb-6 p-3"
-      :style="isCurrentPageStyle('ShoppingList')"
-    />
-    <img
-      src="@/assets/images/Recipes.svg"
-      alt="Recipes"
-      @click="goToTheRecipesPage"
-      class="mb-6 p-3"
-      :style="isCurrentPageStyle('Recipes')"
+      :style="isCurrentPageStyle(navigationOption.pathName)"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
+import { navigationOptions } from '@/utils/consts';
 import router from '../router';
 
 @Component
 export default class NavigationMenu extends Vue {
-  @Prop() currentPage!: string;
+  navOptions = navigationOptions;
 
   isCurrentPageStyle(page: string) {
-    return page == this.currentPage
-      ? 'filter: invert(31%) sepia(38%) saturate(6483%) ' + 'hue-rotate(160deg) brightness(91%) contrast(99%)'
+    return page == window.location.pathname
+      ? 'filter: invert(31%) sepia(38%) saturate(6483%) hue-rotate(160deg) brightness(91%) contrast(99%)'
       : '';
   }
-  goToTheHomePage() {
-    router.safePush('/');
-  }
-  goToTheFridgePage() {
-    router.safePush('/fridge');
-  }
-  goToTheShoppingList() {
-    router.safePush('/shopping-list');
-  }
-  goToTheRecipesPage() {
-    router.safePush('/recipes');
+
+  goToPage(pathName) {
+    router.safePush!(pathName);
   }
 }
 </script>

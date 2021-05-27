@@ -1,4 +1,4 @@
-export default interface ValidationError {
+export interface ValidationError {
   code: string;
   message?: string;
 }

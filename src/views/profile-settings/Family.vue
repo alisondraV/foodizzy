@@ -48,7 +48,7 @@
               v-else
               alt="Profile Image"
               class="mb-4 rounded-full"
-              src="@/assets/images/DefaultMember.svg"
+              src="@/assets/images/DefaultProfile.svg"
               width="45px"
             />
             <div>
@@ -58,7 +58,8 @@
           <img
             alt="Add New"
             class="-mt-6 mb-4 rounded-full mx-4"
-            src="@/assets/images/AddNewMember.svg"
+            width="45px"
+            src="@/assets/images/AddNew.svg"
             @click="addNewMembers"
           />
         </div>
@@ -91,20 +92,18 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase';
-import router from '@/router';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
-import Authentication from '@/utils/Authentication';
 import { CurrentFamily, Family } from '@/types';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VInput from '@/components/VInput.vue';
+import { VAlert, VButton, VHeader, VInput } from '@/components';
+import { AlertStatus } from '@/utils/enums';
+import Authentication from '@/utils/Authentication';
 import Firestore from '@/utils/Firestore';
+import firebase from 'firebase';
+import router from '@/router';
 
 @Component({
-  components: { VAlert, VHeader, VButton, VInput }
+  components: { VAlert, VButton, VHeader, VInput }
 })
 export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   inEditingState = false;
@@ -148,9 +147,9 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   async handleResendInvite(invitation: string) {
     try {
       await CurrentFamily.instance.inviteMembers([invitation]);
-      await this.showAlert('The invitation has been resent', 'success');
+      await this.showAlert('The invitation has been resent', AlertStatus.Success);
     } catch (e) {
-      await this.showAlert("Couldn't resend the invitation", 'danger');
+      await this.showAlert("Couldn't resend the invitation", AlertStatus.Danger);
     }
   }
 
@@ -159,7 +158,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
       await CurrentFamily.instance.cancelInvitation(invitation);
       await this.showAlert('The invitation has been canceled');
     } catch (e) {
-      await this.showAlert("Couldn't cancel the invitation", 'danger');
+      await this.showAlert("Couldn't cancel the invitation", AlertStatus.Danger);
     }
   }
 
@@ -172,9 +171,9 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
       await CurrentFamily.instance.updateFamilyName(this.newFamilyName);
       this.family = await CurrentFamily.instance.getCurrentFamily(true);
       this.inEditingState = false;
-      await this.showAlert('Your family name has been updated', 'success');
+      await this.showAlert('Your family name has been updated', AlertStatus.Success);
     } catch (e) {
-      await this.showAlert("Couldn't update the family name", 'danger');
+      await this.showAlert("Couldn't update the family name", AlertStatus.Danger);
     }
   }
 

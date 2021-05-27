@@ -3,9 +3,7 @@
     <v-header heading="" />
     <div class="mt-20 mb-20 mx-8 flex flex-col text-primary-text">
       <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold">
-        Track your food waste here
-      </h2>
+      <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
       <div class="text-right w-full mb-4">
         <label>
           <select
@@ -19,13 +17,11 @@
           </select>
         </label>
       </div>
-      <p v-if="loading" class="text-secondary-text text-center mb-6">
-        Loading...
-      </p>
+      <p v-if="loading" class="text-secondary-text text-center mb-6">Loading...</p>
       <div v-else>
         <div v-if="totalProducts === 0">
           <p class="text-secondary-text text-center text-sm mb-6">
-            We don't have enough data to display, go fill your fridge!
+            We don't have enough data to display, go fill your storage!
           </p>
         </div>
         <div v-else>
@@ -50,20 +46,16 @@
         </div>
       </div>
     </div>
-    <navigation-menu current-page="Home" />
+    <navigation-menu />
   </div>
 </template>
 
 <script lang="ts">
-import { colors, monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
+import { CurrentFamily, WastedProduct } from '@/types';
+import { CustomChart, NavigationMenu, ProgressBar, VHeader } from '@/components';
+import { colors, monthList } from '@/utils/consts';
 import Authentication from '@/utils/Authentication';
-import CustomChart from '@/components/CustomChart.vue';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import ProgressBar from '@/components/ProgressBar.vue';
-import VHeader from '@/components/VHeader.vue';
-import WastedProduct from '@/types/WastedProduct';
 
 @Component({
   components: {
@@ -130,6 +122,7 @@ export default class Home extends Vue {
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
       return (
+        product.dateWasted &&
         product.dateWasted.toDate().getMonth() == this.selectedMonthData.month &&
         product.dateWasted.toDate().getFullYear() == this.selectedMonthData.year
       );
@@ -149,7 +142,7 @@ export default class Home extends Vue {
     let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
-      const categoryName = (product.category ?? 'General').toLowerCase();
+      const categoryName = product.category.toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
         this.categoryColors[categoryName] = colors[categoryCount];

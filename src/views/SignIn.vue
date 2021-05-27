@@ -7,7 +7,7 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
+      <img src="@/assets/images/Leaves.svg" alt="Logo" class="p-4" />
     </div>
     <div class="mb-8">
       <v-input
@@ -58,12 +58,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
-import router from '@/router';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 
 @Component({
   components: {
@@ -80,11 +80,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   goToSignUpPage() {
-    let route = '/sign-up';
-    if (this.redirect) {
-      route += '?redirect=' + this.redirect;
-    }
-    router.safeReplace(route);
+    this.finishSignIn(PathName.SignUp);
   }
 
   async resetPassword() {
@@ -112,15 +108,22 @@ export default class SignIn extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn();
+      await this.finishSignIn(PathName.Home);
     } catch (err) {
-      await this.finishSignIn('onboarding-track-waste');
+      await this.finishSignIn(PathName.OnboardingTrackWaste);
     }
   }
 
-  async finishSignIn(targetRoute = '') {
-    const route = '/' + (this.redirect ?? targetRoute);
-    await router.safeReplace(route);
+  async finishSignIn(targetRoute: PathName) {
+    if (!this.redirect) {
+      return router.safeReplace!(targetRoute);
+    }
+    return router.safeReplace!({
+      path: targetRoute,
+      query: {
+        redirect: this.redirect
+      }
+    });
   }
 }
 </script>

@@ -10,8 +10,9 @@
 </template>
 
 <script lang="ts">
-import { alertColor, AlertStatus } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { AlertStatus } from '@/utils/enums';
+import { alertColor } from '@/utils/consts';
 
 @Component
 export default class VAlert extends Vue {

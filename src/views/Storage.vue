@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-header heading="What's in your fridge?" />
+    <v-header heading="What's in your storage?" />
     <div class="mt-20">
       <v-alert v-if="alertMessage" :label="alertMessage" :status="alertStatus" />
     </div>
     <div class="mb-40 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
-      <products-list current-page="Fridge" :products="products" />
+      <products-list current-page="Storage" :products="products" />
     </div>
     <v-fab
       v-if="!productsAreSelected"
@@ -19,37 +19,31 @@
       <v-fab class="mb-2" data-cy="waste" iconName="WasteFAB" @click="performActionOnSelected('waste')" />
       <v-fab data-cy="consume" iconName="MoveToShoppingList" @click="performActionOnSelected('consume')" />
     </div>
-    <navigation-menu current-page="Fridge" />
+    <navigation-menu />
   </div>
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import { ListName, PathName, StorageAction } from '@/utils/enums';
+import { NavigationMenu, ProductsList, VAlert, VButton, VFab, VHeader } from '@/components';
 import { Product } from '@/types';
-import ProductsList from '@/components/ProductsList.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VFab from '@/components/VFab.vue';
-import { FridgeAction, fridgeActions } from '@/utils/consts';
+import router from '@/router';
+import { storageActions } from '@/utils/consts';
 
 @Component({
   components: {
     NavigationMenu,
     ProductsList,
-    SearchInput,
     VAlert,
     VButton,
     VHeader,
     VFab
   }
 })
-export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'Fridge';
+export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
+  @Provide('currentPage') currentPage = ListName.Storage;
   newProductCategory = '';
   newProductName = '';
   products: Product[] = [];
@@ -57,7 +51,8 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = (family.storage ?? []).map(Product.fromDTO);
+      // TODO: figure out why we need this copy
+      this.products = (family.storage ?? []).map(p => new Product(p.name, p.category));
     };
   }
 
@@ -65,14 +60,14 @@ export default class Fridge extends Mixins(AlertMixin, ListenerMixin) {
     return this.products.filter(product => product.selected);
   }
 
-  async performActionOnSelected(actionName: FridgeAction) {
-    const { act, alert } = fridgeActions[actionName];
+  async performActionOnSelected(actionName: StorageAction) {
+    const { act, alert } = storageActions[actionName];
     await act(this.selectedProducts);
     await this.showAlert(alert.message, alert.status);
   }
 
   addNewProduct() {
-    router.safePush({ path: '/new-product', query: { location: 'storage' } });
+    router.safePush!({ path: PathName.NewProduct, query: { location: ListName.Storage } });
   }
 
   get productsAreSelected(): boolean {

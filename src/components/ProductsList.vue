@@ -1,7 +1,7 @@
 <template>
   <div>
     <search-input class="mb-6" v-model="searchQuery" />
-    <div v-if="currentPage === 'NewProduct'" class="mb-6">
+    <div v-if="currentPage === 'newProduct'" class="mb-6">
       <div
         class="flex mb-2 text-primary-green font-bold"
         data-cy="add-custom-product"
@@ -19,15 +19,14 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
+import { CategoryProducts } from '@/components';
 import { Product } from '@/types';
-import CategoryProducts from '@/components/CategoryProducts.vue';
-import ListItem from '@/components/ListItem.vue';
 import SearchInput from '@/components/SearchInput.vue';
+import router from '@/router';
 
 @Component({
-  components: { CategoryProducts, SearchInput, ListItem }
+  components: { CategoryProducts, SearchInput }
 })
 export default class ProductsList extends Vue {
   @Prop() location!: string;
@@ -36,7 +35,7 @@ export default class ProductsList extends Vue {
   searchQuery = '';
 
   addCustomProduct() {
-    router.safePush({
+    router.safePush!({
       path: 'custom-product',
       query: { location: this.location }
     });
