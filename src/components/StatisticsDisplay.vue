@@ -22,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import { statisticsColors } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CustomChart from '@/components/CustomChart.vue';
+import { statisticsColors } from '@/utils/consts';
 
 @Component({
   components: { CustomChart }
@@ -33,7 +33,7 @@ export default class StatisticsDisplay extends Vue {
   @Prop() products!: number;
   @Prop() statistics!: { [category: string]: number };
   @Prop() statisticsName!: string;
-  @Prop({ default: false }) isForWasted: boolean;
+  @Prop({ default: false }) isForWasted?: boolean;
 
   getCategoryColor(category: string) {
     return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];

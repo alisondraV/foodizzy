@@ -49,9 +49,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily, WastedProduct } from '@/types';
-import { CustomChart, NavigationMenu, ProgressBar, VHeader } from '@/components';
+import { CustomChart, NavigationMenu, ProgressBar, StatisticsDisplay, VHeader } from '@/components';
 import Authentication from '@/utils/Authentication';
-import StatisticsDisplay from '@/components/StatisticsDisplay.vue';
 import { monthList } from '@/utils/consts';
 
 @Component({
