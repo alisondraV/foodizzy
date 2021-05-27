@@ -20,7 +20,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true }],
     '@typescript-eslint/no-non-null-assertion': 'off',
-    'cypress/no-unnecessary-waiting': 'off'
+    'cypress/no-unnecessary-waiting': 'off',
+    'sort-imports': 'warn'
   },
   plugins: ['cypress']
 };

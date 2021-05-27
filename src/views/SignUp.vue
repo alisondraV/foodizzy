@@ -9,7 +9,7 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" />
+      <img src="@/assets/images/Leaves.svg" alt="Logo" />
     </div>
     <div class="mb-4">
       <v-input
@@ -75,13 +75,13 @@
 </template>
 
 <script lang="ts">
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
+import Authentication from '@/utils/Authentication';
+import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
 import router from '@/router';
-import { CurrentFamily } from '@/types';
-import Authentication from '@/utils/Authentication';
-import { Component, Mixins } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -99,11 +99,15 @@ export default class SignUp extends Mixins(ValidationMixin) {
   }
 
   goToSignInPage() {
-    let route = '/sign-in';
-    if (this.redirect) {
-      route += '?redirect=' + this.redirect;
+    if (!this.redirect) {
+      return router.safeReplace!(PathName.SignIn);
     }
-    router.safeReplace(route);
+    return router.safeReplace!({
+      path: PathName.SignIn,
+      query: {
+        redirect: this.redirect
+      }
+    });
   }
 
   get isFormInValidState() {
@@ -133,7 +137,7 @@ export default class SignUp extends Mixins(ValidationMixin) {
     } catch (e) {
       console.log('Could not get family: ', e.message);
     }
-    await router.safePush('/onboarding-track-waste');
+    await router.safePush!(PathName.OnboardingTrackWaste);
   }
 }
 </script>

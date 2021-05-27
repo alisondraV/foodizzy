@@ -32,16 +32,15 @@
 </template>
 
 <script lang="ts">
-import { AlertMixin } from '@/mixins/AlertMixin';
+import { CurrentFamily, Family } from '@/types';
+import { VAlert, VButton, VHeader } from '@/components';
+import { AlertMixin } from '@/mixins';
+import { AlertStatus } from '@/utils/enums';
+import Authentication from '@/utils/Authentication';
 import { AuthorizationError } from '@/utils/errors';
 import { Component } from 'vue-property-decorator';
-import firebase from 'firebase';
-import Authentication from '@/utils/Authentication';
-import VAlert from '@/components/VAlert.vue';
-import VHeader from '@/components/VHeader.vue';
-import VButton from '@/components/VButton.vue';
-import { CurrentFamily, Family } from '@/types';
 import Firestore from '@/utils/Firestore';
+import firebase from 'firebase';
 
 @Component({
   components: { VAlert, VHeader, VButton }
@@ -67,9 +66,9 @@ export default class AppMain extends AlertMixin {
     try {
       await CurrentFamily.instance.switchTo(familyId, this.user.email);
       await this.getInvitations();
-      await this.showAlert("You've accepted the invitation", 'success');
+      await this.showAlert("You've accepted the invitation", AlertStatus.Success);
     } catch (e) {
-      await this.showAlert("Couldn't accept the invitation", 'danger');
+      await this.showAlert("Couldn't accept the invitation", AlertStatus.Danger);
     }
   }
 
@@ -81,7 +80,7 @@ export default class AppMain extends AlertMixin {
       await this.getInvitations();
       await this.showAlert('The invitation has been declined');
     } catch (e) {
-      await this.showAlert("Couldn't decline the invitation", 'danger');
+      await this.showAlert("Couldn't decline the invitation", AlertStatus.Danger);
     }
   }
 }

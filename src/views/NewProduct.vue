@@ -16,16 +16,12 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Provide, Vue } from 'vue-property-decorator';
-import { Product } from '@/types';
+import { CurrentFamily, Product } from '@/types';
+import { ListItem, ProductsList, SearchInput, VButton, VHeader } from '@/components';
 import Firestore from '@/utils/Firestore';
-import ListItem from '@/components/ListItem.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import ProductsList from '@/components/ProductsList.vue';
-import { ListName } from '@/utils/consts';
+import { ListName } from '@/utils/enums';
+import router from '@/router';
 
 @Component({
   components: {
@@ -37,7 +33,7 @@ import { ListName } from '@/utils/consts';
   }
 })
 export default class NewProduct extends Vue {
-  @Provide('currentPage') currentPage = 'NewProduct';
+  @Provide('currentPage') currentPage = 'newProduct';
   location?: string = '';
   products: Product[] = [];
   searchQuery = '';
@@ -63,7 +59,7 @@ export default class NewProduct extends Vue {
   }
 
   async getProductsForLocation(): Promise<Product[]> {
-    const allProducts = await Firestore.instance.getAllProducts();
+    const allProducts = await CurrentFamily.instance.getAllProducts();
     const availableProducts: Product[] = [];
 
     for (const product of allProducts) {
@@ -80,7 +76,8 @@ export default class NewProduct extends Vue {
     const isInShoppingList = await Firestore.instance.isProductInShoppingList(product);
 
     return (
-      (this.location === 'storage' && !isInStorage) || (this.location === 'shoppingList' && !isInShoppingList)
+      (this.location === ListName.Storage && !isInStorage) ||
+      (this.location === ListName.ShoppingList && !isInShoppingList)
     );
   }
 }

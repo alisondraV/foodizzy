@@ -44,7 +44,7 @@
             <img
               alt="remove"
               class="w-4 h-4 text-primary-text"
-              src="@/assets/images/Remove.svg"
+              src="@/assets/images/Cross.svg"
               @click="removeEmail(email)"
             />
           </li>
@@ -64,12 +64,12 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import router from '@/router';
 
 @Component({
   components: {
@@ -100,7 +100,7 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   goToTheNextPage() {
-    router.safePush('/fridge-setup');
+    router.safePush!(PathName.StorageSetup);
   }
 
   removeEmail(email: string) {

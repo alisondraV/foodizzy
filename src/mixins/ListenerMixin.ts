@@ -1,5 +1,5 @@
-import { CurrentFamily, Family } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
+import { CurrentFamily, Family } from '@/types';
 
 @Component
 export class ListenerMixin extends Vue {
