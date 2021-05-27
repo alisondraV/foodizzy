@@ -26,7 +26,7 @@
         </div>
         <div v-else>
           <statistics-display
-            statistics-name="Products Added"
+            statistics-name="Products In the Storage"
             :products="totalProducts"
             :statistics="totalProductsForMonth"
           />
