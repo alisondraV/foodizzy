@@ -3,18 +3,21 @@
 </template>
 
 <script lang="ts">
+import { statisticsColors } from '@/utils/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Chart from 'chart.js';
 
 @Component
 export default class CustomChart extends Vue {
   @Prop({ default: [] }) readonly labels!: Array<string>;
-  @Prop({ default: [] }) readonly colors!: Array<string>;
   @Prop({ default: [] }) readonly data!: Array<number>;
   @Prop() canvasId!: string;
   readonly options: object | undefined;
+  colors: string[] = [];
 
   mounted() {
+    this.colors = this.labels.map(label => statisticsColors[label] ?? statisticsColors.other);
+
     Chart.defaults.CentralDoughnut = Chart.helpers.clone(Chart.defaults.pie);
     Chart.controllers.CentralDoughnut = Chart.controllers.pie.extend({
       name: 'CentralPie',

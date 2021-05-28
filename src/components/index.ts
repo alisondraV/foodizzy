@@ -7,6 +7,7 @@ export { default as ProgressBar } from './ProgressBar.vue';
 export { default as RecipeComponent } from './RecipeComponent.vue';
 export { default as SearchInput } from './SearchInput.vue';
 export { default as SkipHeader } from './SkipHeader.vue';
+export { default as StatisticsDisplay } from './StatisticsDisplay.vue';
 export { default as VAlert } from './VAlert.vue';
 export { default as VButton } from './VButton.vue';
 export { default as VFab } from './VFab.vue';

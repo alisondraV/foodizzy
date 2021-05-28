@@ -39,7 +39,7 @@ Cypress.Commands.add('createUser', (email = user.email, password = user.password
     email,
     password,
     displayName: name
-  }); 
+  });
 });
 
 Cypress.Commands.add('setUpFamily', () => {
