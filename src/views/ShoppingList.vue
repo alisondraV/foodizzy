@@ -10,30 +10,26 @@
     <v-fab
       v-if="!productsAreSelected"
       class="fixed bottom-0 right-0 mb-24 mr-5"
+      data-cy="add-product"
       iconName="AddNew"
       @click="addNewProduct"
     />
     <div v-else class="fixed bottom-0 right-0 flex flex-col mb-24 mr-5">
-      <v-fab class="mb-2" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
-      <v-fab iconName="Purchase" @click="performActionOnSelected('purchase')" />
+      <v-fab class="mb-2" data-cy="delete" iconName="RemoveFAB" @click="performActionOnSelected('delete')" />
+      <v-fab data-cy="purchase" iconName="Purchase" @click="performActionOnSelected('purchase')" />
     </div>
-    <navigation-menu current-page="ShoppingList" />
+    <navigation-menu />
   </div>
 </template>
 
 <script lang="ts">
-import router from '@/router';
+import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins, Provide } from 'vue-property-decorator';
-import { ListenerMixin, AlertMixin } from '@/mixins';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import { Product } from '@/types/Product';
-import ProductsList from '@/components/ProductsList.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VHeader from '@/components/VHeader.vue';
-import VFab from '@/components/VFab.vue';
-import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
+import { ListName, PathName, ShoppingListAction } from '@/utils/enums';
+import { NavigationMenu, ProductsList, SearchInput, VAlert, VButton, VFab, VHeader } from '@/components';
+import { Product } from '@/types';
+import router from '@/router';
+import { shoppingListActions } from '@/utils/consts';
 
 @Component({
   components: {
@@ -47,24 +43,20 @@ import { ShoppingListAction, shoppingListActions } from '@/utils/consts';
   }
 })
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
-  @Provide('currentPage') currentPage = 'ShoppingList';
+  @Provide('currentPage') currentPage = ListName.ShoppingList;
   products: Product[] = [];
   searchQuery = '';
   unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
     this.onFamilyUpdate = family => {
-      this.products = (family.shoppingList ?? []).map(Product.fromDTO);
+      // TODO: figure out why we need this copy
+      this.products = (family.shoppingList ?? []).map(p => new Product(p.name, p.category));
     };
   }
 
   get selectedProducts() {
     return this.products.filter(product => product.selected);
-  }
-
-  async updateFridge() {
-    await Product.purchaseAll(this.selectedProducts);
-    await this.showAlert('Products were added to the fridge');
   }
 
   async performActionOnSelected(actionName: ShoppingListAction) {
@@ -74,7 +66,7 @@ export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   addNewProduct() {
-    router.safePush({ path: 'new-product', query: { location: 'shoppingList' } });
+    router.safePush!({ path: PathName.NewProduct, query: { location: ListName.ShoppingList } });
   }
 
   get productsAreSelected(): boolean {

@@ -17,11 +17,10 @@
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Vue } from 'vue-property-decorator';
-import SkipHeader from '@/components/SkipHeader.vue';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import { SkipHeader, VButton, VInput } from '@/components';
+import { PathName } from '@/utils/enums';
+import router from '@/router';
 
 @Component({
   components: {
@@ -32,11 +31,11 @@ import VInput from '@/components/VInput.vue';
 })
 export default class OnboardingMakeLists extends Vue {
   goToTheCreateFamily() {
-    router.safePush('/create-family');
+    router.safePush!(PathName.CreateFamily);
   }
 
   goToTheNextOnboarding() {
-    router.safePush('/onboarding-invite-members');
+    router.safePush!(PathName.OnboardingInviteMembers);
   }
 }
 </script>

@@ -1,6 +1,6 @@
-import RecipeIngredient from './RecipeIngredient';
+import { RecipeIngredient } from '.';
 
-export default interface Recipe {
+export interface Recipe {
   name: string;
   ingredients: RecipeIngredient[];
   steps: string[];

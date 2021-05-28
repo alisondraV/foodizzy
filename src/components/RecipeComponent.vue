@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import Recipe from '@/types/Recipe';
+import { Recipe } from '@/types';
 
 @Component
 export default class RecipeComponent extends Vue {

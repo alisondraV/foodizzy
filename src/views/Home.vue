@@ -1,11 +1,9 @@
 <template>
   <div>
     <v-header heading="" />
-    <div class="mt-20 mb-20 mx-8 flex flex-col text-primary-text">
+    <div class="mt-20 mb-24 mx-8 flex flex-col text-primary-text">
       <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold">
-        Track your food waste here
-      </h2>
+      <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
       <div class="text-right w-full mb-4">
         <label>
           <select
@@ -19,54 +17,45 @@
           </select>
         </label>
       </div>
-      <p v-if="loading" class="text-secondary-text text-center mb-6">
-        Loading...
-      </p>
+      <p v-if="loading" class="text-secondary-text text-center mb-6">Loading...</p>
       <div v-else>
         <div v-if="totalProducts === 0">
           <p class="text-secondary-text text-center text-sm mb-6">
-            We don't have enough data to display, go fill your fridge!
+            We don't have enough data to display, go fill your storage!
           </p>
         </div>
         <div v-else>
-          <!--for reactivity-->
-          <div v-for="chart in chartData" :key="chart.length">
-            <custom-chart
-              v-if="chart.length !== 0"
-              class="mb-6"
-              :data="chart"
-              :labels="chartLabels"
-              :colors="[...Object.values(categoryColors)]"
-              canvasId="main"
+          <statistics-display
+            statistics-name="Products In the Storage"
+            :products="totalProducts"
+            :statistics="totalProductsForMonth"
+          />
+          <progress-bar class="mb-8" :label="progressBarLabel" :percentage="getWastePercentage()" />
+          <div v-if="Object.keys(statistics).length !== 0 && !loading">
+            <statistics-display
+              statistics-name="Products Wasted"
+              :products="wastedProducts.length"
+              :statistics="statistics"
+              :is-for-wasted="true"
             />
           </div>
-          <ul class="mb-6">
-            <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
-              <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${categoryColors[category]}`" />
-              <p>{{ getWastePercentage(category) }}% of all food waste was {{ category }}</p>
-            </li>
-          </ul>
-          <progress-bar :label="label" :percentage="getWastePercentage()" />
         </div>
       </div>
     </div>
-    <navigation-menu current-page="Home" />
+    <navigation-menu />
   </div>
 </template>
 
 <script lang="ts">
-import { colors, monthList } from '@/utils/consts';
 import { Component, Vue } from 'vue-property-decorator';
-import { CurrentFamily } from '@/types';
+import { CurrentFamily, WastedProduct } from '@/types';
+import { CustomChart, NavigationMenu, ProgressBar, StatisticsDisplay, VHeader } from '@/components';
 import Authentication from '@/utils/Authentication';
-import CustomChart from '@/components/CustomChart.vue';
-import NavigationMenu from '@/components/NavigationMenu.vue';
-import ProgressBar from '@/components/ProgressBar.vue';
-import VHeader from '@/components/VHeader.vue';
-import WastedProduct from '@/types/WastedProduct';
+import { monthList } from '@/utils/consts';
 
 @Component({
   components: {
+    StatisticsDisplay,
     CustomChart,
     NavigationMenu,
     ProgressBar,
@@ -76,7 +65,6 @@ import WastedProduct from '@/types/WastedProduct';
 export default class Home extends Vue {
   monthData: { month: number; year: number }[] = [];
   wastedProducts: WastedProduct[] = [];
-  categoryColors: { [category: string]: string } = {};
   totalProductsForMonth: { [category: string]: number } = {};
   firstName = '';
   loading = true;
@@ -130,6 +118,7 @@ export default class Home extends Vue {
 
     this.wastedProducts = allWastedProducts.filter((product: WastedProduct) => {
       return (
+        product.dateWasted &&
         product.dateWasted.toDate().getMonth() == this.selectedMonthData.month &&
         product.dateWasted.toDate().getFullYear() == this.selectedMonthData.year
       );
@@ -140,22 +129,18 @@ export default class Home extends Vue {
     return monthList[this.selectedMonthData.month];
   }
 
-  get label() {
+  get progressBarLabel() {
     return `${this.getWastePercentage()}% of all food was not wasted in ${this.month}`;
   }
 
   get statistics() {
     type Category = { [category: string]: number };
-    let categoryCount = 0;
 
     return this.wastedProducts.reduce<Category>((acc, product) => {
-      const categoryName = (product.category ?? 'General').toLowerCase();
+      const categoryName = product.category.toLowerCase();
       if (!Object.keys(acc).includes(categoryName)) {
         acc[categoryName] = 0;
-        this.categoryColors[categoryName] = colors[categoryCount];
-        categoryCount++;
       }
-
       acc[categoryName]++;
 
       return acc;
@@ -166,24 +151,9 @@ export default class Home extends Vue {
     return Object.values(this.totalProductsForMonth).reduce((acc, e) => e + acc, 0);
   }
 
-  get totalWaste() {
-    return Object.values(this.statistics).reduce((acc, e) => e + acc, 0);
-  }
-
-  get chartData() {
-    return [[...Object.values(this.statistics)]];
-  }
-
-  get chartLabels() {
-    return [...Object.keys(this.statistics)];
-  }
-
-  getWastePercentage(category?: string) {
-    if (category) {
-      category = category.toLowerCase();
-      return ((this.statistics[category] / this.wastedProducts.length) * 100).toFixed();
-    }
-    return ((1 - this.totalWaste / this.totalProducts) * 100).toFixed();
+  getWastePercentage() {
+    const totalWaste = Object.values(this.statistics).reduce((acc, e) => e + acc, 0);
+    return ((1 - totalWaste / this.totalProducts) * 100).toFixed();
   }
 }
 </script>
