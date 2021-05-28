@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-between items-center py-2 text-xl left-0">
-    <div @click="toggleProduct">
+  <div class="flex justify-between items-center py-2 text-xl left-0" @click="toggleProduct">
+    <div>
       <img v-if="product.selected" alt="Selected" :src="getSource('selected')" />
       <img v-else alt="NotSelected" :src="getSource('default')" />
     </div>
@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { pages } from '@/utils/consts';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 import { Product } from '@/types';
+import { pages } from '@/utils/consts';
 
 @Component
 export default class ListItem extends Vue {

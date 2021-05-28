@@ -7,6 +7,7 @@
       <div class="mb-8 flex-start">
         <v-input
           class="mb-2"
+          data-cy="name"
           type="text"
           label="Family Name"
           placeholder="Enter your family name"
@@ -19,12 +20,19 @@
         <div class="flex flex-row justify-between mb-4">
           <v-input
             class="w-5/6"
+            data-cy="member-email"
             type="email"
             label="Email Address"
             placeholder="Enter member's email"
             v-model="currentEmail"
           />
-          <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
+          <img
+            alt="Add"
+            class="mt-6"
+            data-cy="add-member"
+            src="@/assets/images/PlusIcon.svg"
+            @click="addEmail"
+          />
         </div>
         <ul>
           <li
@@ -36,7 +44,7 @@
             <img
               alt="remove"
               class="w-4 h-4 text-primary-text"
-              src="@/assets/images/Remove.svg"
+              src="@/assets/images/Cross.svg"
               @click="removeEmail(email)"
             />
           </li>
@@ -44,18 +52,24 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button class="mx-8 mt-3" label="Create Family" :disabled="validationFailed" @click="createFamily" />
+      <v-button
+        class="mx-8 mt-3"
+        data-cy="create"
+        label="Create Family"
+        :disabled="validationFailed"
+        @click="createFamily"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import router from '@/router';
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
+import router from '@/router';
 
 @Component({
   components: {
@@ -86,7 +100,7 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   goToTheNextPage() {
-    router.safePush('/fridge-setup');
+    router.safePush!(PathName.StorageSetup);
   }
 
   removeEmail(email: string) {

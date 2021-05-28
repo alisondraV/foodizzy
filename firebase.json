@@ -16,7 +16,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [   
+    "rewrites": [
+      {
+        "source": "/api/allProducts",
+        "function": "getAllProducts"
+      },
       {
         "source": "**",
         "destination": "/index.html"

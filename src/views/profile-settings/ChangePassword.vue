@@ -9,17 +9,19 @@
       <div v-else class="w-full flex flex-col items-center text-center">
         <v-input
           class="mb-6 w-full"
-          type="password"
+          data-cy="current-password"
           label="Current Password"
           placeholder="Enter your current password"
+          type="password"
           v-model="currentPassword"
           @focus="clearTheMessage"
         />
         <v-input
           class="mb-6 w-full"
-          type="password"
+          data-cy="new-password"
           label="New Password"
           placeholder="Enter your new password"
+          type="password"
           v-model="newPassword"
           @focus="clearTheMessage"
         />
@@ -43,6 +45,7 @@
         <div class="bg-background h-24 w-full bottom-0 fixed">
           <v-button
             class="mx-8 mt-3"
+            data-cy="save"
             label="Change Password"
             @click="changePassword"
             :disabled="validationFailed"
@@ -54,21 +57,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import Authentication from '@/utils/Authentication';
-import VAlert from '@/components/VAlert.vue';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
-import VHeader from '@/components/VHeader.vue';
-import firebase from 'firebase';
 import { AlertMixin, ValidationMixin } from '@/mixins';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { VAlert, VButton, VHeader, VInput } from '@/components';
+import { AlertStatus } from '@/utils/enums';
+import Authentication from '@/utils/Authentication';
+import firebase from 'firebase';
 
 @Component({
   components: {
     VAlert,
     VButton,
-    VInput,
-    VHeader
+    VHeader,
+    VInput
   }
 })
 export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
@@ -96,7 +97,7 @@ export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
 
   async changePassword() {
     if (!this.currentPassword || !this.newPassword) {
-      this.showAlert('Please provide both your current password and the new one', 'danger');
+      await this.showAlert('Please provide both your current password and the new one', AlertStatus.Danger);
       return;
     }
 
@@ -105,9 +106,9 @@ export default class SignIn extends Mixins(ValidationMixin, AlertMixin) {
 
       this.currentPassword = '';
       this.newPassword = '';
-      this.showAlert('Password has been successfully updated', 'success');
+      await this.showAlert('Password has been successfully updated', AlertStatus.Success);
     } catch (e) {
-      this.showAlert("We couldn't update your password", 'danger');
+      await this.showAlert("We couldn't update your password", AlertStatus.Danger);
     }
   }
 }

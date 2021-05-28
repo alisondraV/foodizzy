@@ -7,6 +7,7 @@
     </span>
     <img
       v-if="showProfile()"
+      data-cy="profile-button"
       src="@/assets/images/Profile.svg"
       alt="Profile"
       @click="goToTheProfilePage"
@@ -14,9 +15,11 @@
     />
     <img
       v-if="showClose()"
-      src="@/assets/images/Close.svg"
+      src="@/assets/images/Cross.svg"
+      style="filter: invert(67%) sepia(12%) saturate(1440%) hue-rotate(316deg) brightness(92%) contrast(83%)"
       alt="Close"
       @click="goBack"
+      data-cy="close"
       class="cursor-pointer p-4"
       width="55px"
     />
@@ -25,8 +28,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import router from '../router';
 import { CurrentFamily, Family } from '@/types';
+import { PathName } from '@/utils/enums';
+import router from '../router';
 
 @Component
 export default class VHeader extends Vue {
@@ -62,7 +66,7 @@ export default class VHeader extends Vue {
   }
 
   goToTheProfilePage() {
-    router.safePush('/profile');
+    router.safePush!(PathName.UserProfile);
   }
 }
 </script>

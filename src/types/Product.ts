@@ -1,7 +1,7 @@
 import Firestore from '@/utils/Firestore';
-import { ProductDTO } from './DTOs';
+import { ListName } from '@/utils/enums';
 
-export class Product implements ProductDTO {
+export class Product {
   public name: string;
   private _category?: string | undefined;
   public static defaultCategory = 'General';
@@ -21,37 +21,26 @@ export class Product implements ProductDTO {
     this._category = value;
   }
 
-  static fromDTO(product: ProductDTO) {
-    return new Product(product.name, product.category);
-  }
-
-  toDTO() {
-    return {
-      name: this.name,
-      category: this.category
-    };
-  }
-
   static async removeAllFromShoppingList(products: Product[]) {
-    await Firestore.instance.removeFromShoppingList(products);
+    await Firestore.instance.removeFromList(products, ListName.ShoppingList);
   }
 
   static async removeAllFromStorage(products: Product[]) {
-    await Firestore.instance.removeFromStorage(products);
+    await Firestore.instance.removeFromList(products, ListName.Storage);
   }
 
   static async purchaseAll(products: Product[]) {
     await this.removeAllFromShoppingList(products);
-    await Firestore.instance.addToList(products, 'storage');
+    await Firestore.instance.addToList(products, ListName.Storage);
   }
 
   static async consumeAll(products: Product[]) {
     await this.removeAllFromStorage(products);
-    await Firestore.instance.addToList(products, 'shoppingList');
+    await Firestore.instance.addToList(products, ListName.ShoppingList);
   }
 
   static async wasteAll(products: Product[]) {
-    await Firestore.instance.removeFromStorage(products);
+    await Firestore.instance.removeFromList(products, ListName.Storage);
     await Firestore.instance.moveToWasted(products);
   }
 }

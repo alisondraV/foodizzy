@@ -7,24 +7,26 @@
           Let’s optimize your food consumption together
         </p>
       </div>
-      <img src="@/assets/images/LogoMain.svg" alt="Logo" class="p-4" />
+      <img src="@/assets/images/Leaves.svg" alt="Logo" class="p-4" />
     </div>
     <div class="mb-8">
       <v-input
         class="mb-3"
+        data-cy="email"
         type="email"
         label="Email Address"
         placeholder="Enter your email"
-        :error="errorType === 'email'"
         v-model="email"
+        :error="errorType === 'email'"
       />
       <v-input
         class="mb-3"
+        data-cy="password"
         type="password"
         label="Password"
         placeholder="Enter your password"
-        :error="errorType === 'password'"
         v-model="password"
+        :error="errorType === 'password'"
       />
       <div class="text-dark-peach">{{ errorMessage }}</div>
       <div class="cursor-pointer underline text-right text-sm text-secondary-text" @click="resetPassword">
@@ -32,7 +34,7 @@
       </div>
     </div>
     <div class="mb-8">
-      <v-button class="mb-4" label="Sign In" @click="signIn" />
+      <v-button class="mb-4" data-cy="sign-in" label="Sign In" @click="signIn" />
       <div class="flex items-center text-secondary-text">
         <hr class="w-1/2 border-gray mb-4" />
         <span class="w-1/5 text-center mb-4">OR</span>
@@ -41,6 +43,7 @@
       <button
         @click="signInThroughGoogle"
         class="text-black rounded-md h-12 w-full"
+        data-cy="google-sign-in"
         style="box-shadow: #DFDFDF 1px 2px 12px"
       >
         Continue with Google
@@ -55,12 +58,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
-import router from '@/router';
-import VButton from '@/components/VButton.vue';
-import VInput from '@/components/VInput.vue';
 import { CurrentFamily } from '@/types';
+import { PathName } from '@/utils/enums';
 import { ValidationMixin } from '@/mixins';
+import router from '@/router';
 
 @Component({
   components: {
@@ -77,11 +80,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   goToSignUpPage() {
-    let route = '/sign-up';
-    if (this.redirect) {
-      route += '?redirect=' + this.redirect;
-    }
-    router.safeReplace(route);
+    this.finishSignIn(PathName.SignUp);
   }
 
   async resetPassword() {
@@ -109,15 +108,22 @@ export default class SignIn extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn();
+      await this.finishSignIn(PathName.Home);
     } catch (err) {
-      await this.finishSignIn('create-family');
+      await this.finishSignIn(PathName.OnboardingTrackWaste);
     }
   }
 
-  async finishSignIn(targetRoute = '') {
-    const route = '/' + (this.redirect ?? targetRoute);
-    await router.safeReplace(route);
+  async finishSignIn(targetRoute: PathName) {
+    if (!this.redirect) {
+      return router.safeReplace!(targetRoute);
+    }
+    return router.safeReplace!({
+      path: targetRoute,
+      query: {
+        redirect: this.redirect
+      }
+    });
   }
 }
 </script>
