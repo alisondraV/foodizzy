@@ -14,7 +14,11 @@ describe('Profile Management', () => {
     cy.createUser();
     cy.setUpFamily();
     cy.signIn();
+    // wait for successful sign in
+    cy.wait(500);
     cy.visit('localhost:8080/profile');
+    // wait for family data to load
+    cy.wait(1000);
   });
 
   it('finds userName', () => {
@@ -29,12 +33,11 @@ describe('Profile Management', () => {
     cy.get('[data-cy=name]').type(updatedUser.name);
     cy.get('[data-cy=email]').type(updatedUser.email);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
 
-    cy.visit('localhost:8080/profile');
-    cy.contains(updatedUser.name);
-    cy.get('[data-cy=personal-info]').click();
     cy.contains(updatedUser.email);
+    cy.get('[data-cy=close]').click();
+
+    cy.contains(updatedUser.name);
   });
 
   it('can update password', () => {
@@ -43,12 +46,11 @@ describe('Profile Management', () => {
     cy.get('[data-cy=current-password]').type(user.password);
     cy.get('[data-cy=new-password]').type(updatedUser.password);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
+    cy.get('[data-cy=close]').click();
 
-    cy.visit('localhost:8080/profile');
     cy.get('[data-cy=log-out]').click();
 
-    cy.wait(500); // wait for the page to load
+    cy.visit('localhost:8080/sign-in'); // wait for the page to load
     cy.signIn(user.email, updatedUser.password);
     cy.url().should('equal', 'http://localhost:8080/');
   });
@@ -57,6 +59,8 @@ describe('Profile Management', () => {
     cy.get('[data-cy=family]').click();
     cy.get('[data-cy=edit]').click();
 
+    // wait for the page to load
+    cy.wait(5000);
     cy.contains(user.name);
     cy.contains(user.newFamilyMembers[0]);
     cy.get('[data-cy=cancel-invite]').click();
@@ -65,9 +69,8 @@ describe('Profile Management', () => {
     cy.get('[type="text"]').clear();
     cy.get('[data-cy=new-name]').type(updatedUser.familyName);
     cy.get('[data-cy=save]').click();
-    cy.wait(500); // wait for information to go through
+    cy.get('[data-cy=close]').click();
 
-    cy.visit('localhost:8080/profile');
     cy.get('[data-cy=family]').click();
     cy.contains(updatedUser.familyName);
     cy.contains(user.familyName).should('not.exist');
