@@ -57,7 +57,10 @@ export const syncEmulatorAllProducts = functions.https.onCall(async (data, conte
     );
 });
 
-async function createStatisticsIfDoesNotExist(change: any, family: FirebaseFirestore.DocumentData) {
+async function createStatisticsIfDoesNotExist(
+    change: functions.Change<functions.firestore.QueryDocumentSnapshot>,
+    family: FirebaseFirestore.DocumentData
+) {
     const familyStats = change.before.ref.collection('statistics');
     const thisMonthStatsDoc = await findThisMonthStats(familyStats);
 
@@ -65,13 +68,11 @@ async function createStatisticsIfDoesNotExist(change: any, family: FirebaseFires
         return;
     }
     const totalProducts = await getTotalProducts(family.storage);
-    const thisMonthStatsDocRef = await familyStats.add({
+    await familyStats.add({
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
         totalProducts,
     });
-
-    return await thisMonthStatsDocRef.get();
 }
 
 async function updateTotalProducts(
