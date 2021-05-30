@@ -15,9 +15,10 @@
     <div v-if="currentPage === 'storage'">
       <img class="absolute ml-1 xs:ml-2 py-1" src="@/assets/images/TakePhoto.svg" alt="NewProduct" />
       <input
-        class="opacity-0 ml-1 xs:ml-2 mt-1 w-6 xs:w-10"
-        type="file"
+        class="opacity-0 ml-1 xs:ml-2 mt-1"
         accept="image/x-png,image/jpeg,image/gif"
+        style="width: 40px"
+        type="file"
         @change="e => scanItem(e.target.files)"
       />
     </div>
