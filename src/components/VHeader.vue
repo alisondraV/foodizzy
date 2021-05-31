@@ -7,7 +7,7 @@
     </span>
     <img
       alt="Profile"
-      class="cursor-pointer py-4 pr-3"
+      class="py-4 pr-3"
       data-cy="profile-button"
       width="50px"
       src="@/assets/images/Profile.svg"
