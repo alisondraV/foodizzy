@@ -9,6 +9,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint:no-fix": "vue-cli-service lint --no-fix",
+    "deploy": "firebase deploy",
+    "deploy:staging": "firebase hosting:channel:deploy staging",
     "emulate": "npx firebase emulators:start --import ./emulator_data",
     "emulate:export": "firebase emulators:start --import ./emulator_data --export-on-exit ./emulator_data",
     "emulators:export-data": "firebase emulators:export ./emulator_data",
