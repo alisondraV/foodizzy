@@ -113,7 +113,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     name: '404',
-    component: () => import('../views/404.vue')
+    component: () => import('../views/PageNotFound.vue')
   }
 ];
 
