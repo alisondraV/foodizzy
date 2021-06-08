@@ -1,17 +1,18 @@
 <template>
-  <div class="bg-background flex h-20 px-5 w-full top-0 fixed pt-4">
+  <div class="bg-background flex justify-between h-20 px-5 w-full top-0 fixed pt-4 z-50">
     <span
-      class="ml-4 w-4/5 text-small-header xs:text-header place-self-center font-extrabold text-primary-text"
+      class="ml-4 text-small-header xs:text-header place-self-center font-extrabold text-primary-text"
     >
       {{ heading }}
     </span>
     <img
-      v-if="showProfile()"
-      data-cy="profile-button"
-      src="@/assets/images/Profile.svg"
       alt="Profile"
+      class="py-4 pr-3"
+      data-cy="profile-button"
+      width="50px"
+      src="@/assets/images/Profile.svg"
+      v-if="showProfile()"
       @click="goToTheProfilePage"
-      class="cursor-pointer p-4 w-1/5"
     />
     <img
       v-if="showClose()"
