@@ -9,5 +9,5 @@ Closes #{issue number}
 ## Checklist
 
 - [ ] This change brings new tests
-- [ ] This change breaks any integration tests
+- [ ] This change doesn't break any integration tests
 - [ ] This change includes comments for sophisticated areas

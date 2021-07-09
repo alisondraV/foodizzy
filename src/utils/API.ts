@@ -4,7 +4,10 @@ import firebase from 'firebase';
 import { productConverter } from '@/types/converters';
 
 const httpClient = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : `https://${window.location.hostname}/api`,
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5000'
+      : `https://${window.location.hostname}/api`,
   timeout: 5000
 });
 
