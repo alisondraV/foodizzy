@@ -13,6 +13,7 @@
         placeholder="What are you looking for?"
       />
       <img
+        v-if="!searchIsEmpty"
         alt="Clear"
         class="right-0 pr-3"
         data-cy="clear-button"
@@ -44,12 +45,16 @@ import { Product } from '@/types';
 
 @Component
 export default class SearchInput extends Vue {
-  @Prop() value!: null;
+  @Prop() value!: string;
   @Inject('currentPage') currentPage!: string;
   focused = false;
 
   get isFocused() {
     return this.focused;
+  }
+
+  get searchIsEmpty() {
+    return this.value.length === 0;
   }
 
   async scanItem(files: File[]): Promise<void> {
