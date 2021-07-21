@@ -62,7 +62,7 @@ import { monthList } from '@/utils/consts';
     VHeader
   }
 })
-export default class Home extends Vue {
+export default class Statistics extends Vue {
   monthData: { month: number; year: number }[] = [];
   wastedProducts: WastedProduct[] = [];
   totalProductsForMonth: { [category: string]: number } = {};

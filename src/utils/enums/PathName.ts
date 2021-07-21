@@ -3,7 +3,7 @@ export enum PathName {
   SignUp = '/sign-up',
   StorageSetup = '/storage-setup',
   CreateFamily = '/create-family',
-  Home = '/',
+  Statistics = '/statistics',
   Storage = '/storage',
   ShoppingList = '/shopping-list',
   UserProfile = '/profile',

@@ -24,7 +24,7 @@ import router from '@/router';
 })
 export default class PageNotFound extends Vue {
   goToTheHomePage() {
-    router.safePush!(PathName.Home);
+    router.safePush!(PathName.Storage);
   }
 }
 </script>
