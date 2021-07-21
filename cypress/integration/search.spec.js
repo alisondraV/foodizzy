@@ -1,4 +1,5 @@
 import { productsData } from '../fixtures';
+import { PathName } from '@/utils/enums';
 
 describe('search input', () => {
   const products = productsData.products;
@@ -17,7 +18,7 @@ describe('search input', () => {
   });
 
   it('shows valid products on search', () => {
-    cy.visit('localhost:8080/storage');
+    cy.visit(`http://localhost:8080${PathName.Storage}`);
     // wait for the page to load
     cy.wait(1000);
 
@@ -30,7 +31,7 @@ describe('search input', () => {
   });
 
   it('clears search on clear button click', () => {
-    cy.visit('localhost:8080/storage');
+    cy.visit(`http://localhost:8080${PathName.Storage}`);
     // wait for the page to load
     cy.wait(1000);
 

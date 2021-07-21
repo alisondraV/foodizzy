@@ -1,4 +1,5 @@
 import { user } from '../fixtures';
+import { PathName } from '@/utils/enums';
 
 describe('Profile Management', () => {
   const updatedUser = {
@@ -16,7 +17,7 @@ describe('Profile Management', () => {
     cy.signIn();
     // wait for successful sign in
     cy.wait(500);
-    cy.visit('localhost:8080/profile');
+    cy.visit(`localhost:8080${PathName.UserProfile}`);
     // wait for family data to load
     cy.wait(1000);
   });
@@ -50,9 +51,9 @@ describe('Profile Management', () => {
 
     cy.get('[data-cy=log-out]').click();
 
-    cy.visit('localhost:8080/sign-in'); // wait for the page to load
     cy.signIn(user.email, updatedUser.password);
-    cy.url().should('equal', 'http://localhost:8080/');
+    cy.url().should('equal', `http://localhost:8080${PathName.Storage}`);
+    cy.signOut();
   });
 
   it('can update the family name, tweak pending members and display family members', () => {
@@ -60,7 +61,7 @@ describe('Profile Management', () => {
     cy.get('[data-cy=edit]').click();
 
     // wait for the page to load
-    cy.wait(5000);
+    cy.wait(2000);
     cy.contains(user.name);
     cy.contains(user.newFamilyMembers[0]);
     cy.get('[data-cy=cancel-invite]').click();
