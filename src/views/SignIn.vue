@@ -84,8 +84,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   async resetPassword() {
-    // TODO: add validation
-    await Authentication.instance.sendPasswordReset(this.email);
+    await router.safePush!(PathName.ForgotPassword);
   }
 
   async signIn() {
