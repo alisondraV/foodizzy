@@ -116,6 +116,11 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/PasswordReset/ForgotPassword.vue')
   },
   {
+    path: PathName.EmailSentScreen,
+    name: 'EmailSentScreen',
+    component: () => import('../views/PasswordReset/EmailSentScreen.vue')
+  },
+  {
     path: '*',
     name: '404',
     component: () => import('../views/PageNotFound.vue')
@@ -141,7 +146,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
     if (userLoggedIn) {
       userHasFamily = await CurrentFamily.instance.existsFor(user!);
     }
-    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations', 'ForgotPassword'];
+    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations', 'ForgotPassword', 'EmailSentScreen'];
     const authWithoutFamilyRoutes = [
       'SignIn',
       'SignUp',

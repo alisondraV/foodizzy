@@ -20,4 +20,5 @@ export enum PathName {
   OnboardingMakeLists = '/onboarding/make-lists',
   OnboardingInviteMembers = '/onboarding/invite-members',
   ForgotPassword = '/forgot-password',
+  EmailSentScreen = '/email-sent',
 }
