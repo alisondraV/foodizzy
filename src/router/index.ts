@@ -29,9 +29,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/CreateFamily.vue')
   },
   {
-    path: PathName.Home,
-    name: 'Home',
-    component: () => import('../views/Home.vue')
+    path: PathName.Statistics,
+    name: 'Statistics',
+    component: () => import('../views/Statistics.vue')
   },
   {
     path: PathName.Storage,
@@ -163,7 +163,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
         next(PathName.UserProfile);
       }
     } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
-      next(PathName.Home);
+      next(PathName.Storage);
     }
     next();
   } catch (e) {

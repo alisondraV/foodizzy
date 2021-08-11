@@ -1,4 +1,5 @@
 import { productsData } from '../fixtures';
+import { PathName } from '@/utils/enums';
 
 describe('product CRUD', () => {
   const products = productsData.products;
@@ -13,7 +14,7 @@ describe('product CRUD', () => {
   }
 
   function visitPageAndSelectAProduct({ page, index }) {
-    cy.visit(`localhost:8080/${page}`);
+    cy.visit(`localhost:8080${page}`);
     // wait for the page to load
     cy.wait(1000);
 
@@ -41,9 +42,9 @@ describe('product CRUD', () => {
   });
 
   describe('moving products around', () => {
-    describe('storage', () => {
+    describe(PathName.Storage, () => {
       it('can move product from storage to shopping list', () => {
-        visitPageAndSelectAProduct({ page: 'storage', index: 0 });
+        visitPageAndSelectAProduct({ page: PathName.Storage, index: 0 });
         selectProduct(products[3]);
 
         cy.get('[data-cy=consume]').click();
@@ -51,14 +52,14 @@ describe('product CRUD', () => {
         cy.wait(1000);
         cy.contains(products[0].category).should('not.exist');
 
-        cy.visit('localhost:8080/shopping-list');
+        cy.visit(`localhost:8080${PathName.ShoppingList}`);
         // wait for products load
         cy.wait(1000);
         assertProductExistsInList(products[0]);
       });
 
       it('can delete product from storage', () => {
-        visitPageAndSelectAProduct({ page: 'storage', index: 1 });
+        visitPageAndSelectAProduct({ page: PathName.Storage, index: 1 });
 
         cy.get('[data-cy=remove]').click();
         // wait for product to be added to the shopping list
@@ -69,7 +70,7 @@ describe('product CRUD', () => {
       });
 
       it('can waste product from storage', () => {
-        visitPageAndSelectAProduct({ page: 'storage', index: 2 });
+        visitPageAndSelectAProduct({ page: PathName.Storage, index: 2 });
 
         cy.get('[data-cy=waste]').click();
         // wait for product to be added to the shopping list
@@ -77,7 +78,7 @@ describe('product CRUD', () => {
 
         cy.contains(products[2].category).should('not.exist');
 
-        cy.visit('localhost:8080');
+        cy.visit(`localhost:8080${PathName.Statistics}`);
         // wait the statistics to load
         cy.wait(5000);
 
@@ -87,7 +88,7 @@ describe('product CRUD', () => {
 
     describe('shopping list', () => {
       it('can delete product from shopping list', () => {
-        visitPageAndSelectAProduct({ page: 'shopping-list', index: 0 });
+        visitPageAndSelectAProduct({ page: PathName.ShoppingList, index: 0 });
         cy.get('[data-cy=delete]').click();
         // wait for product to be added to the shopping list
         cy.wait(1000);
@@ -97,7 +98,7 @@ describe('product CRUD', () => {
       });
 
       it('can move product from shopping list to storage', () => {
-        visitPageAndSelectAProduct({ page: 'shopping-list', index: 3 });
+        visitPageAndSelectAProduct({ page: PathName.ShoppingList, index: 3 });
         cy.get('[data-cy=purchase]').click();
         // wait for product to be added to the shopping list
         cy.wait(1000);
@@ -105,7 +106,7 @@ describe('product CRUD', () => {
         cy.contains(products[3].category).should('not.exist');
         cy.contains(products[3].name).should('not.exist');
 
-        cy.visit('localhost:8080/storage');
+        cy.visit(`localhost:8080${PathName.Storage}`);
         // wait for products load
         cy.wait(1000);
         assertProductExistsInList(products[3]);
@@ -123,14 +124,14 @@ describe('product CRUD', () => {
       cy.callFirestore('set', `allProducts/${newProduct.name}`, newProduct);
     });
 
-    ['storage', 'shopping-list'].forEach(location => {
+    [PathName.Storage, PathName.ShoppingList].forEach(location => {
       const testProduct = {
         name: `custom product in ${location}`,
         category: 'Custom'
       };
 
       it(`can add existing products to ${location}`, () => {
-        cy.visit(`localhost:8080/${location}`);
+        cy.visit(`localhost:8080${location}`);
         cy.get('[data-cy=add-product]').click();
 
         // wait to transfer to the add-new-product page
@@ -147,7 +148,7 @@ describe('product CRUD', () => {
       });
 
       it(`can add custom products to ${location}`, () => {
-        cy.visit(`localhost:8080/${location}`);
+        cy.visit(`localhost:8080${location}`);
         cy.get('[data-cy=add-product]').click();
 
         cy.get('[data-cy=add-custom-product]').click();
@@ -161,13 +162,13 @@ describe('product CRUD', () => {
 
         // wait for the page to load
         cy.wait(1000);
-        cy.url().should('include', `/${location}`);
+        cy.url().should('include', location);
 
         assertProductExistsInList(testProduct);
       });
 
       it('can not add custom products which already exist in the list', () => {
-        cy.visit(`localhost:8080/${location}`);
+        cy.visit(`localhost:8080${location}`);
         cy.get('[data-cy=add-product]').click();
         cy.get('[data-cy=add-custom-product]').click();
 

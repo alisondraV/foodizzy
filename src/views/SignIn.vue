@@ -108,7 +108,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   async tryGetFamilyAndForward() {
     try {
       await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn(PathName.Home);
+      await this.finishSignIn(PathName.Storage);
     } catch (err) {
       await this.finishSignIn(PathName.OnboardingTrackWaste);
     }
