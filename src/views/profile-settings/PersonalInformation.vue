@@ -52,7 +52,7 @@
             :error="errorType === 'email'"
           />
         </div>
-        <div v-if="editMode" class="text-dark-peach">{{ errorMessage }}</div>
+        <div v-if="editMode" class="text-dark-peach text-sm">{{ errorMessage }}</div>
       </div>
     </div>
 

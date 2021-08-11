@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="text-dark-peach mb-2 ml-1">{{ errorMessage }}</div>
+    <div class="text-dark-peach mb-2 ml-1 text-sm">{{ errorMessage }}</div>
     <div class="mb-8">
       <v-button class="mb-4" data-cy="sign-up" label="Sign Up" :disabled="validationFailed" @click="signUp" />
       <div class="flex items-center text-secondary-text">

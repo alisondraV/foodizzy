@@ -40,7 +40,7 @@
             8 characters
           </div>
         </div>
-        <div class="text-dark-peach self-start text-left">{{ errorMessage }}</div>
+        <div class="text-dark-peach self-start text-left text-sm">{{ errorMessage }}</div>
 
         <div class="bg-background h-24 w-full bottom-0 fixed">
           <v-button
