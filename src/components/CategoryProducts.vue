@@ -35,17 +35,7 @@ export default class CategoryProducts extends Vue {
   }
 
   get sortedProducts() {
-    const sortedProducts: Product[] = [];
-    const productNames = this.products.map(product => product.name).sort();
-
-    productNames.forEach(name => {
-      this.products.forEach(product => {
-        if (product.name === name) {
-          sortedProducts.push(product);
-        }
-      });
-    });
-    return sortedProducts;
+    return this.products.sort((product1, product2) => (product1.name < product2.name ? -1 : 1));
   }
 
   mounted() {
