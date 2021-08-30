@@ -1,19 +1,18 @@
 <template>
   <div>
-    <div class="mt-8 mb-20 mx-8 flex flex-col h-screen">
+    <div class="mt-8 mx-8 flex flex-col h-screen">
       <p class="text-2xl font-bold text-primary-text mb-6">
         Create Your Family
       </p>
-      <div class="mb-8 flex-start">
+      <div class="flex-start">
         <v-input
-          class="mb-2"
+          class="mb-6"
           data-cy="name"
           type="text"
           label="Family Name"
           placeholder="Enter your family name"
           v-model="familyName"
         />
-        <div class="text-dark-peach mb-6">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
@@ -25,12 +24,14 @@
             label="Email Address"
             placeholder="Enter member's email"
             v-model="currentEmail"
+            :error="errorType === 'email'"
           />
           <img
             alt="Add"
             class="mt-6"
             data-cy="add-member"
             src="@/assets/images/PlusIcon.svg"
+            :class="isEmailInValidState ? 'visible' : 'hidden'"
             @click="addEmail"
           />
         </div>
@@ -52,6 +53,7 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
+      <div class="text-dark-peach mx-8">{{ errorMessage }}</div>
       <v-button
         class="mx-8 mt-3"
         data-cy="create"
@@ -88,13 +90,16 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   get isFormInValidState() {
-    return (
-      (this.currentEmail === '' || this.isEmailValid(this.currentEmail)) &&
-      this.isDisplayNameValid(this.familyName)
-    );
+    return this.isDisplayNameValid(this.familyName);
+  }
+
+  get isEmailInValidState() {
+    return this.currentEmail !== '' && this.isEmailValid(this.currentEmail);
   }
 
   addEmail() {
+    if (!this.isEmailInValidState) return;
+
     this.memberEmails.push(this.currentEmail);
     this.currentEmail = '';
   }
