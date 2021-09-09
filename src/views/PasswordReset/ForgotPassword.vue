@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 mx-6 flex flex-col items-center text-primary-text">
+  <div class="m-6 flex flex-col items-center text-primary-text">
     <img src="@/assets/images/ForgotPassword.svg" alt="Forgot Password" class="mb-2 w-5/6" />
     <h1 class="w-full text-left text-header-onboarding font-extrabold mb-3">Forgot Password?</h1>
     <p class="mb-8">Enter your email below and we’ll get you back into your account.</p>
@@ -13,7 +13,7 @@
     />
     <div class="text-dark-peach text-sm mb-12 h-4 text-left w-full">{{ errorMessage }}</div>
     <v-button class="w-full" label="Submit" @click="sendPasswordReset" />
-    <span class="absolute bottom-0 mb-8 text-primary-green" @click="goToSigIn">Back to Login</span>
+    <span class="mt-12 text-primary-green" @click="goToSigIn">Back to Login</span>
   </div>
 </template>
 

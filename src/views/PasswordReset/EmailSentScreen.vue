@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 mx-6 flex flex-col items-center text-primary-text">
+  <div class="m-6 flex flex-col items-center text-primary-text">
     <img src="@/assets/images/ForgotPassword.svg" alt="Forgot Password" class="mb-2" />
     <h1 class="w-full text-left text-header-onboarding font-extrabold mb-3">Email Sent</h1>
     <p class="w-full text-left mb-2">We’ve sent you a password reset.</p>
@@ -8,7 +8,7 @@
       <span class="text-primary-green" @click="sendPasswordReset">Resend</span>
     </div>
     <div class="text-dark-peach text-sm mb-12 h-4 text-left w-full">{{ errorMessage }}</div>
-    <span class="absolute bottom-0 mb-8 text-primary-green" @click="goToSigIn">Back to Login</span>
+    <span class="mt-12 text-primary-green" @click="goToSigIn">Back to Login</span>
   </div>
 </template>
 
