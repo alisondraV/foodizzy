@@ -36,16 +36,14 @@ export default class StatisticsDisplay extends Vue {
   @Prop({ default: false }) isForWasted?: boolean;
 
   mounted() {
-    this.getSortedStatistics();
+    const arr = Object.entries(this.statistics).sort(
+      (category, nextCategory) => nextCategory[1] - category[1]
+    );
+    this.statistics = Object.fromEntries(arr);
   }
 
   getCategoryColor(category: string) {
     return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];
-  }
-
-  getSortedStatistics() {
-    const arr = Object.entries(this.statistics).sort((a, b) => b[1] - a[1]);
-    this.statistics = Object.fromEntries(arr);
   }
 
   getCategoryPercentage(category: string) {
