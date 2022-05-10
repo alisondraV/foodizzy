@@ -13,9 +13,13 @@
       />
     </div>
     <ul class="mb-6">
-      <li class="flex items-center mb-2" v-for="category in Object.keys(statistics)" :key="category">
+      <li
+        :class="`flex items-center mb-2 text-sm ${category === 'miscellaneous' ? 'mt-4' : ''}`"
+        v-for="category in Object.keys(statistics)"
+        :key="category"
+      >
         <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
-        <p class="text-sm">{{ getStatisticsLabel(category) }}</p>
+        <p>{{ getStatisticsLabel(category) }}</p>
       </li>
     </ul>
   </div>
