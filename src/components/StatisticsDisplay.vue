@@ -36,21 +36,7 @@ export default class StatisticsDisplay extends Vue {
   @Prop({ default: false }) isForWasted?: boolean;
 
   mounted() {
-    // TODO: extract into function
-    const sortedStatistics = Object.entries(this.statistics).sort(
-      (category, nextCategory) => nextCategory[1] - category[1]
-    );
-
-    const filteredStats = sortedStatistics.filter(item => parseInt(this.getCategoryPercentage(item[0])) > 5);
-    const miscellaneousCategory = sortedStatistics
-      .filter(item => parseInt(this.getCategoryPercentage(item[0])) <= 5)
-      .reduce((item, prev) => ['miscellaneous', prev[1] + item[1]]);
-
-    this.statistics = Object.fromEntries([...filteredStats, miscellaneousCategory]);
-  }
-
-  getCategoryColor(category: string) {
-    return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];
+    this.sortAndFilterStatistics();
   }
 
   getCategoryPercentage(category: string) {
@@ -61,6 +47,23 @@ export default class StatisticsDisplay extends Vue {
   getStatisticsLabel(category: string) {
     const food = this.isForWasted ? 'food waste' : 'food';
     return `${this.getCategoryPercentage(category)}% of all ${food} were ${category}`;
+  }
+
+  private sortAndFilterStatistics() {
+    const sortedStatistics = Object.entries(this.statistics).sort(
+      (category, nextCategory) => nextCategory[1] - category[1]
+    );
+
+    const filteredStats = sortedStatistics.filter(item => parseInt(this.getCategoryPercentage(item[0])) > 5);
+    const miscellaneousCategory = sortedStatistics
+      .filter(item => parseInt(this.getCategoryPercentage(item[0])) <= 5)
+      .reduce((item, prev) => ['miscellaneous', prev[1] + item[1]], ['miscellaneous', 0]);
+
+    this.statistics = Object.fromEntries([...filteredStats, miscellaneousCategory]);
+  }
+
+  getCategoryColor(category: string) {
+    return statisticsColors[category] === undefined ? statisticsColors.other : statisticsColors[category];
   }
 }
 </script>
