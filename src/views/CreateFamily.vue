@@ -31,7 +31,7 @@
             class="mt-6"
             data-cy="add-member"
             src="@/assets/images/PlusIcon.svg"
-            :class="isEmailInValidState ? 'visible' : 'hidden'"
+            v-if="isEmailInValidState"
             @click="addEmail"
           />
         </div>
@@ -98,8 +98,6 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   addEmail() {
-    if (!this.isEmailInValidState) return;
-
     this.memberEmails.push(this.currentEmail);
     this.currentEmail = '';
   }
