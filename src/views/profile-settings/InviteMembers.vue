@@ -12,8 +12,15 @@
           label="Email Address"
           placeholder="Enter member’s email"
           v-model="currentEmail"
+          :error="errorType === 'email'"
         />
-        <img src="@/assets/images/PlusIcon.svg" alt="Add" class="mt-6" @click="addEmail" />
+        <img
+          src="@/assets/images/PlusIcon.svg"
+          alt="Add"
+          class="mt-6"
+          v-if="isEmailInValidState"
+          @click="addEmail"
+        />
       </div>
       <ul>
         <li
@@ -41,8 +48,8 @@
 <script lang="ts">
 import { AlertStatus, PathName } from '@/utils/enums';
 import { VAlert, VButton, VHeader, VInput } from '@/components';
-import { AlertMixin } from '@/mixins/AlertMixin';
-import { Component } from 'vue-property-decorator';
+import { AlertMixin, ValidationMixin } from '@/mixins';
+import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily } from '@/types/Family';
 import router from '@/router';
 
@@ -54,7 +61,7 @@ import router from '@/router';
     VInput
   }
 })
-export default class InviteMembers extends AlertMixin {
+export default class InviteMembers extends Mixins(AlertMixin, ValidationMixin) {
   currentEmail = '';
   memberEmails: string[] = [];
 
@@ -67,6 +74,10 @@ export default class InviteMembers extends AlertMixin {
     } catch (e) {
       await this.showAlert("Couldn't send the invites", AlertStatus.Danger);
     }
+  }
+
+  get isEmailInValidState() {
+    return this.currentEmail !== '' && this.isEmailValid(this.currentEmail);
   }
 
   addEmail() {
