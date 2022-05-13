@@ -94,7 +94,17 @@ export default class CreateFamily extends Mixins(ValidationMixin) {
   }
 
   get isEmailInValidState() {
-    return this.currentEmail !== '' && this.isEmailValid(this.currentEmail);
+    // TODO: consider switch
+    if (this.currentEmail === '') {
+      this.errorMessage = '';
+      this.errorType = '';
+    }
+    if (this.currentEmail !== '' && this.isEmailValid(this.currentEmail)) {
+      this.errorMessage = '';
+      this.errorType = '';
+      return true;
+    }
+    return false;
   }
 
   addEmail() {

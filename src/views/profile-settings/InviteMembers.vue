@@ -35,6 +35,7 @@
       </ul>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
+      <div class="text-dark-peach mx-8">{{ errorMessage }}</div>
       <v-button
         class="mx-8 mt-3"
         label="Invite Family Members"
@@ -77,7 +78,17 @@ export default class InviteMembers extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   get isEmailInValidState() {
-    return this.currentEmail !== '' && this.isEmailValid(this.currentEmail);
+    // TODO: consider switch
+    if (this.currentEmail === '') {
+      this.errorMessage = '';
+      this.errorType = '';
+    }
+    if (this.currentEmail !== '' && this.isEmailValid(this.currentEmail)) {
+      this.errorMessage = '';
+      this.errorType = '';
+      return true;
+    }
+    return false;
   }
 
   addEmail() {
