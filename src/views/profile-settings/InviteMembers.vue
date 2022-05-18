@@ -7,7 +7,7 @@
     <div class="mb-20 mx-8" :class="alertMessage ? 'mt-6' : 'mt-20'">
       <div class="flex flex-row justify-between mb-4">
         <v-input
-          class="w-4/5"
+          class="w-5/6"
           type="email"
           label="Email Address"
           placeholder="Enter member’s email"
@@ -15,9 +15,9 @@
           :error="errorType === 'email'"
         />
         <img
-          src="@/assets/images/PlusIcon.svg"
           alt="Add"
           class="mt-6"
+          src="@/assets/images/PlusIcon.svg"
           v-if="isEmailInValidState"
           @click="addEmail"
         />
@@ -78,17 +78,10 @@ export default class InviteMembers extends Mixins(AlertMixin, ValidationMixin) {
   }
 
   get isEmailInValidState() {
-    // TODO: consider switch
-    if (this.currentEmail === '') {
-      this.errorMessage = '';
-      this.errorType = '';
-    }
-    if (this.currentEmail !== '' && this.isEmailValid(this.currentEmail)) {
-      this.errorMessage = '';
-      this.errorType = '';
-      return true;
-    }
-    return false;
+    this.errorMessage = '';
+    this.errorType = '';
+
+    return this.currentEmail !== '' && this.isEmailValid(this.currentEmail);
   }
 
   addEmail() {
