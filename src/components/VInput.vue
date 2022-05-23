@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="w-full">
     <label class="flex flex-col text-secondary-text">
-      <span class="text-left mb-1 text-sm" :class="{ 'text-primary-green' : isFocused }">
+      <span class="text-left mb-1 text-sm" :class="{ 'text-primary-green': isFocused }">
         {{ label }}
       </span>
       <input
