@@ -49,7 +49,7 @@ export default class EmailsList extends Mixins(ValidationMixin) {
   }
 
   removeEmail(email: string) {
-    this.memberEmails.splice(this.memberEmails.indexOf(email), 1);
+    this.memberEmails = this.memberEmails.filter(e => e != email);
   }
 }
 </script>
