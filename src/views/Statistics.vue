@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header heading="" />
+    <v-header heading="Statistics" />
     <div class="mt-20 mb-24 mx-8 flex flex-col text-primary-text">
       <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
       <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
