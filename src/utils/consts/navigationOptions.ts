@@ -1,5 +1,5 @@
-import {Icons} from './icons';
-import {PathName} from '@/utils/enums';
+import { Icons } from './icons';
+import { PathName } from '@/utils/enums';
 
 type NavigationOption = {
   pathName: string;
