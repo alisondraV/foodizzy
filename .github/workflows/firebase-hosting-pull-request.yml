@@ -10,6 +10,8 @@ jobs:
         run: npm i
       - name: Lint
         run: npm run lint:no-fix
+      - name: Lint functions folder
+        run: cd ./functions && npm run lint
       - name: Build
         run: npm run build
       # - name: Run E2E tests
