@@ -10,6 +10,8 @@ jobs:
         run: npm i
       - name: Lint
         run: npm run lint:no-fix
+      - name: Install dependencies for functions folder
+        run: cd ./functions && npm i
       - name: Lint functions folder
         run: cd ./functions && npm run lint
       - name: Build
