@@ -1,9 +1,7 @@
 <template>
   <div>
-    <v-header heading="" />
+    <v-header heading="Statistics" />
     <div class="mt-20 mb-24 mx-8 flex flex-col text-primary-text">
-      <h1 class="text-3xl mb-2 font-extrabold">Welcome, {{ firstName }}!</h1>
-      <h2 class="mb-4 font-extrabold">Track your food waste here</h2>
       <div class="text-right w-full mb-4">
         <label>
           <select
@@ -50,7 +48,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { CurrentFamily, WastedProduct } from '@/types';
 import { CustomChart, NavigationMenu, ProgressBar, StatisticsDisplay, VHeader } from '@/components';
-import Authentication from '@/utils/Authentication';
 import { monthList } from '@/utils/consts';
 
 @Component({
@@ -66,7 +63,6 @@ export default class Statistics extends Vue {
   monthData: { month: number; year: number }[] = [];
   wastedProducts: WastedProduct[] = [];
   totalProductsForMonth: { [category: string]: number } = {};
-  firstName = '';
   loading = true;
   selectedMonthData = {
     month: new Date().getMonth(),
@@ -74,7 +70,6 @@ export default class Statistics extends Vue {
   };
 
   async mounted() {
-    this.firstName = await Authentication.instance.getFirstName();
     await this.getWastedProductsForSelectedMonth();
     await this.getMonthData();
     this.loading = false;
