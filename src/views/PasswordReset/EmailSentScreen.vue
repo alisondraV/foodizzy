@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { VButton, VInput } from '@/components';
 import { ValidationMixin } from '@/mixins';
 import { PathName } from '@/utils/enums';
@@ -27,11 +27,7 @@ import router from '@/router';
   }
 })
 export default class OnboardingFamilyMembers extends Mixins(ValidationMixin) {
-  email = '';
-
-  async mounted() {
-    this.email = this.$route.query.email as string;
-  }
+  @Prop() email!: string;
 
   goToSigIn() {
     router.safePush!(PathName.SignIn);

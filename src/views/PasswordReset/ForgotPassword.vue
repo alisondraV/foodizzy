@@ -39,7 +39,7 @@ export default class OnboardingFamilyMembers extends Mixins(ValidationMixin) {
   }
 
   goToConfirmationPage() {
-    router.safePush!({ path: PathName.EmailSentScreen, query: { email: this.email } });
+    router.safePush!({ path: PathName.EmailSentScreen, params: { email: this.email } });
   }
 
   async sendPasswordReset() {
