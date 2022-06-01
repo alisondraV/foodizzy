@@ -20,7 +20,7 @@
         :error="errorType === 'email'"
       />
       <v-input
-        class="mb-3"
+        class="mb-2"
         data-cy="password"
         type="password"
         label="Password"
@@ -28,7 +28,7 @@
         v-model="password"
         :error="errorType === 'password'"
       />
-      <div class="text-dark-peach">{{ errorMessage }}</div>
+      <div class="text-dark-peach mb-2 text-sm">{{ errorMessage }}</div>
       <div class="cursor-pointer underline text-right text-sm text-secondary-text" @click="resetPassword">
         Forgot password?
       </div>
@@ -84,8 +84,7 @@ export default class SignIn extends Mixins(ValidationMixin) {
   }
 
   async resetPassword() {
-    // TODO: add validation
-    await Authentication.instance.sendPasswordReset(this.email);
+    await router.safePush!(PathName.ForgotPassword);
   }
 
   async signIn() {

@@ -18,5 +18,7 @@ export enum PathName {
   CustomProduct = '/custom-product',
   OnboardingTrackWaste = '/onboarding/track-waste',
   OnboardingMakeLists = '/onboarding/make-lists',
-  OnboardingInviteMembers = '/onboarding/invite-members'
+  OnboardingInviteMembers = '/onboarding/invite-members',
+  ForgotPassword = '/forgot-password',
+  EmailSentScreen = '/email-sent',
 }

@@ -96,7 +96,7 @@ import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily, Family } from '@/types';
 import { VAlert, VButton, VHeader, VInput } from '@/components';
-import { AlertStatus } from '@/utils/enums';
+import { AlertStatus, PathName } from '@/utils/enums';
 import Authentication from '@/utils/Authentication';
 import Firestore from '@/utils/Firestore';
 import firebase from 'firebase';
@@ -132,7 +132,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async addNewMembers() {
-    await router.push('/invite-members');
+    await router.safePush!(PathName.InviteMembers);
   }
 
   editFamilyName() {
@@ -141,7 +141,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async goToCreateFamily() {
-    await router.push('/create-family');
+    await router.safePush!(PathName.CreateFamily);
   }
 
   async handleResendInvite(invitation: string) {
@@ -163,7 +163,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   }
 
   async handleQuit() {
-    await router.push('/quit-family');
+    await router.safePush!(PathName.QuitFamily);
   }
 
   async updateFamilyName() {

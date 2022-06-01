@@ -13,7 +13,7 @@
           placeholder="Enter your family name"
           v-model="familyName"
         />
-        <div class="text-dark-peach mb-6">{{ errorMessage }}</div>
+        <div class="text-dark-peach mb-6 text-sm">{{ errorMessage }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
