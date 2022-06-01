@@ -42,16 +42,14 @@ export default class OnboardingFamilyMembers extends Mixins(ValidationMixin) {
     router.safePush!({ path: PathName.EmailSentScreen, query: { email: this.email } });
   }
 
-  sendPasswordReset() {
-    Authentication.instance
-      .sendPasswordReset(this.email)
-      .then(() => {
-        return this.goToConfirmationPage();
-      })
-      .catch(error => {
-        console.log(`Send password reset error: ${error.code}`);
-        this.displayError(error);
-      });
+  async sendPasswordReset() {
+    try {
+      await Authentication.instance.sendPasswordReset(this.email);
+      return this.goToConfirmationPage();
+    } catch (error) {
+      console.log(`Send password reset error: ${error.code}`);
+      this.displayError(error);
+    }
   }
 }
 </script>
