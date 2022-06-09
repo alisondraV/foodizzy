@@ -13,7 +13,6 @@
             style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
-            :product="product"
             :style="getProductColor(product, category)"
             @click="updateProductList(product)"
           >
@@ -30,11 +29,12 @@
 
 <script lang="ts">
 import { Component, Provide, Vue } from 'vue-property-decorator';
-import { CurrentFamily, Product } from '@/types';
+import { Product } from '@/types';
 import { ListName, PathName } from '@/utils/enums';
 import { SearchInput, SkipHeader, VButton } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
+import API from '@/utils/API';
 
 @Component({
   components: {
@@ -52,7 +52,7 @@ export default class StorageSetup extends Vue {
   searchQuery = '';
 
   async mounted() {
-    this.products = await CurrentFamily.instance.getAllProducts();
+    this.products = await API.instance.getAllProducts();
   }
 
   async addProductsToStorage() {
