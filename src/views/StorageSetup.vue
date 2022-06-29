@@ -6,11 +6,10 @@
       <search-input class="mb-4" v-model="searchQuery" />
       <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
         <h2 class="text-primary-text text-lg mb-1">{{ category }}</h2>
-        <div class="flex flex-wrap justify-between -mx-2">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-2">
           <div
-            class="rounded py-2 px-3 mx-2 my-1"
+            class="rounded py-2 px-3"
             data-cy="product"
-            style="width: 45%"
             v-for="product in filteredCategoryProducts[category]"
             :key="product.name"
             :style="getProductColor(product, category)"
