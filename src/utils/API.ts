@@ -6,7 +6,7 @@ import { productConverter } from '@/types/converters';
 const httpClient = axios.create({
   baseURL:
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5000'
+      ? 'http://localhost:5000/api'
       : `https://${window.location.hostname}/api`,
   timeout: 5000
 });

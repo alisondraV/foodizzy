@@ -113,12 +113,12 @@ const routes: Array<RouteConfig> = [
   {
     path: PathName.ForgotPassword,
     name: 'ForgotPassword',
-    component: () => import('../views/PasswordReset/ForgotPassword.vue')
+    component: () => import('../views/password-reset/ForgotPassword.vue')
   },
   {
     path: PathName.EmailSentScreen,
     name: 'EmailSentScreen',
-    component: () => import('../views/PasswordReset/EmailSentScreen.vue')
+    component: () => import('../views/password-reset/EmailSentScreen.vue')
   },
   {
     path: '*',
