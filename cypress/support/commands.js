@@ -3,6 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import { attachCustomCommands } from 'cypress-firebase';
 import { user, productsData } from '../fixtures';
+import { PathName } from '@/utils/enums';
 
 const firebaseConfig = {
   apiKey: 'foo',
@@ -50,18 +51,23 @@ Cypress.Commands.add('setUpFamily', () => {
     name: user.familyName,
     members: [user.email],
     pendingMembers: [user.newFamilyMembers[0]],
-    storage: [],
+    storage: products,
     shoppingList: []
-  });
-  cy.callFirestore('update', 'family/MyFamily', {
-    storage: products
   });
 });
 
 Cypress.Commands.add('signIn', (email = user.email, password = user.password) => {
-  cy.visit('localhost:8080/sign-in');
+  cy.visit(`http://localhost:8080${PathName.SignIn}`);
 
   cy.get('[data-cy=email]').type(email);
   cy.get('[data-cy=password]').type(password);
   cy.get('[data-cy=sign-in]').click();
+});
+
+Cypress.Commands.add('signOut', () => {
+  cy.visit(`http://localhost:8080${PathName.UserProfile}`);
+  cy.wait(1000);
+
+  cy.get('[data-cy=log-out]').click();
+  cy.wait(1000);
 });

@@ -12,7 +12,7 @@
       </div>
       <hr class="text-secondary-text" />
     </div>
-    <div class="mb-4" v-for="category in Object.keys(filteredCategoryProducts)" :key="category">
+    <div class="mb-4" v-for="category in sortedCategories" :key="category">
       <category-products :products="filteredCategoryProducts[category]" />
     </div>
   </div>
@@ -57,6 +57,10 @@ export default class ProductsList extends Vue {
 
       return acc;
     }, {});
+  }
+
+  get sortedCategories() {
+    return Object.keys(this.filteredCategoryProducts).sort();
   }
 }
 </script>

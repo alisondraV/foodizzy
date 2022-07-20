@@ -1,4 +1,5 @@
 import { Icons } from './icons';
+import { PathName } from '@/utils/enums';
 
 type NavigationOption = {
   pathName: string;
@@ -7,19 +8,19 @@ type NavigationOption = {
 
 export const navigationOptions: NavigationOption[] = [
   {
-    pathName: '/',
-    icon: Icons.Statistics
-  },
-  {
-    pathName: '/storage',
+    pathName: PathName.Storage,
     icon: Icons.Storage
   },
   {
-    pathName: '/shopping-list',
+    pathName: PathName.ShoppingList,
     icon: Icons.ShoppingList
   },
   {
-    pathName: '/recipes',
+    pathName: PathName.Statistics,
+    icon: Icons.Statistics
+  },
+  {
+    pathName: PathName.Recipes,
     icon: Icons.Recipes
   }
 ];

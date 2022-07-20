@@ -9,6 +9,8 @@ Check it out here:
 https://foodizzy-app.web.app/
 
 ## Project setup
+Copy `.env.example` to `.env` and update it with valid variables.
+
 ```
 npm install
 ```

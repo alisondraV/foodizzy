@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <div class="w-full">
     <label class="flex flex-col text-secondary-text">
-      <span class="text-left mb-1 text-sm">{{ label }}</span>
+      <span class="text-left mb-1 text-sm" :class="{ 'text-primary-green': isFocused }">
+        {{ label }}
+      </span>
       <input
         class="focus:outline-none rounded-md text-primary-text h-10 p-4 placeholder-secondary-text
-                border border-secondary-text focus:border-primary-green"
+                focus:border-primary-green"
         :class="error ? 'border-2 border-dark-peach' : 'border border-secondary-text'"
         @input="$emit('input', $event.target.value)"
-        @focus="$emit('focus')"
+        @focus="focused = true"
+        @blur="focused = false"
         :placeholder="placeholder"
         :type="type"
         :value="value"

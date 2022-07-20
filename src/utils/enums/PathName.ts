@@ -3,7 +3,7 @@ export enum PathName {
   SignUp = '/sign-up',
   StorageSetup = '/storage-setup',
   CreateFamily = '/create-family',
-  Home = '/',
+  Statistics = '/statistics',
   Storage = '/storage',
   ShoppingList = '/shopping-list',
   UserProfile = '/profile',
@@ -18,5 +18,7 @@ export enum PathName {
   CustomProduct = '/custom-product',
   OnboardingTrackWaste = '/onboarding/track-waste',
   OnboardingMakeLists = '/onboarding/make-lists',
-  OnboardingInviteMembers = '/onboarding/invite-members'
+  OnboardingInviteMembers = '/onboarding/invite-members',
+  ForgotPassword = '/forgot-password',
+  EmailSentScreen = '/email-sent',
 }

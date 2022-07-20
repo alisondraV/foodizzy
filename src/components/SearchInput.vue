@@ -2,17 +2,25 @@
   <div class="flex w-full">
     <div class="flex flex-1 border border-secondary-text rounded-md mr-1">
       <img class="pl-3" src="@/assets/images/Search.svg" alt="Finished" />
-      <label>
-        <input
-          class="text-primary-text text-sm h-10 w-full pl-2 mr-1 focus:outline-none"
-          :value="value"
-          @focus="focused = true"
-          @blur="focused = false"
-          @input="$emit('input', $event.target.value)"
-          type="text"
-          placeholder="What are you looking for?"
-        />
-      </label>
+      <input
+        class="text-primary-text text-sm h-10 w-full pl-2 mr-1 focus:outline-none"
+        data-cy="search-input"
+        :value="value"
+        @focus="focused = true"
+        @blur="focused = false"
+        @input="$emit('input', $event.target.value)"
+        type="text"
+        placeholder="What are you looking for?"
+      />
+      <img
+        v-if="!searchIsEmpty"
+        alt="Clear"
+        class="right-0 pr-3"
+        data-cy="clear-button"
+        style="filter: invert(67%) sepia(12%) saturate(1440%) hue-rotate(316deg) brightness(92%) contrast(83%)"
+        src="@/assets/images/Cross.svg"
+        @click="$emit('input', '')"
+      />
     </div>
     <div v-if="currentPage === 'storage'">
       <label>
@@ -37,12 +45,16 @@ import { Product } from '@/types';
 
 @Component
 export default class SearchInput extends Vue {
-  @Prop() value!: null;
+  @Prop() value!: string;
   @Inject('currentPage') currentPage!: string;
   focused = false;
 
   get isFocused() {
     return this.focused;
+  }
+
+  get searchIsEmpty() {
+    return this.value.length === 0;
   }
 
   async scanItem(files: File[]): Promise<void> {

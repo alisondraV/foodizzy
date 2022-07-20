@@ -29,9 +29,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/CreateFamily.vue')
   },
   {
-    path: PathName.Home,
-    name: 'Home',
-    component: () => import('../views/Home.vue')
+    path: PathName.Statistics,
+    name: 'Statistics',
+    component: () => import('../views/Statistics.vue')
   },
   {
     path: PathName.Storage,
@@ -111,9 +111,19 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/onboarding/OnboardingInviteMembers.vue')
   },
   {
+    path: PathName.ForgotPassword,
+    name: 'ForgotPassword',
+    component: () => import('../views/password-reset/ForgotPassword.vue')
+  },
+  {
+    path: PathName.EmailSentScreen,
+    name: 'EmailSentScreen',
+    component: () => import('../views/password-reset/EmailSentScreen.vue')
+  },
+  {
     path: '*',
     name: '404',
-    component: () => import('../views/404.vue')
+    component: () => import('../views/PageNotFound.vue')
   }
 ];
 
@@ -136,7 +146,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
     if (userLoggedIn) {
       userHasFamily = await CurrentFamily.instance.existsFor(user!);
     }
-    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations'];
+    const anonymousRoutes = ['SignIn', 'SignUp', 'Invitations', 'ForgotPassword', 'EmailSentScreen'];
     const authWithoutFamilyRoutes = [
       'SignIn',
       'SignUp',
@@ -150,7 +160,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
       'OnboardingMakeLists',
       'OnboardingInviteMembers'
     ];
-    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily'];
+    const authWithFamilyRestrictedRoutes = ['SignIn', 'SignUp', 'CreateFamily', 'StorageSetup'];
 
     const destinationIsOneOf = routes => routes.some(routeName => to.name === routeName);
 
@@ -163,7 +173,7 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
         next(PathName.UserProfile);
       }
     } else if (destinationIsOneOf(authWithFamilyRestrictedRoutes)) {
-      next(PathName.Home);
+      next(PathName.Storage);
     }
     next();
   } catch (e) {

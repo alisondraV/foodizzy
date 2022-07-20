@@ -11,7 +11,7 @@
     </div>
     <hr class="text-secondary-text mb-2" />
     <div v-if="!collapsed">
-      <list-item v-for="product in products" :key="product.name" :product="product" />
+      <list-item v-for="product in sortedProducts" :key="product.name" :product="product" />
     </div>
   </div>
 </template>
@@ -32,6 +32,10 @@ export default class CategoryProducts extends Vue {
 
   get localStorageKey() {
     return `${window.location.pathname}/${this.category}`;
+  }
+
+  get sortedProducts() {
+    return this.products.sort((product1, product2) => (product1.name < product2.name ? -1 : 1));
   }
 
   mounted() {

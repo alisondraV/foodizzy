@@ -1,8 +1,6 @@
 <template>
   <div class="bg-background flex justify-between h-20 px-5 w-full top-0 fixed pt-4 z-50">
-    <span
-      class="ml-4 text-small-header xs:text-header place-self-center font-extrabold text-primary-text"
-    >
+    <span class="ml-4 text-small-header xs:text-header place-self-center font-extrabold text-primary-text">
       {{ heading }}
     </span>
     <img

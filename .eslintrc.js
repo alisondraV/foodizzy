@@ -15,13 +15,12 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'max-len': ['warn', { code: 110, tabWidth: 4 }],
+    'max-len': ['warn', { code: 120, tabWidth: 4 }],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true }],
     '@typescript-eslint/no-non-null-assertion': 'off',
-    'cypress/no-unnecessary-waiting': 'off',
-    'sort-imports': 'warn'
+    'cypress/no-unnecessary-waiting': 'off'
   },
   plugins: ['cypress']
 };
