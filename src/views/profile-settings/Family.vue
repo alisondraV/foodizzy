@@ -71,7 +71,8 @@
         <div v-else v-for="invitation in pendingMembers" :key="invitation">
           <div class="flex w-full justify-between mb-3">
             <div class="flex-1">
-              {{ invitation }}
+              <span class="block">{{ invitation }}</span>
+              <span class="block text-xs">Sent: Aug 4, 2022</span>
             </div>
             <div class="text-primary-green mr-4" @click="handleResendInvite(invitation)">
               Resend
