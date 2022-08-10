@@ -71,8 +71,8 @@
         <div v-else v-for="invitation in pendingMembers" :key="invitation">
           <div class="flex w-full justify-between mb-3">
             <div class="flex-1">
-              <span class="block">{{ invitation }}</span>
-              <span class="block text-xs">Sent: Aug 4, 2022</span>
+              <span class="block">{{ invitation.email }}</span>
+              <span class="block text-xs">Sent: {{ invitation.date.toDate().toDateString() }}</span>
             </div>
             <div class="text-primary-green mr-4" @click="handleResendInvite(invitation)">
               Resend
@@ -95,7 +95,7 @@
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
 import { Component, Mixins } from 'vue-property-decorator';
-import { CurrentFamily, Family } from '@/types';
+import { CurrentFamily, Family, PendingMember } from '@/types';
 import { VAlert, VButton, VHeader, VInput } from '@/components';
 import { AlertStatus, PathName } from '@/utils/enums';
 import Authentication from '@/utils/Authentication';
@@ -112,7 +112,7 @@ export default class AppMain extends Mixins(AlertMixin, ListenerMixin) {
   family: Family | null = null;
   familyMembers: firebase.User[] = [];
   newFamilyName = '';
-  pendingMembers: string[] = [];
+  pendingMembers: PendingMember[] = [];
   user: firebase.User | null = null;
 
   async mounted() {

@@ -9,11 +9,12 @@ import firebase from 'firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
 import CollectionReference = firebase.firestore.CollectionReference;
 import FieldValue = firebase.firestore.FieldValue;
+import { PendingMember } from '@/types/PendingMember';
 
 export interface Family {
   id?: string;
   members: string[];
-  pendingMembers: string[];
+  pendingMembers: PendingMember[];
   name: string;
   storage: Product[];
   shoppingList: Product[];
@@ -180,7 +181,11 @@ export class CurrentFamily {
 
   public async inviteMembers(memberEmails: string[]) {
     const currentFamilyDoc = await this.currentFamilyDoc();
-    await currentFamilyDoc.update('pendingMembers', FieldValue.arrayUnion(...memberEmails));
+    const memberEmailsWithDates = memberEmails.map(memberEmail => ({
+      email: memberEmail,
+      date: firebase.firestore.Timestamp.now()
+    }));
+    await currentFamilyDoc.update('pendingMembers', FieldValue.arrayUnion(...memberEmailsWithDates));
   }
 
   public async listenForChanges(
