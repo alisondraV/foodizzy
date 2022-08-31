@@ -191,6 +191,7 @@ function handleError(error) {
 }
 
 router.safePush = async (location: Location | PathName) => {
+  if (router.currentRoute.path === location) return;
   return router.push(location).catch(handleError);
 };
 
