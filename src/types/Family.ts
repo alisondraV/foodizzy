@@ -181,7 +181,13 @@ export class CurrentFamily {
 
   public async inviteMembers(memberEmails: string[]) {
     const currentFamilyDoc = await this.currentFamilyDoc();
-    const memberEmailsWithDates = memberEmails.map(memberEmail => ({
+    const currentPendingMembersEmails = (await currentFamilyDoc.get())
+      .get('pendingMembers')
+      .map(pendingMember => pendingMember.email);
+
+    const membersToBeInvited = memberEmails.filter(email => !currentPendingMembersEmails.includes(email));
+
+    const memberEmailsWithDates = membersToBeInvited.map(memberEmail => ({
       email: memberEmail,
       date: firebase.firestore.Timestamp.now()
     }));
