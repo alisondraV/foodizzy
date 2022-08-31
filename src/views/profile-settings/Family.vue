@@ -68,16 +68,20 @@
         <div v-if="pendingMembers.length === 0" class="text-dark-peach -mt-2">
           No pending invitations.
         </div>
-        <div v-else v-for="invitation in pendingMembers" :key="invitation">
+        <div v-else v-for="invitation in pendingMembers" :key="invitation.email">
           <div class="flex w-full justify-between mb-3">
             <div class="flex-1">
               <span class="block">{{ invitation.email }}</span>
               <span class="block text-xs">Sent: {{ invitation.date.toDate().toDateString() }}</span>
             </div>
-            <div class="text-primary-green mr-4" @click="handleResendInvite(invitation)">
+            <div class="text-primary-green mr-4" @click="handleResendInvite(invitation.email)">
               Resend
             </div>
-            <div class="text-dark-peach" data-cy="cancel-invite" @click="handleCancelInvitation(invitation)">
+            <div
+              class="text-dark-peach"
+              data-cy="cancel-invite"
+              @click="handleCancelInvitation(invitation.email)"
+            >
               Cancel
             </div>
           </div>
