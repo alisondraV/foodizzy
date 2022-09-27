@@ -181,9 +181,8 @@ export class CurrentFamily {
 
   public async inviteMembers(memberEmails: string[]) {
     const currentFamilyDoc = await this.currentFamilyDoc();
-    const currentPendingMembersEmails = (await currentFamilyDoc.get())
-      .get('pendingMembers')
-      .map(pendingMember => pendingMember.email);
+    const currentPendingMembers = (await currentFamilyDoc.get()).get('pendingMembers') ?? [];
+    const currentPendingMembersEmails = currentPendingMembers.map(pendingMember => pendingMember.email);
 
     const membersToBeInvited = memberEmails.filter(email => !currentPendingMembersEmails.includes(email));
 
