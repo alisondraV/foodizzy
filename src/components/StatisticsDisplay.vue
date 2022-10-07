@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--for reactivity-->
-    <div v-for="monthData in [['selectedMonthData']]" :key="monthData">
+    <div v-for="(_, index) in [['selectedMonthData']]" :key="index">
       <h2 class="mb-4 font-extrabold text-center">
         {{ statisticsName }}
       </h2>
