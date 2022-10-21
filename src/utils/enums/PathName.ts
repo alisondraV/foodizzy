@@ -4,7 +4,7 @@ export enum PathName {
   StorageSetup = '/storage-setup',
   CreateFamily = '/create-family',
   Statistics = '/statistics',
-  Storage = '/storage',
+  Storage = '/',
   ShoppingList = '/shopping-list',
   UserProfile = '/profile',
   Family = '/profile/family',
@@ -20,5 +20,5 @@ export enum PathName {
   OnboardingMakeLists = '/onboarding/make-lists',
   OnboardingInviteMembers = '/onboarding/invite-members',
   ForgotPassword = '/forgot-password',
-  EmailSentScreen = '/email-sent',
+  EmailSentScreen = '/email-sent'
 }
