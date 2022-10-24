@@ -5,6 +5,7 @@
       <img v-else alt="NotSelected" :src="getSource('default')" />
     </div>
     <span class="flex-1 ml-4 text-primary-text">{{ product.name }}</span>
+    <img alt="EditProduct" v-if="currentPage !== 'newProduct'" src="@/assets/images/Edit.svg" />
   </div>
 </template>
 
