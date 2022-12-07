@@ -1,21 +1,21 @@
 <template>
   <div>
     <!--for reactivity-->
-    <div v-for="monthData in [['selectedMonthData']]" :key="monthData">
+    <div v-for="(_, index) in [['selectedMonthData']]" :key="index">
       <h2 class="mb-4 font-extrabold text-center">
         {{ statisticsName }}
       </h2>
       <custom-chart
         class="mb-6"
-        :data="[...Object.values(statistics)]"
-        :labels="[...Object.keys(statistics)]"
+        :data="[...Object.values(filteredStatistics)]"
+        :labels="[...Object.keys(filteredStatistics)]"
         :canvasId="statisticsName"
       />
     </div>
     <ul class="mb-6">
       <li
         :class="`flex items-center mb-2 text-sm ${category === 'miscellaneous' ? 'mt-4' : ''}`"
-        v-for="category in Object.keys(statistics)"
+        v-for="category in Object.keys(filteredStatistics)"
         :key="category"
       >
         <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
@@ -39,9 +39,7 @@ export default class StatisticsDisplay extends Vue {
   @Prop() statisticsName!: string;
   @Prop({ default: false }) isForWasted?: boolean;
 
-  mounted() {
-    this.sortAndFilterStatistics();
-  }
+  filteredStatistics: { [category: string]: number } = this.sortAndFilterStatistics();
 
   getCategoryPercentage(category: string) {
     category = category.toLowerCase();
@@ -57,13 +55,15 @@ export default class StatisticsDisplay extends Vue {
     const sortedStatistics = Object.entries(this.statistics).sort(
       (category, nextCategory) => nextCategory[1] - category[1]
     );
-
     const filteredStats = sortedStatistics.filter(item => parseInt(this.getCategoryPercentage(item[0])) > 5);
     const miscellaneousCategory = sortedStatistics
       .filter(item => parseInt(this.getCategoryPercentage(item[0])) <= 5)
       .reduce((item, prev) => ['miscellaneous', prev[1] + item[1]], ['miscellaneous', 0]);
 
-    this.statistics = Object.fromEntries([...filteredStats, miscellaneousCategory]);
+    const filteredStatsWithMiscCategory =
+      miscellaneousCategory[1] !== 0 ? [...filteredStats, miscellaneousCategory] : filteredStats;
+
+    return Object.fromEntries(filteredStatsWithMiscCategory);
   }
 
   getCategoryColor(category: string) {
