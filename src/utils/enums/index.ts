@@ -7,3 +7,4 @@ export { ListName } from './ListName';
 export { PathName } from './PathName';
 export { StorageAction } from './StorageAction';
 export { ShoppingListAction } from './ShoppingListAction';
+export { UnitType } from './UnitType';

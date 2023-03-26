@@ -45,8 +45,6 @@ import { shoppingListActions } from '@/utils/consts';
 export default class ShoppingList extends Mixins(AlertMixin, ListenerMixin) {
   @Provide('currentPage') currentPage = ListName.ShoppingList;
   products: Product[] = [];
-  searchQuery = '';
-  unsubFamilyListener: (() => void) | undefined;
 
   async mounted() {
     this.onFamilyUpdate = family => {
