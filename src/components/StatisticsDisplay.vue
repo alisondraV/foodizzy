@@ -19,7 +19,7 @@
         :key="category"
       >
         <div class="rounded-2xl h-5 w-5 mr-2" :style="`background: ${getCategoryColor(category)}`" />
-        <p>{{ getStatisticsLabel(category) }}</p>
+        <p>{{ getFilteredStatisticsLabel(category) }}</p>
       </li>
     </ul>
   </div>
@@ -39,26 +39,33 @@ export default class StatisticsDisplay extends Vue {
   @Prop() statisticsName!: string;
   @Prop({ default: false }) isForWasted?: boolean;
 
-  filteredStatistics: { [category: string]: number } = this.sortAndFilterStatistics();
+  filteredStatistics: { [category: string]: number } = this.getSortedAndFilteredStatistics();
 
-  getCategoryPercentage(category: string) {
+  getOriginalCategoryPercentage(category: string) {
     category = category.toLowerCase();
-    return ((this.statistics[category] / this.products) * 100).toFixed();
+    return (this.statistics[category] / this.products) * 100;
   }
 
-  getStatisticsLabel(category: string) {
+  getFilteredCategoryPercentage(category: string) {
+    category = category.toLowerCase();
+    return (this.getSortedAndFilteredStatistics()[category] / this.products) * 100;
+  }
+
+  getFilteredStatisticsLabel(category: string) {
     const food = this.isForWasted ? 'food waste' : 'food';
-    return `${this.getCategoryPercentage(category)}% of all ${food} were ${category}`;
+    return `${this.getFilteredCategoryPercentage(category).toFixed()}% of all ${food} were ${category}`;
   }
 
-  private sortAndFilterStatistics() {
+  private getSortedAndFilteredStatistics() {
     const sortedStatistics = Object.entries(this.statistics).sort(
       (category, nextCategory) => nextCategory[1] - category[1]
     );
-    const filteredStats = sortedStatistics.filter(item => parseInt(this.getCategoryPercentage(item[0])) > 5);
+    const filteredStats = sortedStatistics.filter(item => this.getOriginalCategoryPercentage(item[0]) > 5);
+    
     const miscellaneousCategory = sortedStatistics
-      .filter(item => parseInt(this.getCategoryPercentage(item[0])) <= 5)
-      .reduce((item, prev) => ['miscellaneous', prev[1] + item[1]], ['miscellaneous', 0]);
+      .filter(item => this.getOriginalCategoryPercentage(item[0]) <= 5)
+      .reduce((prev, acc) => ['miscellaneous', prev[1] + acc[1]], ['miscellaneous', 0]);
+
 
     const filteredStatsWithMiscCategory =
       miscellaneousCategory[1] !== 0 ? [...filteredStats, miscellaneousCategory] : filteredStats;
