@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header heading="Add New Item" />
-    <div class="mt-20 mb-20 mx-8">
+    <div class="mt-20 mb-24 mx-8">
       <products-list :location="location" :products="products" />
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
