@@ -21,23 +21,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { CurrentFamily, Recipe } from '@/types';
 import { NavigationMenu, RecipeComponent, VHeader } from '@/components';
 
-@Component({
-  components: {
-    RecipeComponent,
-    NavigationMenu,
-    VHeader
-  }
-})
-export default class Recipes extends Vue {
-  recipes: Recipe[] = [];
+const recipes = ref<Recipe[]>([]);
 
-  async mounted() {
-    this.recipes = await CurrentFamily.instance.getRecipes();
-  }
-}
+onMounted(async () => {
+  recipes.value = await CurrentFamily.instance.getRecipes();
+})
 </script>
