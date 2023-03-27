@@ -30,5 +30,5 @@ const recipes = ref<Recipe[]>([]);
 
 onMounted(async () => {
   recipes.value = await CurrentFamily.instance.getRecipes();
-})
+});
 </script>
