@@ -6,16 +6,27 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Install dependencies
         run: npm i
+
       - name: Lint
         run: npm run lint:no-fix
+
       - name: Install dependencies for functions folder
         run: cd ./functions && npm i
+
       - name: Lint functions folder
         run: cd ./functions && npm run lint
+
       - name: Build
         run: npm run build
+
       # - name: Run E2E tests
       #   uses: cypress-io/github-action@v1
       #   with:
