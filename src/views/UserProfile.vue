@@ -52,46 +52,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
 import { CurrentFamily, Family } from '@/types';
 import { VButton, VHeader } from '@/components';
 import Authentication from '@/utils/Authentication';
 import { PathName } from '@/utils/enums';
 import firebase from 'firebase';
 import router from '@/router';
+import { onMounted, ref } from 'vue';
 
-@Component({
-  components: { VButton, VHeader }
-})
-export default class UserProfile extends Vue {
-  family: Family | null = null;
-  user: firebase.User | null = null;
+const family = ref<Family | null>(null);
+const user = ref<firebase.User | null>(null);
 
-  async mounted() {
-    this.user = await Authentication.instance.getCurrentUser();
-    this.family = await CurrentFamily.instance.getCurrentFamily();
-  }
+onMounted(async () => {
+  user.value = await Authentication.instance.getCurrentUser();
+  family.value = await CurrentFamily.instance.getCurrentFamily();
+});
 
-  async changePassword() {
-    await router.safePush!(PathName.ChangePassword);
-  }
+async function changePassword() {
+  await router.safePush!(PathName.ChangePassword);
+}
 
-  async logOut() {
-    await Authentication.instance.signOut();
-    await router.safePush!(PathName.SignIn);
-  }
+async function logOut() {
+  await Authentication.instance.signOut();
+  await router.safePush!(PathName.SignIn);
+}
 
-  async viewFamily() {
-    await router.safePush!(PathName.Family);
-  }
+async function viewFamily() {
+  await router.safePush!(PathName.Family);
+}
 
-  async viewInvitations() {
-    await router.safePush!(PathName.Invitations);
-  }
+async function viewInvitations() {
+  await router.safePush!(PathName.Invitations);
+}
 
-  async viewPersonalInfo() {
-    await router.safePush!(PathName.PersonalInformation);
-  }
+async function viewPersonalInfo() {
+  await router.safePush!(PathName.PersonalInformation);
 }
 </script>
