@@ -32,37 +32,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
 import { VButton, VInput } from '@/components';
 import { CurrentFamily } from '@/types';
 import { PathName } from '@/utils/enums';
-import { ValidationMixin } from '@/mixins';
 import router from '@/router';
 import EmailsList from '@/components/EmailsList.vue';
+import { useValidation } from '@/composables/useValidation';
+import { ref, watch } from 'vue';
 
-@Component({
-  components: {
-    EmailsList,
-    VButton,
-    VInput
-  }
-})
-export default class CreateFamily extends Mixins(ValidationMixin) {
-  familyName = '';
-  memberEmails: string[] = [];
+const familyName = ref('');
+const memberEmails = ref<string[]>([]);
 
-  async createFamily() {
-    await CurrentFamily.instance.create(this.familyName, this.memberEmails);
-    this.goToTheNextPage();
-  }
+const { errorMessage, isDisplayNameValid, validationFailed } = useValidation();
 
-  get isFormInValidState() {
-    return this.isDisplayNameValid(this.familyName);
-  }
+watch(familyName, () => {
+  isDisplayNameValid(familyName.value);
+});
 
-  goToTheNextPage() {
-    router.safePush!(PathName.StorageSetup);
-  }
+function goToTheNextPage() {
+  router.safePush!(PathName.StorageSetup);
+}
+
+async function createFamily() {
+  await CurrentFamily.instance.create(familyName.value, memberEmails.value);
+  goToTheNextPage();
 }
 </script>
