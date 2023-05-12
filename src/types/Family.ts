@@ -56,9 +56,11 @@ export class CurrentFamily {
 
   public async create(name: string, members: string[]) {
     const user = await Authentication.instance.getCurrentUser();
+    const memberEmailsWithDates = members.map(this.createPendingMember);
+
     const newFamilyRef: DocumentReference = await Firestore.instance.db.collection('family').add({
       members: [user?.email],
-      pendingMembers: members,
+      pendingMembers: memberEmailsWithDates,
       name,
       shoppingList: [],
       storage: []
@@ -185,11 +187,8 @@ export class CurrentFamily {
     const currentPendingMembersEmails = currentPendingMembers.map(pendingMember => pendingMember.email);
 
     const membersToBeInvited = memberEmails.filter(email => !currentPendingMembersEmails.includes(email));
+    const memberEmailsWithDates = membersToBeInvited.map(this.createPendingMember);
 
-    const memberEmailsWithDates = membersToBeInvited.map(memberEmail => ({
-      email: memberEmail,
-      date: firebase.firestore.Timestamp.now()
-    }));
     await currentFamilyDoc.update('pendingMembers', FieldValue.arrayUnion(...memberEmailsWithDates));
   }
 
@@ -217,5 +216,12 @@ export class CurrentFamily {
   async updateFamilyName(newName: string) {
     const currentFamilyDoc = await this.currentFamilyDoc();
     await currentFamilyDoc.update('name', newName);
+  }
+
+  private createPendingMember(memberEmail: string) {
+    return {
+      email: memberEmail,
+      date: firebase.firestore.Timestamp.now()
+    };
   }
 }
