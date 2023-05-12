@@ -31,6 +31,8 @@
     "@types/chart.js": "^2.9.29",
     "@types/jbinary": "^0.0.30",
     "@types/node": "^14.14.37",
+    "@vueuse/integrations": "^10.1.2",
+    "async-validator": "^4.2.5",
     "autoprefixer": "^9",
     "aws-sdk": "^2.884.0",
     "axios": "^0.21.1",

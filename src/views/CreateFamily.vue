@@ -11,9 +11,9 @@
           type="text"
           label="Family Name"
           placeholder="Enter your family name"
-          v-model="familyName"
+          v-model="form.familyName"
         />
-        <div class="text-dark-peach mb-6 text-sm">{{ errorMessage }}</div>
+        <div class="text-dark-peach mb-6 text-sm">{{ errorFields['familyName']?.[0]?.message }}</div>
         <p class="text-1xl font-bold text-primary-text mb-4">
           Invite Family Members
         </p>
@@ -21,13 +21,7 @@
       </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
-      <v-button
-        class="mx-8"
-        data-cy="create"
-        label="Create Family"
-        :disabled="validationFailed"
-        @click="createFamily"
-      />
+      <v-button class="mx-8" data-cy="create" label="Create Family" :disabled="!pass" @click="createFamily" />
     </div>
   </div>
 </template>
@@ -38,24 +32,32 @@ import { CurrentFamily } from '@/types';
 import { PathName } from '@/utils/enums';
 import router from '@/router';
 import EmailsList from '@/components/EmailsList.vue';
-import { useValidation } from '@/composables/useValidation';
-import { ref, watch } from 'vue';
+import { reactive, ref } from 'vue';
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator';
+import { Rules } from 'async-validator';
 
-const familyName = ref('');
 const memberEmails = ref<string[]>([]);
+const error = ref<string>('');
 
-const { errorMessage, isDisplayNameValid, validationFailed } = useValidation();
+const form = reactive({ familyName: '' });
+const rules: Rules = {
+  familyName: {
+    type: 'string',
+    min: 3,
+    max: 20,
+    required: true,
+    message: 'Family name is required and must be between 3 and 20 characters long.'
+  }
+};
 
-watch(familyName, () => {
-  isDisplayNameValid(familyName.value);
-});
+const { pass, errorFields } = useAsyncValidator(form, rules);
 
 function goToTheNextPage() {
   router.safePush!(PathName.StorageSetup);
 }
 
 async function createFamily() {
-  await CurrentFamily.instance.create(familyName.value, memberEmails.value);
+  await CurrentFamily.instance.create(form.familyName, memberEmails.value);
   goToTheNextPage();
 }
 </script>
