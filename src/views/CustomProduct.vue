@@ -10,7 +10,7 @@
         data-cy="custom-product-category-dropdown"
         label="Category"
         :selection-list="categoriesList"
-        :selected-item="product.category"
+        :selected-item="form.productCategory"
         @change="setSelectedCategory"
       />
       <v-input
@@ -19,21 +19,26 @@
         data-cy="custom-product-category"
         type="text"
         placeholder="Pick Category Name"
-        v-model="product.category"
+        v-model="form.productCategory"
         :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
+      <div v-if="errorFields['productCategory']?.[0]?.message" class="ml-1 text-dark-peach">
+        {{ errorFields['productCategory']?.[0]?.message }}
+      </div>
       <v-input
         class="mb-4"
         data-cy="custom-product-name"
         type="text"
         label="Item Name"
         placeholder="Enter Item Name"
-        v-model="product.name"
+        v-model="form.productName"
         :error="errorType === 'displayName'"
         @input="alertMessage = null"
       />
-      <div v-if="errorMessage" class="ml-1 text-dark-peach">{{ errorMessage }}</div>
+      <div v-if="errorFields['productName']?.[0]?.message" class="ml-1 text-dark-peach">
+        {{ errorFields['productName']?.[0]?.message }}
+      </div>
     </div>
     <div class="bg-background h-24 w-full bottom-0 fixed">
       <v-button
@@ -41,99 +46,106 @@
         class="mx-8 mt-3"
         data-cy="confirm-add-custom-product"
         @click="addNewProduct"
-        :disabled="validationFailed"
+        :disabled="!pass"
       />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { AlertMixin, ValidationMixin } from '@/mixins';
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue';
 import { AlertStatus, ListName, PathName } from '@/utils/enums';
-import { Component, Mixins } from 'vue-property-decorator';
 import { CurrentFamily, Product } from '@/types';
 import { VAlert, VButton, VHeader, VInput, VSelect } from '@/components';
 import Firestore from '@/utils/Firestore';
 import router from '@/router';
+import { useRoute } from 'vue-router/composables';
+import { useAlert } from '@/composables/useAlert';
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator';
+import { Rules } from 'async-validator';
 
-@Component({
-  components: {
-    VAlert,
-    VButton,
-    VHeader,
-    VInput,
-    VSelect
+const categoriesList = ref<string[]>([]);
+const customCategory = ref(false);
+const location = ref<string | undefined>(undefined);
+const route = useRoute();
+const { showAlert, alertMessage, alertStatus } = useAlert();
+
+const form = reactive({ productCategory: '', productName: '' });
+const rules: Rules = {
+  productCategory: {
+    type: 'string',
+    required: true,
+    message: 'Product Category is required'
+  },
+  productName: {
+    type: 'string',
+    required: true,
+    message: 'Product Name is required'
   }
-})
-export default class CustomProduct extends Mixins(AlertMixin, ValidationMixin) {
-  categoriesList: string[] = [];
-  customCategory = false;
-  location?: string;
-  product: Product = new Product('', '');
+};
 
-  async mounted() {
-    this.location = this.$route.query.location as string;
+const { pass, errorFields } = useAsyncValidator(form, rules);
 
-    await this.getCategoriesList();
-    this.product.category = this.categoriesList[0];
-  }
+function getProduct() {
+  return new Product(form.productName, form.productCategory);
+}
 
-  async addNewProduct() {
-    if (!this.product) {
-      return;
-    }
-    this.trimProduct();
+async function getCategoriesList() {
+  const allProducts = await CurrentFamily.instance.getAllProducts();
 
-    if (await Firestore.instance.isProductInStorage(this.product)) {
-      return await this.showAlert(`${this.product.name} already exists in the storage`, AlertStatus.Danger);
-    }
-    if (await Firestore.instance.isProductInShoppingList(this.product)) {
-      return await this.showAlert(
-        `${this.product.name} already exists in the shopping list`,
-        AlertStatus.Danger
-      );
-    }
+  const productCategories = allProducts.map(product => product.category);
+  categoriesList.value = [...new Set(productCategories), 'Add New'];
+}
 
-    await this.addProductToStorageOrShoppingList();
-  }
+function trimProduct() {
+  form.productName = form.productName.trim();
+  form.productCategory = form.productCategory.trim();
+}
 
-  async addProductToStorageOrShoppingList() {
-    this.trimProduct();
+async function addProductToStorageOrShoppingList() {
+  trimProduct();
 
-    await CurrentFamily.instance.saveCustomProduct(this.product);
+  await CurrentFamily.instance.saveCustomProduct(getProduct());
 
-    if (this.location === ListName.Storage) {
-      await Firestore.instance.addToList([this.product], ListName.Storage);
-      await router.safePush!(PathName.Storage);
-    } else if (this.location === ListName.ShoppingList) {
-      await Firestore.instance.addToList([this.product], ListName.ShoppingList);
-      await router.safePush!(PathName.ShoppingList);
-    }
-  }
-
-  async getCategoriesList() {
-    const allProducts = await CurrentFamily.instance.getAllProducts();
-    const productCategories = allProducts.map(product => product.category);
-    this.categoriesList = [...new Set(productCategories), 'Add New'];
-  }
-
-  get isFormInValidState() {
-    return this.isDisplayNameValid(this.product.name) && this.isDisplayNameValid(this.product.category!);
-  }
-
-  setSelectedCategory(value) {
-    this.product.category = value;
-    if (this.product.category === 'Add New') {
-      this.customCategory = true;
-      this.product.category = '';
-    } else {
-      this.customCategory = false;
-    }
-  }
-
-  trimProduct() {
-    this.product.name = this.product.name.trim();
-    this.product.category = this.product.category!.trim();
+  if (location.value === ListName.Storage) {
+    await Firestore.instance.addToList([getProduct()], ListName.Storage);
+    await router.safePush!(PathName.Storage);
+  } else if (location.value === ListName.ShoppingList) {
+    await Firestore.instance.addToList([getProduct()], ListName.ShoppingList);
+    await router.safePush!(PathName.ShoppingList);
   }
 }
+
+async function addNewProduct() {
+  if (!getProduct()) {
+    return;
+  }
+  trimProduct();
+
+  if (await Firestore.instance.isProductInStorage(getProduct())) {
+    return await showAlert(`${form.productName} already exists in the storage`, AlertStatus.Danger);
+  }
+  if (await Firestore.instance.isProductInShoppingList(getProduct())) {
+    return await showAlert(`${form.productName} already exists in the shopping list`, AlertStatus.Danger);
+  }
+
+  await addProductToStorageOrShoppingList();
+}
+
+function setSelectedCategory(value) {
+  form.productCategory = value;
+  if (form.productCategory === 'Add New') {
+    customCategory.value = true;
+    form.productCategory = '';
+  } else {
+    customCategory.value = false;
+  }
+}
+
+onMounted(async () => {
+  location.value = route.query.location as string;
+
+  await getCategoriesList();
+  form.productCategory = categoriesList.value[0];
+});
 </script>
