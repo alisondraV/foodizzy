@@ -56,73 +56,69 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
 import { VButton, VInput } from '@/components';
 import Authentication from '@/utils/Authentication';
 import { CurrentFamily } from '@/types';
 import { PathName } from '@/utils/enums';
-import { ValidationMixin } from '@/mixins';
+import { useValidation } from '@/composables/useValidation';
 import router from '@/router';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router/composables';
 
-@Component({
-  components: {
-    VInput,
-    VButton
+const route = useRoute();
+const { displayError, errorType, errorMessage } = useValidation();
+
+const email = ref('');
+const password = ref('');
+
+const redirect = computed<string | null>(() => {
+  return (route.query.redirect as string) ?? null;
+});
+
+async function finishSignIn(targetRoute: PathName) {
+  if (!redirect) {
+    return router.safeReplace!(targetRoute);
   }
-})
-export default class SignIn extends Mixins(ValidationMixin) {
-  email = '';
-  password = '';
-
-  get redirect(): string | null {
-    return (this.$route.query.redirect as string) ?? null;
-  }
-
-  goToSignUpPage() {
-    this.finishSignIn(PathName.SignUp);
-  }
-
-  async resetPassword() {
-    await router.safePush!(PathName.ForgotPassword);
-  }
-
-  async signIn() {
-    Authentication.instance
-      .signIn(this.email, this.password)
-      .then(() => {
-        return this.tryGetFamilyAndForward();
-      })
-      .catch(error => {
-        console.log(`Auth error: ${error.code}`);
-        this.displayError(error);
-      });
-  }
-
-  async signInThroughGoogle() {
-    await Authentication.instance.authWithGoogle();
-    await this.tryGetFamilyAndForward();
-  }
-
-  async tryGetFamilyAndForward() {
-    try {
-      await CurrentFamily.instance.getCurrentFamily();
-      await this.finishSignIn(PathName.Storage);
-    } catch (err) {
-      await this.finishSignIn(PathName.OnboardingTrackWaste);
+  return router.safeReplace!({
+    path: targetRoute,
+    query: {
+      redirect: redirect.value
     }
-  }
+  });
+}
 
-  async finishSignIn(targetRoute: PathName) {
-    if (!this.redirect) {
-      return router.safeReplace!(targetRoute);
-    }
-    return router.safeReplace!({
-      path: targetRoute,
-      query: {
-        redirect: this.redirect
-      }
+function goToSignUpPage() {
+  finishSignIn(PathName.SignUp);
+}
+
+async function resetPassword() {
+  await router.safePush!(PathName.ForgotPassword);
+}
+
+async function tryGetFamilyAndForward() {
+  try {
+    await CurrentFamily.instance.getCurrentFamily();
+    await finishSignIn(PathName.Storage);
+  } catch (err) {
+    await finishSignIn(PathName.OnboardingTrackWaste);
+  }
+}
+
+async function signIn() {
+  Authentication.instance
+    .signIn(email.value, password.value)
+    .then(() => {
+      return tryGetFamilyAndForward();
+    })
+    .catch(error => {
+      console.log(`Auth error: ${error.code}`);
+      displayError(error);
     });
-  }
+}
+
+async function signInThroughGoogle() {
+  await Authentication.instance.authWithGoogle();
+  await tryGetFamilyAndForward();
 }
 </script>

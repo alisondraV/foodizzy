@@ -11,20 +11,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
 import { PathName } from '@/utils/enums';
 import { VButton } from '@/components';
 import router from '@/router';
 
-@Component({
-  components: {
-    VButton
-  }
-})
-export default class PageNotFound extends Vue {
-  goToTheHomePage() {
-    router.safePush!(PathName.Storage);
-  }
-}
+const goToTheHomePage = () => {
+  router.safePush!(PathName.Storage);
+};
 </script>
