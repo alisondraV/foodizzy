@@ -1,11 +1,13 @@
 import Firestore from '@/utils/Firestore';
-import { ListName } from '@/utils/enums';
+import { ListName, UnitType } from '@/utils/enums';
 
 export class Product {
   public name: string;
   private _category?: string | undefined;
   public static defaultCategory = 'General';
   public selected: boolean;
+  public unit?: UnitType;
+  public count?: number;
 
   constructor(name: string, category?: string, selected?: boolean) {
     this.name = name;

@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { AlertMixin, ListenerMixin } from '@/mixins';
-import { Component, Mixins, Provide } from 'vue-property-decorator';
+import { Component, Mixins, Provide, ProvideReactive } from 'vue-property-decorator';
 import { ListName, PathName, StorageAction } from '@/utils/enums';
 import { NavigationMenu, ProductsList, VAlert, VButton, VFab, VHeader } from '@/components';
 import { Product } from '@/types';
@@ -44,10 +44,8 @@ import { storageActions } from '@/utils/consts';
 })
 export default class Storage extends Mixins(AlertMixin, ListenerMixin) {
   @Provide('currentPage') currentPage = ListName.Storage;
-  newProductCategory = '';
-  newProductName = '';
+  @ProvideReactive('editProductModal') editProductModal = false;
   products: Product[] = [];
-  searchQuery = '';
 
   async mounted() {
     this.onFamilyUpdate = family => {
